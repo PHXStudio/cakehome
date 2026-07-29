@@ -9,7 +9,7 @@ namespace Watermelon
     public static class BottomNavSceneSetup
     {
         private const string GAME_SCENE_PATH = "Assets/Project Files/Game/Scenes/Game.unity";
-        private const float NAV_HEIGHT = 140f;
+        private const float NAV_HEIGHT = BottomNavLayout.Height;
 
         [MenuItem("Actions/Setup Bottom Navigation")]
         public static void Setup()
@@ -114,9 +114,9 @@ namespace Watermelon
             GameObject row = CreateUIObject("Tabs", navRoot.transform);
             StretchFull(row.GetComponent<RectTransform>());
 
-            Button shopButton = CreateTabButton(row.transform, "门店", 0f, 1f / 3f, out Graphic shopSelected);
-            Button camperButton = CreateTabButton(row.transform, "露营车", 1f / 3f, 2f / 3f, out Graphic camperSelected);
-            Button profileButton = CreateTabButton(row.transform, "我的", 2f / 3f, 1f, out Graphic profileSelected);
+            Button shopButton = CreateTabButton(row.transform, "Shop", 0f, 1f / 3f, out Graphic shopSelected);
+            Button camperButton = CreateTabButton(row.transform, "Camper", 1f / 3f, 2f / 3f, out Graphic camperSelected);
+            Button profileButton = CreateTabButton(row.transform, "Profile", 2f / 3f, 1f, out Graphic profileSelected);
 
             UIBottomNavBar nav = navRoot.AddComponent<UIBottomNavBar>();
             SerializedObject so = new SerializedObject(nav);
@@ -134,8 +134,7 @@ namespace Watermelon
 
         private static Button CreateTabButton(Transform parent, string label, float anchorMinX, float anchorMaxX, out Graphic selectedGraphic)
         {
-            const float iconSize = 56f;
-            const float labelHeight = 28f;
+            const float iconSize = BottomNavLayout.IconSize;
 
             GameObject tab = CreateUIObject(label, parent);
             RectTransform tabRect = tab.GetComponent<RectTransform>();
@@ -154,27 +153,25 @@ namespace Watermelon
             iconRect.anchorMin = new Vector2(0.5f, 0.5f);
             iconRect.anchorMax = new Vector2(0.5f, 0.5f);
             iconRect.pivot = new Vector2(0.5f, 0.5f);
-            iconRect.anchoredPosition = new Vector2(0f, 16f);
+            // Selected background pill (transparent when inactive)
+            GameObject selBgGo = CreateUIObject("Selected Bg", tab.transform);
+            RectTransform selBgRect = selBgGo.GetComponent<RectTransform>();
+            selBgRect.anchorMin = new Vector2(0.5f, 0.5f);
+            selBgRect.anchorMax = new Vector2(0.5f, 0.5f);
+            selBgRect.pivot = new Vector2(0.5f, 0.5f);
+            selBgRect.anchoredPosition = new Vector2(0f, BottomNavLayout.IconYOffset);
+            selBgRect.sizeDelta = new Vector2(BottomNavLayout.SelectedBgSize, BottomNavLayout.SelectedBgSize);
+            Image selBg = selBgGo.AddComponent<Image>();
+            selBg.color = new Color(0.2f, 0.55f, 0.35f, 0f);
+            selBg.raycastTarget = false;
+            selectedGraphic = selBg;
+
+            iconRect.anchoredPosition = new Vector2(0f, BottomNavLayout.IconYOffset);
             iconRect.sizeDelta = new Vector2(iconSize, iconSize);
             Image icon = iconGo.AddComponent<Image>();
             icon.color = new Color(0.45f, 0.45f, 0.45f, 1f);
             icon.preserveAspect = true;
             icon.raycastTarget = false;
-            selectedGraphic = icon;
-
-            GameObject labelGo = CreateUIObject("Label", tab.transform);
-            RectTransform labelRect = labelGo.GetComponent<RectTransform>();
-            labelRect.anchorMin = new Vector2(0.05f, 0f);
-            labelRect.anchorMax = new Vector2(0.95f, 0f);
-            labelRect.pivot = new Vector2(0.5f, 0f);
-            labelRect.anchoredPosition = new Vector2(0f, 10f);
-            labelRect.sizeDelta = new Vector2(0f, labelHeight);
-            Text text = labelGo.AddComponent<Text>();
-            text.text = label;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.color = new Color(0.35f, 0.35f, 0.35f, 1f);
-            text.fontSize = 22;
-            text.raycastTarget = false;
 
             Button button = tab.AddComponent<Button>();
             button.targetGraphic = icon;

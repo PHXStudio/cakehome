@@ -13,7 +13,6 @@ namespace Watermelon
         public readonly float STORE_AD_RIGHT_OFFSET_X = 300F;
 
         [SerializeField] RectTransform safeAreaRectTransform;
-        [SerializeField] float bottomNavPadding = 140f;
 
         [Space]
         [SerializeField] RectTransform tapToPlayRect;
@@ -65,11 +64,11 @@ namespace Watermelon
 
         private void ApplyBottomNavPadding()
         {
-            if (safeAreaRectTransform == null || bottomNavPadding <= 0f)
+            if (safeAreaRectTransform == null)
                 return;
 
             Vector2 offsetMin = safeAreaRectTransform.offsetMin;
-            offsetMin.y = Mathf.Max(offsetMin.y, bottomNavPadding);
+            offsetMin.y = Mathf.Max(offsetMin.y, UIBottomNavBar.NavHeight);
             safeAreaRectTransform.offsetMin = offsetMin;
         }
 
@@ -77,6 +76,8 @@ namespace Watermelon
 
         public override void PlayShowAnimation()
         {
+            ApplyBottomNavPadding();
+
             showHideStoreAdButtonDelayTweenCase?.Kill();
 
             HideAdButton(true);

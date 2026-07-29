@@ -15,11 +15,14 @@ namespace Watermelon
         [SerializeField] Graphic shopSelected;
         [SerializeField] Graphic camperSelected;
         [SerializeField] Graphic profileSelected;
+        [SerializeField] float navHeight = BottomNavLayout.Height;
         [SerializeField] Color selectedColor = new Color(0.2f, 0.55f, 0.35f, 1f);
         [SerializeField] Color normalColor = new Color(0.45f, 0.45f, 0.45f, 1f);
 
         private MainHubTab currentTab = MainHubTab.Camper;
         private bool isVisible;
+
+        public static float NavHeight => instance != null ? instance.navHeight : BottomNavLayout.Height;
 
         public static MainHubTab CurrentTab => instance != null ? instance.currentTab : MainHubTab.Camper;
         public static bool IsVisible => instance != null && instance.isVisible;
@@ -31,33 +34,63 @@ namespace Watermelon
             if (root == null)
                 root = gameObject;
 
+            ApplyLayout();
+
             if (shopButton != null)
-            {
                 shopButton.onClick.AddListener(() => SelectTab(MainHubTab.Shop));
-                ApplyTabLabel(shopButton, "门店");
-            }
 
             if (camperButton != null)
-            {
                 camperButton.onClick.AddListener(() => SelectTab(MainHubTab.Camper));
-                ApplyTabLabel(camperButton, "露营车");
-            }
 
             if (profileButton != null)
-            {
                 profileButton.onClick.AddListener(() => SelectTab(MainHubTab.Profile));
-                ApplyTabLabel(profileButton, "我的");
-            }
 
             isVisible = root.activeSelf;
             RefreshSelectedVisuals();
         }
 
-        private static void ApplyTabLabel(Button button, string label)
+        private void ApplyLayout()
         {
-            Text text = button.GetComponentInChildren<Text>(true);
-            if (text != null)
-                BottomNavTextUtil.Apply(text, label, 22);
+            RectTransform barRect = (root != null ? root : gameObject).GetComponent<RectTransform>();
+            if (barRect != null)
+                barRect.sizeDelta = new Vector2(barRect.sizeDelta.x, navHeight);
+
+            ApplyTabLayout(shopButton, shopSelected);
+            ApplyTabLayout(camperButton, camperSelected);
+            ApplyTabLayout(profileButton, profileSelected);
+        }
+
+        private static void ApplyTabLayout(Button button, Graphic selectedBg)
+        {
+            if (button == null)
+                return;
+
+            Transform tab = button.transform;
+            for (int i = 0; i < tab.childCount; i++)
+            {
+                Transform child = tab.GetChild(i);
+                RectTransform childRect = child as RectTransform;
+                if (childRect == null)
+                    continue;
+
+                if (child.name == "Icon")
+                {
+                    childRect.sizeDelta = new Vector2(BottomNavLayout.IconSize, BottomNavLayout.IconSize);
+                    childRect.anchoredPosition = new Vector2(0f, BottomNavLayout.IconYOffset);
+                }
+                else if (child.name == "Selected Bg")
+                {
+                    childRect.sizeDelta = new Vector2(BottomNavLayout.SelectedBgSize, BottomNavLayout.SelectedBgSize);
+                    childRect.anchoredPosition = new Vector2(0f, BottomNavLayout.IconYOffset);
+                }
+            }
+
+            if (selectedBg != null)
+            {
+                RectTransform selectedRect = selectedBg.rectTransform;
+                selectedRect.sizeDelta = new Vector2(BottomNavLayout.SelectedBgSize, BottomNavLayout.SelectedBgSize);
+                selectedRect.anchoredPosition = new Vector2(0f, BottomNavLayout.IconYOffset);
+            }
         }
 
         private void OnDestroy()
@@ -203,18 +236,22 @@ namespace Watermelon
 
         private void ApplySelected(Graphic selectedGraphic, Button button, bool selected)
         {
-            Color iconColor = selected ? selectedColor : normalColor;
-            Color labelColor = selected ? selectedColor : new Color(0.35f, 0.35f, 0.35f, 1f);
-
+            // selectedGraphic is the "Selected Bg" image under the tab button.
+            // selected: fill with selectedColor; unselected: fully transparent.
             if (selectedGraphic != null)
-                selectedGraphic.color = iconColor;
+            {
+                Color c = selectedColor;
+                c.a = selected ? 0.18f : 0f;
+                selectedGraphic.color = c;
+            }
 
-            if (button == null)
-                return;
-
-            Text label = button.GetComponentInChildren<Text>(true);
-            if (label != null)
-                label.color = labelColor;
+            // Tint the Icon image too for extra contrast.
+            if (button != null)
+            {
+                Graphic icon = button.targetGraphic;
+                if (icon != null)
+                    icon.color = selected ? selectedColor : normalColor;
+            }
         }
     }
 }
