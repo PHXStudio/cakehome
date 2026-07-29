@@ -1,0 +1,66 @@
+v1.2.6
+Template: No-ads pop up fix
+
+v1.2.5
+Template: Support of both Unity 2022.3 and Unity 6
+
+v1.2.4
+Template: Decreased camera cliping, so extra large levels are displayed correctly
+
+v1.2.3
+Template: Fixed bug with lives system
+
+v1.2.2
+Template: Fixed level revive bug
+Template: Fixed map scroll bug (after closing the No Ads popup)
+Monetization: Banner state toggles automatically during the display of the App Open Ad
+
+v1.2.1
+Template: Added level timer
+
+v1.2.0
+Template: Added Unity 6 (LTS) support
+Template: Fixed tutorial pointer bug
+Template: Implemented new Input System
+
+v1.1.0
+Template: Added support for the fast launch feature (enter play mode without recompiling)
+Defines: Fixed an issue with defines recalculation during the first import
+Defines: Reworked the define disable check. Instead of checking the file path, the system now verifies if the script type exists
+Core: Fixed Promotion window image size on 4k displays
+Core: Added the StaticUnloader script. It allows unloading static variables to support fast game launches (Editor only)
+Tween: Reworked the Tween script structure
+Tween: Added static unload functionality for Tween
+Tween: Reworked NextFrame tween logic
+Save: Removed unused variable
+Core: The script names have been changed to use singular instead of plural (e.g., CurrenciesController is now CurrencyController)
+Currency: Reworked CurrencyController.GetCurrency method (editor only)
+Monetization: A full-screen loading message has been added before displaying ad (interstitals, rewarded video)
+
+v1.0.8
+Fixed VFX-related problem
+
+v1.0.7
+Level Editor improvement
+Beter raycast blocking when popups are opened
+
+v1.0.6
+Core update
+
+v1.0.5
+Fixed problem with WebGL progression save
+
+v1.0.4
+Map infinite mode toggle
+
+v1.0.3
+Link PU bug fix
+
+v1.0.2
+PU required level bugfix
+
+v1.0.1
+Editor layout redraw bugfix
+
+v1.0
+Release

@@ -1,0 +1,191 @@
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Watermelon
+{
+    public static class BottomNavSceneSetup
+    {
+        private const string GAME_SCENE_PATH = "Assets/Project Files/Game/Scenes/Game.unity";
+        private const float NAV_HEIGHT = 140f;
+
+        [MenuItem("Actions/Setup Bottom Navigation")]
+        public static void Setup()
+        {
+            EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Single);
+
+            UIController uiController = Object.FindObjectOfType<UIController>();
+            if (uiController == null)
+            {
+                Debug.LogError("[BottomNav] UIController not found in Game scene.");
+                return;
+            }
+
+            Transform canvas = uiController.transform;
+
+            if (canvas.GetComponentInChildren<UIShopPage>(true) == null)
+                EnsureShopPage(canvas);
+            if (canvas.GetComponentInChildren<UIProfilePage>(true) == null)
+                EnsureProfilePage(canvas);
+            if (canvas.GetComponentInChildren<UIBottomNavBar>(true) == null)
+                EnsureBottomNav(canvas);
+
+            var scene = EditorSceneManager.GetActiveScene();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+
+            Debug.Log("[BottomNav] Bottom navigation setup complete.");
+        }
+
+        private static void EnsureShopPage(Transform canvas)
+        {
+            GameObject page = CreatePageRoot(canvas, "UI Shop Page", out RectTransform safeArea, out Text title, out Text subtitle);
+            UIShopPage component = page.AddComponent<UIShopPage>();
+            SerializedObject so = new SerializedObject(component);
+            so.FindProperty("safeAreaRectTransform").objectReferenceValue = safeArea;
+            so.FindProperty("titleText").objectReferenceValue = title;
+            so.FindProperty("subtitleText").objectReferenceValue = subtitle;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void EnsureProfilePage(Transform canvas)
+        {
+            GameObject page = CreatePageRoot(canvas, "UI Profile Page", out RectTransform safeArea, out Text title, out Text subtitle);
+            UIProfilePage component = page.AddComponent<UIProfilePage>();
+            SerializedObject so = new SerializedObject(component);
+            so.FindProperty("safeAreaRectTransform").objectReferenceValue = safeArea;
+            so.FindProperty("titleText").objectReferenceValue = title;
+            so.FindProperty("subtitleText").objectReferenceValue = subtitle;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static GameObject CreatePageRoot(Transform canvas, string name, out RectTransform safeArea, out Text title, out Text subtitle)
+        {
+            GameObject page = new GameObject(name, typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
+            page.layer = 5;
+            page.transform.SetParent(canvas, false);
+            StretchFull(page.GetComponent<RectTransform>());
+
+            Canvas pageCanvas = page.GetComponent<Canvas>();
+            pageCanvas.overrideSorting = true;
+            pageCanvas.sortingOrder = 50;
+
+            GameObject bg = CreateUIObject("Background", page.transform);
+            StretchFull(bg.GetComponent<RectTransform>());
+            bg.AddComponent<Image>().color = new Color(0.93f, 0.95f, 0.92f, 1f);
+
+            GameObject safe = CreateUIObject("Safe Area", page.transform);
+            safeArea = safe.GetComponent<RectTransform>();
+            StretchFull(safeArea);
+            safeArea.offsetMin = new Vector2(0f, NAV_HEIGHT);
+
+            title = CreateLabel(safe.transform, "Title", new Vector2(0.1f, 0.55f), new Vector2(0.9f, 0.7f));
+            subtitle = CreateLabel(safe.transform, "Subtitle", new Vector2(0.1f, 0.42f), new Vector2(0.9f, 0.55f));
+            return page;
+        }
+
+        private static void EnsureBottomNav(Transform canvas)
+        {
+            GameObject navRoot = new GameObject("Bottom Nav Bar", typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
+            navRoot.layer = 5;
+            navRoot.transform.SetParent(canvas, false);
+
+            RectTransform navRect = navRoot.GetComponent<RectTransform>();
+            navRect.anchorMin = new Vector2(0f, 0f);
+            navRect.anchorMax = new Vector2(1f, 0f);
+            navRect.pivot = new Vector2(0.5f, 0f);
+            navRect.sizeDelta = new Vector2(0f, NAV_HEIGHT);
+
+            Canvas navCanvas = navRoot.GetComponent<Canvas>();
+            navCanvas.overrideSorting = true;
+            navCanvas.sortingOrder = 200;
+
+            GameObject bg = CreateUIObject("Background", navRoot.transform);
+            StretchFull(bg.GetComponent<RectTransform>());
+            bg.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.98f);
+
+            GameObject row = CreateUIObject("Tabs", navRoot.transform);
+            StretchFull(row.GetComponent<RectTransform>());
+            HorizontalLayoutGroup layout = row.AddComponent<HorizontalLayoutGroup>();
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandWidth = true;
+            layout.childForceExpandHeight = true;
+            layout.padding = new RectOffset(12, 12, 12, 20);
+            layout.spacing = 8f;
+
+            Button shopButton = CreateTabButton(row.transform, "门店", out Graphic shopSelected);
+            Button camperButton = CreateTabButton(row.transform, "露营车", out Graphic camperSelected);
+            Button profileButton = CreateTabButton(row.transform, "我的", out Graphic profileSelected);
+
+            UIBottomNavBar nav = navRoot.AddComponent<UIBottomNavBar>();
+            SerializedObject so = new SerializedObject(nav);
+            so.FindProperty("root").objectReferenceValue = navRoot;
+            so.FindProperty("shopButton").objectReferenceValue = shopButton;
+            so.FindProperty("camperButton").objectReferenceValue = camperButton;
+            so.FindProperty("profileButton").objectReferenceValue = profileButton;
+            so.FindProperty("shopSelected").objectReferenceValue = shopSelected;
+            so.FindProperty("camperSelected").objectReferenceValue = camperSelected;
+            so.FindProperty("profileSelected").objectReferenceValue = profileSelected;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            navRoot.SetActive(false);
+        }
+
+        private static Button CreateTabButton(Transform parent, string label, out Graphic selectedGraphic)
+        {
+            GameObject tab = CreateUIObject(label, parent);
+            Image image = tab.AddComponent<Image>();
+            image.color = new Color(0.45f, 0.45f, 0.45f, 1f);
+            selectedGraphic = image;
+
+            Button button = tab.AddComponent<Button>();
+            button.targetGraphic = image;
+
+            GameObject textGo = CreateUIObject("Label", tab.transform);
+            StretchFull(textGo.GetComponent<RectTransform>());
+            Text text = textGo.AddComponent<Text>();
+            text.text = label;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+            text.raycastTarget = false;
+
+            return button;
+        }
+
+        private static Text CreateLabel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax)
+        {
+            GameObject go = CreateUIObject(name, parent);
+            RectTransform rect = go.GetComponent<RectTransform>();
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            Text text = go.AddComponent<Text>();
+            text.alignment = TextAnchor.MiddleCenter;
+            text.raycastTarget = false;
+            return text;
+        }
+
+        private static GameObject CreateUIObject(string name, Transform parent)
+        {
+            GameObject go = new GameObject(name, typeof(RectTransform));
+            go.layer = 5;
+            go.transform.SetParent(parent, false);
+            return go;
+        }
+
+        private static void StretchFull(RectTransform rect)
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            rect.localScale = Vector3.one;
+        }
+    }
+}
+#endif

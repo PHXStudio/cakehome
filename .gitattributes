@@ -1,0 +1,89 @@
+# 行尾与文件类型配置（适合本地版本管理）
+# 默认行为：提交时自动把行尾归一化为 LF
+* text=auto
+
+# =====================
+# 源码与文本（统一 LF，便于 diff/合并）
+# =====================
+*.cs        text eol=lf
+*.js        text eol=lf
+*.json      text eol=lf
+*.xml       text eol=lf
+*.txt       text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.md        text eol=lf
+*.asmdef    text eol=lf
+*.inputactions text eol=lf
+
+# 着色器源码
+*.shader    text eol=lf
+*.cginc     text eol=lf
+*.hlsl      text eol=lf
+*.glsl      text eol=lf
+
+# =====================
+# Unity YAML 资源（以文本方式存储，便于版本对比）
+# =====================
+*.unity             text eol=lf
+*.prefab            text eol=lf
+*.mat               text eol=lf
+*.anim              text eol=lf
+*.controller        text eol=lf
+*.asset             text eol=lf
+*.meta              text eol=lf
+*.physicMaterial    text eol=lf
+*.physicsMaterial2D text eol=lf
+*.preset            text eol=lf
+*.mask              text eol=lf
+*.spriteatlas       text eol=lf
+
+# =====================
+# 二进制资源（不做行尾转换/合并）
+# =====================
+# 图片
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.tga   binary
+*.psd   binary
+*.tif   binary
+*.tiff  binary
+*.bmp   binary
+*.exr   binary
+*.hdr   binary
+*.gif   binary
+
+# 音频
+*.wav   binary
+*.mp3   binary
+*.ogg   binary
+*.aiff  binary
+*.aif   binary
+*.flac  binary
+
+# 视频
+*.mp4   binary
+*.mov   binary
+*.avi   binary
+*.webm  binary
+
+# 模型
+*.fbx   binary
+*.dae   binary
+*.obj   binary
+*.blend binary
+*.3ds   binary
+*.mb    binary
+*.ma    binary
+
+# 字体
+*.ttf   binary
+*.otf   binary
+*.font  binary
+*.dfont binary
+
+# 其他二进制
+*.fontsettings binary
+*.lighting binary
+*.exr  binary
