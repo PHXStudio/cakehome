@@ -99,8 +99,13 @@ namespace Watermelon
             navRect.sizeDelta = new Vector2(0f, NAV_HEIGHT);
 
             Canvas navCanvas = navRoot.GetComponent<Canvas>();
+            navCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+            Camera mainCam = Camera.main;
+            if (mainCam != null)
+                navCanvas.worldCamera = mainCam;
+            navCanvas.planeDistance = 5f;
             navCanvas.overrideSorting = true;
-            navCanvas.sortingOrder = 200;
+            navCanvas.sortingOrder = 600;
 
             GameObject bg = CreateUIObject("Background", navRoot.transform);
             StretchFull(bg.GetComponent<RectTransform>());
@@ -108,18 +113,10 @@ namespace Watermelon
 
             GameObject row = CreateUIObject("Tabs", navRoot.transform);
             StretchFull(row.GetComponent<RectTransform>());
-            HorizontalLayoutGroup layout = row.AddComponent<HorizontalLayoutGroup>();
-            layout.childAlignment = TextAnchor.MiddleCenter;
-            layout.childControlWidth = true;
-            layout.childControlHeight = true;
-            layout.childForceExpandWidth = true;
-            layout.childForceExpandHeight = true;
-            layout.padding = new RectOffset(12, 12, 12, 20);
-            layout.spacing = 8f;
 
-            Button shopButton = CreateTabButton(row.transform, "门店", out Graphic shopSelected);
-            Button camperButton = CreateTabButton(row.transform, "露营车", out Graphic camperSelected);
-            Button profileButton = CreateTabButton(row.transform, "我的", out Graphic profileSelected);
+            Button shopButton = CreateTabButton(row.transform, "门店", 0f, 1f / 3f, out Graphic shopSelected);
+            Button camperButton = CreateTabButton(row.transform, "露营车", 1f / 3f, 2f / 3f, out Graphic camperSelected);
+            Button profileButton = CreateTabButton(row.transform, "我的", 2f / 3f, 1f, out Graphic profileSelected);
 
             UIBottomNavBar nav = navRoot.AddComponent<UIBottomNavBar>();
             SerializedObject so = new SerializedObject(nav);
@@ -135,24 +132,52 @@ namespace Watermelon
             navRoot.SetActive(false);
         }
 
-        private static Button CreateTabButton(Transform parent, string label, out Graphic selectedGraphic)
+        private static Button CreateTabButton(Transform parent, string label, float anchorMinX, float anchorMaxX, out Graphic selectedGraphic)
         {
+            const float iconSize = 56f;
+            const float labelHeight = 28f;
+
             GameObject tab = CreateUIObject(label, parent);
-            Image image = tab.AddComponent<Image>();
-            image.color = new Color(0.45f, 0.45f, 0.45f, 1f);
-            selectedGraphic = image;
+            RectTransform tabRect = tab.GetComponent<RectTransform>();
+            tabRect.anchorMin = new Vector2(anchorMinX, 0f);
+            tabRect.anchorMax = new Vector2(anchorMaxX, 1f);
+            tabRect.offsetMin = Vector2.zero;
+            tabRect.offsetMax = Vector2.zero;
+            tabRect.pivot = new Vector2(0.5f, 0.5f);
 
-            Button button = tab.AddComponent<Button>();
-            button.targetGraphic = image;
+            Image hitArea = tab.AddComponent<Image>();
+            hitArea.color = new Color(1f, 1f, 1f, 0f);
+            hitArea.raycastTarget = true;
 
-            GameObject textGo = CreateUIObject("Label", tab.transform);
-            StretchFull(textGo.GetComponent<RectTransform>());
-            Text text = textGo.AddComponent<Text>();
+            GameObject iconGo = CreateUIObject("Icon", tab.transform);
+            RectTransform iconRect = iconGo.GetComponent<RectTransform>();
+            iconRect.anchorMin = new Vector2(0.5f, 0.5f);
+            iconRect.anchorMax = new Vector2(0.5f, 0.5f);
+            iconRect.pivot = new Vector2(0.5f, 0.5f);
+            iconRect.anchoredPosition = new Vector2(0f, 16f);
+            iconRect.sizeDelta = new Vector2(iconSize, iconSize);
+            Image icon = iconGo.AddComponent<Image>();
+            icon.color = new Color(0.45f, 0.45f, 0.45f, 1f);
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+            selectedGraphic = icon;
+
+            GameObject labelGo = CreateUIObject("Label", tab.transform);
+            RectTransform labelRect = labelGo.GetComponent<RectTransform>();
+            labelRect.anchorMin = new Vector2(0.05f, 0f);
+            labelRect.anchorMax = new Vector2(0.95f, 0f);
+            labelRect.pivot = new Vector2(0.5f, 0f);
+            labelRect.anchoredPosition = new Vector2(0f, 10f);
+            labelRect.sizeDelta = new Vector2(0f, labelHeight);
+            Text text = labelGo.AddComponent<Text>();
             text.text = label;
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            text.color = new Color(0.35f, 0.35f, 0.35f, 1f);
+            text.fontSize = 22;
             text.raycastTarget = false;
 
+            Button button = tab.AddComponent<Button>();
+            button.targetGraphic = icon;
             return button;
         }
 

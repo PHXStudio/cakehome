@@ -57,7 +57,7 @@ namespace Watermelon
         {
             Text text = button.GetComponentInChildren<Text>(true);
             if (text != null)
-                BottomNavTextUtil.Apply(text, label, 34);
+                BottomNavTextUtil.Apply(text, label, 22);
         }
 
         private void OnDestroy()
@@ -203,17 +203,18 @@ namespace Watermelon
 
         private void ApplySelected(Graphic selectedGraphic, Button button, bool selected)
         {
-            Color color = selected ? selectedColor : normalColor;
+            Color iconColor = selected ? selectedColor : normalColor;
+            Color labelColor = selected ? selectedColor : new Color(0.35f, 0.35f, 0.35f, 1f);
 
             if (selectedGraphic != null)
-                selectedGraphic.color = color;
+                selectedGraphic.color = iconColor;
 
-            if (button != null)
-            {
-                Graphic target = button.targetGraphic;
-                if (target != null)
-                    target.color = color;
-            }
+            if (button == null)
+                return;
+
+            Text label = button.GetComponentInChildren<Text>(true);
+            if (label != null)
+                label.color = labelColor;
         }
     }
 }
