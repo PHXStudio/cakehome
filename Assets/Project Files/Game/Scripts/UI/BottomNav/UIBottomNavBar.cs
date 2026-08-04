@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Watermelon.Map;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Bottom navigation chrome only. Tab gameplay is owned by HubModuleRouter modules.
+    /// </summary>
     public class UIBottomNavBar : MonoBehaviour
     {
         private static UIBottomNavBar instance;
@@ -34,6 +36,8 @@ namespace Watermelon
             if (root == null)
                 root = gameObject;
 
+            HubModuleRouter.EnsureInitialized();
+            EnsureNavRendersAboveWorld();
             ApplyLayout();
 
             if (shopButton != null)
@@ -47,6 +51,20 @@ namespace Watermelon
 
             isVisible = root.activeSelf;
             RefreshSelectedVisuals();
+        }
+
+        private void EnsureNavRendersAboveWorld()
+        {
+            Canvas navCanvas = root != null ? root.GetComponent<Canvas>() : GetComponent<Canvas>();
+            if (navCanvas == null)
+                navCanvas = GetComponentInChildren<Canvas>(true);
+
+            if (navCanvas == null)
+                return;
+
+            navCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            navCanvas.overrideSorting = true;
+            navCanvas.sortingOrder = 600;
         }
 
         private void ApplyLayout()
@@ -104,6 +122,7 @@ namespace Watermelon
             if (!EnsureInstance())
                 return;
 
+            instance.EnsureNavRendersAboveWorld();
             instance.SetVisible(true);
         }
 
@@ -132,7 +151,6 @@ namespace Watermelon
             if (instance == null)
                 return false;
 
-            // Inactive objects skip Awake until activated once.
             if (!instance.gameObject.activeSelf)
                 instance.gameObject.SetActive(true);
 
@@ -147,84 +165,26 @@ namespace Watermelon
 
         private void SelectTabInternal(MainHubTab tab, bool force)
         {
-            if (!force && currentTab == tab && IsHubPageDisplayed(tab))
+            if (!force && currentTab == tab && HubModuleRouter.IsModuleActive(tab))
             {
                 RefreshSelectedVisuals();
                 return;
             }
 
-            HideHubPagesExcept(tab);
+            // Hub tabs always keep the nav bar for switching between gameplay pillars.
+            Show();
+            HubModuleRouter.SwitchTo(tab, force);
 
             currentTab = tab;
             RefreshSelectedVisuals();
-
-            switch (tab)
-            {
-                case MainHubTab.Shop:
-                    MapBehavior.SetMapVisible(false);
-                    MapBehavior.DisableScroll();
-                    if (UIController.GetPage<UIShopPage>() != null)
-                        UIController.ShowPage<UIShopPage>();
-                    break;
-
-                case MainHubTab.Profile:
-                    MapBehavior.SetMapVisible(false);
-                    MapBehavior.DisableScroll();
-                    if (UIController.GetPage<UIProfilePage>() != null)
-                        UIController.ShowPage<UIProfilePage>();
-                    break;
-
-                case MainHubTab.Camper:
-                default:
-                    MapBehavior.SetMapVisible(true);
-                    MapBehavior.EnableScroll();
-                    if (UIController.GetPage<UIMainMenu>() != null)
-                        UIController.ShowPage<UIMainMenu>();
-                    break;
-            }
         }
 
-        private static bool IsHubPageDisplayed(MainHubTab tab)
-        {
-            switch (tab)
-            {
-                case MainHubTab.Shop:
-                    return UIController.IsDisplayed<UIShopPage>();
-                case MainHubTab.Profile:
-                    return UIController.IsDisplayed<UIProfilePage>();
-                default:
-                    return UIController.IsDisplayed<UIMainMenu>();
-            }
-        }
-
-        private static void HideHubPagesExcept(MainHubTab keep)
-        {
-            if (UIController.IsDisplayed<Watermelon.IAPStore.UIStore>())
-                UIController.HidePage<Watermelon.IAPStore.UIStore>();
-
-            if (keep != MainHubTab.Shop && UIController.IsDisplayed<UIShopPage>())
-                UIController.HidePage<UIShopPage>();
-
-            if (keep != MainHubTab.Profile && UIController.IsDisplayed<UIProfilePage>())
-                UIController.HidePage<UIProfilePage>();
-
-            if (keep != MainHubTab.Camper && UIController.IsDisplayed<UIMainMenu>())
-                UIController.HidePage<UIMainMenu>();
-        }
-
+        /// <summary>
+        /// Exit all hub gameplay modules (used when entering a level).
+        /// </summary>
         public static void HideAllHubPages()
         {
-            if (UIController.IsDisplayed<Watermelon.IAPStore.UIStore>())
-                UIController.HidePage<Watermelon.IAPStore.UIStore>();
-
-            if (UIController.IsDisplayed<UIShopPage>())
-                UIController.HidePage<UIShopPage>();
-
-            if (UIController.IsDisplayed<UIProfilePage>())
-                UIController.HidePage<UIProfilePage>();
-
-            if (UIController.IsDisplayed<UIMainMenu>())
-                UIController.HidePage<UIMainMenu>();
+            HubModuleRouter.ExitAll();
         }
 
         private void RefreshSelectedVisuals()
@@ -236,8 +196,6 @@ namespace Watermelon
 
         private void ApplySelected(Graphic selectedGraphic, Button button, bool selected)
         {
-            // selectedGraphic is the "Selected Bg" image under the tab button.
-            // selected: fill with selectedColor; unselected: fully transparent.
             if (selectedGraphic != null)
             {
                 Color c = selectedColor;
@@ -245,7 +203,6 @@ namespace Watermelon
                 selectedGraphic.color = c;
             }
 
-            // Tint the Icon image too for extra contrast.
             if (button != null)
             {
                 Graphic icon = button.targetGraphic;

@@ -55,6 +55,9 @@ namespace Watermelon
             levelController.Init();
             tutorialController.Init();
 
+            ShopController.EnsureInitialized();
+            HubModuleRouter.EnsureInitialized();
+
             uiController.InitPages();
 
             AdsManager.TryToLoadFirstAds();
@@ -92,7 +95,7 @@ namespace Watermelon
             AdsManager.ShowInterstitial(null);
 
             UIBottomNavBar.Hide();
-            UIBottomNavBar.HideAllHubPages();
+            HubModuleRouter.ExitAll();
 
             gameController.mapBehavior.Hide();
 
@@ -108,7 +111,7 @@ namespace Watermelon
         public static void LoadCustomLevel(LevelData levelData, PreloadedLevelData preloadedLevelData, BackgroundData backgroundData, bool animateDock, SimpleCallback onLevelLoaded = null)
         {
             UIBottomNavBar.Hide();
-            UIBottomNavBar.HideAllHubPages();
+            HubModuleRouter.ExitAll();
 
             levelController.LoadCustomLevel(levelData, preloadedLevelData, backgroundData, animateDock, onLevelLoaded);
 

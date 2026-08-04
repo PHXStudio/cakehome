@@ -99,11 +99,7 @@ namespace Watermelon
             navRect.sizeDelta = new Vector2(0f, NAV_HEIGHT);
 
             Canvas navCanvas = navRoot.GetComponent<Canvas>();
-            navCanvas.renderMode = RenderMode.ScreenSpaceCamera;
-            Camera mainCam = Camera.main;
-            if (mainCam != null)
-                navCanvas.worldCamera = mainCam;
-            navCanvas.planeDistance = 5f;
+            navCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
             navCanvas.overrideSorting = true;
             navCanvas.sortingOrder = 600;
 
