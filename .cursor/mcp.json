@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "unity-mcp": {
+      "command": "bash",
+      "args": ["/Users/helohuka/ssd2/tilematch/unity-mcp/start.sh"]
+    }
+  }
+}

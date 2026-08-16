@@ -14,6 +14,7 @@ namespace Watermelon
 
         public void Enter()
         {
+            LevelController.SetBackgroundVisible(true);
             MapBehavior.SetMapVisible(true);
             MapBehavior.EnableScroll();
 

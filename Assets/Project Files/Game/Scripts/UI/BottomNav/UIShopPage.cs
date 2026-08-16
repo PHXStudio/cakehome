@@ -96,22 +96,42 @@ namespace Watermelon
                 pageCanvas.sortingOrder = 50;
             }
 
-            Transform bg = transform.Find("Background");
-            if (bg != null)
-            {
-                Image bgImage = bg.GetComponent<Image>();
-                if (bgImage != null)
-                {
-                    bgImage.color = new Color(0f, 0f, 0f, 0f);
-                    bgImage.raycastTarget = false;
-                }
-            }
+            RemoveBackground();
 
             if (safeAreaRectTransform != null)
             {
                 Vector2 offsetMin = safeAreaRectTransform.offsetMin;
                 offsetMin.y = Mathf.Max(offsetMin.y, UIBottomNavBar.NavHeight);
                 safeAreaRectTransform.offsetMin = offsetMin;
+            }
+        }
+
+        /// <summary>
+        /// Shop page must not fill the screen — remove any full-page Background UI.
+        /// </summary>
+        private void RemoveBackground()
+        {
+            // Direct child named Background
+            Transform bg = transform.Find("Background");
+            if (bg != null)
+            {
+                if (Application.isPlaying)
+                    Destroy(bg.gameObject);
+                else
+                    DestroyImmediate(bg.gameObject);
+            }
+
+            // Any leftover full-stretch Image on page root (old solid panel)
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                Transform child = transform.GetChild(i);
+                if (child == null || child.name != "Background")
+                    continue;
+
+                if (Application.isPlaying)
+                    Destroy(child.gameObject);
+                else
+                    DestroyImmediate(child.gameObject);
             }
         }
 
@@ -204,11 +224,13 @@ namespace Watermelon
         private void EnsureHud()
         {
             Transform page = transform;
-            Image bg = page.Find("Background")?.GetComponent<Image>();
-            if (bg != null)
+            Image bgImg = page.Find("Background")?.GetComponent<Image>();
+            if (bgImg != null)
             {
-                bg.color = new Color(0f, 0f, 0f, 0f);
-                bg.raycastTarget = false;
+                if (Application.isPlaying)
+                    Destroy(bgImg.gameObject);
+                else
+                    DestroyImmediate(bgImg.gameObject);
             }
 
             RectTransform safe = safeAreaRectTransform;

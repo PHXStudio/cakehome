@@ -41,18 +41,24 @@ namespace Watermelon
 
         private static void EnsureShopPage(Transform canvas)
         {
-            GameObject page = CreatePageRoot(canvas, "UI Shop Page", out RectTransform safeArea, out Text title, out Text subtitle);
+            // No full-page Background — 3D ShopWorld / sky fills the viewport.
+            GameObject page = CreatePageRoot(canvas, "UI Shop Page", createBackground: false,
+                out RectTransform safeArea, out Text title, out Text subtitle);
             UIShopPage component = page.AddComponent<UIShopPage>();
             SerializedObject so = new SerializedObject(component);
             so.FindProperty("safeAreaRectTransform").objectReferenceValue = safeArea;
-            so.FindProperty("titleText").objectReferenceValue = title;
-            so.FindProperty("subtitleText").objectReferenceValue = subtitle;
             so.ApplyModifiedPropertiesWithoutUndo();
+            // Disable placeholder labels; runtime HUD rebuilds them.
+            if (title != null)
+                title.gameObject.SetActive(false);
+            if (subtitle != null)
+                subtitle.gameObject.SetActive(false);
         }
 
         private static void EnsureProfilePage(Transform canvas)
         {
-            GameObject page = CreatePageRoot(canvas, "UI Profile Page", out RectTransform safeArea, out Text title, out Text subtitle);
+            GameObject page = CreatePageRoot(canvas, "UI Profile Page", createBackground: true,
+                out RectTransform safeArea, out Text title, out Text subtitle);
             UIProfilePage component = page.AddComponent<UIProfilePage>();
             SerializedObject so = new SerializedObject(component);
             so.FindProperty("safeAreaRectTransform").objectReferenceValue = safeArea;
@@ -61,7 +67,8 @@ namespace Watermelon
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        private static GameObject CreatePageRoot(Transform canvas, string name, out RectTransform safeArea, out Text title, out Text subtitle)
+        private static GameObject CreatePageRoot(Transform canvas, string name, bool createBackground,
+            out RectTransform safeArea, out Text title, out Text subtitle)
         {
             GameObject page = new GameObject(name, typeof(RectTransform), typeof(Canvas), typeof(GraphicRaycaster));
             page.layer = 5;
@@ -72,9 +79,12 @@ namespace Watermelon
             pageCanvas.overrideSorting = true;
             pageCanvas.sortingOrder = 50;
 
-            GameObject bg = CreateUIObject("Background", page.transform);
-            StretchFull(bg.GetComponent<RectTransform>());
-            bg.AddComponent<Image>().color = new Color(0.93f, 0.95f, 0.92f, 1f);
+            if (createBackground)
+            {
+                GameObject bg = CreateUIObject("Background", page.transform);
+                StretchFull(bg.GetComponent<RectTransform>());
+                bg.AddComponent<Image>().color = new Color(0.93f, 0.95f, 0.92f, 1f);
+            }
 
             GameObject safe = CreateUIObject("Safe Area", page.transform);
             safeArea = safe.GetComponent<RectTransform>();

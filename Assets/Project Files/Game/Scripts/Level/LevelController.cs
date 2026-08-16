@@ -49,6 +49,12 @@ namespace Watermelon
 
         public static BackgroundBehavior Background { get; private set; }
 
+        public static void SetBackgroundVisible(bool visible)
+        {
+            if (Background != null)
+                Background.gameObject.SetActive(visible);
+        }
+
         private static bool isCustomLevel;
         public static bool IsCustomLevel => isCustomLevel;
 

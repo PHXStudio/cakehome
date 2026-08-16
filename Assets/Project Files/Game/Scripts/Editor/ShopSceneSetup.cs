@@ -8,12 +8,12 @@ namespace Watermelon
 {
     /// <summary>
     /// Places an editable ShopWorld under Game.unity so the Shop hub tab shows a real scene.
-    /// Uses Prefabs/Shop/Shop0.prefab as the dollhouse environment.
+    /// Uses Prefabs/Shop/Shop1.prefab as the dollhouse environment.
     /// </summary>
     public static class ShopSceneSetup
     {
         private const string GAME_SCENE_PATH = "Assets/Project Files/Game/Scenes/Game.unity";
-        private const string SHOP0_PREFAB_PATH = "Assets/Project Files/Game/Prefabs/Shop/Shop0.prefab";
+        private const string SHOP_PREFAB_PATH = "Assets/Project Files/Game/Prefabs/Shop/Shop1.prefab";
         private const string RESOURCES_ENV_PATH = "Assets/Project Files/Game/Resources/Shop/ShopEnvironment.prefab";
         private const string DATA_FOLDER = "Assets/Project Files/Data/Shop";
         private const string RESOURCES_FOLDER = "Assets/Project Files/Game/Resources/Shop";
@@ -22,10 +22,14 @@ namespace Watermelon
         private const string RESOURCES_CATALOG_PATH = RESOURCES_FOLDER + "/Cake Catalog.asset";
         private const string RESOURCES_CONFIG_PATH = RESOURCES_FOLDER + "/Shop Config.asset";
 
+        private const string SHOP0_SKYBOX_PATH = "Assets/Project Files/Game/Materials/Shop/Shop0 Skybox.mat";
+        private const string RESOURCES_SKYBOX_PATH = RESOURCES_FOLDER + "/Shop0Skybox.mat";
+
         [MenuItem("Actions/Setup Shop System")]
         public static void Setup()
         {
             EnsureDataAssets(out CakeCatalog catalog, out _);
+            EnsureShop0Skybox();
             EnsureResourcesEnvironmentLink();
             PlaceShopWorldInGameScene(forceRebuild: false);
             SoftenShopPageBackground();
@@ -40,6 +44,7 @@ namespace Watermelon
         [MenuItem("Actions/Shop/Place ShopWorld In Game Scene")]
         public static void PlaceOnly()
         {
+            EnsureShop0Skybox();
             EnsureResourcesEnvironmentLink();
             PlaceShopWorldInGameScene(forceRebuild: true);
             SoftenShopPageBackground();
@@ -48,12 +53,78 @@ namespace Watermelon
             Debug.Log("[Shop] ShopWorld placed/rebuilt in Game.unity (inactive until Shop tab).");
         }
 
+        [MenuItem("Actions/Shop/Create Shop0 Skybox")]
+        public static void CreateShop0SkyboxMenu()
+        {
+            Material mat = EnsureShop0Skybox();
+            AssetDatabase.SaveAssets();
+            Selection.activeObject = mat;
+            Debug.Log($"[Shop] Shop0 skybox ready at {SHOP0_SKYBOX_PATH}");
+        }
+
         [MenuItem("Actions/Create Shop Data Assets")]
         public static void CreateDataAssetsOnly()
         {
             EnsureDataAssets(out _, out _);
+            EnsureShop0Skybox();
             AssetDatabase.SaveAssets();
             Debug.Log("[Shop] Cake Catalog and Shop Config created/updated.");
+        }
+
+        /// <summary>
+        /// Creates/refreshes the dedicated Shop0 procedural skybox material.
+        /// </summary>
+        public static Material EnsureShop0Skybox()
+        {
+            if (!AssetDatabase.IsValidFolder("Assets/Project Files/Game/Materials"))
+            {
+                if (!AssetDatabase.IsValidFolder("Assets/Project Files/Game"))
+                    AssetDatabase.CreateFolder("Assets/Project Files", "Game");
+                AssetDatabase.CreateFolder("Assets/Project Files/Game", "Materials");
+            }
+
+            if (!AssetDatabase.IsValidFolder("Assets/Project Files/Game/Materials/Shop"))
+                AssetDatabase.CreateFolder("Assets/Project Files/Game/Materials", "Shop");
+
+            if (!AssetDatabase.IsValidFolder("Assets/Project Files/Game/Resources"))
+                AssetDatabase.CreateFolder("Assets/Project Files/Game", "Resources");
+            if (!AssetDatabase.IsValidFolder(RESOURCES_FOLDER))
+                AssetDatabase.CreateFolder("Assets/Project Files/Game/Resources", "Shop");
+
+            Material mat = AssetDatabase.LoadAssetAtPath<Material>(SHOP0_SKYBOX_PATH);
+            if (mat == null)
+            {
+                Shader shader = Shader.Find("Skybox/Procedural");
+                if (shader == null)
+                {
+                    Debug.LogError("[Shop] Skybox/Procedural shader not found.");
+                    return null;
+                }
+
+                mat = new Material(shader) { name = "Shop0 Skybox" };
+                ShopWorld.ConfigureShop0SkyMaterial(mat);
+                AssetDatabase.CreateAsset(mat, SHOP0_SKYBOX_PATH);
+            }
+            else
+            {
+                ShopWorld.ConfigureShop0SkyMaterial(mat);
+                EditorUtility.SetDirty(mat);
+            }
+
+            // Mirror into Resources for runtime ResolveShopSkybox()
+            Material resMat = AssetDatabase.LoadAssetAtPath<Material>(RESOURCES_SKYBOX_PATH);
+            if (resMat == null)
+            {
+                AssetDatabase.CopyAsset(SHOP0_SKYBOX_PATH, RESOURCES_SKYBOX_PATH);
+            }
+            else
+            {
+                ShopWorld.ConfigureShop0SkyMaterial(resMat);
+                EditorUtility.SetDirty(resMat);
+            }
+
+            AssetDatabase.SaveAssets();
+            return mat;
         }
 
         private static void EnsureResourcesEnvironmentLink()
@@ -63,10 +134,10 @@ namespace Watermelon
             if (!AssetDatabase.IsValidFolder(RESOURCES_FOLDER))
                 AssetDatabase.CreateFolder("Assets/Project Files/Game/Resources", "Shop");
 
-            GameObject source = AssetDatabase.LoadAssetAtPath<GameObject>(SHOP0_PREFAB_PATH);
+            GameObject source = AssetDatabase.LoadAssetAtPath<GameObject>(SHOP_PREFAB_PATH);
             if (source == null)
             {
-                Debug.LogWarning($"[Shop] Missing environment prefab at {SHOP0_PREFAB_PATH}");
+                Debug.LogWarning($"[Shop] Missing environment prefab at {SHOP_PREFAB_PATH}");
                 return;
             }
 
@@ -74,8 +145,8 @@ namespace Watermelon
             if (AssetDatabase.LoadAssetAtPath<Object>(RESOURCES_ENV_PATH) != null)
                 AssetDatabase.DeleteAsset(RESOURCES_ENV_PATH);
 
-            if (!AssetDatabase.CopyAsset(SHOP0_PREFAB_PATH, RESOURCES_ENV_PATH))
-                Debug.LogWarning("[Shop] Failed to copy Shop0 into Resources/Shop/ShopEnvironment.prefab");
+            if (!AssetDatabase.CopyAsset(SHOP_PREFAB_PATH, RESOURCES_ENV_PATH))
+                Debug.LogWarning("[Shop] Failed to copy Shop1 into Resources/Shop/ShopEnvironment.prefab");
             else
                 AssetDatabase.SaveAssets();
         }
@@ -110,41 +181,36 @@ namespace Watermelon
 
             ShopWorld.CreateCamera(worldRoot.transform, out Camera cam);
 
-            // Environment from Shop0
+            // Environment from Shop1
             Transform environment = null;
-            GameObject shop0 = AssetDatabase.LoadAssetAtPath<GameObject>(SHOP0_PREFAB_PATH);
-            if (shop0 != null)
+            GameObject shopPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SHOP_PREFAB_PATH);
+            if (shopPrefab != null)
             {
-                GameObject envInstance = (GameObject)PrefabUtility.InstantiatePrefab(shop0, worldRoot.transform);
-                envInstance.name = "Environment_Shop0";
+                GameObject envInstance = (GameObject)PrefabUtility.InstantiatePrefab(shopPrefab, worldRoot.transform);
+                envInstance.name = "Environment_Shop1";
                 envInstance.transform.localPosition = Vector3.zero;
                 envInstance.transform.localRotation = Quaternion.identity;
-                envInstance.transform.localScale = Vector3.one;
+                // Kenney room modules are large; keep shop dollhouse a bit smaller on mobile.
+                envInstance.transform.localScale = Vector3.one * 0.5f;
                 environment = envInstance.transform;
                 ShopWorld.CenterEnvironmentOnOrigin(environment);
             }
             else
             {
-                Debug.LogWarning("[Shop] Shop0.prefab not found — DisplayStage only.");
+                Debug.LogWarning("[Shop] Shop1.prefab not found — only empty ShopWorld + camera.");
             }
 
-            Transform stage = ShopWorld.BuildCenterDisplayStage(worldRoot.transform, out ShopShelfSlot[] slots);
-
             // Bind via SerializedObject so private fields stick in the scene
+            Material sky = EnsureShop0Skybox();
             SerializedObject so = new SerializedObject(world);
             so.FindProperty("sceneAuthored").boolValue = true;
             so.FindProperty("layoutVersion").intValue = ShopWorld.LayoutVersion;
             so.FindProperty("root").objectReferenceValue = worldRoot;
             so.FindProperty("shopCamera").objectReferenceValue = cam;
             so.FindProperty("idleProducer").objectReferenceValue = producer;
-            so.FindProperty("displayStage").objectReferenceValue = stage;
             so.FindProperty("environmentRoot").objectReferenceValue = environment;
-
-            SerializedProperty shelvesProp = so.FindProperty("shelves");
-            shelvesProp.arraySize = slots.Length;
-            for (int i = 0; i < slots.Length; i++)
-                shelvesProp.GetArrayElementAtIndex(i).objectReferenceValue = slots[i];
-
+            if (sky != null)
+                so.FindProperty("shopSkybox").objectReferenceValue = sky;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             // Temporarily enable so bounds/camera reframe runs with real mesh bounds
@@ -157,7 +223,7 @@ namespace Watermelon
 
             Selection.activeGameObject = worldRoot;
             EditorSceneManager.MarkSceneDirty(scene);
-            Debug.Log("[Shop] Created scene-authored ShopWorld with Shop0 environment + center DisplayStage.");
+            Debug.Log("[Shop] Created scene-authored ShopWorld with Shop1 environment only (no cake stage).");
         }
 
         private static void EnsureDataAssets(out CakeCatalog catalog, out ShopConfig config)
@@ -229,12 +295,8 @@ namespace Watermelon
             if (bg == null)
                 return;
 
-            Image image = bg.GetComponent<Image>();
-            if (image != null)
-            {
-                image.color = new Color(0f, 0f, 0f, 0f);
-                image.raycastTarget = false;
-            }
+            Object.DestroyImmediate(bg.gameObject);
+            EditorUtility.SetDirty(shopPage.gameObject);
         }
     }
 }

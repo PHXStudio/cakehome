@@ -12,6 +12,8 @@ namespace Watermelon
 
         public void Enter()
         {
+            LevelController.SetBackgroundVisible(false);
+
             if (UIController.GetPage<UIProfilePage>() != null)
                 UIController.ShowPage<UIProfilePage>();
 

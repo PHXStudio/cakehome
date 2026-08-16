@@ -13,6 +13,8 @@ namespace Watermelon
         public void Enter()
         {
             ShopController.EnsureInitialized();
+            // Level menu background prefab (Background 1 Clone) covers shop sky
+            LevelController.SetBackgroundVisible(false);
             ShopWorld.SetVisible(true);
 
             if (UIController.GetPage<UIShopPage>() != null)
