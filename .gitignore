@@ -80,6 +80,9 @@ crashlytics-build.properties
 ehthumbs.db
 Thumbs.db
 
+# Cursor 编辑器本地配置
+.cursor/
+
 # Unity MCP local server
 unity-mcp/node_modules/
 unity-mcp/dist/
