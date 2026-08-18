@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <!-- 保留所有 Watermelon Core 类型，防止 IL2CPP 裁剪 -->
+  <assembly fullname="Assembly-CSharp" preserve="all" />
+  <assembly fullname="Core.UE" preserve="all" />
+  <assembly fullname="Core.Inspector" preserve="all" />
+  <assembly fullname="Core.Settings" preserve="all" />
+  <assembly fullname="Core.UE.Editor" preserve="all" />
+  <assembly fullname="Core.Inspector.Editor" preserve="all" />
+  <assembly fullname="Core.Settings.Editor" preserve="all" />
+
+  <!-- 保留热更程序集 -->
+  <assembly fullname="HotUpdate" preserve="all" />
+
+  <!-- 保留 HybridCLR 运行时 -->
+  <assembly fullname="HybridCLR.Runtime" preserve="all" />
+
+  <!-- 保留 Unity 引擎常用模块 -->
+  <assembly fullname="UnityEngine" preserve="all" />
+  <assembly fullname="UnityEngine.CoreModule" preserve="all" />
+  <assembly fullname="UnityEngine.UI" preserve="all" />
+  <assembly fullname="UnityEngine.PhysicsModule" preserve="all" />
+  <assembly fullname="UnityEngine.Physics2DModule" preserve="all" />
+  <assembly fullname="UnityEngine.InputModule" preserve="all" />
+  <assembly fullname="UnityEngine.InputLegacyModule" preserve="all" />
+  <assembly fullname="UnityEngine.UIModule" preserve="all" />
+  <assembly fullname="UnityEngine.TextRenderingModule" preserve="all" />
+  <assembly fullname="UnityEngine.AnimationModule" preserve="all" />
+  <assembly fullname="UnityEngine.AudioModule" preserve="all" />
+  <assembly fullname="UnityEngine.ParticleSystemModule" preserve="all" />
+  <assembly fullname="UnityEngine.AssetBundleModule" preserve="all" />
+  <assembly fullname="Unity.TextMeshPro" preserve="all" />
+  <assembly fullname="Unity.InputSystem" preserve="all" />
+</linker>

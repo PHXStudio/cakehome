@@ -118,8 +118,12 @@ namespace Watermelon
             Color mainColor = new Color(0.207f, 0.305f, 0.717f, 1.0f);
 
 #if UNITY_EDITOR
-            backgroundColor = CoreEditor.AdsDummyBackgroundColor;
-            mainColor = CoreEditor.AdsDummyMainColor;
+            CoreSettings coreSettings = UnityEditor.AssetDatabase.LoadAssetAtPath<CoreSettings>("Assets/Watermelon Core/Core Settings.asset");
+            if (coreSettings != null)
+            {
+                backgroundColor = coreSettings.AdsDummyBackgroundColor;
+                mainColor = coreSettings.AdsDummyMainColor;
+            }
 #endif
 
             GameObject go = new GameObject("[ADS DUMMY CANVAS]");

@@ -37,7 +37,7 @@ namespace Watermelon
 
             if (!File.Exists(presetPath))
             {
-                Debug.LogError(string.Format("[Save Presets]: Preset  at path {0} doesn’t  exist!", presetPath));
+                Debug.LogError(string.Format("[Save Presets]: Preset  at path {0} doesnï¿½t  exist!", presetPath));
                 return;
             }
 
@@ -45,7 +45,10 @@ namespace Watermelon
 
             if (currentSceneName.Equals("Init") || (currentSceneName.Equals("Level Editor")))
             {
-                EditorSceneManager.OpenScene(Path.Combine(CoreEditor.FOLDER_SCENES, "Game.unity"));
+                CoreSettings coreSettings = UnityEditor.AssetDatabase.LoadAssetAtPath<CoreSettings>("Assets/Watermelon Core/Core Settings.asset");
+                string scenesFolder = coreSettings != null ? coreSettings.ScenesFolder : "Assets/Project Files/Game/Scenes";
+
+                EditorSceneManager.OpenScene(Path.Combine(scenesFolder, "Game.unity"));
             }
 
             // Replace current save file with the preset
@@ -90,7 +93,7 @@ namespace Watermelon
             {
                 if (!File.Exists(savePath))
                 {
-                    Debug.LogError("[Save Presets]: Save file doesn’t exist!");
+                    Debug.LogError("[Save Presets]: Save file doesnï¿½t exist!");
 
                     return;
                 }
@@ -162,7 +165,7 @@ namespace Watermelon
 
             if (presetPath.Length == 0)
             {
-                Debug.LogError(string.Format("[Save Presets]: Preset with id {0} doesn’t  exist!", id));
+                Debug.LogError(string.Format("[Save Presets]: Preset with id {0} doesnï¿½t  exist!", id));
                 return;
             }
 

@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &1493404876954399501
 GameObject:
@@ -179,8 +179,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 2
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 43bda4895b7e2d940ab8ecb8da000216, type: 2}
-  m_sharedMaterial: {fileID: -9000908787416703487, guid: 43bda4895b7e2d940ab8ecb8da000216,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: -9000908787416703487, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -773,8 +773,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: GET MORE LIVES!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 4159578fb6bdbfe4ab07f0e8d6c1d4dc, type: 2}
-  m_sharedMaterial: {fileID: 1362077558012880144, guid: 4159578fb6bdbfe4ab07f0e8d6c1d4dc,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: 1362077558012880144, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -908,8 +908,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Time to next life:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 813e21a261194344a8b78a10b96785c1, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: 813e21a261194344a8b78a10b96785c1,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: -3707072339102680950, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1043,8 +1043,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: GET FREE LIFE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2ee9bf6e65695d48ba9d4b5a346538f, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: c2ee9bf6e65695d48ba9d4b5a346538f,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: -3707072339102680950, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1178,8 +1178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Refill
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 813e21a261194344a8b78a10b96785c1, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: 813e21a261194344a8b78a10b96785c1,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: -3707072339102680950, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1750,8 +1750,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 22:22
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 813e21a261194344a8b78a10b96785c1, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: 813e21a261194344a8b78a10b96785c1,
+  m_fontAsset: {fileID: 11400000, guid: 499cf83f07b1eca49b41b4b547540c38, type: 2}
+  m_sharedMaterial: {fileID: -3707072339102680950, guid: 499cf83f07b1eca49b41b4b547540c38,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

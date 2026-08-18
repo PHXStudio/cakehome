@@ -1,0 +1,26 @@
+{
+    "name": "Core.WC.Editor.Monetization.Dummy",
+    "rootNamespace": "",
+    "references": [
+        "Core.WC",
+        "Core.UE",
+        "Core.UE.Editor",
+        "Core.Settings",
+        "Core.Settings.Editor",
+        "Core.Inspector",
+        "Core.Inspector.Editor",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "Core.WC.Editor.Monetization.Ads.Base"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

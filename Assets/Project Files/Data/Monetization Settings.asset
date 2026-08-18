@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iapSettings: {fileID: 1569315140361065267}
   adsSettings: {fileID: 1338303973460554233}
-  isModuleActive: 0
+  isModuleActive: 1
   verboseLogging: 0
   debugMode: 0
   testDevices:
@@ -37,10 +37,10 @@ MonoBehaviour:
   interstitialType: 1
   rewardedVideoType: 1
   loadAdsOnStart: 1
-  interstitialFirstStartDelay: 40
+  interstitialFirstStartDelay: 15
   interstitialStartDelay: 40
-  interstitialShowingDelay: 30
-  autoShowInterstitial: 0
+  interstitialShowingDelay: 15
+  autoShowInterstitial: 1
   loadingAdDuration: 0
   loadingMessage: Ad is loading..
   isUMPEnabled: 0
@@ -124,3 +124,4 @@ MonoBehaviour:
     iOSID: com.example.game.pu
     productKeyType: 5
     productType: 0
+
