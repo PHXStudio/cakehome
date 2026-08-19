@@ -214,8 +214,8 @@ namespace Watermelon
 
             SaveController.Save();
 
-            UIController.ShowPage<UIMainMenu>();
-
+            // 直接重进关卡。不 ShowPage<UIMainMenu>：失败重试时 activeModule 已为 null，
+            // Camper.Exit() 不会触发来隐藏主菜单，会导致主菜单与关卡 UI 重叠。
             LoadLevel(LevelController.DisplayedLevelIndex);
         }
 
@@ -225,8 +225,6 @@ namespace Watermelon
             isGameActive = false;
 
             SaveController.Save();
-
-            UIController.ShowPage<UIMainMenu>();
 
             LoadLevel(LevelController.DisplayedLevelIndex, halfPrice: true);
         }
