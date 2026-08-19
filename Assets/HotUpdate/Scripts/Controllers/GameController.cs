@@ -65,6 +65,7 @@ namespace Watermelon
             DailyRewardController.Init();
             DailyRewardController.ResetStreakIfMissed();
             DailyTaskController.Init();
+            RecipeController.Init();
             PushNotificationManager.Init();
         }
 
@@ -114,6 +115,9 @@ namespace Watermelon
             DailyTaskController.AddProgress(DailyTaskType.LevelsPlayed);
 
             LivesSystem.LockLife(halfPrice);
+
+            // M2 配方：设置当前关卡的关联配方（掉落碎片池）
+            RecipeController.SetLevelContext(index);
 
             AdsManager.ShowInterstitial(null);
 

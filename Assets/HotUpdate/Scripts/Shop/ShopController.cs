@@ -281,6 +281,10 @@ namespace Watermelon
             if (IsHotThemeMatch(cake))
                 multiplier *= config.HotThemeMultiplier;
 
+            // M2 配方：已解封配方蛋糕 2× 售价
+            if (definition != null)
+                multiplier *= RecipeController.GetRecipeMultiplier(definition.Id);
+
             return baseRate * multiplier;
         }
 

@@ -112,6 +112,18 @@ namespace Watermelon
             TrackEvent("iap_purchase", "product=" + productId, "price=" + price);
         }
 
+        // ------------------------------------------------------------------ M2 配方
+
+        public static void TrackRecipeUnlock(string recipeId)
+        {
+            TrackEvent("recipe_unlock", "recipe=" + recipeId);
+        }
+
+        public static void TrackFragmentCollect(string recipeId, int total)
+        {
+            TrackEvent("fragment_collect", "recipe=" + recipeId, "total=" + total);
+        }
+
         // ------------------------------------------------------------------ 关卡（漏斗）
 
         public static void TrackLevelStart(int levelIndex)

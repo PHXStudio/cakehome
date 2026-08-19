@@ -29,6 +29,8 @@ namespace Watermelon
         [Space]
         [SerializeField] UIShopFreezerPanel freezerPanel;
         [SerializeField] UIShopExpandConfirmPopUp expandConfirmPopUp;
+        [SerializeField] Button recipeButton;
+        [SerializeField] UIRecipePanel recipePanel;
 
         [Header("Animations")]
         [SerializeField] RectTransform[] hudElements;
@@ -50,6 +52,8 @@ namespace Watermelon
                 freezerPanel.Init();
             if (expandConfirmPopUp != null)
                 expandConfirmPopUp.Init();
+            if (recipePanel != null)
+                recipePanel.Init();
 
             ShopController.StateChanged += RefreshHud;
             RefreshHud();
@@ -114,6 +118,20 @@ namespace Watermelon
                 expandButton.onClick.RemoveAllListeners();
                 expandButton.onClick.AddListener(OnExpandClicked);
             }
+
+            if (recipeButton != null)
+            {
+                recipeButton.onClick.RemoveAllListeners();
+                recipeButton.onClick.AddListener(OnRecipeClicked);
+            }
+        }
+
+        private void OnRecipeClicked()
+        {
+            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+
+            if (recipePanel != null)
+                recipePanel.Toggle();
         }
 
         private void PlayEntranceAnimation()

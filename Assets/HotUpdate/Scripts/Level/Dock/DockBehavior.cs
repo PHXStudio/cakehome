@@ -42,6 +42,10 @@ namespace Watermelon
 
             this.levelController = levelController;
 
+            // M2 配方碎片：消除时掉落当前关卡关联配方的碎片
+            MatchCombined -= RecipeController.OnMatchCombined;
+            MatchCombined += RecipeController.OnMatchCombined;
+
             defaultContainerPosition = transform.position;
 
             lastPickedObject = null;

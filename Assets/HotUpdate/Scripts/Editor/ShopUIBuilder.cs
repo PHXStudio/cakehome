@@ -139,6 +139,7 @@ namespace Watermelon
             GameObject freezerBtn = CreateSideButton(safeArea, "FreezerButton", new Vector2(0.03f, 0.70f), new Vector2(0.20f, 0.84f), "冰柜", CandyColors.BlueberryPri, LoadSprite(BTN_PURPLE));
             GameObject harvestBtn = CreateSideButton(safeArea, "HarvestButton", new Vector2(0.80f, 0.70f), new Vector2(0.97f, 0.84f), "收获", CandyColors.StrawberryPri, LoadSprite(BTN_PURPLE));
             GameObject expandBtn = CreateSideButton(safeArea, "ExpandButton", new Vector2(0.03f, 0.16f), new Vector2(0.20f, 0.30f), "扩建", CandyColors.ApplePri, LoadSprite(BTN_GREEN));
+            GameObject recipeBtn = CreateSideButton(safeArea, "RecipeButton", new Vector2(0.80f, 0.55f), new Vector2(0.97f, 0.69f), "配方", CandyColors.GrapePri, LoadSprite(BTN_PURPLE));
 
             // Expand cost chip (under expand button)
             GameObject expandCostChip = CreateChip(safeArea, "ExpandCost Chip", new Vector2(0.03f, 0.08f), new Vector2(0.20f, 0.16f), "100", 26, CandyColors.OrangeLt, CandyColors.OrangeDk);
@@ -150,6 +151,9 @@ namespace Watermelon
             // --- Expand Confirm PopUp ---
             UIShopExpandConfirmPopUp expandConfirm = BuildExpandConfirmPopUp(page.transform);
 
+            // --- Recipe Panel (M2) ---
+            UIRecipePanel recipePanel = BuildRecipePanel(page.transform);
+
             // --- hudElements (entrance order) ---
             RectTransform[] hudElements = new RectTransform[]
             {
@@ -160,6 +164,7 @@ namespace Watermelon
                 freezerBtn.GetComponent<RectTransform>(),
                 harvestBtn.GetComponent<RectTransform>(),
                 expandBtn.GetComponent<RectTransform>(),
+                recipeBtn.GetComponent<RectTransform>(),
                 expandCostChip.GetComponent<RectTransform>(),
             };
 
@@ -177,6 +182,8 @@ namespace Watermelon
             so.FindProperty("expandButton").objectReferenceValue = expandBtn.GetComponent<Button>();
             so.FindProperty("freezerPanel").objectReferenceValue = freezerPanel;
             so.FindProperty("expandConfirmPopUp").objectReferenceValue = expandConfirm;
+            so.FindProperty("recipeButton").objectReferenceValue = recipeBtn.GetComponent<Button>();
+            so.FindProperty("recipePanel").objectReferenceValue = recipePanel;
             so.FindProperty("hudElements").arraySize = hudElements.Length;
             for (int i = 0; i < hudElements.Length; i++)
                 so.FindProperty("hudElements").GetArrayElementAtIndex(i).objectReferenceValue = hudElements[i];
@@ -356,6 +363,100 @@ namespace Watermelon
             so.ApplyModifiedPropertiesWithoutUndo();
 
             popup.SetActive(false);
+            return component;
+        }
+
+        // ------------------------------------------------------------------ Recipe panel (M2)
+
+        private static UIRecipePanel BuildRecipePanel(Transform parent)
+        {
+            GameObject panelGo = CreateUIObject("Recipe Panel", parent);
+            RectTransform panelRect = panelGo.GetComponent<RectTransform>();
+            StretchFull(panelRect);
+            CanvasGroup cg = panelGo.AddComponent<CanvasGroup>();
+
+            // Background mask
+            Image bg = panelGo.AddComponent<Image>();
+            bg.color = new Color(0f, 0f, 0f, 0.8f);
+            bg.raycastTarget = true;
+
+            // Panel
+            GameObject panel = CreateUIObject("Panel", panelGo.transform);
+            RectTransform bodyRect = panel.GetComponent<RectTransform>();
+            bodyRect.anchorMin = new Vector2(0.5f, 0.5f);
+            bodyRect.anchorMax = new Vector2(0.5f, 0.5f);
+            bodyRect.pivot = new Vector2(0.5f, 0.5f);
+            bodyRect.sizeDelta = new Vector2(680f, 520f);
+            Image panelImg = panel.AddComponent<Image>();
+            panelImg.sprite = LoadSprite(PANEL);
+            panelImg.type = Image.Type.Sliced;
+            panelImg.pixelsPerUnitMultiplier = 2f;
+            panelImg.color = Color.white;
+
+            TMP_Text title = CreateTMP(panel.transform, "Title", "配方图鉴", 48, new Color(0.2f, 0.25f, 0.2f), TextAlignmentOptions.Center);
+            SetRect(title.rectTransform, new Vector2(0f, 0.86f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
+
+            // Close button (top-right corner of body)
+            GameObject closeGo = CreateUIObject("Close", panel.transform);
+            RectTransform closeRect = closeGo.GetComponent<RectTransform>();
+            SetRect(closeRect, new Vector2(0.88f, 0.84f), new Vector2(0.98f, 0.96f), Vector2.zero, Vector2.zero);
+            Button closeBtn = CreateButton(closeGo.transform, "Close", LoadSprite(BTN_CLOSE), new Color(1f, 1f, 1f, 0.9f));
+
+            // Scroll content root
+            GameObject contentRoot = CreateUIObject("Content Root", panel.transform);
+            RectTransform contentRect = contentRoot.GetComponent<RectTransform>();
+            SetRect(contentRect, new Vector2(0.04f, 0.06f), new Vector2(0.96f, 0.84f), Vector2.zero, Vector2.zero);
+            VerticalLayoutGroup vlg = contentRoot.AddComponent<VerticalLayoutGroup>();
+            vlg.spacing = 8f;
+            vlg.childAlignment = TextAnchor.UpperCenter;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = false;
+            vlg.childForceExpandHeight = false;
+            ContentSizeFitter csf = contentRoot.AddComponent<ContentSizeFitter>();
+            csf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+            // Row template (hidden)
+            GameObject row = CreateUIObject("Row Template", contentRoot.transform);
+            row.SetActive(false);
+            RectTransform rowRect = row.GetComponent<RectTransform>();
+            rowRect.sizeDelta = new Vector2(0f, 52f);
+            Image rowImg = row.AddComponent<Image>();
+            rowImg.sprite = LoadSprite(NINE_SLICE);
+            rowImg.type = Image.Type.Sliced;
+            rowImg.pixelsPerUnitMultiplier = 2f;
+            rowImg.color = new Color(1f, 1f, 1f, 0.35f);
+
+            TMP_Text rowName = CreateTMP(row.transform, "Name Text", "", 28, new Color(0.2f, 0.25f, 0.2f), TextAlignmentOptions.Left);
+            SetRect(rowName.rectTransform, new Vector2(0.04f, 0f), new Vector2(0.55f, 1f), Vector2.zero, Vector2.zero);
+
+            TMP_Text rowProgress = CreateTMP(row.transform, "Progress Text", "", 26, new Color(0.3f, 0.35f, 0.3f), TextAlignmentOptions.Center);
+            SetRect(rowProgress.rectTransform, new Vector2(0.55f, 0f), new Vector2(0.76f, 1f), Vector2.zero, Vector2.zero);
+
+            GameObject unlockGo = CreateUIObject("Unlock", row.transform);
+            RectTransform unlockRect = unlockGo.GetComponent<RectTransform>();
+            SetRect(unlockRect, new Vector2(0.78f, 0.14f), new Vector2(0.97f, 0.86f), Vector2.zero, Vector2.zero);
+            Button unlockBtn = CreateButtonVisual(unlockGo, LoadSprite(BTN_PURPLE), CandyColors.StrawberryPri);
+            TMP_Text unlockLabel = CreateTMP(unlockGo.transform, "Text", "解封", 26, Color.white, TextAlignmentOptions.Center);
+            StretchFull(unlockLabel.rectTransform);
+
+            // Row 组件绑定（实例继承模板序列化引用）
+            RecipeRow rowComponent = row.AddComponent<RecipeRow>();
+            SerializedObject rowSo = new SerializedObject(rowComponent);
+            rowSo.FindProperty("nameText").objectReferenceValue = rowName;
+            rowSo.FindProperty("progressText").objectReferenceValue = rowProgress;
+            rowSo.FindProperty("unlockButton").objectReferenceValue = unlockBtn;
+            rowSo.ApplyModifiedPropertiesWithoutUndo();
+
+            UIRecipePanel component = panelGo.AddComponent<UIRecipePanel>();
+            SerializedObject so = new SerializedObject(component);
+            so.FindProperty("panelScalable").FindPropertyRelative("transform").objectReferenceValue = bodyRect;
+            so.FindProperty("closeButton").objectReferenceValue = closeBtn;
+            so.FindProperty("contentRoot").objectReferenceValue = contentRect;
+            so.FindProperty("rowTemplate").objectReferenceValue = row;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            panelGo.SetActive(false);
             return component;
         }
 
