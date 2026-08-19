@@ -1,0 +1,101 @@
+using System;
+using UnityEngine;
+
+namespace Watermelon
+{
+    /// <summary>
+    /// 本地推送通知（海外渠道次留召回）。
+    /// 编辑器/PC 不触发真实通知；真机（Android/iOS）生效。
+    /// 触发点：体力满、商店离线收益、每日任务/签到刷新。
+    /// </summary>
+    public static class PushNotificationManager
+    {
+        private const string DAILY_REMINDER_HOUR = "18"; // 每日 18:00 刷新提醒
+
+        public static void Init()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            try
+            {
+                if (!Unity.Notifications.NotificationCenter.CheckAuthorizationStatus())
+                    Unity.Notifications.NotificationCenter.RequestAuthorization();
+
+                ScheduleDailyResetReminder();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[Push] Init failed: " + e.Message);
+            }
+#else
+            Debug.Log("[Push] Local notifications only active on Android/iOS.");
+#endif
+        }
+
+        /// <summary>体力快满时提醒（secondsUntilFull 秒后触发）。</summary>
+        public static void ScheduleLivesFullReminder(int secondsUntilFull)
+        {
+            if (secondsUntilFull <= 0)
+                return;
+
+#if UNITY_ANDROID || UNITY_IOS
+            try
+            {
+                Unity.Notifications.Notification n = new Unity.Notifications.Notification
+                {
+                    Title = "体力已满！",
+                    Text = "回来继续闯关吧！",
+                    FireTime = DateTime.Now.AddSeconds(secondsUntilFull)
+                };
+                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[Push] Lives reminder failed: " + e.Message);
+            }
+#endif
+        }
+
+        /// <summary>商店离线收益累计可观时提醒。</summary>
+        public static void ScheduleShopReadyReminder()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            try
+            {
+                Unity.Notifications.Notification n = new Unity.Notifications.Notification
+                {
+                    Title = "店铺收益待收！",
+                    Text = "你的蛋糕店又赚了一波烘焙积分！",
+                    FireTime = DateTime.Now.AddHours(4)
+                };
+                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[Push] Shop reminder failed: " + e.Message);
+            }
+#endif
+        }
+
+        /// <summary>每日任务/签到刷新提醒（次日 18:00）。</summary>
+        public static void ScheduleDailyResetReminder()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+            try
+            {
+                DateTime fireTime = DateTime.Now.Date.AddDays(1).AddHours(18);
+                Unity.Notifications.Notification n = new Unity.Notifications.Notification
+                {
+                    Title = "每日奖励刷新！",
+                    Text = "登录领取今日签到与任务奖励！",
+                    FireTime = fireTime
+                };
+                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[Push] Daily reminder failed: " + e.Message);
+            }
+#endif
+        }
+    }
+}

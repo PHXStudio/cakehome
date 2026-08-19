@@ -100,12 +100,15 @@ namespace Watermelon
 
         public void OnButtonClick()
         {
+            CustomAnalytics.TrackRewardVideo("add_lives");
+
             AdsManager.ShowRewardBasedVideo(success =>
             {
                 UIController.HidePage<UIAddLivesPanel>();
 
                 if (success)
                 {
+                    DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
                     LivesSystem.AddLife(1, true);
 
                     if (lifeRecievedAudio != null)

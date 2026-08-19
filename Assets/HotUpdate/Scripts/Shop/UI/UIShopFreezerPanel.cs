@@ -1,33 +1,41 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// 冷藏冰柜面板：行增量复用（杜绝全量 Destroy/Instantiate）、标准九宫格样式、弹入动画。
+    /// 结构由 ShopUIBuilder 构建并绑定引用。
+    /// </summary>
     public class UIShopFreezerPanel : MonoBehaviour
     {
         [SerializeField] GameObject root;
-        [SerializeField] Transform content;
+        [SerializeField] RectTransform content;
+        [SerializeField] RectTransform rowTemplate;
         [SerializeField] Button closeButton;
-        [SerializeField] Text emptyLabel;
+        [SerializeField] TMP_Text emptyLabel;
+        [SerializeField] UIScaleAnimation panelScalable;
 
-        private readonly System.Collections.Generic.List<GameObject> spawnedRows = new System.Collections.Generic.List<GameObject>();
-        private bool wired;
-
-        public void Configure(GameObject rootObject, Transform contentTransform, Button close, Text empty)
+        private sealed class FreezerRow
         {
-            root = rootObject;
-            content = contentTransform;
-            closeButton = close;
-            emptyLabel = empty;
-            WireClose();
-            Hide();
+            public RectTransform Root;
+            public TMP_Text Label;
+            public Button PlaceButton;
+            public Image CakeDot;
+            public string InstanceId;
         }
 
-        private void Awake()
+        private readonly List<FreezerRow> rows = new List<FreezerRow>();
+        private bool wired;
+
+        public bool IsOpen => root != null && root.activeSelf;
+
+        public void Init()
         {
             WireClose();
-            if (root == null)
-                root = gameObject;
+            Hide(immediately: true);
         }
 
         private void WireClose()
@@ -35,123 +43,126 @@ namespace Watermelon
             if (wired || closeButton == null)
                 return;
 
-            closeButton.onClick.AddListener(Hide);
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(() => Hide());
             wired = true;
         }
 
         public void Show()
         {
-            if (root != null)
-                root.SetActive(true);
+            if (root == null)
+                return;
 
+            root.SetActive(true);
             Rebuild();
+
+            if (panelScalable != null)
+                panelScalable.Show(immediately: false, duration: 0.3f);
         }
 
-        public void Hide()
+        public void Hide(bool immediately = false)
         {
-            if (root != null)
+            if (root == null)
+                return;
+
+            if (immediately)
+            {
                 root.SetActive(false);
+                return;
+            }
+
+            if (panelScalable != null)
+            {
+                panelScalable.Hide(immediately: false, duration: 0.3f, onCompleted: () => root.SetActive(false));
+            }
+            else
+            {
+                root.SetActive(false);
+            }
         }
 
         public void Toggle()
         {
-            if (root != null && root.activeSelf)
+            if (IsOpen)
                 Hide();
             else
                 Show();
         }
 
+        /// <summary>仅在面板打开时刷新（事件驱动，避免关闭状态空转）。</summary>
+        public void RefreshIfOpen()
+        {
+            if (IsOpen)
+                Rebuild();
+        }
+
         public void Rebuild()
         {
-            ClearRows();
-
-            if (!ShopController.IsInitialized || content == null)
+            if (content == null)
                 return;
 
-            var freezer = ShopController.GetFreezerCakes();
+            List<OwnedCake> freezer = ShopController.IsInitialized
+                ? ShopController.GetFreezerCakes()
+                : new List<OwnedCake>();
+
             if (emptyLabel != null)
                 emptyLabel.gameObject.SetActive(freezer.Count == 0);
 
-            for (int i = 0; i < freezer.Count; i++)
+            int i = 0;
+            for (; i < freezer.Count; i++)
             {
+                FreezerRow row = GetOrCreateRow(i);
+
                 OwnedCake cake = freezer[i];
                 CakeDefinition def = ShopController.GetDefinition(cake);
-                string label = def != null ? def.DisplayName : cake.DefinitionId;
 
-                GameObject row = new GameObject($"FreezerRow_{i}", typeof(RectTransform), typeof(Image), typeof(Button));
-                row.transform.SetParent(content, false);
+                row.InstanceId = cake.InstanceId;
+                row.Label.text = def != null ? def.DisplayName : cake.DefinitionId;
 
-                LayoutElement layout = row.AddComponent<LayoutElement>();
-                layout.minHeight = 64f;
-                layout.preferredHeight = 64f;
+                if (row.CakeDot != null && def != null)
+                    row.CakeDot.color = def.DisplayColor;
 
-                Image bg = row.GetComponent<Image>();
-                bg.color = new Color(1f, 1f, 1f, 0.85f);
-
-                GameObject textGo = new GameObject("Label", typeof(RectTransform));
-                textGo.transform.SetParent(row.transform, false);
-                RectTransform textRect = textGo.GetComponent<RectTransform>();
-                Stretch(textRect);
-                textRect.offsetMin = new Vector2(16f, 0f);
-                textRect.offsetMax = new Vector2(-120f, 0f);
-
-                Text text = textGo.AddComponent<Text>();
-                BottomNavTextUtil.Apply(text, label, 28);
-                text.alignment = TextAnchor.MiddleLeft;
-                text.color = new Color(0.2f, 0.25f, 0.2f);
-
-                GameObject placeGo = new GameObject("Place", typeof(RectTransform));
-                placeGo.transform.SetParent(row.transform, false);
-                RectTransform placeRect = placeGo.GetComponent<RectTransform>();
-                placeRect.anchorMin = new Vector2(1f, 0.15f);
-                placeRect.anchorMax = new Vector2(1f, 0.85f);
-                placeRect.pivot = new Vector2(1f, 0.5f);
-                placeRect.sizeDelta = new Vector2(110f, 0f);
-                placeRect.anchoredPosition = new Vector2(-12f, 0f);
-
-                Image placeBg = placeGo.AddComponent<Image>();
-                placeBg.color = new Color(0.3f, 0.7f, 0.45f, 1f);
-                Button placeButton = placeGo.AddComponent<Button>();
-
-                GameObject placeLabelGo = new GameObject("Text", typeof(RectTransform));
-                placeLabelGo.transform.SetParent(placeGo.transform, false);
-                Stretch(placeLabelGo.GetComponent<RectTransform>());
-                Text placeLabel = placeLabelGo.AddComponent<Text>();
-                BottomNavTextUtil.Apply(placeLabel, "上架", 26);
-                placeLabel.color = Color.white;
-
-                string instanceId = cake.InstanceId;
-                placeButton.onClick.AddListener(() =>
-                {
-                    int empty = ShopController.FindEmptyShelf();
-                    if (empty >= 0)
-                    {
-                        ShopController.PlaceCake(instanceId, empty);
-                        Rebuild();
-                    }
-                });
-
-                spawnedRows.Add(row);
+                row.Root.gameObject.SetActive(true);
             }
+
+            for (; i < rows.Count; i++)
+                rows[i].Root.gameObject.SetActive(false);
         }
 
-        private void ClearRows()
+        private FreezerRow GetOrCreateRow(int index)
         {
-            for (int i = 0; i < spawnedRows.Count; i++)
+            if (index < rows.Count)
+                return rows[index];
+
+            RectTransform rowRect = Instantiate(rowTemplate, content);
+            rowRect.gameObject.SetActive(true);
+
+            FreezerRow row = new FreezerRow
             {
-                if (spawnedRows[i] != null)
-                    Destroy(spawnedRows[i]);
-            }
+                Root = rowRect,
+                Label = rowRect.Find("Label")?.GetComponent<TMP_Text>(),
+                PlaceButton = rowRect.Find("Place")?.GetComponent<Button>(),
+                CakeDot = rowRect.Find("CakeDot")?.GetComponent<Image>()
+            };
 
-            spawnedRows.Clear();
+            row.PlaceButton.onClick.RemoveAllListeners();
+            row.PlaceButton.onClick.AddListener(() => OnPlaceClicked(row));
+
+            rows.Add(row);
+            return row;
         }
 
-        private static void Stretch(RectTransform rect)
+        private void OnPlaceClicked(FreezerRow row)
         {
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
+            if (string.IsNullOrEmpty(row.InstanceId))
+                return;
+
+            int empty = ShopController.FindEmptyShelf();
+            if (empty >= 0)
+            {
+                ShopController.PlaceCake(row.InstanceId, empty);
+                Rebuild();
+            }
         }
     }
 }

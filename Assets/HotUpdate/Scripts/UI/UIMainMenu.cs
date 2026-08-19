@@ -96,9 +96,36 @@ namespace Watermelon
                 iapStoreButton.Show();
             });
 
+            // 每日签到 + 每日任务：延迟检查弹出（次留召回）
+            Tween.DelayedCall(0.6f, CheckDailyPanels);
+
             MapLevelAbstractBehavior.OnLevelClicked += OnLevelOnMapSelected;
 
             UIController.OnPageOpened(this);
+        }
+
+        private void CheckDailyPanels()
+        {
+            DailyRewardPanel rewardPanel = Object.FindObjectOfType<DailyRewardPanel>(true);
+            if (DailyRewardController.CanClaimToday() && rewardPanel != null)
+            {
+                rewardPanel.Init();
+                rewardPanel.Show(CheckDailyTaskPanel);
+            }
+            else
+            {
+                CheckDailyTaskPanel();
+            }
+        }
+
+        private void CheckDailyTaskPanel()
+        {
+            DailyTaskPanel taskPanel = Object.FindObjectOfType<DailyTaskPanel>(true);
+            if (taskPanel != null && DailyTaskController.HasClaimable())
+            {
+                taskPanel.Init();
+                taskPanel.Show();
+            }
         }
 
         public override void PlayHideAnimation()

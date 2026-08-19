@@ -165,8 +165,10 @@ namespace Watermelon
             // Settle before rearranging so rates stay fair
             SettleOnlinePartial();
 
+            string defId = save.Cakes[cakeIndex].DefinitionId;
             PlaceCakeInternal(cakeIndex, shelfIndex);
             MarkDirtyAndNotify();
+            CustomAnalytics.TrackShopPlaceCake(defId);
             return true;
         }
 
@@ -218,11 +220,12 @@ namespace Watermelon
                 return false;
 
             int cost = config.GetExpandCost(save.UnlockedShelfCount);
-            if (!CurrencyController.HasAmount(CurrencyType.BakingCredits, cost))
+            if (!CurrencyController.HasAmount(CurrencyType.Coins, cost))
                 return false;
 
-            CurrencyController.Substract(CurrencyType.BakingCredits, cost);
+            CurrencyController.Substract(CurrencyType.Coins, cost);
             save.UnlockedShelfCount++;
+            CustomAnalytics.TrackShopExpand(save.UnlockedShelfCount);
             save.EnsureShelfSize(config.MaxShelfCount);
             MarkDirtyAndNotify();
             return true;
@@ -369,6 +372,9 @@ namespace Watermelon
             SettleOffline();
             lastOnlineTick = DateTime.Now;
             StateChanged?.Invoke();
+
+            if (save.PendingCredits >= 50)
+                PushNotificationManager.ScheduleShopReadyReminder();
         }
 
         public static int Harvest()
@@ -381,10 +387,12 @@ namespace Watermelon
                 return 0;
 
             save.PendingCredits -= amount;
-            CurrencyController.Add(CurrencyType.BakingCredits, amount);
+            CurrencyController.Add(CurrencyType.Coins, amount);
             MarkDirtyAndNotify();
 
-            Harvested?.Invoke(CurrencyController.GetCurrency(CurrencyType.BakingCredits), amount);
+            Harvested?.Invoke(CurrencyController.GetCurrency(CurrencyType.Coins), amount);
+            CustomAnalytics.TrackShopHarvest(amount, CurrencyController.Get(CurrencyType.Coins));
+            DailyTaskController.AddProgress(DailyTaskType.ShopHarvests);
             return amount;
         }
 

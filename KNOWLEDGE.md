@@ -310,6 +310,19 @@ OnSlotsFilled / TimerFinished
 | Shop Debug Menu | `Editor/ShopDebugMenu.cs` | 运行时调试（送蛋糕/加积分/强制结算） |
 | Custom Actions Menu | `Editor/CustomActionsMenu.cs` | 自定义操作菜单（占位） |
 | HotUpdate Build Processor | `Editor/HotUpdateBuildProcessor.cs` | HybridCLR 构建流程 |
+| Unity MCP 自动启动 | `Editor/UnityMcpAutoStart.cs` | 开启 MCP HTTP 桥接自动启动（uvx mcpforunityserver, 127.0.0.1:8080） |
+| MCP 失焦自动刷新 | `Editor/UnityBackgroundUpdate.cs` | **自动化前置**：runInBackground + 失焦强制重绘 GameView/SceneView |
+
+### 10.1 MCP 自动化运行保障（UnityBackgroundUpdate.cs）
+
+Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不刷新），会破坏 MCP 自动化（截图/状态读取看到死画面）。`UnityBackgroundUpdate.cs` 三管齐下解决：
+
+1. **逻辑不冻结** — `PlayerSettings.runInBackground = true`（已写入 `ProjectSettings.asset`），失焦时 Update/物理/协程继续执行
+2. **运行时兜底** — `EnteredPlayMode` 时 `Application.runInBackground = true` + `QualitySettings.vSyncCount = 0` + `targetFrameRate = 60`
+3. **画面持续刷新** — `EditorApplication.update` 检测 `InternalEditorUtility.isApplicationActive == false`（失焦）时，以 ~10Hz 强制 `GameView`/`SceneView` `Repaint()`
+
+- 开关菜单：`Tools/MCP/失焦自动刷新`（EditorPrefs `UnityMCP.BackgroundAutoRefresh`，默认开启）
+- 验证结论：失焦状态下 `isAppActive=False`，Play Mode 照常运行（`runInBackground=True, targetFPS=60, vsync=0`）
 
 ---
 
@@ -376,6 +389,9 @@ OnSlotsFilled / TimerFinished
 4. **店铺 3D 场景** 使用固定 45° 等距视角 + 专属天空盒，代码场景构建
 5. **HybridCLR 构建** 通过 `HotUpdateBuildProcessor.cs` 控制
 6. **存档模型** 统一实现 `ISaveObject` + `Flush()` 接口，通过 `SaveController` 管理
+7. **🎮 积分体系统一为金币 Coins（2026-08）** — 关卡奖励、游客注册、店铺挂机收获全部发放 `CurrencyType.Coins`；烘焙积分 `BakingCredits` 已从 `MD_CurrencyType.cs` 枚举和 `Currencies Database.asset` 彻底移除（GDD 14.2 的"烘焙积分中台"规划暂未采纳，实际以金币统一）
+8. **⚠️ Enter Play Mode Options 已禁用（`EditorSettings.asset` = 0/0）** — 此前开启 `DisableDomainReload + DisableSceneReload`（=3）导致场景不重载时 `Initializer.Awake` 不执行、Watermelon 核心模块（Save/Audio/Currency）不初始化，产生大量 NullReferenceException。恢复标准重载后模块每次 Play 稳定初始化。**不要重新启用该选项**
+9. **⚡ Unity 失焦自动刷新** — `Assets/Editor/UnityBackgroundUpdate.cs` 解决编辑器失焦时 Play Mode 逻辑/渲染冻结（runInBackground + 强制重绘），便于 MCP 自动化
 
 ---
 

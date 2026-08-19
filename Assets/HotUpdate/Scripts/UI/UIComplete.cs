@@ -159,6 +159,8 @@ namespace Watermelon
             homeButton.interactable = false;
             nextLevelButton.interactable = false;
 
+            CustomAnalytics.TrackRewardVideo("multiply_reward");
+
             AdsManager.ShowRewardBasedVideo((bool success) =>
             {
                 if (success)
@@ -173,6 +175,7 @@ namespace Watermelon
                         FloatingCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                         {
                             CurrencyController.Add(CurrencyType.Coins, currentReward * rewardMult);
+                            DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
 
                             homeButton.interactable = true;
                             nextLevelButton.interactable = true;

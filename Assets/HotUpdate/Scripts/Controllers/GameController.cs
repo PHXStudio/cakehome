@@ -62,44 +62,57 @@ namespace Watermelon
 
             AdsManager.TryToLoadFirstAds();
             CustomAnalytics.Init();
+            DailyRewardController.Init();
+            DailyRewardController.ResetStreakIfMissed();
+            DailyTaskController.Init();
+            PushNotificationManager.Init();
         }
 
         private void Start()
         {
-            ITutorial tutorial = TutorialController.GetTutorial(TutorialID.FirstLevel);
-            if (data.ShowTutorial && !tutorial.IsFinished)
+            // Kick the loading screen's fade-out first (it fades over 0.6s). The game UI is
+            // revealed a beat later so it never overlaps the loading screen when coming in
+            // from the Init scene (LoadingGraphics is DontDestroyOnLoad, so it is still up).
+            GameLoading.MarkAsReadyToHide();
+
+            Tween.DelayedCall(0.7f, () =>
             {
-                // Start first level tutorial
-                CustomAnalytics.TrackTutorialStart();
-                tutorial.StartTutorial();
-            }
-            else
-            {
-                if (PlayerPrefs.GetInt("FirstLaunch", 1) == 1)
+                ITutorial tutorial = TutorialController.GetTutorial(TutorialID.FirstLevel);
+                if (data.ShowTutorial && !tutorial.IsFinished)
                 {
-                    PlayerPrefs.SetInt("FirstLaunch", 0);
-                    PlayerPrefs.Save();
-                    try { CustomAnalytics.TrackInstall(); } catch { }
+                    // Start first level tutorial
+                    CustomAnalytics.TrackTutorialStart();
+                    tutorial.StartTutorial();
                 }
-                try { CustomAnalytics.TrackLaunch(); } catch { }
+                else
+                {
+                    if (PlayerPrefs.GetInt("FirstLaunch", 1) == 1)
+                    {
+                        PlayerPrefs.SetInt("FirstLaunch", 0);
+                        PlayerPrefs.Save();
+                        try { CustomAnalytics.TrackInstall(); } catch { }
+                    }
+                    try { CustomAnalytics.TrackLaunch(); } catch { }
 
-                mapBehavior.Show();
+                    mapBehavior.Show();
 
-                UIBottomNavBar.Show();
-                UIBottomNavBar.SelectTab(MainHubTab.Camper, force: true);
+                    UIBottomNavBar.Show();
+                    UIBottomNavBar.SelectTab(MainHubTab.Camper, force: true);
 
-                AdsManager.EnableBanner();
+                    AdsManager.EnableBanner();
 
 #if UNITY_EDITOR
-                CheckIfNeedToAutoRunLevel();
+                    CheckIfNeedToAutoRunLevel();
 #endif
-            }
-
-            GameLoading.MarkAsReadyToHide();
+                }
+            });
         }
 
         public static void LoadLevel(int index, SimpleCallback onLevelLoaded = null)
         {
+            CustomAnalytics.TrackLevelStart(index);
+            DailyTaskController.AddProgress(DailyTaskType.LevelsPlayed);
+
             LivesSystem.LockLife();
 
             AdsManager.ShowInterstitial(null);
@@ -141,6 +154,7 @@ namespace Watermelon
                 float playTime = Time.timeSinceLevelLoad > 0 ? Time.timeSinceLevelLoad : 0;
                 int tilesLeft = LevelController.LevelRepresentation != null ? LevelController.LevelRepresentation.Tiles.Count : 0;
                 CustomAnalytics.TrackLevelComplete(LevelController.DisplayedLevelIndex, playTime, tilesLeft);
+                DailyTaskController.AddProgress(DailyTaskType.LevelsWon);
             }
             catch { }
 

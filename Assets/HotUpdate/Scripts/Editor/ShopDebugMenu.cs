@@ -20,7 +20,7 @@ namespace Watermelon
             Debug.Log(cake != null ? $"[Shop] Granted {cake.DefinitionId} ({cake.InstanceId})" : "[Shop] Grant failed.");
         }
 
-        [MenuItem("Actions/Shop/Add 500 Baking Credits")]
+        [MenuItem("Actions/Shop/Add 500 Coins")]
         public static void AddCredits()
         {
             if (!Application.isPlaying)
@@ -29,8 +29,8 @@ namespace Watermelon
                 return;
             }
 
-            CurrencyController.Add(CurrencyType.BakingCredits, 500);
-            Debug.Log("[Shop] +500 Baking Credits");
+            CurrencyController.Add(CurrencyType.Coins, 500);
+            Debug.Log("[Shop] +500 Coins");
         }
 
         [MenuItem("Actions/Shop/Force Settle Offline")]

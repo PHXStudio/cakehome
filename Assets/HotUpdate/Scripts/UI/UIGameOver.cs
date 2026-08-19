@@ -89,12 +89,17 @@ namespace Watermelon
         {
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
+            CustomAnalytics.TrackRewardVideo("revive");
+
             AdsManager.ShowRewardBasedVideo(ReviveCallback);
         }
 
         private void ReviveCallback(bool watchedRV)
         {
             if (!watchedRV) return;
+
+            CustomAnalytics.TrackRewardVideoCompleted("revive");
+            DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
 
             GameController.Revive();
 

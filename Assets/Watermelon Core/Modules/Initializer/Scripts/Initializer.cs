@@ -22,7 +22,8 @@ namespace Watermelon
 
         public void Awake()
         {
-            if (initializer != null) return;
+            if (initializer != null)
+                return;
 
             initializer = this;
 
@@ -34,14 +35,37 @@ namespace Watermelon
             Transform = transform;
 
 #if MODULE_INPUT_SYSTEM
-            eventSystem.gameObject.GetOrSetComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+            try
+            {
+                eventSystem.gameObject.GetOrSetComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[Initializer]: Failed to set up InputSystemUIInputModule: " + e.Message);
+            }
 #else
             eventSystem.gameObject.GetOrSetComponent<StandaloneInputModule>();
 #endif
 
             DontDestroyOnLoad(gameObject);
 
-            initSettings.Init(this);
+            if (initSettings == null)
+            {
+                Debug.LogError("[Initializer]: initSettings is not assigned, core modules were NOT initialized!");
+                return;
+            }
+
+            Debug.Log("[Initializer]: Awake calling initSettings.Init");
+
+            try
+            {
+                initSettings.Init(this);
+                Debug.Log("[Initializer]: initSettings.Init completed OK");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("[Initializer]: initSettings.Init FAILED — " + e);
+            }
         }
 
         public void Start()
