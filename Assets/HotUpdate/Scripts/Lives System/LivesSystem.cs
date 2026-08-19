@@ -27,6 +27,10 @@ namespace Watermelon
         private static Coroutine infiniteModeCoroutine;
         private static Coroutine newLifeCoroutine;
 
+        // D4 半价重试：累积 0.5 体力，满 1 才实际扣 1（两次半价重试 = 1 体力）
+        private static bool halfPriceLocked;
+        private static float halfLifeAccumulator;
+
         public static event StatusChangedDelegate StatusChanged;
 
         public static void Init(LivesData livesData)
@@ -155,9 +159,10 @@ namespace Watermelon
             UpdateNewLife();
         }
 
-        public static void LockLife()
+        public static void LockLife(bool halfPrice = false)
         {
             save.LifeLocked = true;
+            halfPriceLocked = halfPrice;
 
             SaveController.MarkAsSaveIsRequired();
         }
@@ -171,7 +176,31 @@ namespace Watermelon
             SaveController.MarkAsSaveIsRequired();
 
             if (decrease)
-                TakeLife();
+            {
+                if (halfPriceLocked)
+                {
+                    // D4 半价重试：累加 0.5，满 1 才扣 1 体力
+                    halfLifeAccumulator += 0.5f;
+                    if (halfLifeAccumulator >= 1f)
+                    {
+                        int whole = Mathf.FloorToInt(halfLifeAccumulator);
+                        halfLifeAccumulator -= whole;
+                        TakeLife(whole);
+                    }
+
+                    halfPriceLocked = false;
+                }
+                else
+                {
+                    TakeLife();
+                }
+            }
+        }
+
+        /// <summary>半价重试可用性：无限模式，或至少还有 1 体力（两次半价 = 1 体力）。</summary>
+        public static bool CanStartHalfPrice()
+        {
+            return InfiniteMode || Lives >= 1;
         }
 
         private static void UpdateNewLife()

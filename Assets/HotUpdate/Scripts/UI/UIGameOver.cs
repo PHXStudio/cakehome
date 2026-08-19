@@ -9,7 +9,7 @@ namespace Watermelon
     public class UIGameOver : UIPage
     {
         [SerializeField] RectTransform safeAreaRectTransform;
-        
+
         [SerializeField] UIScaleAnimation levelFailed;
         [SerializeField] UIFadeAnimation backgroundFade;
 
@@ -21,13 +21,28 @@ namespace Watermelon
         [SerializeField] UIScaleAnimation replayButtonScalable;
         [SerializeField] UIScaleAnimation reviveButtonScalable;
 
+        [Header("D4 失败挽留")]
+        [SerializeField] TMP_Text reviveButtonText;
+        [SerializeField] TMP_Text replayButtonText;
+        [SerializeField] int reviveCoinCost = 100;
+
         private TweenCase continuePingPongCase;
 
         public override void Init()
         {
+            // 先清空场景/prefab 残留的序列化事件（如旧 ContinueButton），避免双重触发
+            menuButton.onClick.RemoveAllListeners();
+            replayButton.onClick.RemoveAllListeners();
+            reviveButton.onClick.RemoveAllListeners();
+
             menuButton.onClick.AddListener(MenuButton);
             replayButton.onClick.AddListener(ReplayButton);
             reviveButton.onClick.AddListener(ReviveButton);
+
+            if (reviveButtonText != null)
+                reviveButtonText.text = $"续局 {reviveCoinCost} 积分";
+            if (replayButtonText != null)
+                replayButtonText.text = "半价重试";
 
             NotchSaveArea.RegisterRectTransform(safeAreaRectTransform);
         }
@@ -89,19 +104,13 @@ namespace Watermelon
         {
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
-            CustomAnalytics.TrackRewardVideo("revive");
-
-            AdsManager.ShowRewardBasedVideo(ReviveCallback);
-        }
-
-        private void ReviveCallback(bool watchedRV)
-        {
-            if (!watchedRV) return;
-
-            CustomAnalytics.TrackRewardVideoCompleted("revive");
-            DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
-
-            GameController.Revive();
+            // D4 积分续局：花费积分直接续命（替代原广告复活）
+            if (!GameController.ReviveWithCoins(reviveCoinCost))
+            {
+                Debug.Log("[GameOver] 积分不足，无法续局");
+                UIAddLivesPanel.Show();
+                return;
+            }
 
             UIController.HidePage<UIGameOver>();
             UIController.ShowPage<UIGame>();
@@ -111,11 +120,12 @@ namespace Watermelon
         {
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
-            if (LivesSystem.Lives > 0 || LivesSystem.InfiniteMode)
+            // D4 半价重试：两次半价重试 = 1 体力
+            if (LivesSystem.CanStartHalfPrice())
             {
                 UIController.HidePage<UIGameOver>();
 
-                GameController.ReplayLevel();
+                GameController.ReplayLevelHalfPrice();
             }
             else
             {

@@ -108,12 +108,12 @@ namespace Watermelon
             });
         }
 
-        public static void LoadLevel(int index, SimpleCallback onLevelLoaded = null)
+        public static void LoadLevel(int index, SimpleCallback onLevelLoaded = null, bool halfPrice = false)
         {
             CustomAnalytics.TrackLevelStart(index);
             DailyTaskController.AddProgress(DailyTaskType.LevelsPlayed);
 
-            LivesSystem.LockLife();
+            LivesSystem.LockLife(halfPrice);
 
             AdsManager.ShowInterstitial(null);
 
@@ -217,6 +217,32 @@ namespace Watermelon
             UIController.ShowPage<UIMainMenu>();
 
             LoadLevel(LevelController.DisplayedLevelIndex);
+        }
+
+        /// <summary>D4 半价重试：以半价体力重新进入当前关卡。</summary>
+        public static void ReplayLevelHalfPrice()
+        {
+            isGameActive = false;
+
+            SaveController.Save();
+
+            UIController.ShowPage<UIMainMenu>();
+
+            LoadLevel(LevelController.DisplayedLevelIndex, halfPrice: true);
+        }
+
+        /// <summary>D4 积分续局：花费 coins 直接续命，不足则返回 false。</summary>
+        public static bool ReviveWithCoins(int coins)
+        {
+            if (CurrencyController.Get(CurrencyType.Coins) < coins)
+                return false;
+
+            CurrencyController.Substract(CurrencyType.Coins, coins);
+            CustomAnalytics.TrackCurrencySpend("coins", coins, "revive");
+
+            Revive();
+
+            return true;
         }
 
         public static void ReturnToMenu()
