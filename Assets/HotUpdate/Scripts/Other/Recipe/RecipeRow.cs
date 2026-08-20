@@ -40,7 +40,7 @@ namespace Watermelon
             if (RecipeController.IsUnlocked(recipe.Id))
             {
                 if (nameText != null)
-                    nameText.text = $"{recipe.DisplayName} 2×";
+                    nameText.text = $"{recipe.DisplayName} {RecipeController.UnlockedMultiplier:0.#}×";
                 if (progressText != null)
                     progressText.text = "已解封";
                 if (unlockButton != null)

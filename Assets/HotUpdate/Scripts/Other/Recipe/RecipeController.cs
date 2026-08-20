@@ -28,6 +28,7 @@ namespace Watermelon
         public static int FragmentsToUnlock => config != null ? config.FragmentsToUnlock : 10;
         public static int UnlockCost => config != null ? config.UnlockCost : 200;
         public static float DropChance => config != null ? config.DropChance : 0.15f;
+        public static float UnlockedMultiplier => config != null ? config.UnlockedMultiplier : 2f;
 
         // ------------------------------------------------------------------ 配方定义
 
@@ -180,10 +181,10 @@ namespace Watermelon
             return true;
         }
 
-        /// <summary>门店倍率：已解封配方蛋糕 2× 售价。</summary>
+        /// <summary>门店倍率：已解封配方蛋糕按配置倍率（默认 2×）售价。</summary>
         public static float GetRecipeMultiplier(string cakeId)
         {
-            return IsUnlocked(cakeId) ? 2f : 1f;
+            return IsUnlocked(cakeId) ? UnlockedMultiplier : 1f;
         }
 
         // ------------------------------------------------------------------ 工具

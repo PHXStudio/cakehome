@@ -12,10 +12,12 @@ namespace Watermelon
         [SerializeField] int fragmentsToUnlock = 10;
         [SerializeField] int unlockCost = 200;
         [SerializeField] float dropChance = 0.15f;
+        [SerializeField] float unlockedMultiplier = 2f;
 
         public int FragmentsToUnlock => fragmentsToUnlock;
         public int UnlockCost => unlockCost;
         public float DropChance => dropChance;
+        public float UnlockedMultiplier => unlockedMultiplier;
 
         public static RecipeConfig CreateDefaultRuntimeConfig()
         {

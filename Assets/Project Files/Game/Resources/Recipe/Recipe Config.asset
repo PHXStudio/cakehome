@@ -15,3 +15,4 @@ MonoBehaviour:
   fragmentsToUnlock: 10
   unlockCost: 200
   dropChance: 0.15
+  unlockedMultiplier: 2
