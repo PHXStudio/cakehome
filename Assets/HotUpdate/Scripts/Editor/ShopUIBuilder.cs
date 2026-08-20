@@ -44,6 +44,15 @@ namespace Watermelon
             PrefabUtility.SaveAsPrefabAsset(root, PREFAB_PATH);
             Object.DestroyImmediate(root);
 
+            // Defensive: Unity can serialize prefab root scale as 0; force it back to 1.
+            GameObject saved = AssetDatabase.LoadAssetAtPath<GameObject>(PREFAB_PATH);
+            if (saved != null && saved.transform.localScale != Vector3.one)
+            {
+                saved.transform.localScale = Vector3.one;
+                EditorUtility.SetDirty(saved);
+                AssetDatabase.SaveAssets();
+            }
+
             // 2. Replace scene-authored page in Game.unity
             EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Single);
             ReplacePageInGameScene();

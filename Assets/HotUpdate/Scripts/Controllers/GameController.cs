@@ -66,6 +66,7 @@ namespace Watermelon
             DailyRewardController.ResetStreakIfMissed();
             DailyTaskController.Init();
             RecipeController.Init();
+            AvatarController.Init();
             PushNotificationManager.Init();
         }
 
