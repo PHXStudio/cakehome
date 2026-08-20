@@ -68,6 +68,7 @@ namespace Watermelon
             RecipeController.Init();
             AvatarController.Init();
             IngredientController.Init();
+            MatchBonusController.Init();
             PushNotificationManager.Init();
         }
 
@@ -120,6 +121,9 @@ namespace Watermelon
 
             // M2 配方：设置当前关卡的关联配方（掉落碎片池）
             RecipeController.SetLevelContext(index);
+
+            // 积分棋子：进入关卡启用
+            MatchBonusController.OnLevelStarted();
 
             AdsManager.ShowInterstitial(null);
 
@@ -178,6 +182,7 @@ namespace Watermelon
                 UIController.ShowPage<UIComplete>();
             });
 
+            MatchBonusController.OnLevelEnded();
             isGameActive = false;
         }
 
@@ -206,6 +211,7 @@ namespace Watermelon
                 UIController.ShowPage<UIGameOver>();
             });
 
+            MatchBonusController.OnLevelEnded();
             isGameActive = false;
         }
 

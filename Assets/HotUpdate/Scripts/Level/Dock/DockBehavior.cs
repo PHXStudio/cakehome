@@ -46,6 +46,10 @@ namespace Watermelon
             MatchCombined -= RecipeController.OnMatchCombined;
             MatchCombined += RecipeController.OnMatchCombined;
 
+            // 积分棋子：消除实时加分
+            MatchCombined -= MatchBonusController.OnMatchCombined;
+            MatchCombined += MatchBonusController.OnMatchCombined;
+
             defaultContainerPosition = transform.position;
 
             lastPickedObject = null;
