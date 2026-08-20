@@ -529,6 +529,41 @@ namespace Watermelon
             StateChanged?.Invoke();
         }
 
+        /// <summary>
+        /// 顾客购买演出：货架蛋糕被买走，一次性结算已产出的挂机收益并移除蛋糕（回收）。
+        /// 返回结算积分；无蛋糕或失败返回 -1。
+        /// </summary>
+        public static int CustomerBuys(int shelfIndex)
+        {
+            EnsureInitialized();
+
+            OwnedCake cake = GetCakeOnShelf(shelfIndex);
+            if (cake == null)
+                return -1;
+
+            // 结算货架蛋糕的挂机产出（按当前速率 × 上架时长，封顶保鲜期后）
+            float hours = cake.GetHoursOnShelf(DateTime.Now);
+            if (hours <= 0f)
+                return -1;
+
+            float rate = GetCakeRate(cake, DateTime.Now);
+            double earned = rate * Math.Min(hours, config.MaxOfflineHours);
+            if (earned < 1)
+                return -1;
+
+            int amount = Mathf.FloorToInt((float)earned);
+
+            // 移除蛋糕（回收，清空货架）
+            save.ShelfSlots[shelfIndex] = ShopSave.EMPTY_SLOT;
+            save.Cakes.Remove(cake);
+
+            CurrencyController.Add(CurrencyType.Coins, amount);
+            CustomAnalytics.TrackCurrencyGain("coins", amount, "customer_buy");
+            MarkDirtyAndNotify();
+
+            return amount;
+        }
+
         private static void UnloadStatic()
         {
             save = null;

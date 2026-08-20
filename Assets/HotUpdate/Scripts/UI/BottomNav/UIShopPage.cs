@@ -34,6 +34,8 @@ namespace Watermelon
         [SerializeField] UIRecipePanel recipePanel;
         [SerializeField] Button ingredientButton;
         [SerializeField] UIIngredientPanel ingredientPanel;
+        [SerializeField] Button customerButton;
+        [SerializeField] TMP_Text customerStatusText;
 
         [Header("Animations")]
         [SerializeField] RectTransform[] hudElements;
@@ -135,6 +137,56 @@ namespace Watermelon
                 ingredientButton.onClick.RemoveAllListeners();
                 ingredientButton.onClick.AddListener(OnIngredientClicked);
             }
+
+            if (customerButton != null)
+            {
+                customerButton.onClick.RemoveAllListeners();
+                customerButton.onClick.AddListener(OnCustomerClicked);
+            }
+        }
+
+        private void OnCustomerClicked()
+        {
+            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+
+            // 找有蛋糕的货架（优先最新上架的）
+            int target = -1;
+            for (int i = 0; i < ShopController.Save.UnlockedShelfCount; i++)
+            {
+                if (ShopController.GetCakeOnShelf(i) != null)
+                {
+                    target = i;
+                    break;
+                }
+            }
+
+            if (target < 0)
+            {
+                if (customerStatusText != null)
+                    customerStatusText.text = "货架没有蛋糕";
+                return;
+            }
+
+            int amount = ShopController.CustomerBuys(target);
+            if (amount > 0)
+            {
+                if (customerStatusText != null)
+                    customerStatusText.text = $"顾客买走了蛋糕 +{amount}";
+
+                // 飞币演出
+                if (harvestButtonRect != null && coinsPanel != null)
+                {
+                    FloatingCloud.SpawnCurrency("Coins", harvestButtonRect, coinsPanel.RectTransform,
+                        Mathf.Clamp(amount, 1, 8), null, RefreshHud);
+                }
+            }
+            else
+            {
+                if (customerStatusText != null)
+                    customerStatusText.text = "蛋糕刚上架";
+            }
+
+            RefreshHud();
         }
 
         private void OnRecipeClicked()

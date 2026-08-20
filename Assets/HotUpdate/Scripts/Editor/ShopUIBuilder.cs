@@ -152,6 +152,9 @@ namespace Watermelon
             GameObject expandBtn = CreateSideButton(safeArea, "ExpandButton", new Vector2(0.03f, 0.16f), new Vector2(0.20f, 0.30f), "扩建", CandyColors.ApplePri, LoadSprite(BTN_GREEN));
             GameObject recipeBtn = CreateSideButton(safeArea, "RecipeButton", new Vector2(0.80f, 0.55f), new Vector2(0.97f, 0.69f), "配方", CandyColors.GrapePri, LoadSprite(BTN_PURPLE));
             GameObject ingredientBtn = CreateSideButton(safeArea, "IngredientButton", new Vector2(0.80f, 0.40f), new Vector2(0.97f, 0.54f), "原料", CandyColors.PeachPri, LoadSprite(BTN_PURPLE));
+            GameObject customerBtn = CreateSideButton(safeArea, "CustomerButton", new Vector2(0.80f, 0.25f), new Vector2(0.97f, 0.39f), "顾客", CandyColors.LemonPri, LoadSprite(BTN_PURPLE));
+            GameObject customerStatusChip = CreateChip(safeArea, "Customer Status Chip", new Vector2(0.80f, 0.16f), new Vector2(0.97f, 0.24f), "", 20, CandyColors.PeachLt, CandyColors.PeachDk);
+            TMP_Text customerStatusText = customerStatusChip.transform.Find("Text").GetComponent<TMP_Text>();
 
             // Expand cost chip (under expand button)
             GameObject expandCostChip = CreateChip(safeArea, "ExpandCost Chip", new Vector2(0.03f, 0.08f), new Vector2(0.20f, 0.16f), "100", 26, CandyColors.OrangeLt, CandyColors.OrangeDk);
@@ -182,6 +185,7 @@ namespace Watermelon
                 expandBtn.GetComponent<RectTransform>(),
                 recipeBtn.GetComponent<RectTransform>(),
                 ingredientBtn.GetComponent<RectTransform>(),
+                customerBtn.GetComponent<RectTransform>(),
                 expandCostChip.GetComponent<RectTransform>(),
             };
 
@@ -204,6 +208,8 @@ namespace Watermelon
             so.FindProperty("recipePanel").objectReferenceValue = recipePanel;
             so.FindProperty("ingredientButton").objectReferenceValue = ingredientBtn.GetComponent<Button>();
             so.FindProperty("ingredientPanel").objectReferenceValue = ingredientPanel;
+            so.FindProperty("customerButton").objectReferenceValue = customerBtn.GetComponent<Button>();
+            so.FindProperty("customerStatusText").objectReferenceValue = customerStatusText;
             so.FindProperty("hudElements").arraySize = hudElements.Length;
             for (int i = 0; i < hudElements.Length; i++)
                 so.FindProperty("hudElements").GetArrayElementAtIndex(i).objectReferenceValue = hudElements[i];
