@@ -130,10 +130,12 @@ namespace Watermelon
             GameObject themeChip = CreateChip(safeArea, "Theme Chip", new Vector2(0.02f, 0.88f), new Vector2(0.32f, 0.98f), "今日热门", 34, CandyColors.LemonLt, CandyColors.LemonDk);
             GameObject rateChip = CreateChip(safeArea, "Rate Chip", new Vector2(0.34f, 0.88f), new Vector2(0.56f, 0.98f), "0/时", 34, CandyColors.MintLt, CandyColors.MintDk);
             GameObject pendingChip = CreateChip(safeArea, "Pending Chip", new Vector2(0.58f, 0.88f), new Vector2(0.72f, 0.98f), "待收获 0", 30, CandyColors.PeachLt, CandyColors.PeachDk);
+            GameObject freshnessChip = CreateChip(safeArea, "Freshness Chip", new Vector2(0.74f, 0.88f), new Vector2(0.98f, 0.98f), "新鲜 100%", 26, CandyColors.AppleLt, CandyColors.AppleDk);
 
             TMP_Text themeText = themeChip.transform.Find("Text").GetComponent<TMP_Text>();
             TMP_Text rateText = rateChip.transform.Find("Text").GetComponent<TMP_Text>();
             TMP_Text pendingText = pendingChip.transform.Find("Text").GetComponent<TMP_Text>();
+            TMP_Text freshnessText = freshnessChip.transform.Find("Text").GetComponent<TMP_Text>();
 
             // --- Side buttons ---
             GameObject freezerBtn = CreateSideButton(safeArea, "FreezerButton", new Vector2(0.03f, 0.70f), new Vector2(0.20f, 0.84f), "冰柜", CandyColors.BlueberryPri, LoadSprite(BTN_PURPLE));
@@ -161,6 +163,7 @@ namespace Watermelon
                 themeChip.GetComponent<RectTransform>(),
                 rateChip.GetComponent<RectTransform>(),
                 pendingChip.GetComponent<RectTransform>(),
+                freshnessChip.GetComponent<RectTransform>(),
                 freezerBtn.GetComponent<RectTransform>(),
                 harvestBtn.GetComponent<RectTransform>(),
                 expandBtn.GetComponent<RectTransform>(),
@@ -175,6 +178,7 @@ namespace Watermelon
             so.FindProperty("themeText").objectReferenceValue = themeText;
             so.FindProperty("rateText").objectReferenceValue = rateText;
             so.FindProperty("pendingText").objectReferenceValue = pendingText;
+            so.FindProperty("freshnessText").objectReferenceValue = freshnessText;
             so.FindProperty("expandCostText").objectReferenceValue = expandCostText;
             so.FindProperty("harvestButton").objectReferenceValue = harvestBtn.GetComponent<Button>();
             so.FindProperty("harvestButtonRect").objectReferenceValue = harvestBtn.GetComponent<RectTransform>();

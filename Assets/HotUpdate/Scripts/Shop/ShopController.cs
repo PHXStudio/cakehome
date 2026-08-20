@@ -285,7 +285,60 @@ namespace Watermelon
             if (definition != null)
                 multiplier *= RecipeController.GetRecipeMultiplier(definition.Id);
 
+            // M3 保鲜折扣：上架时间越久收益越低（1.0 → staleMultiplier），催玩家回访更换
+            multiplier *= GetFreshnessMultiplier(cake, now);
+
             return baseRate * multiplier;
+        }
+
+        /// <summary>
+        /// M3 保鲜折扣：上架后 freshHours 内 1.0 倍，之后线性衰减至 staleMultiplier
+        /// （在 fullyStaleHours 达到），逾期保底不再降。
+        /// </summary>
+        public static float GetFreshnessMultiplier(OwnedCake cake, DateTime now)
+        {
+            if (cake == null || !cake.IsOnShelf)
+                return 1f;
+
+            float hours = cake.GetHoursOnShelf(now);
+            if (hours <= config.FreshHours)
+                return 1f;
+
+            float staleRange = Mathf.Max(0.01f, config.FullyStaleHours - config.FreshHours);
+            float t = Mathf.Clamp01((hours - config.FreshHours) / staleRange);
+            return Mathf.Lerp(1f, config.StaleMultiplier, t);
+        }
+
+        /// <summary>是否处于保鲜期内（UI 展示用）。</summary>
+        public static bool IsFresh(OwnedCake cake, DateTime now)
+        {
+            return cake != null && GetFreshnessMultiplier(cake, now) >= 0.999f;
+        }
+
+        /// <summary>
+        /// M3 整体保鲜状态标签：取货架上最不新鲜蛋糕的折扣，提示玩家及时收获/更换。
+        /// </summary>
+        public static string GetOverallFreshnessLabel()
+        {
+            DateTime now = DateTime.Now;
+            float worst = 1f;
+            int shelved = 0;
+
+            for (int i = 0; i < save.UnlockedShelfCount; i++)
+            {
+                OwnedCake cake = GetCakeOnShelf(i);
+                if (cake == null)
+                    continue;
+
+                shelved++;
+                worst = Mathf.Min(worst, GetFreshnessMultiplier(cake, now));
+            }
+
+            if (shelved == 0)
+                return "无上架";
+
+            int pct = Mathf.RoundToInt(worst * 100f);
+            return $"保鲜 {pct}%";
         }
 
         public static float GetTotalCreditsPerHour()

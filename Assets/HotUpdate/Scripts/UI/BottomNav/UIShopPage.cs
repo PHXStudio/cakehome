@@ -18,6 +18,7 @@ namespace Watermelon
         [SerializeField] TMP_Text themeText;
         [SerializeField] TMP_Text rateText;
         [SerializeField] TMP_Text pendingText;
+        [SerializeField] TMP_Text freshnessText;
         [SerializeField] TMP_Text expandCostText;
 
         [Space]
@@ -166,6 +167,9 @@ namespace Watermelon
 
             if (pendingText != null)
                 pendingText.text = $"待收获 {Mathf.FloorToInt((float)ShopController.PendingCredits)}";
+
+            if (freshnessText != null)
+                freshnessText.text = ShopController.GetOverallFreshnessLabel();
 
             if (expandCostText != null)
             {
