@@ -288,6 +288,9 @@ namespace Watermelon
             // M3 保鲜折扣：上架时间越久收益越低（1.0 → staleMultiplier），催玩家回访更换
             multiplier *= GetFreshnessMultiplier(cake, now);
 
+            // 原料采购：面粉/车厘子/彩虹糖针临时增益叠加
+            multiplier *= IngredientController.GetTotalMultiplier();
+
             return baseRate * multiplier;
         }
 

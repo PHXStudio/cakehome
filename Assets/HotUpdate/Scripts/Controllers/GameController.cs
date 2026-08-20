@@ -67,6 +67,7 @@ namespace Watermelon
             DailyTaskController.Init();
             RecipeController.Init();
             AvatarController.Init();
+            IngredientController.Init();
             PushNotificationManager.Init();
         }
 
