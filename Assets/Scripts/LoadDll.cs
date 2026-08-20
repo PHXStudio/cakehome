@@ -31,6 +31,12 @@ namespace Watermelon
 
         private IEnumerator Start()
         {
+#if UNITY_EDITOR
+            // 编辑器下 HotUpdate 已由 Unity 主编译加载（Library/ScriptAssemblies/HotUpdate.dll），
+            // 不走 StreamingAssets 热更，避免程序集重复加载冲突。
+            Debug.Log("[LoadDll] Editor mode: HotUpdate already compiled in, skipping hot reload.");
+            yield break;
+#else
             // 先加载 AOT 补充元数据（可选，用于解决 missing method 问题）
             if (aotDllNames != null && aotDllNames.Length > 0)
             {
@@ -45,6 +51,7 @@ namespace Watermelon
 
             // 调用热更入口
             InvokeHotUpdateEntry();
+#endif
         }
 
         private IEnumerator LoadAOTAssemblies()
