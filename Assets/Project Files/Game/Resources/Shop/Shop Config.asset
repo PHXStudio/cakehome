@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialShelfCount: 4
   maxShelfCount: 8
-  expandCosts:
-  - 100
-  - 250
-  - 500
-  - 1000
+  expandCosts: 64000000fa000000f4010000e8030000
   managerRecommendHours: 2
   managerRecommendMultiplier: 2
   hotThemeMultiplier: 2
   maxOfflineHours: 8
   defaultCreditsPerHour: 10
+  freshHours: 2
+  staleMultiplier: 0.5
+  fullyStaleHours: 8

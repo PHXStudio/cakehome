@@ -13,10 +13,9 @@ namespace Watermelon
     public static class RecipeController
     {
         private const string SAVE_NAME = "recipe";
-        private const int FRAGMENTS_TO_UNLOCK = 10;
-        private const int UNLOCK_COST = 200;
-        private const float DROP_CHANCE = 0.15f;
+        private const string CONFIG_PATH = "Recipe/Recipe Config";
 
+        private static RecipeConfig config;
         private static RecipeSave save;
         private static bool isInitialized;
         private static int currentLevelRecipeIndex = -1;
@@ -26,8 +25,9 @@ namespace Watermelon
 
         public static RecipeSave Save => save;
         public static bool IsInitialized => isInitialized;
-        public static int FragmentsToUnlock => FRAGMENTS_TO_UNLOCK;
-        public static int UnlockCost => UNLOCK_COST;
+        public static int FragmentsToUnlock => config != null ? config.FragmentsToUnlock : 10;
+        public static int UnlockCost => config != null ? config.UnlockCost : 200;
+        public static float DropChance => config != null ? config.DropChance : 0.15f;
 
         // ------------------------------------------------------------------ 配方定义
 
@@ -39,6 +39,11 @@ namespace Watermelon
                 return;
 
             isInitialized = true;
+
+            // 数值配置：从 Resources 加载，缺失时用代码兜底默认值
+            config = Resources.Load<RecipeConfig>(CONFIG_PATH);
+            if (config == null)
+                config = RecipeConfig.CreateDefaultRuntimeConfig();
 
             // 配方 = 门店蛋糕目录（6 种蛋糕即 6 个配方）
             BuildRecipes();
@@ -84,7 +89,7 @@ namespace Watermelon
             if (currentLevelRecipeIndex < 0 || currentLevelRecipeIndex >= Recipes.Length)
                 return;
 
-            if (UnityEngine.Random.value > DROP_CHANCE)
+            if (UnityEngine.Random.value > DropChance)
                 return;
 
             AddFragment(Recipes[currentLevelRecipeIndex].Id);
@@ -98,7 +103,7 @@ namespace Watermelon
             if (index < 0)
                 return;
 
-            save.Fragments[index] = Mathf.Min(save.Fragments[index] + 1, FRAGMENTS_TO_UNLOCK);
+            save.Fragments[index] = Mathf.Min(save.Fragments[index] + 1, FragmentsToUnlock);
             SaveController.MarkAsSaveIsRequired();
 
             CustomAnalytics.TrackFragmentCollect(recipeId, save.Fragments[index]);
@@ -151,7 +156,7 @@ namespace Watermelon
             if (IsUnlocked(recipeId))
                 return false;
 
-            return GetFragments(recipeId) >= FRAGMENTS_TO_UNLOCK;
+            return GetFragments(recipeId) >= FragmentsToUnlock;
         }
 
         /// <summary>支付积分解封配方。成功返回 true。</summary>
@@ -162,11 +167,11 @@ namespace Watermelon
             if (!CanUnlock(recipeId))
                 return false;
 
-            if (!CurrencyController.HasAmount(CurrencyType.Coins, UNLOCK_COST))
+            if (!CurrencyController.HasAmount(CurrencyType.Coins, UnlockCost))
                 return false;
 
-            CurrencyController.Substract(CurrencyType.Coins, UNLOCK_COST);
-            CustomAnalytics.TrackCurrencySpend("coins", UNLOCK_COST, "recipe_unlock");
+            CurrencyController.Substract(CurrencyType.Coins, UnlockCost);
+            CustomAnalytics.TrackCurrencySpend("coins", UnlockCost, "recipe_unlock");
 
             save.Unlocked.Add(recipeId);
             SaveController.MarkAsSaveIsRequired();
