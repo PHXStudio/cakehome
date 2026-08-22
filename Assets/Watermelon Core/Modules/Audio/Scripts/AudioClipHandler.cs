@@ -35,6 +35,45 @@ namespace Watermelon
 
         private TweenCase volumeCase;
 
+        public AudioClipHandler(AudioType audioType, float clipVolume)
+        {
+            this.audioType = audioType;
+            this.clipVolume = clipVolume;
+
+            this.advancedSettings = false;
+
+            Init();
+        }
+
+        public AudioClipHandler(AudioType audioType, float clipVolume, float minDelay, AudioSource customAudioSource = null)
+        {
+            this.audioType = audioType;
+            this.clipVolume = clipVolume;
+            this.minDelay = minDelay;
+
+            this.customAudioSource = customAudioSource;
+
+            this.advancedSettings = true;
+
+            Init();
+        }
+
+        public AudioClipHandler(AudioType audioType, float clipVolume, float minDelay, DuoFloat pitchRange, int pitchSteps, float pitchResetTime, AudioSource customAudioSource = null)
+        {
+            this.audioType = audioType;
+            this.clipVolume = clipVolume;
+            this.minDelay = minDelay;
+            this.pitchRange = pitchRange;
+            this.pitchSteps = pitchSteps;
+            this.pitchResetTime = pitchResetTime;
+            this.customAudioSource = customAudioSource;
+
+            this.advancedSettings = true;
+            this.dynamicPitch = true;
+
+            Init();
+        }
+
         public void Init()
         {
             AudioController.VolumeChanged += OnVolumeChanged;
@@ -64,7 +103,10 @@ namespace Watermelon
 
             if(advancedSettings)
             {
-                if (Time.time < lastPlayedTime + minDelay) return;
+                if (Time.time < lastPlayedTime + minDelay && Time.time >= lastPlayedTime)
+                {
+                    return;
+                }
 
                 lastPlayedTime = Time.time;
 
@@ -158,31 +200,3 @@ namespace Watermelon
         }
     }
 }
-
-// -----------------
-// Audio Controller v 0.4
-// -----------------
-
-// Changelog
-// v 0.4
-// • Vibration settings removed
-// v 0.3.3
-// • Method for separate music and sound volume override
-// v 0.3.2
-// • Added audio listener creation method
-// v 0.3.2
-// • Added volume float
-// • AudioSettings variable removed (now sounds, music and vibrations can be reached directly)
-// v 0.3.1
-// • Added OnVolumeChanged callback
-// • Renamed AudioSettings to Settings
-// v 0.3
-// • Added IsAudioModuleEnabled method
-// • Added IsVibrationModuleEnabled method
-// • Removed VibrationToggleButton class
-// v 0.2
-// • Removed MODULE_VIBRATION
-// v 0.1
-// • Added basic version
-// • Added support of new initialization
-// • Music and Sound volume is combined

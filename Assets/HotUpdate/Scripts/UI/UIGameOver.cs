@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using TMPro;
 using UnityEngine;
@@ -49,7 +49,7 @@ namespace Watermelon
 
         #region Show/Hide
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             levelFailed.Hide(immediately: true);
             menuButtonScalable.Hide(immediately: true);
@@ -81,19 +81,19 @@ namespace Watermelon
 
                 continuePingPongCase = reviveButtonScalable.Transform.DOPingPongScale(1.0f, 1.05f, 0.9f, Ease.Type.QuadIn, Ease.Type.QuadOut, unscaledTime: true);
 
-                UIController.OnPageOpened(this);
+                NotifyOpened();
             });
 
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             backgroundFade.Hide(immediately: true);
 
             if (continuePingPongCase != null && continuePingPongCase.IsActive)
                 continuePingPongCase.Kill();
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         #endregion

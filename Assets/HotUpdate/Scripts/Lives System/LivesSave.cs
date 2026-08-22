@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Watermelon
 {
@@ -20,7 +20,7 @@ namespace Watermelon
             this.status = status;
         }
 
-        public void Flush()
+        public void OnBeforeSave()
         {
             if (status == null) return;
 

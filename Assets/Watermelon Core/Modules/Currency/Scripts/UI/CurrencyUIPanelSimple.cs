@@ -30,6 +30,8 @@ namespace Watermelon
         private RectTransform rectTransformRef;
         public RectTransform RectTransform => rectTransformRef;
 
+        public RectTransform TextRectTransform => text.rectTransform;
+
         private bool isInitialized;
 
         private void Awake()

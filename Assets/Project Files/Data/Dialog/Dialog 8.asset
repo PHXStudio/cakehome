@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 8
+  m_EditorClassIdentifier: 
+  chapterTitle: Sofia Discovers the Coffee Stand
+  steps:
+  - rid: 1038874977809204475
+  - rid: 8407529653694559886
+  - rid: 4262678690755085691
+  - rid: 8781691080150891819
+  - rid: 4326934440167873402
+  - rid: 7823905754763434989
+  - rid: 4383310151548326243
+  - rid: 6975438485012862505
+  - rid: 9095842370848584541
+  - rid: 5818870836215511659
+  - rid: 6703653003857722052
+  - rid: 5899159953271161006
+  - rid: 1128559268157251915
+  references:
+    version: 2
+    RefIds:
+    - rid: 1038874977809204475
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: Do not move. The light is perfect.
+    - rid: 1128559268157251915
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: Perfect. Now everyone can watch it become something special.
+    - rid: 4262678690755085691
+      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        image: {fileID: 21300000, guid: af8ee6cccf0105543afac3ac803bd832, type: 3}
+    - rid: 4326934440167873402
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: You usually ask before photographing people.
+    - rid: 4383310151548326243
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: And you are?
+    - rid: 5818870836215511659
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: People love good coffee.
+    - rid: 5899159953271161006
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: The house is far from finished.
+    - rid: 6703653003857722052
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: They love a comeback story even more.
+    - rid: 6975438485012862505
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: Sofia Reyes. Photographer, local business enthusiast, and the reason
+          your coffee stand has been appearing all over the neighborhood feed.
+    - rid: 7823905754763434989
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: I photographed the coffee. Maya happened to be standing behind it.
+    - rid: 8407529653694559886
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Excuse me?
+    - rid: 8781691080150891819
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: Excellent. That is exactly the photo I needed.
+    - rid: 9095842370848584541
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: You posted about us?

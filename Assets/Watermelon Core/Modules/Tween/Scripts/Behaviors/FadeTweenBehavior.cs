@@ -21,7 +21,7 @@ namespace Watermelon
 
         protected override void IncrementLoopChangeValues()
         {
-            var difference = endValue - startValue;
+            float difference = endValue - startValue;
             startValue = endValue;
             endValue += difference;
         }

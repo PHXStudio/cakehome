@@ -21,6 +21,7 @@ namespace Watermelon
         private List<Type> nestedTypes;
 
         private InfoBoxAttribute infoBoxAttribute;
+        private TextAreaAttribute textAreaAttribute;
 
         public SerializedPropertyGUIRenderer(CustomInspector editor, SerializedProperty serializedProperty, FieldInfo fieldInfo, object targetObject, List<Type> nestedTypes)
         {
@@ -60,6 +61,26 @@ namespace Watermelon
             }
 
             infoBoxAttribute = PropertyUtility.GetAttribute<InfoBoxAttribute>(fieldInfo);
+            textAreaAttribute = PropertyUtility.GetAttribute<TextAreaAttribute>(fieldInfo);
+        }
+
+        // Built-in TextAreaDrawer positions its label via a Rect sized off EditorGUIUtility.contextWidth
+        // (the whole inspector width), not the actual rect it receives. Nested inside this inspector's
+        // BeginHorizontal/BeginVertical wrapper that assumption breaks and a second, misplaced label
+        // gets drawn at the top of the window. Bypass the drawer and lay the field out with plain
+        // EditorGUILayout calls instead, which stay consistent with the surrounding nested groups.
+        private void DrawPropertyField()
+        {
+            if (textAreaAttribute != null && serializedProperty.propertyType == SerializedPropertyType.String)
+            {
+                EditorGUILayout.LabelField(labelContent);
+                serializedProperty.stringValue = EditorGUILayout.TextArea(serializedProperty.stringValue,
+                    GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * textAreaAttribute.minLines));
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(serializedProperty, labelContent, true);
+            }
         }
 
         public bool IsEnabled()
@@ -174,7 +195,7 @@ namespace Watermelon
                             DrawInfoBox(infoBoxAttribute.Text, infoBoxAttribute.Type);
                         }
 
-                        EditorGUILayout.PropertyField(serializedProperty, labelContent, true);
+                        DrawPropertyField();
                     }
                 }
                 else
@@ -184,7 +205,7 @@ namespace Watermelon
                         DrawInfoBox(infoBoxAttribute.Text, infoBoxAttribute.Type);
                     }
 
-                    EditorGUILayout.PropertyField(serializedProperty, labelContent, true);
+                    DrawPropertyField();
                 }
             }
 

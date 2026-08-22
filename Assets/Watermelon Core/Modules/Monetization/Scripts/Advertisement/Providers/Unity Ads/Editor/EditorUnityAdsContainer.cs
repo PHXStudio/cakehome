@@ -1,13 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 namespace Watermelon
 {
     public class EditorUnityAdsContainer : EditorAdsContainer
     {
-        public EditorUnityAdsContainer(string containerName, string propertyName) : base(containerName, propertyName)
-        {
-        }
+        protected override string ContainerDisplayName => "Unity Ads";
 
         protected override void SpecialButtons()
         {

@@ -28,6 +28,9 @@ namespace Watermelon
         [SerializeField] Image currencyImage;
         [SerializeField] CanvasGroup textAndIconCanvasGroup;
 
+        [Space]
+        [SerializeField] string analyticsSink;
+
         private int currentPrice;
         private Currency currency;
 
@@ -50,6 +53,11 @@ namespace Watermelon
             Init(price, currencyType);
         }
 
+        public void Init(CurrencyAmount currencyAmount)
+        {
+            Init(currencyAmount.Amount, currencyAmount.CurrencyType);
+        }
+
         public void Init(int price, CurrencyType currencyType)
         {
             this.currencyType = currencyType;
@@ -60,7 +68,7 @@ namespace Watermelon
             currentPrice = price;
 
             currencyImage.sprite = currency.Icon;
-            buttonText.text = currency.AmountFormatted;
+            buttonText.text = CurrencyHelper.Format(currentPrice);
 
             Subscribe();
 
@@ -73,6 +81,7 @@ namespace Watermelon
             if (currency.Amount >= currentPrice)
             {
                 button.interactable = true;
+                if(textAndIconCanvasGroup != null)
                 textAndIconCanvasGroup.alpha = 1f;
 
                 if (disableMode == DisableMode.Sprite)
@@ -88,7 +97,8 @@ namespace Watermelon
             else
             {
                 button.interactable = false;
-                textAndIconCanvasGroup.alpha = 0.6f;
+                if (textAndIconCanvasGroup != null)
+                    textAndIconCanvasGroup.alpha = 0.6f;
 
                 if (disableMode == DisableMode.Sprite)
                 {
@@ -133,14 +143,14 @@ namespace Watermelon
         private void OnButtonClicked()
         {
 #if MODULE_HAPTIC
-            Haptic.Play(Haptic.HAPTIC_LIGHT);
+            Haptic.Play(Haptic.HAPTIC_HARD);
 #endif
 
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
 
             if (CurrencyController.HasAmount(currencyType, currentPrice))
             {
-                CurrencyController.Substract(currencyType, currentPrice);
+                CurrencyController.Substract(currencyType, currentPrice, analyticsSink);
 
                 Purchased?.Invoke();
             }

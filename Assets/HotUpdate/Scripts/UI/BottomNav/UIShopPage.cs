@@ -71,7 +71,7 @@ namespace Watermelon
             ShopController.StateChanged -= RefreshHud;
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             ShopController.EnsureInitialized();
             ApplyBottomNavPadding();
@@ -82,10 +82,10 @@ namespace Watermelon
             PlayEntranceAnimation();
             RefreshHud();
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             entranceTweens.KillActive();
             pendingPulseTween.KillActive();
@@ -93,7 +93,7 @@ namespace Watermelon
             if (freezerPanel != null)
                 freezerPanel.Hide(immediately: true);
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         private void ApplyBottomNavPadding()

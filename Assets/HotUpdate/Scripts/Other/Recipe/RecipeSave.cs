@@ -30,7 +30,7 @@ namespace Watermelon
                 Unlocked = new List<string>();
         }
 
-        public void Flush()
+        public void OnBeforeSave()
         {
         }
     }

@@ -35,6 +35,23 @@ extern "C"
 	{
 		if (@available(iOS 13.0, *)) // Check if the device is running iOS 13.0 or later, as Core Haptics is available only on iOS 13+.
 		{  
+			if (!hapticEngine) 
+			{
+				NSLog(@"Haptic engine is nil. Reinitializing...");
+				
+				_Initialize();
+			} 
+			else
+			{
+				NSError *startError = nil;
+				[hapticEngine startAndReturnError:&startError];
+				
+				if (startError) {
+					NSLog(@"Failed to restart haptic engine: %@", startError);
+					return;
+				}
+			}
+			
 			NSError *error = nil;  // Declare an NSError object to capture any errors that may occur.
 
 			// Create a haptic intensity parameter
@@ -77,9 +94,21 @@ extern "C"
 	{
 		if (@available(iOS 13.0, *)) 
 		{
-			if (!hapticEngine) {
-				NSLog(@"Haptic engine not initialized. Call _Initialise() first.");
-				return;
+			if (!hapticEngine) 
+			{
+				NSLog(@"Haptic engine is nil. Reinitializing...");
+				
+				_Initialize();
+			} 
+			else
+			{
+				NSError *startError = nil;
+				[hapticEngine startAndReturnError:&startError];
+				
+				if (startError) {
+					NSLog(@"Failed to restart haptic engine: %@", startError);
+					return;
+				}
 			}
 
 			// Convert the C string to an NSString.
@@ -90,8 +119,8 @@ extern "C"
 			NSDictionary *hapticPatternDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
 
 			// Extract the ID and pattern array.
-			NSString *patternId = hapticPatternDict[@"ID"];
-			NSArray *eventsArray = hapticPatternDict[@"Pattern"];
+			NSString *patternId = hapticPatternDict[@"id"];
+			NSArray *eventsArray = hapticPatternDict[@"pattern"];
 			NSMutableArray *events = [NSMutableArray array];
 
 			// Iterate through the events array and create CHHapticEvent objects.
@@ -139,9 +168,21 @@ extern "C"
 	{
 		if (@available(iOS 13.0, *)) 
 		{
-			if (!hapticEngine) {
-				NSLog(@"Haptic engine not initialized. Call _Initialise() first.");
-				return;
+			if (!hapticEngine) 
+			{
+				NSLog(@"Haptic engine is nil. Reinitializing...");
+				
+				_Initialize();
+			} 
+			else
+			{
+				NSError *startError = nil;
+				[hapticEngine startAndReturnError:&startError];
+				
+				if (startError) {
+					NSLog(@"Failed to restart haptic engine: %@", startError);
+					return;
+				}
 			}
 
 			// Convert the C string patternId to an NSString.

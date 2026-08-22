@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb41bf72d53a48a6bdc593d706f94, type: 3}
+  m_Name: Ads Settings
+  m_EditorClassIdentifier: 
+  activeProvider: Dummy
+  debugMode: 0
+  testDevices: []
+  loadAdsOnStart: 1
+  bannerEnabled: 0
+  interstitialEnabled: 1
+  rewardedVideoEnabled: 1
+  noAdsRewardSprite: {fileID: 21300000, guid: 99ae878a7283c2d40bbfb630adc8df1c, type: 3}
+  interstitialFirstStartDelay: 40
+  interstitialStartDelay: 40
+  interstitialShowingDelay: 30
+  loadingAdDuration: 0
+  loadingMessage: Ad is loading..
+  providerContainers:
+  - rid: 2131732083002572800
+  - rid: 2131732083002572801
+  - rid: 2131732083002572802
+  - rid: 2131732083002572803
+  privacyLink: 
+  termsOfUseLink: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 2131732083002572800
+      type: {class: ApplovinContainer, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        androidBannerID: banner
+        iOSBannerID: banner
+        androidInterstitialID: video
+        iOSInterstitialID: video
+        androidRewardedVideoID: rewardedVideo
+        iOSRewardedVideoID: rewardedVideo
+        bannerPosition: 0
+        useAdaptiveBanner: 1
+        bannerBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    - rid: 2131732083002572801
+      type: {class: AdMobContainer, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        androidAppId: 
+        iosAppId: 
+        androidBannerID: ca-app-pub-3940256099942544/6300978111
+        iOSBannerID: ca-app-pub-3940256099942544/2934735716
+        androidInterstitialID: ca-app-pub-3940256099942544/1033173712
+        iOSInterstitialID: ca-app-pub-3940256099942544/4411468910
+        androidRewardedVideoID: ca-app-pub-3940256099942544/5224354917
+        iOSRewardedVideoID: ca-app-pub-3940256099942544/1712485313
+        useAppOpenAd: 0
+        androidAppOpenAdID: ca-app-pub-3940256099942544/9257395921
+        iOSAppOpenAdID: ca-app-pub-3940256099942544/5575463023
+        appOpenAdExpirationHoursTime: 4
+        bannerType: 0
+        bannerPosition: 0
+    - rid: 2131732083002572802
+      type: {class: AdDummyContainer, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        bannerPosition: 0
+    - rid: 2131732083002572803
+      type: {class: LevelPlayContainer, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        androidAppKey: 
+        androidBannerID: 
+        androidInterstitialID: 
+        androidRVID: 
+        iOSAppKey: 
+        iOSBannerID: 
+        iOSInterstitialID: 
+        iOSRVID: 
+        bannerPosition: 0
+        bannerType: 0

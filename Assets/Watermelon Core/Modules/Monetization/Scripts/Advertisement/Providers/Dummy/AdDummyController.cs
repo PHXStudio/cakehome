@@ -20,8 +20,12 @@ namespace Watermelon
 
         private RectTransform bannerRectTransform;
 
-        public void Init(AdsSettings settings)
+        private string providerName;
+
+        public void Init(AdsSettings settings, string providerName)
         {
+            this.providerName = providerName;
+
             bannerRectTransform = (RectTransform)bannerObject.transform;
 
             interstitialCloseButton.AddEvent(EventTriggerType.PointerDown, (data) => CloseInterstitialButton());
@@ -34,7 +38,10 @@ namespace Watermelon
 
             DontDestroyOnLoad(gameObject);
 
-            switch (settings.DummyContainer.BannerPosition)
+            var container = settings.GetContainer<AdDummyContainer>();
+            var bannerPosition = container?.BannerPosition ?? BannerPosition.Bottom;
+
+            switch (bannerPosition)
             {
                 case BannerPosition.Bottom:
                     bannerRectTransform.pivot = new Vector2(0.5f, 0.0f);
@@ -74,7 +81,7 @@ namespace Watermelon
         {
             interstitialObject.SetActive(false);
 
-            AdsManager.OnProviderAdClosed(AdProvider.Dummy, AdType.Interstitial);
+            AdsManager.OnProviderAdClosed(providerName, AdType.Interstitial);
         }
 
         public void ShowRewardedVideo()
@@ -86,7 +93,7 @@ namespace Watermelon
         {
             rewardedVideoObject.SetActive(false);
 
-            AdsManager.OnProviderAdClosed(AdProvider.Dummy, AdType.RewardedVideo);
+            AdsManager.OnProviderAdClosed(providerName, AdType.RewardedVideo);
         }
 
         #region Buttons
@@ -116,15 +123,6 @@ namespace Watermelon
         {
             Color backgroundColor = new Color(0.211f, 0.211f, 0.321f, 1.0f);
             Color mainColor = new Color(0.207f, 0.305f, 0.717f, 1.0f);
-
-#if UNITY_EDITOR
-            CoreSettings coreSettings = UnityEditor.AssetDatabase.LoadAssetAtPath<CoreSettings>("Assets/Watermelon Core/Core Settings.asset");
-            if (coreSettings != null)
-            {
-                backgroundColor = coreSettings.AdsDummyBackgroundColor;
-                mainColor = coreSettings.AdsDummyMainColor;
-            }
-#endif
 
             GameObject go = new GameObject("[ADS DUMMY CANVAS]");
 

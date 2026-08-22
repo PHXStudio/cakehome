@@ -1,94 +1,84 @@
-﻿#pragma warning disable 0649
+#pragma warning disable 0649
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Watermelon
 {
-    [DefaultExecutionOrder(-999)]
     public class Initializer : MonoBehaviour
     {
-        private static Initializer initializer;
+        private static bool isInitialized;
 
         [SerializeField] ProjectInitSettings initSettings;
+        [SerializeField] SDKInitializer sdkInitializer;
         [SerializeField] EventSystem eventSystem;
 
-        public static GameObject GameObject { get; private set; }
-        public static Transform Transform { get; private set; }
+        private ConsentData consentData;
 
-        public static ProjectInitSettings InitSettings { get; private set; }
-
-        private bool manualActivation;
-
-        public void Awake()
+        public void Init()
         {
-            if (initializer != null)
-                return;
+            if (isInitialized) return;
 
-            initializer = this;
+            isInitialized = true;
 
-            manualActivation = false;
+            if (eventSystem == null)
+                LogManager.LogWarning("[Initializer]: EventSystem is not assigned — input may not work.", LogCategory.Systems);
 
-            InitSettings = initSettings;
+            if (sdkInitializer == null)
+                Debug.LogError("[Initializer]: SDKInitializer is not assigned — consent providers will not be registered.");
 
-            GameObject = gameObject;
-            Transform = transform;
+            consentData = new ConsentData(sdkInitializer?.gameObject);
 
-#if MODULE_INPUT_SYSTEM
-            try
-            {
-                eventSystem.gameObject.GetOrSetComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning("[Initializer]: Failed to set up InputSystemUIInputModule: " + e.Message);
-            }
-#else
-            eventSystem.gameObject.GetOrSetComponent<StandaloneInputModule>();
-#endif
+            IPreInitializable[] preInitComponents = GetComponents<IPreInitializable>();
+            LogManager.Log($"[Initializer]: Found {preInitComponents.Length} pre-initializable component(s).", LogCategory.Systems);
+            foreach (IPreInitializable component in preInitComponents)
+                component.PreInit();
 
             DontDestroyOnLoad(gameObject);
+        }
 
+        public void InitModules()
+        {
             if (initSettings == null)
             {
-                Debug.LogError("[Initializer]: initSettings is not assigned, core modules were NOT initialized!");
+                Debug.LogError("[Initializer]: InitSettings is not assigned — modules will not be initialized.");
                 return;
             }
 
-            Debug.Log("[Initializer]: Awake calling initSettings.Init");
-
-            try
-            {
-                initSettings.Init(this);
-                Debug.Log("[Initializer]: initSettings.Init completed OK");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError("[Initializer]: initSettings.Init FAILED — " + e);
-            }
+            // Use async initialization - StartCoroutine will wait for all modules to complete
+            StartCoroutine(initSettings.InitAsync(gameObject, this));
         }
 
-        public void Start()
+        public IEnumerator InitModulesAsync()
         {
-            if (!manualActivation)
-                LoadGame(true);
+            if (initSettings == null)
+            {
+                Debug.LogError("[Initializer]: InitSettings is not assigned — modules will not be initialized.");
+                yield break;
+            }
+
+            // Yield until all modules finish initialization sequentially
+            yield return StartCoroutine(initSettings.InitAsync(gameObject, this));
         }
 
-        public void LoadGame(bool loadingScene)
+        public void InitSDKs()
         {
-            if (loadingScene)
+            if (sdkInitializer == null)
             {
-                GameLoading.LoadGameScene();
+                LogManager.LogWarning("[Initializer]: SDKInitializer is not assigned — SDKs will not be initialized.", LogCategory.Systems);
+                return;
             }
-            else
-            {
-                GameLoading.SimpleLoad();
-            }
+
+            sdkInitializer.Init();
         }
 
-        public void EnableManualActivation()
+        private void OnDestroy()
         {
-            manualActivation = true;
+            initSettings.Unload();
+            consentData?.Unload();
+
+            isInitialized = false;
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Watermelon
 
         #region Show/Hide
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             ApplyBottomNavPadding();
 
@@ -101,7 +101,7 @@ namespace Watermelon
 
             MapLevelAbstractBehavior.OnLevelClicked += OnLevelOnMapSelected;
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
         private void CheckDailyPanels()
@@ -128,7 +128,7 @@ namespace Watermelon
             }
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             showHideStoreAdButtonDelayTweenCase?.Kill();
 
@@ -142,7 +142,7 @@ namespace Watermelon
 
             MapLevelAbstractBehavior.OnLevelClicked -= OnLevelOnMapSelected;
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         #endregion

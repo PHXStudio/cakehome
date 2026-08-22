@@ -2,11 +2,23 @@ using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Tween extensions for <see cref="Transform"/> world/local space animations.
+    /// This is the most comprehensive cases file, covering:
+    /// <list type="bullet">
+    ///   <item><b>Rotation</b> — Euler angles, Quaternion, local, constant, look-at (3D and 2D)</item>
+    ///   <item><b>Position</b> — world/local, per-axis, X+Z combined, Bezier curves, follow</item>
+    ///   <item><b>Scale</b> — uniform, per-axis, two-phase push, ping-pong oscillation</item>
+    ///   <item><b>Shake</b> — random 3D position offset</item>
+    /// </list>
+    /// All extension methods target <see cref="Component"/> so they work on any MonoBehaviour or Transform directly.
+    /// </summary>
     public static class TransformTweenCases
     {
         #region Extensions
         /// <summary>
-        /// Changes rotation angle of object.
+        /// Animates <see cref="Transform.eulerAngles"/> to <paramref name="resultValue"/>.
+        /// Automatically clamps the rotation delta into the ±180° range to take the shortest arc.
         /// </summary>
         public static TweenCase DORotate(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -14,7 +26,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes quaternion rotation of object.
+        /// Animates <see cref="Transform.rotation"/> (world-space <see cref="Quaternion"/>) to <paramref name="resultValue"/> using <see cref="Quaternion.LerpUnclamped"/>.
         /// </summary>
         public static TweenCase DORotate(this Component tweenObject, Quaternion resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -22,7 +34,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes local quaternion rotation of object.
+        /// Animates <see cref="Transform.localRotation"/> to <paramref name="resultValue"/> using <see cref="Quaternion.LerpUnclamped"/>.
         /// </summary>
         public static TweenCase DOLocalRotate(this Component tweenObject, Quaternion resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -30,7 +42,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes local angle rotation of object.
+        /// Animates <see cref="Transform.localEulerAngles"/> to <paramref name="resultValue"/> (delegates to <see cref="RotateAngle"/> in local space).
         /// </summary>
         public static TweenCase DOLocalRotate(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -38,7 +50,8 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes object rotation by given vector during specified time.
+        /// Rotates the object continuously at <paramref name="rotationVector"/> degrees per second for the specified <paramref name="time"/>.
+        /// Uses <see cref="Time.deltaTime"/> directly, so it is not affected by the tween's easing curve.
         /// </summary>
         public static TweenCase DORotateConstant(this Component tweenObject, Vector3 rotationVector, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -46,7 +59,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes position of object.
+        /// Animates <see cref="Transform.position"/> (world space) to <paramref name="resultValue"/>.
         /// </summary>
         public static TweenCase DOMove(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -54,7 +67,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes position of object.
+        /// Animates <see cref="Transform.position"/> (world space) to the position of <paramref name="resultValue"/> at the moment the tween starts.
         /// </summary>
         public static TweenCase DOMove(this Component tweenObject, Transform resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -62,7 +75,8 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes position of object by bezier curve.
+        /// Moves the object along a <b>quadratic Bezier curve</b> to <paramref name="resultValue"/>,
+        /// with the control point auto-calculated from <paramref name="upOffset"/>, <paramref name="rightOffset"/>, and <paramref name="forwardOffset"/> relative to the path midpoint.
         /// </summary>
         public static TweenCase DOBezierMove(this Component tweenObject, Vector3 resultValue, float upOffset, float rightOffset, float forwardOffset, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -70,7 +84,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes position of object by bezier curve.
+        /// Moves the object along a <b>quadratic Bezier curve</b> to <paramref name="resultValue"/> using an explicit <paramref name="controlPoint1"/>.
         /// </summary>
         public static TweenCase DOBezierMove(this Component tweenObject, Vector3 resultValue, Vector3 controlPoint1, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -78,7 +92,7 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes position of object by bezier curve.
+        /// Moves the object along a <b>cubic Bezier curve</b> to <paramref name="resultValue"/> using two explicit control points.
         /// </summary>
         public static TweenCase DOBezierMove(this Component tweenObject, Vector3 resultValue, Vector3 controlPoint1, Vector3 controlPoint2, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -86,7 +100,9 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Follow a target transform.
+        /// Moves the object toward <paramref name="target"/> at <paramref name="speed"/> units per second using <see cref="Vector3.MoveTowards"/>.
+        /// Completes automatically when within <paramref name="minimumDistance"/> of the target.
+        /// The tween duration is set to <see cref="float.MaxValue"/>; the tween self-completes when close enough.
         /// </summary>
         public static TweenCase DoFollow(this Component tweenObject, Transform target, float speed, float minimumDistance, float delay, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -94,63 +110,53 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Follow a target transform by bezier curve.
+        /// Moves the object along a quadratic Bezier curve that tracks the live position of <paramref name="resultValue"/> each frame.
+        /// The control point is recalculated each update based on the current offset parameters.
         /// </summary>
         public static TweenCase DOBezierFollow(this Component tweenObject, Transform resultValue, float upOffset, float rightOffset, float forwardOffset, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new BezierFollow(tweenObject.transform, resultValue, upOffset, rightOffset, forwardOffset).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes x position of object.
-        /// </summary>
+        /// <summary>Animates only the X component of <see cref="Transform.position"/>, leaving Y and Z unchanged.</summary>
         public static TweenCase DOMoveX(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new PositionX(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes y position of object.
-        /// </summary>
+        /// <summary>Animates only the Y component of <see cref="Transform.position"/>, leaving X and Z unchanged.</summary>
         public static TweenCase DOMoveY(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new PositionY(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes z position of object.
-        /// </summary>
+        /// <summary>Animates only the Z component of <see cref="Transform.position"/>, leaving X and Y unchanged.</summary>
         public static TweenCase DOMoveZ(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new PositionZ(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes x,z positions of object.
-        /// </summary>
+        /// <summary>Animates both X and Z components of <see cref="Transform.position"/> simultaneously, leaving Y unchanged.</summary>
         public static TweenCase DOMoveXZ(this Component tweenObject, float resultValueX, float resultValueZ, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new PositionXZ(tweenObject.transform, resultValueX, resultValueZ).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes local scale of object.
-        /// </summary>
+        /// <summary>Animates <see cref="Transform.localScale"/> to the Vector3 <paramref name="resultValue"/>.</summary>
         public static TweenCase DOScale(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new Scale(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes local scale of object.
-        /// </summary>
+        /// <summary>Animates <see cref="Transform.localScale"/> to a uniform scale of <paramref name="resultValue"/> on all axes.</summary>
         public static TweenCase DOScale(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new Scale(tweenObject.transform, new Vector3(resultValue, resultValue, resultValue)).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
         /// <summary>
-        /// Changes local scale of object twice.
+        /// Animates <see cref="Transform.localScale"/> in two sequential phases: first to <paramref name="firstScale"/>, then to <paramref name="secondScale"/>.
+        /// Each phase has its own duration and easing curve, allowing a punch-and-settle feel.
         /// </summary>
         public static TweenCase DOPushScale(this Component tweenObject, Vector3 firstScale, Vector3 secondScale, float firstScaleTime, float secondScaleTime, Ease.Type firstScaleEasing = Ease.Type.Linear, Ease.Type secondScaleEasing = Ease.Type.Linear, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -158,79 +164,68 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Changes local scale of object twice.
+        /// Animates <see cref="Transform.localScale"/> in two sequential phases using uniform float values.
+        /// Converts floats to <c>Vector3</c> internally.
         /// </summary>
         public static TweenCase DOPushScale(this Component tweenObject, float firstScale, float secondScale, float firstScaleTime, float secondScaleTime, Ease.Type firstScaleEasing = Ease.Type.Linear, Ease.Type secondScaleEasing = Ease.Type.Linear, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new PushScale(tweenObject.transform, firstScale.ToVector3(), secondScale.ToVector3(), firstScaleTime, secondScaleTime, firstScaleEasing, secondScaleEasing).SetDelay(delay).SetDuration(firstScaleTime + secondScaleTime).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes x scale of object.
-        /// </summary>
+        /// <summary>Animates only the X component of <see cref="Transform.localScale"/>, leaving Y and Z unchanged.</summary>
         public static TweenCase DOScaleX(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new ScaleX(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes y scale of object.
-        /// </summary>
+        /// <summary>Animates only the Y component of <see cref="Transform.localScale"/>, leaving X and Z unchanged.</summary>
         public static TweenCase DOScaleY(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new ScaleY(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes z scale of object.
-        /// </summary>
+        /// <summary>Animates only the Z component of <see cref="Transform.localScale"/>, leaving X and Y unchanged.</summary>
         public static TweenCase DOScaleZ(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new ScaleZ(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
         /// <summary>
-        /// Scale transform up and down.
+        /// Continuously oscillates <see cref="Transform.localScale"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>
+        /// for the given <paramref name="time"/> using separate easing curves for the scale-up and scale-down phases.
+        /// Useful for idle pulse or heartbeat effects.
         /// </summary>
         public static TweenCase DOPingPongScale(this Component tweenObject, float minValue, float maxValue, float time, Ease.Type positiveScaleEasing, Ease.Type negativeScaleEasing, float delay = 0, bool unscaledTime = false)
         {
             return new PingPongScale(tweenObject.transform, minValue, maxValue, time, positiveScaleEasing, negativeScaleEasing).SetDelay(delay).SetUnscaledMode(unscaledTime).StartTween();
         }
 
-        /// <summary>
-        /// Changes local position of object.
-        /// </summary>
+        /// <summary>Animates <see cref="Transform.localPosition"/> to <paramref name="resultValue"/>.</summary>
         public static TweenCase DOLocalMove(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new LocalMove(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes x local position of object.
-        /// </summary>
+        /// <summary>Animates only the X component of <see cref="Transform.localPosition"/>, leaving Y and Z unchanged.</summary>
         public static TweenCase DOLocalMoveX(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new LocalPositionX(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes y local position of object.
-        /// </summary>
+        /// <summary>Animates only the Y component of <see cref="Transform.localPosition"/>, leaving X and Z unchanged.</summary>
         public static TweenCase DOLocalMoveY(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new LocalPositionY(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Changes z local position of object.
-        /// </summary>
+        /// <summary>Animates only the Z component of <see cref="Transform.localPosition"/>, leaving X and Y unchanged.</summary>
         public static TweenCase DOLocalMoveZ(this Component tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new LocalPositionZ(tweenObject.transform, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
         /// <summary>
-        /// Rotates object face to position.
+        /// Smoothly rotates the object to face <paramref name="resultValue"/> (world position) using <see cref="Quaternion.Slerp"/>.
         /// </summary>
         public static TweenCase DOLookAt(this Component tweenObject, Vector3 resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -238,7 +233,8 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Rotates 2D object face to position.
+        /// Smoothly rotates a 2D object so that its <paramref name="type"/> axis points toward <paramref name="resultValue"/> (world position).
+        /// Uses Z-axis rotation only (suitable for 2D/top-down games).
         /// </summary>
         public static TweenCase DOLookAt2D(this Component tweenObject, Vector3 resultValue, TransformTweenCases.LookAt2D.LookAtType type, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -246,7 +242,8 @@ namespace Watermelon
         }
 
         /// <summary>
-        /// Shake object in 3D space
+        /// Shakes <see cref="Transform.position"/> each frame by a random point on the unit sphere scaled by <c>magnitude × easedProgress</c>.
+        /// Restores the original position on completion.
         /// </summary>
         public static TweenCase DOShake(this Component tweenObject, float magnitude, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
@@ -254,6 +251,10 @@ namespace Watermelon
         }
         #endregion
 
+        /// <summary>
+        /// Interpolates <see cref="Transform.eulerAngles"/> from its starting value to <c>resultValue</c>.
+        /// The constructor normalises the delta into ±180° on each axis to guarantee the shortest-arc rotation.
+        /// </summary>
         public class RotateAngle : TweenCaseFunction<Transform, Vector3>
         {
             public RotateAngle(Transform tweenObject, Vector3 resultValue) : base(tweenObject, resultValue)
@@ -295,6 +296,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates <see cref="Transform.rotation"/> (world-space Quaternion) using <see cref="Quaternion.LerpUnclamped"/>.</summary>
         public class RotateQuaternion : TweenCaseFunction<Transform, Quaternion>
         {
             public RotateQuaternion(Transform tweenObject, Quaternion resultValue) : base(tweenObject, resultValue)
@@ -320,6 +322,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates <see cref="Transform.localRotation"/> using <see cref="Quaternion.LerpUnclamped"/>.</summary>
         public class LocalRotate : TweenCaseFunction<Transform, Quaternion>
         {
             public LocalRotate(Transform tweenObject, Quaternion resultValue) : base(tweenObject, resultValue)
@@ -345,6 +348,10 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Interpolates <see cref="Transform.localEulerAngles"/> from its starting value to <c>resultValue</c>.
+        /// Validates that the parent GameObject is active (<c>activeSelf</c>) in addition to being non-null.
+        /// </summary>
         public class LocalRotateAngle : TweenCaseFunction<Transform, Vector3>
         {
             public LocalRotateAngle(Transform tweenObject, Vector3 resultValue) : base(tweenObject, resultValue)
@@ -370,6 +377,10 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Rotates the object at a constant angular velocity (<paramref name="rotationVector"/> degrees/second) for the tween's duration.
+        /// Unlike other rotation cases, this does <b>not</b> lerp between two values — it accumulates rotation each frame via <see cref="Transform.Rotate"/>.
+        /// </summary>
         public class RotateConstant : TweenCase
         {
             private Transform objectTransform;
@@ -397,6 +408,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates <see cref="Transform.position"/> (world space) from its starting value to <c>resultValue</c>.</summary>
         public class Position : TweenCaseFunction<Transform, Vector3>
         {
             public Position(Transform tweenObject, Vector3 resultValue) : base(tweenObject, resultValue)
@@ -422,6 +434,10 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Interpolates <see cref="Transform.position"/> toward the live position of a target <see cref="Transform"/>.
+        /// The target position is sampled at tween creation time; use <see cref="Follow"/> if you need continuous target tracking.
+        /// </summary>
         public class PositionTransform : TweenCaseFunction<Transform, Transform>
         {
             private Vector3 startPosition;
@@ -449,6 +465,14 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Moves along a Bezier curve (quadratic or cubic) from the starting world position to <c>resultValue</c>.
+        /// <list type="bullet">
+        ///   <item>Quadratic: one control point — uses <see cref="Bezier.EvaluateQuadratic"/>.</item>
+        ///   <item>Cubic: two control points — uses <see cref="Bezier.EvaluateCubic"/>.</item>
+        /// </list>
+        /// The single-offset constructor auto-calculates the control point relative to the path midpoint.
+        /// </summary>
         public class BezierPosition : TweenCaseFunction<Transform, Vector3>
         {
             private Vector3 controlPoint1;
@@ -508,15 +532,19 @@ namespace Watermelon
             {
                 if (isQuadratic)
                 {
-                    tweenObject.position = Bezier.EvaluateQuadratic(startValue, controlPoint1, resultValue, Interpolate(state));
+                    tweenObject.position = BezierUtils.EvaluateQuadratic(startValue, controlPoint1, resultValue, Interpolate(state));
                 }
                 else
                 {
-                    tweenObject.position = Bezier.EvaluateCubic(startValue, controlPoint1, controlPoint2, resultValue, Interpolate(state));
+                    tweenObject.position = BezierUtils.EvaluateCubic(startValue, controlPoint1, controlPoint2, resultValue, Interpolate(state));
                 }
             }
         }
 
+        /// <summary>
+        /// Tracks a moving <see cref="Transform"/> target along a quadratic Bezier arc, recalculating the control point each frame.
+        /// Unlike <see cref="BezierPosition"/>, the destination updates every frame as the target moves.
+        /// </summary>
         public class BezierFollow : TweenCase
         {
             private Vector3 startPosition;
@@ -576,15 +604,19 @@ namespace Watermelon
             {
                 if (isQuadratic)
                 {
-                    fromTransform.position = Bezier.EvaluateQuadratic(startPosition, keyPoint1, toTransform.position, Interpolate(state));
+                    fromTransform.position = BezierUtils.EvaluateQuadratic(startPosition, keyPoint1, toTransform.position, Interpolate(state));
                 }
                 else
                 {
-                    fromTransform.position = Bezier.EvaluateCubic(startPosition, keyPoint1, keyPoint2, toTransform.position, Interpolate(state));
+                    fromTransform.position = BezierUtils.EvaluateCubic(startPosition, keyPoint1, keyPoint2, toTransform.position, Interpolate(state));
                 }
             }
         }
 
+        /// <summary>
+        /// Moves the object toward a <see cref="Transform"/> target at a fixed speed using <see cref="Vector3.MoveTowards"/>.
+        /// Self-completes when squared distance falls below <c>minimumDistance²</c>. The tween is not eased — speed is constant.
+        /// </summary>
         public class Follow : TweenCase
         {
             private Transform tweenObject;
@@ -623,6 +655,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the X component of <see cref="Transform.position"/>, preserving Y and Z.</summary>
         public class PositionX : TweenCaseFunction<Transform, float>
         {
             public PositionX(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -648,6 +681,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Y component of <see cref="Transform.position"/>, preserving X and Z.</summary>
         public class PositionY : TweenCaseFunction<Transform, float>
         {
             public PositionY(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -673,6 +707,10 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Interpolates both X and Z components of <see cref="Transform.position"/> simultaneously, preserving Y.
+        /// Both axes share the same eased progress value, so they arrive at their targets at the same time.
+        /// </summary>
         public class PositionXZ : TweenCase
         {
             private Transform tweenObject;
@@ -716,6 +754,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Z component of <see cref="Transform.position"/>, preserving X and Y.</summary>
         public class PositionZ : TweenCaseFunction<Transform, float>
         {
             public PositionZ(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -741,6 +780,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates <see cref="Transform.localScale"/> (all three axes) from its starting value to <c>resultValue</c>.</summary>
         public class Scale : TweenCaseFunction<Transform, Vector3>
         {
             public Scale(Transform tweenObject, Vector3 resultValue) : base(tweenObject, resultValue)
@@ -766,6 +806,13 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Animates <see cref="Transform.localScale"/> in two sequential phases with independent easing:
+        /// <list type="number">
+        ///   <item>Phase 1 (0 → <c>firstTime</c>): scales from start to <c>firstScaleValue</c> using <c>firstScaleEasing</c>.</item>
+        ///   <item>Phase 2 (<c>firstTime</c> → total duration): scales from <c>firstScaleValue</c> to <c>secondScaleValue</c> using <c>secondScaleEasing</c>.</item>
+        /// </list>
+        /// </summary>
         public class PushScale : TweenCase
         {
             public Transform tweenObject;
@@ -812,7 +859,7 @@ namespace Watermelon
 
             public override void Invoke(float deltaTime)
             {
-                relativeState = duration * state;
+                relativeState = Duration * state;
 
                 if (relativeState <= firstTime)
                 {
@@ -820,11 +867,12 @@ namespace Watermelon
                 }
                 else
                 {
-                    tweenObject.localScale = Vector3.LerpUnclamped(firstScaleValue, secondScaleValue, Ease.Interpolate(Mathf.InverseLerp(firstTime, duration, relativeState), secondScaleEasing));
+                    tweenObject.localScale = Vector3.LerpUnclamped(firstScaleValue, secondScaleValue, Ease.Interpolate(Mathf.InverseLerp(firstTime, Duration, relativeState), secondScaleEasing));
                 }
             }
         }
 
+        /// <summary>Interpolates only the X component of <see cref="Transform.localScale"/>, preserving Y and Z.</summary>
         public class ScaleX : TweenCaseFunction<Transform, float>
         {
             public ScaleX(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -850,6 +898,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Y component of <see cref="Transform.localScale"/>, preserving X and Z.</summary>
         public class ScaleY : TweenCaseFunction<Transform, float>
         {
             public ScaleY(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -875,6 +924,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Z component of <see cref="Transform.localScale"/>, preserving X and Y.</summary>
         public class ScaleZ : TweenCaseFunction<Transform, float>
         {
             public ScaleZ(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -900,6 +950,12 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Oscillates <see cref="Transform.localScale"/> uniformly between <c>minValue</c> and <c>maxValue</c> over the tween's duration.
+        /// The duration is split into two equal half-periods: scale-up and scale-down, each with its own easing function.
+        /// Accumulates wall-clock time internally rather than using the base <c>state</c> so that the oscillation
+        /// runs independently of the outer tween progress.
+        /// </summary>
         public class PingPongScale : TweenCase
         {
             private Transform tweenObject;
@@ -923,14 +979,14 @@ namespace Watermelon
                 this.minValue = minValue;
                 this.maxValue = maxValue;
 
-                this.duration = duration;
+                SetDuration(duration);
 
                 parentObject = tweenObject.gameObject;
 
-                easeFunction = Ease.GetFunction(positiveScaleEasing);
+                SetEasing(positiveScaleEasing);
                 negativeEaseFunction = Ease.GetFunction(negativeScaleEasing);
                 totalTime = 0;
-                halfTime = duration / 2f;
+                halfTime = Duration / 2f;
             }
 
             public override bool Validate()
@@ -951,7 +1007,7 @@ namespace Watermelon
 
                 if (direction)
                 {
-                    tempScaleValue = Mathf.LerpUnclamped(minValue, maxValue, easeFunction.Interpolate(totalTime / halfTime));
+                    tempScaleValue = Mathf.LerpUnclamped(minValue, maxValue, Interpolate(totalTime / halfTime));
                 }
                 else
                 {
@@ -962,6 +1018,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates <see cref="Transform.localPosition"/> from its starting value to <c>resultValue</c>.</summary>
         public class LocalMove : TweenCaseFunction<Transform, Vector3>
         {
             public LocalMove(Transform tweenObject, Vector3 resultValue) : base(tweenObject, resultValue)
@@ -987,6 +1044,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the X component of <see cref="Transform.localPosition"/>, preserving Y and Z.</summary>
         public class LocalPositionX : TweenCaseFunction<Transform, float>
         {
             public LocalPositionX(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -1012,6 +1070,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Y component of <see cref="Transform.localPosition"/>, preserving X and Z.</summary>
         public class LocalPositionY : TweenCaseFunction<Transform, float>
         {
             public LocalPositionY(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -1037,6 +1096,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the Z component of <see cref="Transform.localPosition"/>, preserving X and Y.</summary>
         public class LocalPositionZ : TweenCaseFunction<Transform, float>
         {
             public LocalPositionZ(Transform tweenObject, float resultValue) : base(tweenObject, resultValue)
@@ -1062,6 +1122,10 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Smoothly rotates the object to face a world-space <c>resultValue</c> position using <see cref="Quaternion.Slerp"/>.
+        /// The target direction is computed from the object's position at tween creation time.
+        /// </summary>
         public class LookAt : TweenCaseFunction<Transform, Vector3>
         {
             private Quaternion startRotation;
@@ -1093,8 +1157,13 @@ namespace Watermelon
             }
         }
 
+        /// <summary>
+        /// Smoothly rotates a 2D object toward a world-space target using Z-axis rotation only.
+        /// The facing axis is selected by <see cref="LookAtType"/>: <c>Up</c> rotates the sprite's up-axis, <c>Right</c> rotates the right-axis, <c>Forward</c> the forward-axis.
+        /// </summary>
         public class LookAt2D : TweenCaseFunction<Transform, Vector3>
         {
+            /// <summary>Which local axis of the object should point toward the target.</summary>
             public LookAtType type;
             float rotationZ;
 
@@ -1130,14 +1199,22 @@ namespace Watermelon
                 tweenObject.rotation = Quaternion.Euler(0f, 0f, Mathf.LerpUnclamped(startValue.z, rotationZ, Interpolate(state)));
             }
 
+            /// <summary>Specifies which local axis of the 2D object should point toward the look-at target.</summary>
             public enum LookAtType
             {
+                /// <summary>The sprite's local up axis (+Y) faces the target (e.g. character heads).</summary>
                 Up,
+                /// <summary>The sprite's local right axis (+X) faces the target.</summary>
                 Right,
+                /// <summary>The sprite's local forward axis (+Z) faces the target.</summary>
                 Forward
             }
         }
 
+        /// <summary>
+        /// Shakes <see cref="Transform.position"/> each frame by a random point on the unit sphere scaled by <c>magnitude × easedProgress</c>.
+        /// The object's original position is restored when the tween completes.
+        /// </summary>
         public class Shake : TweenCase
         {
             private Transform tweenObject;

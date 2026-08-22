@@ -18,7 +18,10 @@ namespace Watermelon
         public CurrencyData Data => data;
 
         [SerializeField] FloatingCloudCase floatingCloud;
-        public FloatingCloudCase FloatingCloud => floatingCloud;
+        public FloatingCloudCase CurrencyCloud => floatingCloud;
+
+        [SerializeField] CurrencyRewardPreviewSettings previewSettings;
+        public CurrencyRewardPreviewSettings PreviewSettings => previewSettings;
 
         public int Amount { get => save.Amount; set => save.Amount = value; }
 
@@ -31,6 +34,9 @@ namespace Watermelon
         public void Init()
         {
             data.Init(this);
+
+            // Initialize preview settings if available
+            previewSettings?.Init(this);
         }
 
         public void SetSave(Save save)
@@ -43,13 +49,21 @@ namespace Watermelon
             OnCurrencyChanged?.Invoke(this, difference);
         }
 
+        // Currency objects live on the CurrencyDatabase asset, which survives scene reloads and
+        // (with Enter Play Mode's domain reload disabled) even Play Mode restarts — without this,
+        // every scene object that ever subscribed keeps receiving callbacks after it's gone.
+        public void ClearListeners()
+        {
+            OnCurrencyChanged = null;
+        }
+
         [System.Serializable]
         public class Save : ISaveObject
         {
             [SerializeField] int amount = -1;
             public int Amount { get => amount; set => amount = value; }
 
-            public void Flush()
+            public void OnBeforeSave()
             {
 
             }

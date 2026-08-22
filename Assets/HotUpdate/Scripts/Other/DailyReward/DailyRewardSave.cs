@@ -12,7 +12,7 @@ namespace Watermelon
         /// <summary>本 7 天周期内已领取的天数 bitmask（bit0=Day1 ... bit6=Day7）</summary>
         public int ClaimedMask;
 
-        public void Flush()
+        public void OnBeforeSave()
         {
         }
     }

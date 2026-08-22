@@ -16,7 +16,7 @@ namespace Watermelon
         private static List<ParticleCase> activeParticles = new List<ParticleCase>();
 
         // List to manage particles that are activated with a delay.
-        private static List<TweenCase> delayedParticles = new List<TweenCase>();
+        private static List<DelayedParticle> delayedParticles = new List<DelayedParticle>();
 
         /// <summary>
         /// Initializes the particles controller by registering all particles in the array.
@@ -39,11 +39,7 @@ namespace Watermelon
         /// </summary>
         private void OnDestroy()
         {
-            // Kill all delayed particles.
-            for (int i = 0; i < delayedParticles.Count; i++)
-            {
-                delayedParticles[i].KillActive();
-            }
+            // Clear all delayed particles.
             delayedParticles.Clear();
 
             // Remove all active particles.
@@ -55,6 +51,30 @@ namespace Watermelon
                 particle.Destroy();
             }
             registerParticles.Clear();
+        }
+
+        /// <summary>
+        /// Updates delayed particles and activates them when their delay has passed.
+        /// </summary>
+        private void Update()
+        {
+            // Check delayed particles and activate them when ready
+            for (int i = delayedParticles.Count - 1; i >= 0; i--)
+            {
+                if (Time.time >= delayedParticles[i].ActivationTime)
+                {
+                    DelayedParticle delayedParticle = delayedParticles[i];
+                    
+                    // Play the particle system
+                    delayedParticle.ParticleCase.ParticleSystem.Play();
+                    
+                    // Add to active particles list
+                    activeParticles.Add(delayedParticle.ParticleCase);
+                    
+                    // Remove from delayed list
+                    delayedParticles.RemoveAt(i);
+                }
+            }
         }
 
         /// <summary>
@@ -139,25 +159,16 @@ namespace Watermelon
             // Create a new ParticleCase for the activated particle.
             ParticleCase particleCase = new ParticleCase(particleSystem, isDelayed, resetParent);
 
-            // If delayed, create a tween case to activate it after the delay.
+            // If delayed, add to delayed particles list for Update to handle.
             if (isDelayed)
             {
-                TweenCase delayTweenCase = null;
-
-                delayTweenCase = Tween.DelayedCall(delay, () =>
+                DelayedParticle delayedParticle = new DelayedParticle
                 {
-                    // Play the particle system.
-                    particleCase.ParticleSystem.Play();
+                    ParticleCase = particleCase,
+                    ActivationTime = Time.time + delay
+                };
 
-                    // Add the particle case to the active list.
-                    activeParticles.Add(particleCase);
-
-                    // Remove from delayed particles list.
-                    delayedParticles.Remove(delayTweenCase);
-                });
-
-                // Add the delay tween case to the list.
-                delayedParticles.Add(delayTweenCase);
+                delayedParticles.Add(delayedParticle);
 
                 return particleCase;
             }
@@ -330,6 +341,13 @@ namespace Watermelon
         public static bool HasParticle(int particleHash)
         {
             return registerParticles.ContainsKey(particleHash);
+        }
+        
+        // Structure to store delayed particle information
+        private struct DelayedParticle
+        {
+            public ParticleCase ParticleCase;
+            public float ActivationTime;
         }
     }
 }

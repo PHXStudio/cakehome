@@ -2,6 +2,7 @@
 
 namespace Watermelon
 {
+    /// <summary>Minimal <see cref="ISaveObject"/> that persists a single <see langword="bool"/> value.</summary>
     [System.Serializable]
     public class SimpleBoolSave : ISaveObject
     {
@@ -12,6 +13,6 @@ namespace Watermelon
             set => this.value = value;
         }
 
-        public virtual void Flush() { }
+        public virtual void OnBeforeSave() { }
     }
 }

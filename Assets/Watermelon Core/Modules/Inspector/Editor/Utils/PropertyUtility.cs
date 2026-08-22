@@ -10,14 +10,14 @@ namespace Watermelon
     {
         public static readonly Type TYPE_BOOL = typeof(bool);
 
-        public static GUIRenderer[] GroupRenderers(CustomInspector editor, IEnumerable<GUIRenderer> baseRenderers)
+        public static GUIRenderer[] GroupRenderers(CustomInspector editor, IEnumerable<GUIRenderer> baseRenderers, string idPrefix = "")
         {
             List<GroupGUIRenderer> groupGUIRenderers = new List<GroupGUIRenderer>();
 
             IGrouping<GroupAttribute, GUIRenderer>[] groupRenderers = baseRenderers.Where(x => x.GroupAttribute != null).GroupBy(x => x.GroupAttribute).ToArray();
             foreach (IGrouping<GroupAttribute, GUIRenderer> group in groupRenderers)
             {
-                groupGUIRenderers.Add(new GroupGUIRenderer(editor, group.Key, group.ToList()));
+                groupGUIRenderers.Add(new GroupGUIRenderer(editor, group.Key, group.ToList(), idPrefix));
             }
 
             Dictionary<string, GroupGUIRenderer> groupsDictionary = groupGUIRenderers.ToDictionary(g => g.GroupID, g => g);
@@ -141,7 +141,7 @@ namespace Watermelon
         {
             Type targetType = serializedObject.targetObject.GetType();
 
-            IEnumerable<FieldInfo> fieldInfos = targetType.GetFields(ReflectionUtils.FLAGS_INSTANCE).Where(x => x.GetCustomAttribute<GroupAttribute>() == null);
+            IEnumerable<FieldInfo> fieldInfos = targetType.GetFields(ReflectionUtils.FLAGS_INSTANCE).Where(x => x.GetCustomAttribute<GroupAttribute>() == null && x.GetCustomAttribute<HideAttribute>() == null);
             foreach (var field in fieldInfos)
             {
                 SerializedProperty serializedProperty = serializedObject.FindProperty(field.Name);

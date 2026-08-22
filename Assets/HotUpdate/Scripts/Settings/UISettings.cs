@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public class UISettings : UIPage, IPopupWindow
+    public class UISettings : UIPage
     {
+        public override bool IsPopup => true;
+
         [BoxGroup("References", "References")]
         [SerializeField] Image backgroundImage;
         [BoxGroup("References", "References")]
@@ -17,38 +19,39 @@ namespace Watermelon
         [BoxGroup("Buttons", "Buttons")]
         [SerializeField] Button closeButton;
 
-        public bool IsOpened => isPageDisplayed;
+        private float fadeIntensity;
 
         public override void Init()
         {
             closeButton.onClick.AddListener(OnCloseButtonClicked);
             backgroundImage.AddEvent(EventTriggerType.PointerDown, OnBackgroundClicked);
+
+            fadeIntensity = backgroundImage.color.a;
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
+            Checkpoint.Log("Settings opened", gameObject);
+
             RecalculatePanelSize();
 
             panelRectTransform.anchoredPosition = Vector2.down * 2000;
             panelRectTransform.DOAnchoredPosition(Vector2.zero, 0.3f).SetEasing(Ease.Type.SineOut);
 
-            backgroundImage.SetAlpha(0);
-            backgroundImage.DOFade(0.3f, 0.3f).OnComplete(() => 
+            backgroundImage.SetAlpha(0f);
+            backgroundImage.DOFade(fadeIntensity, 0.3f).OnComplete(() => 
             {
-                UIController.OnPageOpened(this);
-                UIController.OnPopupWindowOpened(this);
+                NotifyOpened();
             });
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
-            Debug.Log("hide");
             panelRectTransform.DOAnchoredPosition(Vector2.down * 2000, 0.3f).SetEasing(Ease.Type.SineIn);
 
-            backgroundImage.DOFade(0, 0.3f).OnComplete(() => 
+            backgroundImage.DOFade(0f, 0.3f).OnComplete(() =>
             {
-                UIController.OnPageClosed(this);
-                UIController.OnPopupWindowClosed(this);
+                NotifyClosed();
             });
         }
 
@@ -85,7 +88,7 @@ namespace Watermelon
 
         public void OnCloseButtonClicked()
         {
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
 
             UIController.HidePage<UISettings>();
         }

@@ -23,7 +23,7 @@ namespace Watermelon
 
         private static InitModulesHandler modulesHandler;
 
-        [MenuItem("Window/Watermelon Core/Project Init Settings", priority = 50)]
+        [MenuItem("Window/Watermelon/Core/Project Init Settings", priority = 50)]
         public static void SelectProjectInitSettings()
         {
             ProjectInitSettings selectedObject = EditorUtils.GetAsset<ProjectInitSettings>();
@@ -41,7 +41,8 @@ namespace Watermelon
         {
             projectInitSettings = (ProjectInitSettings)target;
 
-            modulesHandler = new InitModulesHandler();
+            if (modulesHandler == null)
+                modulesHandler = new InitModulesHandler();
 
             modulesProperty = serializedObject.FindProperty(MODULES_PROPERTY_NAME);
 
@@ -143,7 +144,7 @@ namespace Watermelon
                 {
                     initModuleSerializedObject = new SerializedObject(initModule.objectReferenceValue);
 
-                    initModulesEditors.Add(new InitModuleContainer(initModule.objectReferenceValue.GetType(), initModuleSerializedObject, Editor.CreateEditor(initModuleSerializedObject.targetObject), modulesHandler.IsCoreModule(initModule.objectReferenceValue.GetType())));
+                    initModulesEditors.Add(new InitModuleContainer(initModule.objectReferenceValue.GetType(), initModuleSerializedObject, modulesHandler.IsCoreModule(initModule.objectReferenceValue.GetType())));
                 }
             }
         }
@@ -504,11 +505,11 @@ namespace Watermelon
 
         private class InitModulesHandler
         {
-            private IEnumerable<ModuleData> modulesData;
+            private List<ModuleData> modulesData;
 
             public InitModulesHandler()
             {
-                modulesData = GetModulesData();
+                modulesData = GetModulesData().ToList();
             }
 
             private IEnumerable<ModuleData> GetModulesData()
@@ -558,19 +559,28 @@ namespace Watermelon
 
             public bool IsCore;
 
-            public InitModuleContainer(Type type, SerializedObject serializedObject, Editor editor, bool isCore)
+            public InitModuleContainer(Type type, SerializedObject serializedObject, bool isCore)
             {
                 Type = type;
                 SerializedObject = serializedObject;
-                Editor = editor;
                 IsCore = isCore;
+            }
 
-                initModuleEditor = editor as InitModuleEditor;
+            // Editor is created lazily, on first access, so collapsed modules don't pay the CreateEditor cost on OnEnable
+            private void EnsureEditor()
+            {
+                if (Editor != null) return;
+
+                Editor = UnityEditor.Editor.CreateEditor(SerializedObject.targetObject);
+
+                initModuleEditor = Editor as InitModuleEditor;
                 isModuleInitEditor = initModuleEditor != null;
             }
 
             public void OnInspectorGUI()
             {
+                EnsureEditor();
+
                 if(Editor != null)
                 {
                     Editor.OnInspectorGUI();
@@ -579,6 +589,8 @@ namespace Watermelon
 
             public void DrawButtons()
             {
+                EnsureEditor();
+
                 if (!isModuleInitEditor) return;
 
                 initModuleEditor.Buttons();
@@ -586,6 +598,8 @@ namespace Watermelon
 
             public void PrepareMenuItems(ref GenericMenu genericMenu)
             {
+                EnsureEditor();
+
                 if (!isModuleInitEditor) return;
 
                 initModuleEditor.PrepareMenuItems(ref genericMenu);
@@ -593,6 +607,8 @@ namespace Watermelon
 
             public void OnRemoved()
             {
+                EnsureEditor();
+
                 if (!isModuleInitEditor) return;
 
                 initModuleEditor.OnRemoved();

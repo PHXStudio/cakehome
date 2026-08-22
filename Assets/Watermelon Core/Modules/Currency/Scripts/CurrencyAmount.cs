@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Watermelon
 {
@@ -27,14 +28,14 @@ namespace Watermelon
             return CurrencyController.HasAmount(currencyType, amount);
         }
 
-        public void SubstractFromBalance()
+        public void SubstractFromBalance(string sink = "")
         {
-            CurrencyController.Substract(currencyType, amount);
+            CurrencyController.Substract(currencyType, amount, sink);
         }
 
-        public void AddToBalance()
+        public void AddToBalance(string source = "")
         {
-            CurrencyController.Add(currencyType, amount);
+            CurrencyController.Add(currencyType, amount, source);
         }
 
         public string GetTextWithIcon()

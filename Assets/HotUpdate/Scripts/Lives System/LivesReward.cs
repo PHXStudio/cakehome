@@ -10,7 +10,7 @@ namespace Watermelon
         [Space]
         [SerializeField] TextMeshProUGUI amountText;
 
-        public override void Init()
+        public void Init()
         {
             if (amountText != null)
             {

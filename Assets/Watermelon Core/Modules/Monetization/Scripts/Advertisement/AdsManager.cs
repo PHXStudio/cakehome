@@ -1,4 +1,4 @@
-﻿#pragma warning disable 0649
+#pragma warning disable 0649
 #pragma warning disable 0162
 
 using UnityEngine;
@@ -7,19 +7,20 @@ using System.Collections;
 
 namespace Watermelon
 {
-    [StaticUnload]
-    [Define("MODULE_ADMOB", "GoogleMobileAds.Api.MobileAds")]
-    [Define("MODULE_UNITYADS", "UnityEngine.Advertisements.Advertisement")]
-    [Define("MODULE_LEVELPLAY", "IronSource")]
-    public static class AdsManager
+    public class AdsManager
     {
+        private const int DEFAULT_BANNER_HEIGHT = 110;
         private const int INIT_ATTEMPTS_AMOUNT = 30;
 
+        private const double FORCED_AD_DISABLED_FOREVER = -1;
         private const string FIRST_LAUNCH_PREFS = "FIRST_LAUNCH";
 
-        private static AdProviderHandler[] AD_PROVIDERS;
+        private static AdsManager instance;
 
-        private static bool isModuleInitialized;
+        private static AdProviderHandler activeHandler;
+
+        private static bool debugMode;
+        public static bool DebugMode => debugMode;
 
         private static AdsSettings settings;
         public static AdsSettings Settings => settings;
@@ -29,17 +30,23 @@ namespace Watermelon
         private static AdProviderHandler.AdvertisementCallback rewardedVideoCallback;
         private static AdProviderHandler.AdvertisementCallback interstitalCallback;
 
-        private static List<SimpleCallback> mainThreadEvents = new List<SimpleCallback>();
+        private static MainThreadDispatcher dispatcher;
 
         private static bool isFirstAdLoaded = false;
         private static bool waitingForRewardVideoCallback;
 
         private static bool isBannerActive = true;
+        public static bool IsBannerActive => isBannerActive;
+
+        private static float bannerHeight = DEFAULT_BANNER_HEIGHT;
+        public static float BannerHeight => bannerHeight;
 
         private static Coroutine loadingCoroutine;
         private static TweenCase delayTweenCase;
 
-        private static Dictionary<AdProvider, AdProviderHandler> advertisingActiveModules = new Dictionary<AdProvider, AdProviderHandler>();
+        private static float intFirstStartDelay;
+        private static float intStartDelay;
+        private static float intShowingDelay;
 
         // Events
         public static event SimpleCallback ForcedAdDisabled;
@@ -53,144 +60,105 @@ namespace Watermelon
 
         private static AdSave save;
 
-        private static List<LoadingTask> loadingTasks;
-
         #region Initialize
-        public static void Init(MonetizationSettings monetizationSettings)
+        public void Init(AdsSettings adsSettings, MonoBehaviour host)
         {
-            if (isModuleInitialized)
+            if (instance != null)
             {
-                Debug.LogWarning("[AdsManager]: Module already exists!");
-
+                LogManager.LogWarning("[AdsManager]: Module already exists!", LogCategory.Services);
                 return;
             }
 
-            isModuleInitialized = true;
+            instance = this;
+
+            dispatcher = new MainThreadDispatcher(host);
+
             isFirstAdLoaded = false;
 
-            settings = monetizationSettings.AdsSettings;
+            debugMode = adsSettings.DebugMode;
+
+            settings = adsSettings;
+
+            intFirstStartDelay = settings.InterstitialFirstStartDelay;
+            intStartDelay = settings.InterstitialStartDelay;
+            intShowingDelay = settings.InterstitialShowingDelay;
+
+#if MODULE_REMOTE_CONFIG
+            AdsRemoteConfigData remoteConfigData = RemoteConfigController.TryGetConfig<AdsRemoteConfigData>("ads");
+            if (remoteConfigData != null)
+            {
+                intFirstStartDelay = remoteConfigData.intFSDelay;
+                intStartDelay = remoteConfigData.intSDelay;
+                intShowingDelay = remoteConfigData.intDelay;
+
+                if (!remoteConfigData.useBanner)
+                    settings.DisableBanner();
+
+                if (!remoteConfigData.useInterstitials)
+                    settings.DisableInterstitial();
+
+                if (!remoteConfigData.useRewardedVideo)
+                    settings.DisableRewardedVideo();
+            }
+#endif
 
             save = SaveController.GetSaveObject<AdSave>("advertisement_forced_ad");
 
             if (settings == null)
             {
                 Debug.LogError("[AdsManager]: Settings don't exist!");
-
                 return;
             }
 
-            AD_PROVIDERS = GetProviders();
-
             if (!PlayerPrefs.HasKey(FIRST_LAUNCH_PREFS))
             {
-                lastInterstitialTime = Time.time + settings.InterstitialFirstStartDelay;
-
+                lastInterstitialTime = Time.time + intFirstStartDelay;
                 PlayerPrefs.SetInt(FIRST_LAUNCH_PREFS, 1);
             }
             else
             {
-                lastInterstitialTime = Time.time + settings.InterstitialStartDelay;
+                lastInterstitialTime = Time.time + intStartDelay;
             }
 
-            Initializer.GameObject.AddComponent<AdsManager.AdEventExecutor>();
-
-            advertisingActiveModules = new Dictionary<AdProvider, AdProviderHandler>();
-            for (int i = 0; i < AD_PROVIDERS.Length; i++)
+            // Check if ad-free period has expired and send analytics event only once
+            if (save.ForcedAdDisabledUntil != 0 && save.ForcedAdDisabledUntil != FORCED_AD_DISABLED_FOREVER && IsForcedAdEnabled())
             {
-                if (IsModuleEnabled(AD_PROVIDERS[i].ProviderType))
-                {
-                    AD_PROVIDERS[i].LinkSettings(Monetization.Settings);
-
-                    advertisingActiveModules.Add(AD_PROVIDERS[i].ProviderType, AD_PROVIDERS[i]);
-                }
+#if MODULE_ANALYTICS
+                Analytics.TrackEvent(AdsAnalytics.AdFreePeriodExpired);
+#endif
+                save.ForcedAdDisabledUntil = 0;
             }
 
-            if (Monetization.VerboseLogging)
+            activeHandler = settings.GetContainer(settings.ActiveProvider)?.CreateHandler();
+
+            if (activeHandler != null)
             {
-                if (settings.BannerType != AdProvider.Disable && !advertisingActiveModules.ContainsKey(settings.BannerType))
-                    Debug.LogWarning("[AdsManager]: Banner type (" + settings.BannerType + ") is selected, but isn't active!");
-
-                if (settings.InterstitialType != AdProvider.Disable && !advertisingActiveModules.ContainsKey(settings.InterstitialType))
-                    Debug.LogWarning("[AdsManager]: Interstitial type (" + settings.InterstitialType + ") is selected, but isn't active!");
-
-                if (settings.RewardedVideoType != AdProvider.Disable && !advertisingActiveModules.ContainsKey(settings.RewardedVideoType))
-                    Debug.LogWarning("[AdsManager]: Rewarded Video type (" + settings.RewardedVideoType + ") is selected, but isn't active!");
-            }
-
-            loadingTasks = new List<LoadingTask>();
-
-            // Add loading task if GDPR isn't created
-            if (settings.IsUMPEnabled)
-            {
-                UMPLoadingTask cmpLoadingTask = new UMPLoadingTask(monetizationSettings);
-                cmpLoadingTask.OnTaskCompleted += LoadingTaskCompleted;
-
-                loadingTasks.Add(cmpLoadingTask);
-            }
-
-            if(settings.IsIDFAEnabled)
-            {
-                IDFALoadingTask idfaTask = new IDFALoadingTask(monetizationSettings);
-                idfaTask.OnTaskCompleted += LoadingTaskCompleted;
-
-                loadingTasks.Add(idfaTask);
-            }
-
-            if(loadingTasks.IsNullOrEmpty())
-            {
-                InitializeModules(settings.LoadAdsOnStart);
+                activeHandler.LinkSettings(settings);
             }
             else
             {
-                // Invoke first loading task
-                LoadingTask loadingTask = loadingTasks[0];
-
-                loadingTasks.RemoveAt(0);
-
-                GameLoading.AddTask(loadingTask);
+                Debug.LogError($"[AdsManager]: Provider '{settings.ActiveProvider}' not found or SDK not installed!");
             }
-        }
 
-        private static void LoadingTaskCompleted(LoadingTask.CompleteStatus status)
-        {
-            if (status == LoadingTask.CompleteStatus.Skipped || status == LoadingTask.CompleteStatus.Completed)
-            {
-                if(!loadingTasks.IsNullOrEmpty())
-                {
-                    LoadingTask loadingTask = loadingTasks[0];
-
-                    loadingTasks.RemoveAt(0);
-
-                    GameLoading.AddTask(loadingTask);
-                }
-                else
-                {
-                    CallEventInMainThread(() =>
-                    {
-                        InitializeModules(settings.LoadAdsOnStart);
-                    });
-                }
-            }
+            InitializeModules(settings.LoadAdsOnStart);
         }
 
         private static async void InitializeModules(bool loadAds)
         {
-            // Loop through all the providers and initialize them asynchronously
-            foreach (AdProviderHandler providerHandler in advertisingActiveModules.Values)
+            if (activeHandler == null)
+                return;
+
+            LogManager.Log($"[AdsManager]: {activeHandler.ProviderName} is trying to initialize!", LogCategory.Services);
+
+            bool isInitialized = await activeHandler.InitAsync();
+
+            if (isInitialized)
             {
-                Debug.Log($"[AdsManager]: {providerHandler.ProviderType} is trying to initialize!");
-
-                bool isInitialized = await providerHandler.InitAsync();
-
-                if (isInitialized)
-                {
-                    if (Monetization.VerboseLogging)
-                        Debug.Log($"[AdsManager]: {providerHandler.ProviderType} initialized successfully.");
-                }
-                else
-                {
-                    Debug.LogError($"[AdsManager]: {providerHandler.ProviderType} failed to initialize.");
-                }
+                LogManager.Log($"[AdsManager]: {activeHandler.ProviderName} initialized successfully.", LogCategory.Services);
+            }
+            else
+            {
+                Debug.LogError($"[AdsManager]: {activeHandler.ProviderName} failed to initialize.");
             }
 
             if (loadAds)
@@ -200,38 +168,45 @@ namespace Watermelon
         }
         #endregion
 
-        private static void Update()
+        public static void Unload()
         {
-            if (!isModuleInitialized)
-                return;
+            debugMode = false;
 
-            if (mainThreadEvents.Count > 0)
-            {
-                for (int i = 0; i < mainThreadEvents.Count; i++)
-                {
-                    mainThreadEvents[i]?.Invoke();
-                }
+            settings = null;
+            lastInterstitialTime = 0;
 
-                mainThreadEvents.Clear();
-            }
+            rewardedVideoCallback = null;
+            interstitalCallback = null;
 
-            if (settings.AutoShowInterstitial)
-            {
-                if (lastInterstitialTime < Time.time)
-                {
-                    ShowInterstitial(null);
+            dispatcher = null;
 
-                    ResetInterstitialDelayTime();
-                }
-            }
+            isFirstAdLoaded = false;
+            waitingForRewardVideoCallback = false;
+
+            isBannerActive = true;
+            bannerHeight = DEFAULT_BANNER_HEIGHT;
+
+            loadingCoroutine = null;
+
+            ForcedAdDisabled = null;
+
+            AdProviderInitialized = null;
+            AdLoaded = null;
+            AdDisplayed = null;
+            AdClosed = null;
+
+            InterstitialConditions = null;
+
+            save = null;
+
+            instance = null;
         }
 
         public static void TryToLoadFirstAds()
         {
             if (loadingCoroutine == null)
             {
-                Debug.Log("[AdsManager]: Loading first ads..");
-
+                LogManager.Log("[AdsManager]: Loading first ads..", LogCategory.Services);
                 loadingCoroutine = Tween.InvokeCoroutine(TryToLoadAdsCoroutine());
             }
         }
@@ -242,7 +217,7 @@ namespace Watermelon
 
             yield return new WaitForSeconds(1.0f);
 
-            while (!isFirstAdLoaded || initAttemps > INIT_ATTEMPTS_AMOUNT)
+            while (!isFirstAdLoaded && initAttemps < INIT_ATTEMPTS_AMOUNT)
             {
                 if (LoadFirstAds())
                     break;
@@ -252,55 +227,44 @@ namespace Watermelon
                 initAttemps++;
             }
 
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: First ads have loaded!");
+            LogManager.Log("[AdsManager]: First ads have loaded!", LogCategory.Services);
         }
 
         private static bool LoadFirstAds()
         {
-            if (!isModuleInitialized)
+            if (instance == null)
                 return false;
 
             if (isFirstAdLoaded)
                 return true;
 
-            if (settings.IsIDFAEnabled && !AdsManager.IsIDFADetermined())
+            bool isProviderInitialized = activeHandler != null && activeHandler.IsInitialized;
+
+            LogManager.Log($"[AdsManager]: LoadFirstAds — provider={settings?.ActiveProvider}, initialized={isProviderInitialized}", LogCategory.Services);
+
+            if (!isProviderInitialized)
                 return false;
 
-            bool isRewardedVideoModuleInititalized = AdsManager.IsModuleInititalized(AdsManager.Settings.RewardedVideoType);
-            bool isInterstitialModuleInitialized = AdsManager.IsModuleInititalized(AdsManager.Settings.InterstitialType);
-            bool isBannerModuleInitialized = AdsManager.IsModuleInititalized(AdsManager.Settings.BannerType);
+            if (settings.RewardedVideoEnabled)
+                RequestRewardBasedVideo();
 
-            bool isRewardedVideoActive = AdsManager.Settings.RewardedVideoType != AdProvider.Disable;
-            bool isInterstitialActive = AdsManager.Settings.InterstitialType != AdProvider.Disable;
-            bool isBannerActive = AdsManager.Settings.BannerType != AdProvider.Disable;
+            bool isForcedAdEnabled = IsForcedAdEnabled();
+            LogManager.Log($"[AdsManager]: LoadFirstAds — IsForcedAdEnabled={isForcedAdEnabled}", LogCategory.Services);
 
-            if ((!isRewardedVideoActive || isRewardedVideoModuleInititalized) && (!isInterstitialActive || isInterstitialModuleInitialized) && (!isBannerActive || isBannerModuleInitialized))
-            {
-                if (isRewardedVideoActive)
-                    AdsManager.RequestRewardBasedVideo();
+            if (settings.InterstitialEnabled && isForcedAdEnabled)
+                RequestInterstitial();
 
-                bool isForcedAdEnabled = AdsManager.IsForcedAdEnabled();
-                if (isInterstitialActive && isForcedAdEnabled)
-                    AdsManager.RequestInterstitial();
+            if (settings.BannerEnabled && isForcedAdEnabled)
+                ShowBanner();
 
-                if (isBannerActive && isForcedAdEnabled)
-                    AdsManager.ShowBanner();
+            isFirstAdLoaded = true;
 
-                isFirstAdLoaded = true;
-
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public static void CallEventInMainThread(SimpleCallback callback)
         {
-            if (callback != null)
-            {
-                mainThreadEvents.Add(callback);
-            }
+            dispatcher?.Dispatch(callback);
         }
 
         public static void ShowErrorMessage()
@@ -308,96 +272,73 @@ namespace Watermelon
             SystemMessage.ShowMessage("Network error. Please try again later");
         }
 
-        public static bool IsModuleEnabled(AdProvider advertisingModule)
+        public static bool IsProviderActive()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
-                return false;
-
-            if (advertisingModule == AdProvider.Disable)
-                return false;
-
-            return (Settings.BannerType == advertisingModule || Settings.InterstitialType == advertisingModule || Settings.RewardedVideoType == advertisingModule);
+            return instance != null && activeHandler != null;
         }
 
-        public static AdProviderHandler GetAdProvider(AdProvider adProvider)
+        public static bool IsProviderInitialized()
         {
-            if(advertisingActiveModules.ContainsKey(adProvider))
-            {
-                return advertisingActiveModules[adProvider];
-            }
-
-            return null;
+            return instance != null && activeHandler != null && activeHandler.IsInitialized;
         }
 
-        public static bool IsModuleActive(AdProvider advertisingModule)
+        public static AdProviderHandler GetActiveProvider()
         {
-            return advertisingActiveModules.ContainsKey(advertisingModule);
-        }
-
-        public static bool IsModuleInititalized(AdProvider advertisingModule)
-        {
-            if (advertisingActiveModules.ContainsKey(advertisingModule))
-            {
-                return advertisingActiveModules[advertisingModule].IsInitialized;
-            }
-
-            return false;
+            return activeHandler;
         }
 
         #region Interstitial
         public static bool IsInterstitialLoaded()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return false;
             }
 
-            AdProvider advertisingModules = settings.InterstitialType;
-
-            if (!save.IsForcedAdEnabled || !IsModuleActive(advertisingModules))
+            if (!IsForcedAdEnabled() || activeHandler == null)
                 return false;
 
-            return advertisingActiveModules[advertisingModules].IsInterstitialLoaded();
+            return activeHandler.IsInterstitialLoaded();
         }
 
         public static void RequestInterstitial()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
-            AdProvider advertisingModules = settings.InterstitialType;
-
-            if (!save.IsForcedAdEnabled || !IsModuleActive(advertisingModules) || !advertisingActiveModules[advertisingModules].IsInitialized || advertisingActiveModules[advertisingModules].IsInterstitialLoaded())
+            if (!IsForcedAdEnabled() || activeHandler == null || !activeHandler.IsInitialized || activeHandler.IsInterstitialLoaded())
                 return;
 
-            advertisingActiveModules[advertisingModules].RequestInterstitial();
+            activeHandler.RequestInterstitial();
         }
 
-        public static void ShowInterstitial(AdProviderHandler.AdvertisementCallback callback, bool ignoreConditions = false)
+        public static void ShowInterstitial(AdProviderHandler.AdvertisementCallback callback, string analyticsEvent = "Default", bool ignoreConditions = false)
         {
-            AdProvider advertisingModules = settings.InterstitialType;
-
             interstitalCallback = callback;
-
-            if (!Monetization.IsActive || !isModuleInitialized)
+            interstitalCallback += (result) =>
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
+                if (string.IsNullOrEmpty(analyticsEvent))
+                    analyticsEvent = "Default";
 
+#if MODULE_ANALYTICS
+                Analytics.TrackEvent(AdsAnalytics.InterstitialDisplayed, new AdsAnalytics.AnalyticsIntData(analyticsEvent));
+#endif
+            };
+
+            if (instance == null)
+            {
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 ExecuteInterstitialCallback(false);
-
                 return;
             }
 
-            if (!save.IsForcedAdEnabled || !IsModuleActive(advertisingModules) || (!ignoreConditions && (!CheckInterstitialTime() || !CheckExtraInterstitialCondition())) || !advertisingActiveModules[advertisingModules].IsInitialized || !advertisingActiveModules[advertisingModules].IsInterstitialLoaded())
+            if (!IsForcedAdEnabled() || activeHandler == null || (!ignoreConditions && (!CheckInterstitialTime() || !CheckExtraInterstitialCondition())) || !activeHandler.IsInitialized || !activeHandler.IsInterstitialLoaded())
             {
                 ExecuteInterstitialCallback(false);
-
                 return;
             }
 
@@ -411,14 +352,13 @@ namespace Watermelon
                 delayTweenCase.KillActive();
                 delayTweenCase = Tween.DelayedCall(settings.LoadingAdDuration, () =>
                 {
-                    advertisingActiveModules[advertisingModules].ShowInterstitial(callback);
-
+                    activeHandler.ShowInterstitial(callback);
                     SystemMessage.HideLoadingPanel();
-                });
+                }, unscaledTime: true);
             }
             else
             {
-                advertisingActiveModules[advertisingModules].ShowInterstitial(callback);
+                activeHandler.ShowInterstitial(callback);
             }
         }
 
@@ -437,13 +377,12 @@ namespace Watermelon
 
         public static void ResetInterstitialDelayTime()
         {
-            lastInterstitialTime = Time.time + settings.InterstitialShowingDelay;
+            lastInterstitialTime = Time.time + intShowingDelay;
         }
 
         private static bool CheckInterstitialTime()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: Interstitial Time: " + lastInterstitialTime + "; Time: " + Time.time);
+            LogManager.Log("[AdsManager]: Interstitial Time: " + lastInterstitialTime + "; Time: " + Time.time, LogCategory.Services);
 
             return lastInterstitialTime < Time.time;
         }
@@ -460,13 +399,11 @@ namespace Watermelon
                     if (!(bool)listDelegates[i].DynamicInvoke())
                     {
                         state = false;
-
                         break;
                     }
                 }
 
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Extra condition interstitial state: " + state);
+                LogManager.Log("[AdsManager]: Extra condition interstitial state: " + state, LogCategory.Services);
 
                 return state;
             }
@@ -478,55 +415,45 @@ namespace Watermelon
         #region Rewarded Video
         public static bool IsRewardBasedVideoLoaded()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return false;
             }
 
-            AdProvider advertisingModule = settings.RewardedVideoType;
-
-            if (!IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized)
+            if (activeHandler == null || !activeHandler.IsInitialized)
                 return false;
 
-            return advertisingActiveModules[advertisingModule].IsRewardedVideoLoaded();
+            return activeHandler.IsRewardedVideoLoaded();
         }
 
         public static void RequestRewardBasedVideo()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
-            AdProvider advertisingModule = settings.RewardedVideoType;
-
-            if (!IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized || advertisingActiveModules[advertisingModule].IsRewardedVideoLoaded())
+            if (!settings.RewardedVideoEnabled || activeHandler == null || !activeHandler.IsInitialized || activeHandler.IsRewardedVideoLoaded())
                 return;
 
-            advertisingActiveModules[advertisingModule].RequestRewardedVideo();
+            activeHandler.RequestRewardedVideo();
         }
 
-        public static void ShowRewardBasedVideo(AdProviderHandler.AdvertisementCallback callback, bool showErrorMessage = true)
+        public static void ShowRewardBasedVideo(AdProviderHandler.AdvertisementCallback callback, string analyticsEvent = "Default", bool showErrorMessage = true)
         {
             rewardedVideoCallback = callback;
             waitingForRewardVideoCallback = true;
 
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 ExecuteRewardVideoCallback(false);
-
                 return;
             }
 
-            AdProvider advertisingModule = settings.RewardedVideoType;
-            
-            if (!IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized || !advertisingActiveModules[advertisingModule].IsRewardedVideoLoaded())
+            if (!settings.RewardedVideoEnabled || activeHandler == null || !activeHandler.IsInitialized || !activeHandler.IsRewardedVideoLoaded())
             {
                 ExecuteRewardVideoCallback(false);
 
@@ -535,6 +462,13 @@ namespace Watermelon
 
                 return;
             }
+
+            if (string.IsNullOrEmpty(analyticsEvent))
+                analyticsEvent = "Default";
+
+#if MODULE_ANALYTICS
+            Analytics.TrackEvent(AdsAnalytics.RVClicked, new AdsAnalytics.AnalyticsRVData(analyticsEvent));
+#endif
 
             delayTweenCase.KillActive();
 
@@ -546,14 +480,13 @@ namespace Watermelon
                 delayTweenCase.KillActive();
                 delayTweenCase = Tween.DelayedCall(settings.LoadingAdDuration, () =>
                 {
-                    advertisingActiveModules[advertisingModule].ShowRewardedVideo(callback);
-
+                    activeHandler.ShowRewardedVideo(callback);
                     SystemMessage.HideLoadingPanel();
-                });
+                }, unscaledTime: true);
             }
             else
             {
-                advertisingActiveModules[advertisingModule].ShowRewardedVideo(callback);
+                activeHandler.ShowRewardedVideo(callback);
             }
         }
 
@@ -565,10 +498,7 @@ namespace Watermelon
 
                 waitingForRewardVideoCallback = false;
 
-                if (Monetization.VerboseLogging)
-                {
-                    Debug.Log("[AdsManager]: Reward received: " + result);
-                }
+                LogManager.Log("[AdsManager]: Reward received: " + result, LogCategory.Services);
             }
         }
         #endregion
@@ -576,152 +506,157 @@ namespace Watermelon
         #region Banner
         public static void ShowBanner()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
-            if (!isBannerActive) return;
+            if (!isBannerActive)
+            {
+                LogManager.Log("[AdsManager]: ShowBanner — skipped: isBannerActive=false", LogCategory.Services);
+                return;
+            }
 
-            AdProvider advertisingModule = settings.BannerType;
+            bool forcedEnabled = IsForcedAdEnabled();
+            bool initialized = activeHandler != null && activeHandler.IsInitialized;
+            LogManager.Log($"[AdsManager]: ShowBanner — provider={settings?.ActiveProvider}, forcedEnabled={forcedEnabled}, initialized={initialized}", LogCategory.Services);
 
-            if (!save.IsForcedAdEnabled || !IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized)
+            if (!forcedEnabled || !initialized)
                 return;
 
-            advertisingActiveModules[advertisingModule].ShowBanner();
+            activeHandler.ShowBanner();
         }
 
         public static void DestroyBanner()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
-            AdProvider advertisingModule = settings.BannerType;
-
-            if (!IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized)
+            if (activeHandler == null || !activeHandler.IsInitialized)
                 return;
 
-            advertisingActiveModules[advertisingModule].DestroyBanner();
+            activeHandler.DestroyBanner();
         }
 
         public static void HideBanner()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
-            AdProvider advertisingModule = settings.BannerType;
-
-            if (!IsModuleActive(advertisingModule) || !advertisingActiveModules[advertisingModule].IsInitialized)
+            if (activeHandler == null || !activeHandler.IsInitialized)
                 return;
 
-            advertisingActiveModules[advertisingModule].HideBanner();
+            activeHandler.HideBanner();
         }
 
         public static void EnableBanner()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
+                return;
+            }
 
+            if (settings != null && !settings.BannerEnabled)
+            {
+                isBannerActive = false;
                 return;
             }
 
             isBannerActive = true;
+
+            SafeAreaAdapter.Refresh(true);
 
             ShowBanner();
         }
 
         public static void DisableBanner()
         {
-            if (!Monetization.IsActive || !isModuleInitialized)
+            if (instance == null)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!");
-
+                LogManager.LogWarning("[AdsManager]: Mobile monetization is disabled!", LogCategory.Services);
                 return;
             }
 
             isBannerActive = false;
 
+            SafeAreaAdapter.Refresh(true);
+
             HideBanner();
         }
+
+        public static void ResetBannerHeight()
+        {
+            bannerHeight = DEFAULT_BANNER_HEIGHT;
+
+            SafeAreaAdapter.Refresh(true);
+        }
+
+        public static void SetBannerHeight(float height)
+        {
+            bannerHeight = height;
+
+            SafeAreaAdapter.Refresh(true);
+        }
+
+        public static float GetBannerHeight()
+        {
+            if (Settings != null && Settings.BannerEnabled && IsForcedAdEnabled() && IsBannerActive)
+            {
+                return bannerHeight;
+            }
+
+            return 0.0f;
+        }
         #endregion
-
-        #region UMP
-        public static bool CanRequestAds()
-        {
-            if (!settings.IsUMPEnabled)
-            {
-                if(Monetization.VerboseLogging)
-                    Debug.LogWarning("[AdsManager]: UMP is disabled in Monetization Settings!");
-
-                return false;
-            }
-
-#if MODULE_ADMOB
-            return GoogleMobileAds.Ump.Api.ConsentInformation.CanRequestAds();
-#else
-            return false;
-#endif
-        }
-
-        public static ConsentRequirementStatus GetConsentStatus()
-        {
-            if (!settings.IsUMPEnabled)
-            {
-                if (Monetization.VerboseLogging)
-                    Debug.LogWarning("[AdsManager]: UMP is disabled in Monetization Settings!");
-
-                return ConsentRequirementStatus.Unknown;
-            }
-
-#if MODULE_ADMOB
-            return (ConsentRequirementStatus)GoogleMobileAds.Ump.Api.ConsentInformation.PrivacyOptionsRequirementStatus;
-#else
-            return ConsentRequirementStatus.Unknown;
-#endif
-        }
-
-        public static void ResetConsentState()
-        {
-            if (!settings.IsUMPEnabled)
-            {
-                if (Monetization.VerboseLogging)
-                    Debug.LogWarning("[AdsManager]: UMP is disabled in Monetization Settings!");
-
-                return;
-            }
-
-#if MODULE_ADMOB
-            GoogleMobileAds.Ump.Api.ConsentInformation.Reset();
-#endif
-        }
-#endregion
 
         #region Forced Ad
         public static bool IsForcedAdEnabled()
         {
-            return save.IsForcedAdEnabled;
+            if (save == null) return true;
+
+            if (save.ForcedAdDisabledUntil == FORCED_AD_DISABLED_FOREVER)
+                return false;
+
+            return TimeUtils.GetCurrentUnixTimestamp() >= save.ForcedAdDisabledUntil;
         }
 
-        public static void DisableForcedAd()
+        public static void DisableForcedAdForever()
         {
-            if (!save.IsForcedAdEnabled) return;
+            DisableForcedAdInternal(FORCED_AD_DISABLED_FOREVER);
+        }
 
-            Debug.Log("[Ads Manager]: Banners and interstitials are disabled!");
+        public static void DisableForcedAd(int durationSeconds)
+        {
+            if (durationSeconds < 0)
+            {
+                LogManager.LogWarning("[AdsManager]: Invalid duration for ad disable: " + durationSeconds, LogCategory.Services);
+                return;
+            }
 
-            save.IsForcedAdEnabled = false;
+            double targetTime = TimeUtils.GetCurrentUnixTimestamp() + durationSeconds;
+            if (targetTime <= save.ForcedAdDisabledUntil)
+                return;
 
-            NotchSaveArea.Refresh(true);
+            DisableForcedAdInternal(targetTime);
+        }
+
+        private static void DisableForcedAdInternal(double targetTime)
+        {
+            LogManager.Log("[AdsManager]: Banners and interstitials are disabled!", LogCategory.Services);
+
+            save.ForcedAdDisabledUntil = targetTime;
+
+            SaveController.MarkAsSaveIsRequired();
+
+            SafeAreaAdapter.Refresh(true);
 
             ForcedAdDisabled?.Invoke();
 
@@ -729,45 +664,19 @@ namespace Watermelon
         }
         #endregion
 
-        #region IDFA
-        public static AuthorizationTrackingStatus GetIDFAStatus()
+        public static void OnProviderInitialized(string providerName)
         {
-            if (!settings.IsIDFAEnabled)
-                return AuthorizationTrackingStatus.NOT_DETERMINED;
-
-#if UNITY_IOS && MODULE_IDFA
-            return (AuthorizationTrackingStatus)Unity.Advertisement.IosSupport.ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
-#else
-            return AuthorizationTrackingStatus.NOT_DETERMINED;
-#endif
+            AdProviderInitialized?.Invoke(providerName);
         }
 
-        public static bool IsIDFADetermined()
+        public static void OnProviderAdLoaded(string providerName, AdType advertisingType)
         {
-            if (!settings.IsIDFAEnabled)
-                return true;
-
-#if UNITY_IOS && MODULE_IDFA
-            return Unity.Advertisement.IosSupport.ATTrackingStatusBinding.GetAuthorizationTrackingStatus() != Unity.Advertisement.IosSupport.ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED;
-#else
-            return true;
-#endif
-        }
-        #endregion
-
-        public static void OnProviderInitialized(AdProvider advertisingModule)
-        {
-            AdProviderInitialized?.Invoke(advertisingModule);
+            AdLoaded?.Invoke(providerName, advertisingType);
         }
 
-        public static void OnProviderAdLoaded(AdProvider advertisingModule, AdType advertisingType)
+        public static void OnProviderAdDisplayed(string providerName, AdType advertisingType)
         {
-            AdLoaded?.Invoke(advertisingModule, advertisingType);
-        }
-
-        public static void OnProviderAdDisplayed(AdProvider advertisingModule, AdType advertisingType)
-        {
-            AdDisplayed?.Invoke(advertisingModule, advertisingType);
+            AdDisplayed?.Invoke(providerName, advertisingType);
 
             if (advertisingType == AdType.Interstitial || advertisingType == AdType.RewardedVideo)
             {
@@ -775,9 +684,9 @@ namespace Watermelon
             }
         }
 
-        public static void OnProviderAdClosed(AdProvider advertisingModule, AdType advertisingType)
+        public static void OnProviderAdClosed(string providerName, AdType advertisingType)
         {
-            AdClosed?.Invoke(advertisingModule, advertisingType);
+            AdClosed?.Invoke(providerName, advertisingType);
 
             if (advertisingType == AdType.Interstitial || advertisingType == AdType.RewardedVideo)
             {
@@ -785,116 +694,12 @@ namespace Watermelon
             }
         }
 
-        private static AdProviderHandler[] GetProviders()
-        {
-            return new AdProviderHandler[]
-            {
-                new AdDummyHandler(AdProvider.Dummy), 
-
-#if MODULE_ADMOB
-                new AdMobHandler(AdProvider.AdMob), 
-#endif
-
-#if MODULE_UNITYADS
-                new UnityAdsLegacyHandler(AdProvider.UnityAdsLegacy), 
-#endif
-
-#if MODULE_LEVELPLAY
-                new LevelPlayHandler(AdProvider.LevelPlay),
-#endif
-            };
-        }
-
-        private static void UnloadStatic()
-        {
-            isModuleInitialized = false;
-
-            settings = null;
-            lastInterstitialTime = 0;
-
-            rewardedVideoCallback = null;
-            interstitalCallback = null;
-
-            mainThreadEvents.Clear();
-
-            isFirstAdLoaded = false;
-            waitingForRewardVideoCallback = false;
-
-            isBannerActive = true;
-
-            loadingCoroutine = null;
-
-            advertisingActiveModules.Clear();
-
-            ForcedAdDisabled = null;
-
-            AdProviderInitialized = null;
-            AdLoaded = null;
-            AdDisplayed = null;
-            AdClosed = null;
-
-            InterstitialConditions = null;
-
-            save = null;
-
-            loadingTasks = null;
-
-            AD_PROVIDERS = null;
-        }
-
-        public delegate void AdsModuleCallback(AdProvider advertisingModules);
-        public delegate void AdsEventsCallback(AdProvider advertisingModules, AdType advertisingType);
+        public delegate void AdsModuleCallback(string providerName);
+        public delegate void AdsEventsCallback(string providerName, AdType advertisingType);
         public delegate bool AdsBoolCallback();
-
-        private class AdEventExecutor : MonoBehaviour
-        {
-            private void Update()
-            {
-                AdsManager.Update();
-            }
-        }
     }
 }
 
 // -----------------
-// Advertisement v1.4.2
+// Advertisement v1.5.0
 // -----------------
-
-// Changelog
-// v1.4.2
-// • Added EnableBanner, DisableBanner methods
-// v1.4.1
-// • Added ironSource (Unity LevelPlay) ad provider
-// v1.4
-// • Admob v9.0.0 support
-// • Better naming and code cleanup
-// • Ads callbacks replaced with simplified ones (AdLoaded, AdDisplayed, AdClosed)
-// • Removed ShowInterstitial, ShowRewardedVideo, ShowBanner methods with provider type parameter
-// • Added optional bool parameter to ShowInterstitial method. Allows to show interstitial even if conditions aren't met
-// v1.3
-// • Admob v8.1.0 support
-// • Removed IronSource provider
-// v1.2.1
-// • Some fixes in IronSourse provider
-// • Some fixes in Admob provider
-// • New interface in Admob provider
-// • Added Build Preprocessing for Admob 
-// v1.2
-// • Added IronSource provider
-// v1.1f3
-// • GDPR style rework
-// • Rewarded video error message
-// • Removed GDPR check in AdMob module
-// v1.1f2
-// • GDPR init bug fixed
-// v1.1
-// • Added first ad loader
-// • Moved IAP check to AdsManager script
-// v1.0
-// • Added documentation
-// v0.3
-// • Unity Ads fixed
-// v0.2
-// • Bug fix
-// v0.1
-// • Added basic version

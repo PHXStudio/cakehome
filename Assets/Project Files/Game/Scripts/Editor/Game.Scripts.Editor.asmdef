@@ -1,0 +1,30 @@
+{
+    "name": "Game.Scripts.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Game.Scripts",
+        "Core.WC",
+        "Core.UE",
+        "Core.UE.Editor",
+        "Core.Inspector",
+        "Core.Inspector.Editor",
+        "Core.Settings",
+        "Core.Settings.Editor",
+        "Unity.ugui",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "Watermelon.Tutorial",
+        "Game.Scripts.Merge.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

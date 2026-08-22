@@ -4,6 +4,7 @@
     {
         Banner = 0,
         Interstitial = 1,
-        RewardedVideo = 2
+        RewardedVideo = 2,
+        AppOpen = 3
     }
 }

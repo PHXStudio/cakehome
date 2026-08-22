@@ -6,38 +6,39 @@ namespace Watermelon
     [System.Serializable]
     public class AudioCase
     {
-        public AudioSource source;
-
-        public AudioType type;
+        public readonly AudioSource Source;
+        public readonly AudioType Type;
 
         public AudioCallback onAudioEnded;
         private Coroutine endCoroutine;
 
         public AudioCase(AudioClip clip, AudioSource source, AudioType type, AudioCallback callback = null)
         {
-            this.source = source;
-            this.type = type;
+            Source = source;
+            Source.clip = clip;
 
-            this.source.clip = clip;
+            Type = type;
+
+            onAudioEnded = callback;
         }
 
         public AudioCase OnComplete(AudioCallback callback)
         {
             onAudioEnded = callback;
 
-            endCoroutine = Tween.InvokeCoroutine(OnAudioEndCoroutine(source.clip.length));
+            endCoroutine = Tween.InvokeCoroutine(OnAudioEndCoroutine(Source.clip.length));
 
             return this;
         }
 
         public virtual void Play()
         {
-            source.Play();
+            Source.Play();
         }
 
         public void Stop()
         {
-            source.Stop();
+            Source.Stop();
 
             if (endCoroutine != null)
                 Tween.StopCustomCoroutine(endCoroutine);
@@ -45,20 +46,20 @@ namespace Watermelon
 
         public void FadeOut(float value, float time, bool stop = false)
         {
-            TweenCase tweenCase = source.DOVolume(value, time);
+            TweenCase tweenCase = Source.DOVolume(value, time);
 
             if (stop)
             {
                 tweenCase.OnComplete(delegate
                 {
-                    source.Stop();
+                    Source.Stop();
                 });
             }
         }
 
         public void FadeIn(float value, float time)
         {
-            source.DOVolume(value, time);
+            Source.DOVolume(value, time);
         }
 
         private IEnumerator OnAudioEndCoroutine(float clipDuration)
@@ -71,7 +72,3 @@ namespace Watermelon
         public delegate void AudioCallback();
     }
 }
-
-// -----------------
-// Audio Controller v 0.3.3
-// -----------------

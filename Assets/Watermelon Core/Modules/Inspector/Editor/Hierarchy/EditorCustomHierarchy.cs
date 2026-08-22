@@ -49,9 +49,14 @@ namespace Watermelon
                     }
                 }
 
+#if UNITY_6000_4_OR_NEWER
+                EditorApplication.hierarchyWindowItemByEntityIdOnGUI -= HighlightItems;
+                EditorApplication.hierarchyWindowItemByEntityIdOnGUI += HighlightItems;
+#else
                 EditorApplication.hierarchyWindowItemOnGUI -= HighlightItems;
-                EditorApplication.hierarchyWindowItemOnGUI += HighlightItems; 
-                
+                EditorApplication.hierarchyWindowItemOnGUI += HighlightItems;
+#endif
+
                 PrefabStage.prefabStageClosing += OnPrefabStageClosing;
             }
             else
@@ -70,7 +75,11 @@ namespace Watermelon
             Hierarchy.ClearHierarchies();
         }
 
+#if UNITY_6000_4_OR_NEWER
+        private static void HighlightItems(EntityId instanceID, Rect selectionRect)
+#else
         private static void HighlightItems(int instanceID, Rect selectionRect)
+#endif
         {
             if (!CoreEditor.UseHierarchyIcons)
             {

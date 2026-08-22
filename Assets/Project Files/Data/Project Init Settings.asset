@@ -28,7 +28,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739328186e8220e4dbd35270e195d7cf, type: 3}
   m_Name: Watermelon.HapticInitModule
   m_EditorClassIdentifier: 
-  verboseLogging: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,6 +43,7 @@ MonoBehaviour:
   modules:
   - {fileID: 465105545023070882}
   - {fileID: 150167048453217202}
+  - {fileID: 878099118089065219}
   - {fileID: 6377013955087300433}
   - {fileID: 2650117374181925186}
   - {fileID: 1166592688446620423}
@@ -64,7 +64,8 @@ MonoBehaviour:
   m_Name: Watermelon.SaveInitModule
   m_EditorClassIdentifier: 
   autoSaveDelay: 0
-  cleanSaveStart: 0
+  webGLPrefix: gameName
+  namedFiles: []
 --- !u!114 &465105545023070882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,9 +78,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d448ec3af5e46f04aa350a8a9ccbb3ef, type: 3}
   m_Name: Watermelon.InitializerInitModule
   m_EditorClassIdentifier: 
-  manualControlMode: 0
   systemMessagesPrefab: {fileID: 6951761026347705287, guid: 15892f63869a33e41aa27c6098e3caf3,
     type: 3}
+--- !u!114 &878099118089065219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208c742dc404cef4994446e9ea4e3217, type: 3}
+  m_Name: Watermelon.PoolInitModule
+  m_EditorClassIdentifier: 
 --- !u!114 &1166592688446620423
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,6 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27433fc73d0e094491cb89c195d0cf8, type: 3}
   m_Name: Watermelon.AudioInitModule
   m_EditorClassIdentifier: 
+  audioRegistry: {fileID: 0}
   audioSettings: {fileID: 11400000, guid: 503b1ff9b67b4c644b15ce25918d2d63, type: 2}
   audioSourcesPoolSize: 4
   maxDistance: 30
@@ -133,6 +146,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  spawnGlobalMusicSource: 1
+  globalMusicClip: {fileID: 0}
 --- !u!114 &4654385860053538920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -372,4 +387,3 @@ MonoBehaviour:
   tweensUpdateCount: 300
   tweensFixedUpdateCount: 30
   tweensLateUpdateCount: 0
-  verboseLogging: 0

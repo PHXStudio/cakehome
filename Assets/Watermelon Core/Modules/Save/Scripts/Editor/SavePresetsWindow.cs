@@ -42,8 +42,7 @@ namespace Watermelon
         private GUIStyle modifiedBoxStyle;
         private float backupLabelWidth;
 
-        [MenuItem("Tools/Save Presets")]
-        [MenuItem("Window/Save Presets")]
+        [MenuItem("Window/Watermelon/Tools/Save Presets")]
         static void ShowWindow()
         {
             SavePresetsWindow tempWindow = (SavePresetsWindow)GetWindow(typeof(SavePresetsWindow), false, WINDOW_TITLE);
@@ -93,7 +92,7 @@ namespace Watermelon
                     if (!fileEntries[j].EndsWith(SavePresets.META_SUFFIX))
                     {
                         creationTime = File.GetCreationTimeUtc(fileEntries[j]);
-                        allSavePresets.Add(new SavePreset(SavePresets.GetFileName(fileEntries[j]), creationTime, fileEntries[j], directory));
+                        allSavePresets.Add(new SavePreset(Path.GetFileNameWithoutExtension(fileEntries[j]), creationTime, fileEntries[j], directory));
                     }
                 }
             }

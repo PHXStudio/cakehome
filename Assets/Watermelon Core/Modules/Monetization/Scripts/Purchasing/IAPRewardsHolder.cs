@@ -6,12 +6,13 @@ namespace Watermelon
     {
         [Group("Settings")]
         [SerializeField] ProductKeyType productKey;
+        public ProductKeyType ProductKey => productKey;
 
         [Space]
         [Group("Settings")]
         [SerializeField] IAPButton purchaseButton;
 
-        private SimpleBoolSave save;
+        private IAPItem.Save save;
         private ProductData product;
 
         private void Start()
@@ -41,8 +42,8 @@ namespace Watermelon
         {
             // Get the product save file to check if it was previously purchased
             // This data is stored only locally so after the game reinstall it will be reset
-            save = SaveController.GetSaveObject<SimpleBoolSave>($"IAPProduct_{productKey}");
-            
+            save = SaveController.GetSaveObject<IAPItem.Save>($"iap_{productKey}");
+
             // Get product data wrapper
             // To acess Unity IAP product use product.Product property
             product = IAPManager.GetProductData(productKey);
@@ -51,7 +52,7 @@ namespace Watermelon
             // If there is problem with the internet connection or server didn't return product data loading animation appeared
             purchaseButton.UpdateState(product);
 
-            if(product.IsPurchased || product.ProductType == ProductType.NonConsumable && save.Value)
+            if (IAPManager.IsPurchased(productKey) || product.ProductType == ProductType.NonConsumable && save.IsPurchased)
             {
                 // Disable holder if it's an one time purchase (non-consumable) product 
                 if (product.ProductType == ProductType.NonConsumable)
@@ -64,37 +65,33 @@ namespace Watermelon
             }
 
             // Check if holder needs to be disabled
-            for (int i = 0; i < rewards.Length; i++)
+            if (CheckDisableState())
             {
-                if (rewards[i].CheckDisableState())
-                {
-                    // Disable holder game object
-                    gameObject.SetActive(false);
-
-                    break;
-                }
+                // Disable holder game object
+                gameObject.SetActive(false);
             }
         }
 
         private void OnPurchaseComplete(ProductKeyType key)
         {
+            if (!isPageActive) return;
+
             // Check if the purchased product type is equal to holder's product type
             if (productKey == key)
             {
-                ApplyRewards();
-
                 // Disable holder if it's an one time purchase (non-consumable) product 
                 if (product.ProductType == ProductType.NonConsumable)
                 {
                     // Disable holder game object
                     gameObject.SetActive(false);
                 }
+            }
 
-                // Change local save data
-                save.Value = true;
-
-                // Mark save as dirty to make sure changes will be stored
-                SaveController.MarkAsSaveIsRequired();
+            // Check if holder needs to be disabled
+            if (CheckDisableState())
+            {
+                // Disable holder game object
+                gameObject.SetActive(false);
             }
         }
     }

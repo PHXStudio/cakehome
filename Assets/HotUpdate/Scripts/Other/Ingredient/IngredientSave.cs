@@ -24,7 +24,7 @@ namespace Watermelon
             }
         }
 
-        public void Flush()
+        public void OnBeforeSave()
         {
         }
     }

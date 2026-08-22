@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f9ff67c8dde8d46b30d64a0a0661a5, type: 3}
+  m_Name: Level
+  m_EditorClassIdentifier: 
+  gridWidth: 7
+  gridHeight: 9
+  cells:
+  - typeId: Candy
+    grade: 4
+    lockState: 2
+  - typeId: Soda
+    grade: 3
+    lockState: 2
+  - typeId: Candy
+    grade: 2
+    lockState: 2
+  - typeId: Cake
+    grade: 8
+    lockState: 2
+  - typeId: Mixer Spawner
+    grade: 3
+    lockState: 2
+  - typeId: Coffee
+    grade: 9
+    lockState: 2
+  - typeId: Coffee
+    grade: 8
+    lockState: 2
+  - typeId: Cake
+    grade: 9
+    lockState: 2
+  - typeId: Coffee
+    grade: 11
+    lockState: 2
+  - typeId: Coffee
+    grade: 5
+    lockState: 2
+  - typeId: Mixer Spawner
+    grade: 1
+    lockState: 2
+  - typeId: Kettle Spawner
+    grade: 3
+    lockState: 2
+  - typeId: Cake
+    grade: 2
+    lockState: 2
+  - typeId: Coffee
+    grade: 7
+    lockState: 2
+  - typeId: Soda
+    grade: 4
+    lockState: 2
+  - typeId: Cake
+    grade: 1
+    lockState: 2
+  - typeId: Coffee
+    grade: 3
+    lockState: 2
+  - typeId: Kettle Spawner
+    grade: 1
+    lockState: 0
+  - typeId: Kettle Spawner
+    grade: 3
+    lockState: 2
+  - typeId: Soda
+    grade: 3
+    lockState: 2
+  - typeId: Coffee
+    grade: 6
+    lockState: 2
+  - typeId: Coffee
+    grade: 9
+    lockState: 2
+  - typeId: Coffee
+    grade: 2
+    lockState: 2
+  - typeId: Coffee
+    grade: 2
+    lockState: 2
+  - typeId: Kettle Spawner
+    grade: 1
+    lockState: 0
+  - typeId: Coffee
+    grade: 2
+    lockState: 2
+  - typeId: Coffee
+    grade: 6
+    lockState: 2
+  - typeId: Candy
+    grade: 3
+    lockState: 2
+  - typeId: Coffee
+    grade: 8
+    lockState: 2
+  - typeId: Coffee
+    grade: 6
+    lockState: 2
+  - typeId: Coffee
+    grade: 4
+    lockState: 2
+  - typeId: Kettle Spawner
+    grade: 2
+    lockState: 0
+  - typeId: Coffee
+    grade: 4
+    lockState: 2
+  - typeId: Soda
+    grade: 2
+    lockState: 2
+  - typeId: Coffee
+    grade: 10
+    lockState: 2
+  - typeId: Coffee
+    grade: 6
+    lockState: 2
+  - typeId: Coffee
+    grade: 7
+    lockState: 2
+  - typeId: Cake
+    grade: 7
+    lockState: 2
+  - typeId: Mixer Spawner
+    grade: 2
+    lockState: 2
+  - typeId: Candy
+    grade: 2
+    lockState: 2
+  - typeId: Coffee
+    grade: 5
+    lockState: 2
+  - typeId: Candy
+    grade: 1
+    lockState: 2
+  - typeId: Placeholders
+    grade: 4
+    lockState: 2
+  - typeId: Placeholders
+    grade: 7
+    lockState: 2
+  - typeId: Placeholders
+    grade: 3
+    lockState: 2
+  - typeId: Placeholders
+    grade: 1
+    lockState: 2
+  - typeId: Placeholders
+    grade: 6
+    lockState: 2
+  - typeId: Placeholders
+    grade: 2
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2
+  - typeId: Placeholders
+    grade: 5
+    lockState: 2

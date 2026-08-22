@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 11
+  m_EditorClassIdentifier: 
+  chapterTitle: Arthurs Proposal
+  steps:
+  - rid: 5239548633418834494
+  - rid: 6462075169002953818
+  - rid: 7228583998400770790
+  - rid: 174706252990243685
+  - rid: 1216375881208897736
+  - rid: 5744193451335511477
+  - rid: 6394258329972744506
+  - rid: 1266703261948156259
+  - rid: 7025705464420908511
+  - rid: 8548600076149729631
+  - rid: 3671143702790653365
+  - rid: 9001056290209830880
+  - rid: 471661797109108123
+  - rid: 764703551303860565
+  references:
+    version: 2
+    RefIds:
+    - rid: 174706252990243685
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: Every Saturday morning.
+    - rid: 471661797109108123
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: I am not asking for one.
+    - rid: 764703551303860565
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: Think of it as an open invitation waiting for the house.
+    - rid: 1216375881208897736
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        emotion: 0
+        text: She paid in coins and opinions.
+    - rid: 1266703261948156259
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: I chair the neighborhood association now.
+    - rid: 3671143702790653365
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: When the property is ready.
+    - rid: 5239548633418834494
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: I was told there was excellent coffee and visible progress.
+    - rid: 5744193451335511477
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: Mostly opinions.
+    - rid: 6394258329972744506
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: What brings you here?
+    - rid: 6462075169002953818
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: I may have used those exact words.
+    - rid: 7025705464420908511
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: We have not held our summer garden evening since Evelyn stopped hosting
+          it.
+    - rid: 7228583998400770790
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Arthur Cole? Grandma used to buy bread from your bakery.
+    - rid: 8548600076149729631
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: You want to hold it here again?
+    - rid: 9001056290209830880
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: I cannot promise a date.

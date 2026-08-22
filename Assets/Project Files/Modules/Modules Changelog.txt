@@ -1,0 +1,28 @@
+v1.0.2
+Modules: removed unused template scaffolding (Analytics, Camera Controller, Control, Curve, Dev Panel, Lives System, Power Ups, Remote Config, Skin Store, Skins, Static Map, UI Store, UI Styles, Upgrades, Watermelon Shaders, World Space UI).
+Currency Module: added Gems currency type.
+Currency Module: added ICurrencyCloudFlyable for custom fly-cloud prefabs with shine/trail effects.
+Currency Module: fixed reward loss when fly-cloud animation is killed early.
+Currency Module: cleared change listeners on unload to prevent stale callbacks after Play Mode restarts.
+Purchasing Module: switched to ProviderDefine-based Unity IAP detection.
+Purchasing Module: reworked product key types (Boost/Pro packs, Gems 1-6, No Ads).
+Purchasing Module: fixed receipt validator compile errors outside Android/iOS player builds.
+Tutorial Module: removed skip-tutorial dev feature.
+Tutorial Module: added drag-loop pointer animation for drag-gesture steps.
+Tutorial Module: added spotlight mask overlay for highlighting board cells/UI.
+Tutorial Module: fixed reparented elements losing anchor/pivot on canvas activation.
+Floating Text Module: added UI-based floating text behavior.
+Floating Text Module: clamped spawn position to screen bounds.
+Reward Module: updated reward map for Energy and SpawnerQueue, removed entries for deleted modules.
+Save Module: updated save key registrations for new gameplay systems.
+Level System Module: generalized editor asset path/prefix, added refresh helper.
+Loading Module: fixed background image aspect ratio.
+Scene Overlay Module: fixed Unity 6 compatibility guard.
+Settings Module: added checkpoint logging on open.
+Audio: renamed ui_click sound to button_sound across Currency, Purchasing, Advertisement, Settings.
+
+v1.0.1
+UI Store Module: renamed main folder
+
+v1.0.0
+Control Module: fixed gamepad images naming

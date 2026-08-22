@@ -9,28 +9,26 @@ namespace Watermelon
     {
         public override void OnCreated()
         {
-            AudioClips audioClips = EditorUtils.GetAsset<AudioClips>();
-            if(audioClips == null)
+            AudioRegistry registry = EditorUtils.GetAsset<AudioRegistry>();
+            if (registry == null)
             {
-                audioClips = (AudioClips)ScriptableObject.CreateInstance<AudioClips>();
-                audioClips.name = "Audio Clips";
+                registry = ScriptableObject.CreateInstance<AudioRegistry>();
+                registry.name = "Audio Registry";
 
                 string referencePath = AssetDatabase.GetAssetPath(target);
                 string directoryPath = Path.GetDirectoryName(referencePath);
 
-                // Create a unique file path for the ScriptableObject
-                string assetPath = Path.Combine(directoryPath, audioClips.name + ".asset");
+                string assetPath = Path.Combine(directoryPath, registry.name + ".asset");
                 assetPath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
 
-                // Save the ScriptableObject to the determined path
-                AssetDatabase.CreateAsset(audioClips, assetPath);
+                AssetDatabase.CreateAsset(registry, assetPath);
                 AssetDatabase.SaveAssets();
 
                 EditorUtility.SetDirty(target);
             }
 
             serializedObject.Update();
-            serializedObject.FindProperty("audioSettings").objectReferenceValue = audioClips;
+            serializedObject.FindProperty("audioRegistry").objectReferenceValue = registry;
             serializedObject.ApplyModifiedProperties();
         }
     }

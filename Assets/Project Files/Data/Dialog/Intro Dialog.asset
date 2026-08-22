@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Intro Dialog
+  m_EditorClassIdentifier: 
+  chapterTitle: 'Chapter 1: A New Beginning'
+  steps:
+  - rid: 4952170771345571858
+  - rid: 5520886963192201216
+  - rid: 4952170771345571856
+  - rid: 5520886851360522241
+  - rid: 5520886851360522242
+  - rid: 5520886851360522243
+  - rid: 5520886851360522244
+  references:
+    version: 2
+    RefIds:
+    - rid: 4952170771345571856
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: The facade is damaged and almost everything outside needs work.
+    - rid: 4952170771345571858
+      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        image: {fileID: 21300000, guid: 2d27a24a57cfecf4aa07285e70311e4e, type: 3}
+    - rid: 5520886851360522241
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: But Grandma never chose the easy option.
+    - rid: 5520886851360522242
+      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        image: {fileID: 21300000, guid: c455bd5870a507f48b10616f5d518039, type: 3}
+    - rid: 5520886851360522243
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Her coffee recipes are still here. I could open a small coffee stand
+          and use the earnings for repairs.
+    - rid: 5520886851360522244
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: One cup, one repair, and one piece of home at a time.
+    - rid: 5520886963192201216
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: "Grandmas house\u2026 I remember it being much brighter."

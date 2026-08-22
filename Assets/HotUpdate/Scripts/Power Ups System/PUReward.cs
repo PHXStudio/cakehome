@@ -8,7 +8,7 @@ namespace Watermelon
     {
         [SerializeField] PUData[] powerUpsData;
 
-        public override void Init()
+        public void Init()
         {
             foreach (PUData powerUpData in powerUpsData)
             {

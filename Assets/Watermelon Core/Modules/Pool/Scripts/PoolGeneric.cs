@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Watermelon
 {
     /// <summary>
-    /// Generic pool. Caches specified component allowing not to use GetComponent<> after each call. Can not be added into the PoolManager.
+    /// Generic pool. Caches specified component allowing not to use GetComponent after each call.
     /// To use just create new instance.
     /// </summary>
     /// <typeparam name="T">Component to cache.</typeparam>
@@ -26,7 +26,7 @@ namespace Watermelon
 
         private bool inited = false;
 
-        public List<T> pooledObjects;
+        private List<T> pooledObjects;
 
         public PoolGeneric(GameObject prefab)
         {
@@ -238,6 +238,8 @@ namespace Watermelon
             }
 
             pooledObjects.Clear();
+            pooledObjects = null;
+            inited = false;
         }
     }
 }

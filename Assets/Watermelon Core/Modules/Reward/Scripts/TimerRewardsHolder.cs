@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon.IAPStore
+namespace Watermelon
 {
     public sealed class TimerRewardsHolder : RewardsHolder
     {
         private const string DEFAULT_BUTTON_TEXT = "FREE";
+        private const float MINIMUM_BUTTON_WIDTH = 270f;
 
         [Group("Settings")]
-        [SerializeField] string saveID = "uniqueTimerSaveID";
+        [SerializeField] string saveID = "";
 
         [Group("Settings"), Space]
         [SerializeField] Button button;
@@ -26,25 +27,19 @@ namespace Watermelon.IAPStore
 
         private StringBuilder sb;
 
-        private void Awake()
+        private void Start()
         {
+            if (string.IsNullOrEmpty(saveID))
+            {
+                Debug.LogError($"[TimerRewardsHolder] saveID is empty on '{gameObject.name}'. Assign a unique ID in the Inspector.", gameObject);
+                return;
+            }
+
             InitializeComponents();
 
             save = SaveController.GetSaveObject<SimpleLongSave>($"TimerProduct_{saveID}");
 
             timerStartTime = DateTime.FromBinary(save.Value);
-
-            // Check if rewards needs to be disabled
-            for (int i = 0; i < rewards.Length; i++)
-            {
-                if (rewards[i].CheckDisableState())
-                {
-                    // Disable holder game object
-                    gameObject.SetActive(false);
-
-                    return;
-                }
-            }
 
             sb = new StringBuilder();
 
@@ -55,7 +50,7 @@ namespace Watermelon.IAPStore
         {
             sb.Clear();
 
-            if(timeSpan.Hours > 0)
+            if (timeSpan.Hours > 0)
             {
                 sb.Append(timeSpan.Hours);
                 sb.Append(':');
@@ -63,7 +58,6 @@ namespace Watermelon.IAPStore
 
             sb.Append(timeSpan.Minutes.ToString("00"));
             sb.Append(':');
-
             sb.Append(timeSpan.Seconds.ToString("00"));
 
             return sb.ToString();
@@ -73,23 +67,22 @@ namespace Watermelon.IAPStore
         {
             TimeSpan timer = DateTime.Now - timerStartTime;
             TimeSpan duration = TimeSpan.FromMinutes(timerDurationInMinutes);
+
             if (timer > duration)
             {
                 button.enabled = true;
-
                 timerText.text = DEFAULT_BUTTON_TEXT;
             }
             else
             {
                 button.enabled = false;
-
                 timerText.text = FormatTimer(duration - timer);
 
-                float prefferedWidth = timerText.preferredWidth;
-                if (prefferedWidth < 270) prefferedWidth = 270;
+                float preferredWidth = timerText.preferredWidth;
+                if (preferredWidth < MINIMUM_BUTTON_WIDTH) preferredWidth = MINIMUM_BUTTON_WIDTH;
 
-                timerText.rectTransform.sizeDelta = timerText.rectTransform.sizeDelta.SetX(prefferedWidth + 5);
-                button.image.rectTransform.sizeDelta = button.image.rectTransform.sizeDelta.SetX(prefferedWidth + 10);
+                timerText.rectTransform.sizeDelta = timerText.rectTransform.sizeDelta.SetX(preferredWidth + 5);
+                button.image.rectTransform.sizeDelta = button.image.rectTransform.sizeDelta.SetX(preferredWidth + 10);
             }
         }
 
@@ -103,16 +96,10 @@ namespace Watermelon.IAPStore
 
         private void OnButtonClicked()
         {
-#if MODULE_HAPTIC
-            Haptic.Play(Haptic.HAPTIC_LIGHT);
-#endif
-
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
-
             save.Value = DateTime.Now.ToBinary();
             timerStartTime = DateTime.Now;
 
-            ApplyRewards();
+            rewardSet.ApplyReward();
 
             SaveController.MarkAsSaveIsRequired();
         }

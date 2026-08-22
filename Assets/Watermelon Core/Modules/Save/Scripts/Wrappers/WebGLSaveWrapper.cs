@@ -1,55 +1,75 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Watermelon
 {
-    public class WebGLSaveWrapper : BaseSaveWrapper
+    /// <summary>
+    /// Save wrapper for WebGL builds that stores data in the browser's <c>localStorage</c> via a JavaScript bridge.
+    /// No-op in the Unity Editor; active only under <c>UNITY_WEBGL &amp;&amp; !UNITY_EDITOR</c>.
+    /// Does not support background thread writes — <see cref="UseThreads"/> returns <c>false</c>.
+    /// </summary>
+    public class WebGLSaveWrapper : ISaveWrapper
     {
-        public void Init(string prefix)
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            init(prefix);
-#endif
-        }
+        /// <summary>No-op; WebGL initialization is performed by <see cref="Configure"/> when a prefix is set.</summary>
+        public void Init() {}
 
-        public override GlobalSave Load(string fileName)
+        /// <summary>Loads the save file from <c>localStorage</c> by key; returns an empty <see cref="SaveFile"/> if the key does not exist.</summary>
+        public SaveFile Load(string fileName)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            string jsonObject = load(fileName);
-            if(!string.IsNullOrEmpty(jsonObject))
+            string json = load(fileName);
+            if (!string.IsNullOrEmpty(json))
             {
                 try
                 {
-                    GlobalSave deserializedObject = JsonUtility.FromJson<GlobalSave>(jsonObject);
-
-                    return deserializedObject;
+                    SaveFile loaded = SaveJson.FromJson<SaveFile>(json);
+                    if (loaded != null)
+                    {
+                        loaded.Init();
+                        return loaded;
+                    }
                 }
                 catch (System.Exception ex)
                 {
-                    Debug.LogError(ex.Message);
+                    Debug.LogError($"[Save]: Failed to load WebGL save '{fileName}': {ex.Message}");
                 }
             }
 #endif
-
-            return new GlobalSave();
+            SaveFile empty = new();
+            empty.Init();
+            return empty;
         }
 
-        public override void Save(GlobalSave globalSave, string fileName)
+        /// <summary>Stores the JSON string in <c>localStorage</c> under the given key.</summary>
+        public void SaveRaw(string fileName, string json)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            string jsonObject = JsonUtility.ToJson(globalSave);
-
-            save(fileName, jsonObject);
+            save(fileName, json);
 #endif
         }
 
-        public override void Delete(string fileName)
+        /// <summary>Removes the entry from <c>localStorage</c> for the given key.</summary>
+        public void Delete(string fileName)
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
             deleteItem(fileName);
 #endif
+        }
+
+        /// <summary>Returns <c>false</c>; <c>localStorage</c> is synchronous and must be called on the main thread.</summary>
+        public bool UseThreads() => false;
+
+        /// <summary>Passes the <see cref="SaveWrapperConfig.WebGLPrefix"/> to the JS <c>init()</c> function to namespace all <c>localStorage</c> keys.</summary>
+        public void Configure(SaveWrapperConfig config)
+        {
+            if(config == null) return;
+
+            if (!string.IsNullOrEmpty(config.WebGLPrefix))
+            {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                init(config.WebGLPrefix);
+#endif
+            }
         }
 
 #if UNITY_WEBGL && !UNITY_EDITOR

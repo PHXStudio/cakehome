@@ -58,19 +58,25 @@ namespace Watermelon.Map
 
             enabled = false;
 
-            UIController.PopupOpened += OnPopupStateChanged;
-            UIController.PopupClosed += OnPopupStateChanged;
+            UIController.PopupOpened += OnPopupOpened;
+            UIController.PopupClosed += OnPopupClosed;
         }
 
         private void OnDestroy()
         {
-            UIController.PopupOpened -= OnPopupStateChanged;
-            UIController.PopupClosed -= OnPopupStateChanged;
+            UIController.PopupOpened -= OnPopupOpened;
+            UIController.PopupClosed -= OnPopupClosed;
         }
 
-        private void OnPopupStateChanged(IPopupWindow popupWindow, bool state)
+        private void OnPopupOpened(UIPage page)
         {
-            isPopupOpened = state;
+            isPopupOpened = true;
+            isMouseDown = false;
+        }
+
+        private void OnPopupClosed(UIPage page)
+        {
+            isPopupOpened = false;
             isMouseDown = false;
         }
 
@@ -287,8 +293,7 @@ namespace Watermelon.Map
 
                 if (Mathf.Approximately(cachedPos, currentLowestChunkPosY))
                 {
-                    rubberCase.KillActive();
-                    rubberCase.InvokeCompleteEvent();
+                    rubberCase.Complete();
                 }
             }).SetEasing(Ease.Type.SineOut).OnComplete(() =>
             {

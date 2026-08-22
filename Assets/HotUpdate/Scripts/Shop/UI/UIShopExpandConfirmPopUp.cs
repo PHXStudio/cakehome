@@ -49,7 +49,6 @@ namespace Watermelon
                     panelScalable.Show(immediately: false, duration: 0.3f);
             });
 
-            UIController.OnPopupWindowOpened(this);
         }
 
         private void OnConfirmClicked()
@@ -74,7 +73,6 @@ namespace Watermelon
                 gameObject.SetActive(false);
             }
 
-            UIController.OnPopupWindowClosed(this);
         }
     }
 }

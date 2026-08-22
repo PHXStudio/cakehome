@@ -7,8 +7,14 @@ namespace Watermelon
     {
         [SerializeField] string androidID;
         [SerializeField] string iOSID;
+
         [SerializeField] ProductKeyType productKeyType;
         [SerializeField] ProductType productType;
+
+        [SerializeField] float defaultUSDPrice = 0.99f;
+
+        [CreateScriptableObject]
+        [SerializeField] RewardsSet rewardsSet;
 
         public string ID
         {
@@ -26,25 +32,48 @@ namespace Watermelon
 
         public ProductType ProductType { get => productType; set => productType = value; }
         public ProductKeyType ProductKeyType { get => productKeyType; set => productKeyType = value; }
+        public float DefaultUSDPrice { get => defaultUSDPrice; }
 
-        public IAPItem()
+        public int TimesPurchased => save.TimesPurchased;
+        public RewardsSet RewardsSet => rewardsSet;
+
+        private Save save;
+
+        public void Init()
         {
+            save = SaveController.GetSaveObject<Save>($"iap_{productKeyType}");
         }
 
-        public IAPItem(string id, ProductKeyType productKeyType, ProductType productType)
+        public void OnProductPurchased()
         {
-            this.androidID = id;
-            this.iOSID = id;
-            this.productKeyType = productKeyType;
-            this.productType = productType;
+            save.TimesPurchased++;
+
+            rewardsSet?.ApplyReward();
         }
 
-        public IAPItem(string androidID, string iOSID, ProductKeyType productKeyType, ProductType productType)
+        public void OnProductRestored()
         {
-            this.androidID = androidID;
-            this.iOSID = iOSID;
-            this.productKeyType = productKeyType;
-            this.productType = productType;
+            rewardsSet?.RestoreReward();
+        }
+
+#if MODULE_REMOTE_CONFIG
+        public void OverrideDefaultPrice(IAPRemoteConfigData.IAP remoteConfigItem)
+        {
+            if (remoteConfigItem != null)
+                defaultUSDPrice = remoteConfigItem.price;
+        }
+#endif
+
+        public class Save : ISaveObject
+        {
+            public int TimesPurchased;
+
+            public bool IsPurchased => TimesPurchased > 0;
+
+            public void OnBeforeSave()
+            {
+
+            }
         }
     }
 }

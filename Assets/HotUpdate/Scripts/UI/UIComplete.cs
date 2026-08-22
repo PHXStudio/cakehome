@@ -1,4 +1,4 @@
-﻿
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -50,7 +50,7 @@ namespace Watermelon
         }
 
         #region Show/Hide
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             rewardLabel.Hide(immediately: true);
             multiplyRewardButtonFade.Hide(immediately: true);
@@ -96,7 +96,7 @@ namespace Watermelon
             });
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             if (!isPageDisplayed)
                 return;
@@ -109,7 +109,7 @@ namespace Watermelon
                 canvas.enabled = false;
                 isPageDisplayed = false;
 
-                UIController.OnPageClosed(this);
+                NotifyClosed();
             });
         }
 

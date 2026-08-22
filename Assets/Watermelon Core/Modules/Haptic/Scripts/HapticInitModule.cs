@@ -1,20 +1,21 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Init module that creates the <see cref="Haptic"/> instance during project initialization.
+    /// </summary>
     [RegisterModule("Haptic")]
     public class HapticInitModule : InitModule
     {
-        [SerializeField] bool verboseLogging = false;
-
         public override string ModuleName => "Haptic";
 
-        public override void CreateComponent()
+        public override IEnumerator InitAsync(GameObject owner)
         {
-            if (verboseLogging)
-                Haptic.EnableVerboseLogging();
-
-            Haptic.Init();
+            new Haptic();
+            
+            yield break;
         }
     }
 }

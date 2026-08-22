@@ -1,13 +1,10 @@
-﻿namespace Watermelon
+namespace Watermelon
 {
+    [AdsEditorContainer(typeof(AdDummyContainer))]
     public class EditorDummyContainer : EditorAdsContainer
     {
-        public EditorDummyContainer(string containerName, string propertyName) : base(containerName, propertyName)
-        {
-        }
+        protected override string ContainerDisplayName => "Dummy";
 
-        protected override void SpecialButtons()
-        {
-        }
+        protected override void SpecialButtons() { }
     }
 }

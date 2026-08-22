@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Watermelon
@@ -10,7 +11,7 @@ namespace Watermelon
         [SerializeField] CakeCatalog cakeCatalog;
         [SerializeField] ShopConfig shopConfig;
 
-        public override void CreateComponent()
+        public override IEnumerator InitAsync(GameObject owner)
         {
             if (cakeCatalog == null)
                 cakeCatalog = Resources.Load<CakeCatalog>("Shop/Cake Catalog");
@@ -19,6 +20,7 @@ namespace Watermelon
                 shopConfig = Resources.Load<ShopConfig>("Shop/Shop Config");
 
             ShopController.Init(cakeCatalog, shopConfig);
+            yield break;
         }
     }
 }

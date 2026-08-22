@@ -16,7 +16,7 @@ namespace Watermelon
         public double DailyThemeDayUnix;
         public int NextInstanceCounter = 1;
 
-        public void Flush()
+        public void OnBeforeSave()
         {
         }
 

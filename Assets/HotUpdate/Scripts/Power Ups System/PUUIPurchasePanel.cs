@@ -57,7 +57,6 @@ namespace Watermelon
             Currency currency = CurrencyController.GetCurrency(settings.CurrencyType);
             powerUpPurchaseIcon.sprite = currency.Icon;
 
-            UIController.OnPopupWindowOpened(this);
         }
 
         public void PurchasePUButton()
@@ -74,7 +73,6 @@ namespace Watermelon
         {
             powerUpPurchasePanel.SetActive(false);
 
-            UIController.OnPopupWindowClosed(this);
         }
     }
 }

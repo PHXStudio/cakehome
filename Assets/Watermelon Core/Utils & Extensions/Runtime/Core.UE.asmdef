@@ -1,3 +1,16 @@
 {
-	"name": "Core.UE"
+    "name": "Core.UE",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5c13976791bc78d49aef018c2c398dbc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

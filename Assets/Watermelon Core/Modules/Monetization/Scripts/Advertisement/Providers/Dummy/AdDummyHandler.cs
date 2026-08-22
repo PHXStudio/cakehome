@@ -1,67 +1,75 @@
-﻿
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Watermelon
 {
+    [Preserve]
     public class AdDummyHandler : AdProviderHandler
     {
+        public override string ProviderName => "Dummy";
+
         private AdDummyController dummyController;
 
         private bool isInterstitialLoaded = false;
         private bool isRewardVideoLoaded = false;
 
-        public AdDummyHandler(AdProvider providerType) : base(providerType) { }
-
         protected override async Task<bool> InitProviderAsync()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: Dummy Ads is trying to initialize!", adsSettings);
+            LogManager.Log("[AdsManager/Dummy]: InitProviderAsync called", LogCategory.Services);
 
             TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-            if (adsSettings.IsDummyEnabled())
-            {
-                dummyController = AdDummyController.CreateObject();
-                dummyController.Init(adsSettings);
-            }
+            dummyController = AdDummyController.CreateObject();
+            dummyController.Init(adsSettings, ProviderName);
 
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: Dummy Ads initialization complete");
-
-            // Set task result to true indicating success
             tcs.SetResult(true);
 
-            // Await the result of the initialization process
             return await tcs.Task;
         }
 
         public override void ShowBanner()
         {
+            LogManager.Log($"[AdsManager/Dummy]: ShowBanner called (controller={(dummyController != null ? "OK" : "NULL")})", LogCategory.Services);
+
+            if (dummyController == null) return;
+
             dummyController.ShowBanner();
 
-            AdsManager.OnProviderAdDisplayed(providerType, AdType.Banner);
+            AdsManager.OnProviderAdDisplayed(ProviderName, AdType.Banner);
+
+            AdsManager.SetBannerHeight(50);
         }
 
         public override void HideBanner()
         {
+            LogManager.Log($"[AdsManager/Dummy]: HideBanner called (controller={(dummyController != null ? "OK" : "NULL")})", LogCategory.Services);
+
+            if (dummyController == null) return;
+
             dummyController.HideBanner();
 
-            AdsManager.OnProviderAdClosed(providerType, AdType.Banner);
+            AdsManager.OnProviderAdClosed(ProviderName, AdType.Banner);
         }
 
         public override void DestroyBanner()
         {
+            LogManager.Log($"[AdsManager/Dummy]: DestroyBanner called (controller={(dummyController != null ? "OK" : "NULL")})", LogCategory.Services);
+
+            if (dummyController == null) return;
+
             dummyController.HideBanner();
 
-            AdsManager.OnProviderAdClosed(providerType, AdType.Banner);
+            AdsManager.OnProviderAdClosed(ProviderName, AdType.Banner);
         }
 
         public override void RequestInterstitial()
         {
+            LogManager.Log("[AdsManager/Dummy]: RequestInterstitial called", LogCategory.Services);
+
             isInterstitialLoaded = true;
 
-            AdsManager.OnProviderAdLoaded(providerType, AdType.Interstitial);
+            AdsManager.OnProviderAdLoaded(ProviderName, AdType.Interstitial);
         }
 
         public override bool IsInterstitialLoaded()
@@ -71,16 +79,22 @@ namespace Watermelon
 
         public override void ShowInterstitial(AdvertisementCallback callback)
         {
+            LogManager.Log($"[AdsManager/Dummy]: ShowInterstitial called (controller={(dummyController != null ? "OK" : "NULL")}, loaded={isInterstitialLoaded})", LogCategory.Services);
+
+            if (dummyController == null) return;
+
             dummyController.ShowInterstitial();
 
-            AdsManager.OnProviderAdDisplayed(providerType, AdType.Interstitial);
+            AdsManager.OnProviderAdDisplayed(ProviderName, AdType.Interstitial);
         }
 
         public override void RequestRewardedVideo()
         {
+            LogManager.Log("[AdsManager/Dummy]: RequestRewardedVideo called", LogCategory.Services);
+
             isRewardVideoLoaded = true;
 
-            AdsManager.OnProviderAdLoaded(providerType, AdType.RewardedVideo);
+            AdsManager.OnProviderAdLoaded(ProviderName, AdType.RewardedVideo);
         }
 
         public override bool IsRewardedVideoLoaded()
@@ -90,9 +104,13 @@ namespace Watermelon
 
         public override void ShowRewardedVideo(AdvertisementCallback callback)
         {
+            LogManager.Log($"[AdsManager/Dummy]: ShowRewardedVideo called (controller={(dummyController != null ? "OK" : "NULL")}, loaded={isRewardVideoLoaded})", LogCategory.Services);
+
+            if (dummyController == null) return;
+
             dummyController.ShowRewardedVideo();
 
-            AdsManager.OnProviderAdDisplayed(providerType, AdType.RewardedVideo);
+            AdsManager.OnProviderAdDisplayed(ProviderName, AdType.RewardedVideo);
         }
     }
 }

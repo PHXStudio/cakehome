@@ -30,7 +30,7 @@ namespace Watermelon
             "/Game/Textures"
         };
 
-        [MenuItem("Window/Watermelon Core/Prepare Project", priority = 900)]
+        [MenuItem("Window/Watermelon/Core/Prepare Project", priority = 900)]
         private static void CreateStructure()
         {
             try
@@ -288,16 +288,6 @@ namespace Watermelon
             text.fontSize = 90;
             text.text = "Loading..";
             text.raycastTarget = false;
-
-            LoadingGraphics loadingGraphics = go.AddComponent<LoadingGraphics>();
-
-            SerializedObject serializedObject = new SerializedObject(loadingGraphics);
-            serializedObject.Update();
-            serializedObject.FindProperty("loadingText").objectReferenceValue = text;
-            serializedObject.FindProperty("backgroundImage").objectReferenceValue = backgroundImage;
-            serializedObject.FindProperty("canvasScaler").objectReferenceValue = canvasScaler;
-            serializedObject.FindProperty("loadingCamera").objectReferenceValue = camera;
-            serializedObject.ApplyModifiedProperties();
 
             return go;
         }

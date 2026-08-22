@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 namespace Watermelon
 {
@@ -9,16 +10,17 @@ namespace Watermelon
 
         [SerializeField] LivesData livesData;
 
-        public override void CreateComponent()
+        public override IEnumerator InitAsync(GameObject owner)
         {
             if (livesData == null)
             {
                 Debug.LogError("LivesData is not assigned in Project Init Settings", this);
 
-                return;
+                yield break;
             }
 
             LivesSystem.Init(livesData);
+            yield break;
         }
     }
 }

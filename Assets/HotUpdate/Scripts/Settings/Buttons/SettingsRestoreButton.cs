@@ -6,8 +6,8 @@ namespace Watermelon
     {
         public override void Init()
         {
-#if MODULE_MONETIZATION
-            gameObject.SetActive(Monetization.IsActive);
+#if MODULE_IAP
+            gameObject.SetActive(IAPManager.IsInitialized);
 #else
             gameObject.SetActive(false);
 #endif
@@ -15,12 +15,12 @@ namespace Watermelon
 
         public override void OnClick()
         {
-#if MODULE_MONETIZATION
+#if MODULE_IAP
             IAPManager.RestorePurchases();
 #endif
 
             // Play button sound
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
         }
 
         public override void Select()

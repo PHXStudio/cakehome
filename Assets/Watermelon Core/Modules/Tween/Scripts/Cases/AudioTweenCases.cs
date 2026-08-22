@@ -1,19 +1,21 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Tween extensions for <see cref="AudioSource"/> components.
+    /// </summary>
     public static class AudioTweenCases
     {
         #region Extensions
-        /// <summary>
-        /// Change audio source volume
-        /// </summary>
+        /// <summary>Animates <see cref="AudioSource.volume"/> from its current value to <paramref name="resultValue"/>.</summary>
         public static TweenCase DOVolume(this AudioSource tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod updateMethod = UpdateMethod.Update)
         {
             return new Volume(tweenObject, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(updateMethod).StartTween();
         }
         #endregion
 
+        /// <summary>Interpolates <see cref="AudioSource.volume"/> from its starting value to <c>resultValue</c>.</summary>
         public class Volume : TweenCaseFunction<AudioSource, float>
         {
             public Volume(AudioSource tweenObject, float resultValue) : base(tweenObject, resultValue)

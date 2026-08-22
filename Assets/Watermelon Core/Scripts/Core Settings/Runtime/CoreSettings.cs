@@ -27,13 +27,6 @@ namespace Watermelon
         [SerializeField] bool useHierarchyIcons = true;
         public bool UseHierarchyIcons => useHierarchyIcons;
 
-        [Header("Ads")]
-        [SerializeField] Color adsDummyBackgroundColor = new Color(0.1f, 0.2f, 0.35f, 1.0f);
-        public Color AdsDummyBackgroundColor => adsDummyBackgroundColor;
-
-        [SerializeField] Color adsDummyMainColor = new Color(0.15f, 0.37f, 0.6f, 1.0f);
-        public Color AdsDummyMainColor => adsDummyMainColor;
-
         [Header("Other")]
         [SerializeField] bool showWatermelonPromotions = true;
         public bool ShowWatermelonPromotions => showWatermelonPromotions;

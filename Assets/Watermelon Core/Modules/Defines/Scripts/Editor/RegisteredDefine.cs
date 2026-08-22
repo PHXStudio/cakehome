@@ -2,19 +2,22 @@
 {
     public class RegisteredDefine
     {
-        public string Define { get; private set; }
-        public string AssemblyType { get; private set; }
+        public readonly string Define;
+        public readonly string AssemblyType;
+        public readonly string FilePath;
 
-        public RegisteredDefine(string define, string assemblyType)
+        public RegisteredDefine(string define, string assemblyType, string filePath)
         {
             Define = define;
             AssemblyType = assemblyType;
+            FilePath = filePath;
         }
 
         public RegisteredDefine(DefineAttribute defineAttribute)
         {
             Define = defineAttribute.Define;
             AssemblyType = defineAttribute.AssemblyType;
+            FilePath = defineAttribute.FilePath;
         }
     }
 }

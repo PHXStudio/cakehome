@@ -17,7 +17,7 @@ namespace Watermelon
         public static readonly BindingFlags FLAGS_STATIC_PRIVATE = BindingFlags.NonPublic | BindingFlags.Static;
         public static readonly BindingFlags FLAGS_STATIC_PUBLIC = BindingFlags.Public | BindingFlags.Static;
 
-        public static void InjectInstanceComponent<T>(T instanceObject, string variableName, object value, BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)
+        public static void InjectInstanceComponent<T>(this T instanceObject, string variableName, object value, BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)
         {
             if (instanceObject != null)
             {
@@ -25,10 +25,20 @@ namespace Watermelon
             }
         }
 
+        public static bool FieldExists<T>(T instanceObject, string variableName, BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance)
+        {
+            if (instanceObject != null)
+            {
+                return instanceObject.GetType().GetField(variableName, bindingFlags) != null;
+            }
+
+            return false;
+        }
+
         public static void InjectInstanceComponent<T>(string variableName, object value, BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance) where T : Object
         {
-#if UNITY_6000
-            T component = UnityEngine.Object.FindFirstObjectByType<T>(FindObjectsInactive.Include);
+#if UNITY_6000_0_OR_NEWER
+            T component = UnityEngine.Object.FindAnyObjectByType<T>(FindObjectsInactive.Include);
 #else
             T component = UnityEngine.Object.FindObjectOfType<T>(true);
 #endif

@@ -3,26 +3,26 @@ using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public static class GraphicTweenCases 
+    /// <summary>
+    /// Tween extensions for <see cref="Graphic"/> components (e.g. <see cref="UnityEngine.UI.Image"/>, <see cref="UnityEngine.UI.Text"/>).
+    /// </summary>
+    public static class GraphicTweenCases
     {
         #region Extensions
-        /// <summary>
-        /// Change color of image
-        /// </summary>
+        /// <summary>Animates the full <see cref="Graphic.color"/> (RGBA) to <paramref name="resultValue"/>.</summary>
         public static TweenCase DOColor(this Graphic tweenObject, Color resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new GraphicColor(tweenObject, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
 
-        /// <summary>
-        /// Change graphic color alpha
-        /// </summary>
+        /// <summary>Animates only the alpha channel of <see cref="Graphic.color"/> to <paramref name="resultValue"/> (0 = transparent, 1 = opaque).</summary>
         public static TweenCase DOFade(this Graphic tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod tweenType = UpdateMethod.Update)
         {
             return new Fade(tweenObject, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(tweenType).StartTween();
         }
         #endregion
 
+        /// <summary>Interpolates the full RGBA color of a <see cref="Graphic"/> to <c>resultValue</c>.</summary>
         public class GraphicColor : TweenCaseFunction<Graphic, Color>
         {
             public GraphicColor(Graphic tweenObject, Color resultValue) : base(tweenObject, resultValue)
@@ -48,6 +48,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the alpha channel of a <see cref="Graphic"/>'s color, leaving RGB unchanged.</summary>
         public class Fade : TweenCaseFunction<Graphic, float>
         {
             public Fade(Graphic tweenObject, float resultValue) : base(tweenObject, resultValue)

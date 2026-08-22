@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b799c17a54eef0e4baa1be9eda7b82da, type: 3}
+  m_Name: Reward Booster Pack
+  m_EditorClassIdentifier: 
+  rewards:
+  - rid: 4221807265299824645
+  - rid: 5520887150049755141
+  - rid: 5520887150049755142
+  notes: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 4221807265299824645
+      type: {class: CurrencyReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        currencies:
+        - currencyType: 1
+          amount: 100
+        analyticsSource: 
+    - rid: 5520887150049755141
+      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        amount: 50
+    - rid: 5520887150049755142
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 2
+        spawnFloatingImage: 0

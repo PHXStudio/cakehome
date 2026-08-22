@@ -1,5 +1,3 @@
-﻿#pragma warning disable 0414
-
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -8,36 +6,65 @@ namespace Watermelon
     /// <summary>
     /// Class that manages all pool operations.
     /// </summary>
-    [StaticUnload]
-    public static class PoolManager
+    public class PoolManager : MonoBehaviour
     {
+        private static PoolManager instance;
+
         private const string OBJECT_FORMAT = "{0} e{1}";
 
         /// <summary>
         /// List of all existing pools.
         /// </summary>
-        private static List<IPool> poolsList = new List<IPool>();
+        private List<IPool> poolsList;
 
         /// <summary>
-        /// Dictionary which allows to acces Pool by name.
+        /// Dictionary which allows to access Pool by name.
         /// </summary>
-        private static Dictionary<int, IPool> poolsDictionary;
+        private Dictionary<int, IPool> poolsDictionary;
 
-        public static Transform DefaultContainer { get; private set; }
+        private Transform defaultContainer;
 
-        static PoolManager()
+        public static Transform DefaultContainer => instance != null ? instance.defaultContainer : null;
+
+        public static IReadOnlyList<IPool> Pools => instance != null ? instance.poolsList : null;
+
+        private void Awake()
         {
+            Init();
+
+            if (Application.isPlaying)
+                DontDestroyOnLoad(gameObject);
+        }
+
+        /// <summary>
+        /// Initializes the PoolManager instance.
+        /// Called automatically by Awake; invoke explicitly after AddComponent in tests
+        /// (EditMode does not trigger Awake).
+        /// </summary>
+        public void Init()
+        {
+            instance = this;
             poolsList = new List<IPool>();
             poolsDictionary = new Dictionary<int, IPool>();
         }
 
+        private void OnDestroy()
+        {
+            poolsList.Clear();
+            poolsDictionary.Clear();
+
+            instance = null;
+        }
+
         public static void ReturnToPool()
         {
-            if (!poolsList.IsNullOrEmpty())
+            if (instance == null) return;
+
+            if (!instance.poolsList.IsNullOrEmpty())
             {
-                for (int i = 0; i < poolsList.Count; i++)
+                for (int i = 0; i < instance.poolsList.Count; i++)
                 {
-                    poolsList[i].ReturnToPoolEverything(true);
+                    instance.poolsList[i].ReturnToPoolEverything(true);
                 }
             }
         }
@@ -49,11 +76,13 @@ namespace Watermelon
         /// <returns>Reference to Pool.</returns>
         public static IPool GetPoolByName(string poolName)
         {
+            if (instance == null) return null;
+
             int poolHash = poolName.GetHashCode();
 
-            if (poolsDictionary.ContainsKey(poolHash))
+            if (instance.poolsDictionary.ContainsKey(poolHash))
             {
-                return poolsDictionary[poolHash];
+                return instance.poolsDictionary[poolHash];
             }
 
             Debug.LogError("[Pool] Not found pool with name: '" + poolName + "'");
@@ -63,7 +92,14 @@ namespace Watermelon
 
         public static void AddPool(IPool pool)
         {
-            if(pool == null)
+            if (instance == null)
+            {
+                Debug.LogError("[Pool]: Attempted to add a pool but PoolManager is not initialized.");
+
+                return;
+            }
+
+            if (pool == null)
             {
                 Debug.LogError("[Pool]: Attempted to add a null pool reference. Please ensure a valid IPool instance is provided.");
 
@@ -72,24 +108,28 @@ namespace Watermelon
 
             int poolHash = pool.Name.GetHashCode();
 
-            if (poolsDictionary.ContainsKey(poolHash))
+            if (instance.poolsDictionary.ContainsKey(poolHash))
             {
                 Debug.LogError("[Pool] Adding a new pool failed. Name \"" + pool.Name + "\" already exists.");
 
                 return;
             }
 
-            poolsDictionary.Add(poolHash, pool);
-            poolsList.Add(pool);
+            instance.poolsDictionary.Add(poolHash, pool);
+            instance.poolsList.Add(pool);
         }
 
         public static bool HasPool(string name)
         {
-            return poolsDictionary.ContainsKey(name.GetHashCode());
+            if (instance == null) return false;
+
+            return instance.poolsDictionary.ContainsKey(name.GetHashCode());
         }
 
         public static void DestroyPool(IPool pool)
         {
+            if (instance == null) return;
+
             if (pool == null)
             {
                 Debug.LogError("[Pool]: Attempted to destroy a null pool reference. Please ensure a valid IPool instance is provided.");
@@ -99,32 +139,27 @@ namespace Watermelon
 
             pool.Clear();
 
-            poolsDictionary.Remove(pool.Name.GetHashCode());
-            poolsList.Remove(pool);
-        }
-
-        public static bool PoolExists(string name)
-        {
-            return poolsDictionary.ContainsKey(name.GetHashCode());
+            instance.poolsDictionary.Remove(pool.Name.GetHashCode());
+            instance.poolsList.Remove(pool);
         }
 
         public static Transform GetContainer(Transform poolContainer)
         {
 #if UNITY_EDITOR
-            if (poolContainer == null)
+            if (poolContainer == null && instance != null)
             {
-                if(DefaultContainer == null)
+                if (instance.defaultContainer == null)
                 {
                     // Create container object
-                    GameObject containerObject = new GameObject("[POOL OBJECTS]");
-                    DefaultContainer = containerObject.transform;
-                    DefaultContainer.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-                    DefaultContainer.localScale = Vector3.one;
+                    GameObject containerObject = new("[POOL OBJECTS]");
+                    instance.defaultContainer = containerObject.transform;
+                    instance.defaultContainer.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    instance.defaultContainer.localScale = Vector3.one;
 
-                    GameObject.DontDestroyOnLoad(DefaultContainer);
+                    DontDestroyOnLoad(instance.defaultContainer);
                 }
 
-                return DefaultContainer;
+                return instance.defaultContainer;
             }
 #endif
 
@@ -134,12 +169,6 @@ namespace Watermelon
         public static string FormatName(string name, int elementIndex)
         {
             return string.Format(OBJECT_FORMAT, name, elementIndex);
-        }
-
-        private static void UnloadStatic()
-        {
-            poolsList.Clear();
-            poolsDictionary.Clear();
         }
     }
 }

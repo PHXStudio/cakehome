@@ -1,0 +1,2032 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d08093cb2c218034cba0832078411d9b, type: 3}
+  m_Name: Zone 1 Data
+  m_EditorClassIdentifier: 
+  zoneId: 7b7bb54f-00e6-41eb-bb33-18d87327e0be
+  zoneName: Let's make coffee
+  minLevelToUnlock: 0
+  backgroundSprite: {fileID: 21300000, guid: f9a55569c3bbcaf498e69dadf09e87ed, type: 3}
+  zonePreview: {fileID: 21300000, guid: 0cdb4a755de780a4895e1aa738ea30c6, type: 3}
+  zonePrefab: {fileID: 6325659266932893377, guid: 41e27f6306c29984ab1f8c23de1511ba,
+    type: 3}
+  progression:
+  - atUpgrade: 1
+    targetLevel:
+      level: 1
+      progress: 0.4
+    dialog: {fileID: 11400000, guid: e2f76d352ddb432594a24c3b0490073e, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000100
+    sequentialTasks:
+    - addMode: 1
+      task:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        items:
+        - typeId: Coffee
+          grade: 5
+          collected: 0
+        coinsReward: 4
+    - addMode: 1
+      task:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        items:
+        - typeId: Coffee
+          grade: 7
+          collected: 0
+        coinsReward: 16
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 1
+            collected: 0
+          - typeId: Coffee
+            grade: 2
+            collected: 0
+          coinsReward: 1
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 2
+            collected: 0
+          - typeId: Coffee
+            grade: 2
+            collected: 0
+          coinsReward: 1
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 1
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 1
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 1
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 2
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 3
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 1
+            collected: 0
+          coinsReward: 2
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      stopSpawnCoinMultiplier: 2.5
+      maxSimultaneousRandomTasks: 1
+  - atUpgrade: 2
+    targetLevel:
+      level: 1
+      progress: 0.8
+    dialog: {fileID: 11400000, guid: bad3fd1947b64873818329c838690657, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000200
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 1
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 3
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 0.3877551
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 10
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 1
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 3
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 8
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      stopSpawnCoinMultiplier: 2.5
+      maxSimultaneousRandomTasks: 1
+  - atUpgrade: 3
+    targetLevel:
+      level: 2
+      progress: 0.4
+    dialog: {fileID: 11400000, guid: 236e637fb48f49e9bfdff602a29841a2, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000300
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 3
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 0.52577317
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 10
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 8
+      - weight: 0.166927
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      stopSpawnCoinMultiplier: 2.5
+      maxSimultaneousRandomTasks: 1
+  - atUpgrade: 4
+    targetLevel:
+      level: 3
+      progress: 0.25
+    dialog: {fileID: 11400000, guid: 7ea28eeddc504f63b9911982f7d1018f, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000400
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 4
+      - weight: 0.75
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 10
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 8
+      - weight: 0.3622449
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 18
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 0.52924466
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 16
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      stopSpawnCoinMultiplier: 2.5
+      maxSimultaneousRandomTasks: 1
+  - atUpgrade: 5
+    targetLevel:
+      level: 4
+      progress: 0
+    dialog: {fileID: 11400000, guid: ed39f68a82a94e8f857212367aff61e1, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000500
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 0.7083333
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 0.4858247
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 4
+            collected: 0
+          coinsReward: 20
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          coinsReward: 6
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 0.15347633
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 9
+            collected: 0
+          coinsReward: 30
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      stopSpawnCoinMultiplier: 2.5
+      maxSimultaneousRandomTasks: 2
+  - atUpgrade: 6
+    targetLevel:
+      level: 4
+      progress: 0.35
+    dialog: {fileID: 11400000, guid: 98817853840e4a838ee713d8dbd2916f, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000600
+    sequentialTasks:
+    - addMode: 1
+      task:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        items:
+        - typeId: Cake
+          grade: 3
+          collected: 0
+        coinsReward: 1
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 0.4489796
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 4
+            collected: 0
+          coinsReward: 14
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 20
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 10
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 0.20874378
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 8
+            collected: 0
+          coinsReward: 30
+      - weight: 0.21665634
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 5
+            collected: 0
+          coinsReward: 30
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      stopSpawnCoinMultiplier: 2
+      maxSimultaneousRandomTasks: 2
+  - atUpgrade: 7
+    targetLevel:
+      level: 5
+      progress: 0.1
+    dialog: {fileID: 11400000, guid: 5aefe483a0504b198cd00c2aaab72f93, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000700
+      - reward:
+          rid: 7000000000000000701
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 0.36734694
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 4
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          coinsReward: 16
+      - weight: 1.0983117
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 9
+            collected: 0
+          coinsReward: 26
+      - weight: 0.17542775
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 3
+            collected: 0
+          coinsReward: 10
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      stopSpawnCoinMultiplier: 2
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 8
+    targetLevel:
+      level: 5
+      progress: 0.6
+    dialog: {fileID: 11400000, guid: f8cd14278e214813b9016b25fabd17c6, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000800
+      - reward:
+          rid: 7000000000000000801
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 3
+            collected: 0
+          coinsReward: 4
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 0.33804
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 8
+            collected: 0
+          coinsReward: 12
+      - weight: 0.5639612
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 4
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 6
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      stopSpawnCoinMultiplier: 2
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 9
+    targetLevel:
+      level: 6
+      progress: 0
+    dialog: {fileID: 11400000, guid: 6f9f37c647f44f16998e6e9499536de3, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000000900
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 8
+            collected: 0
+          coinsReward: 30
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 18
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 12
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      stopSpawnCoinMultiplier: 2
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 10
+    targetLevel:
+      level: 6
+      progress: 0.25
+    dialog: {fileID: 11400000, guid: 308106e684494b11bf253132fd77343b, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001000
+      - reward:
+          rid: 7000000000000001001
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 0.9704017
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 3
+            collected: 0
+          coinsReward: 2
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1.2205582
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 12
+      - weight: 0.56986815
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 9
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      stopSpawnCoinMultiplier: 2
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 11
+    targetLevel:
+      level: 6
+      progress: 0.9
+    dialog: {fileID: 11400000, guid: 5aed67e337bc4f93a25bb9d03656e19b, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001100
+      - reward:
+          rid: 7000000000000001101
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 3
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 1.0855331
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 8
+      - weight: 0.8759201
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 4
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 8
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      - {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+      stopSpawnCoinMultiplier: 1.5
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 12
+    targetLevel:
+      level: 7
+      progress: 0.15
+    dialog: {fileID: 11400000, guid: 38697cede7984bc0851f60cba3a56d6c, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001200
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      - {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+      stopSpawnCoinMultiplier: 1.5
+      maxSimultaneousRandomTasks: 3
+  - atUpgrade: 13
+    targetLevel:
+      level: 7
+      progress: 0.7
+    dialog: {fileID: 11400000, guid: 5485a030091d42e39f86568120d1a024, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001300
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 0.59251565
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 5
+            collected: 0
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 12
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 0.9294028
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 20
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 12
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      - {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+      stopSpawnCoinMultiplier: 1.5
+      maxSimultaneousRandomTasks: 4
+  - atUpgrade: 14
+    targetLevel:
+      level: 8
+      progress: 0
+    dialog: {fileID: 11400000, guid: db70a97f47e64a569a2a2485a7d0cd8c, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001400
+      - reward:
+          rid: 7000000000000001401
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 6
+      - weight: 1.5723405
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 2
+            collected: 0
+          coinsReward: 4
+      - weight: 0.30988792
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 5
+            collected: 0
+          coinsReward: 30
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 8
+            collected: 0
+          coinsReward: 40
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 20
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 1.044899
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Candy
+            grade: 4
+            collected: 0
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 12
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      - {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+      stopSpawnCoinMultiplier: 1.5
+      maxSimultaneousRandomTasks: 4
+  - atUpgrade: 15
+    targetLevel:
+      level: 8
+      progress: 0.3
+    dialog: {fileID: 11400000, guid: b7b7e9dc17ac40af98656751cfff0be3, type: 2}
+    reward:
+      rewards:
+      - reward:
+          rid: 7000000000000001500
+    sequentialTasks: []
+    randomTasks:
+      tasks:
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          coinsReward: 6
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 4
+            collected: 0
+          coinsReward: 4
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      - weight: 2
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          coinsReward: 8
+      - weight: 0.7232704
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 4
+            collected: 0
+          - typeId: Candy
+            grade: 3
+            collected: 0
+          coinsReward: 18
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 6
+            collected: 0
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 24
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 5
+            collected: 0
+          - typeId: Coffee
+            grade: 8
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Cake
+            grade: 4
+            collected: 0
+          - typeId: Cake
+            grade: 8
+            collected: 0
+          coinsReward: 32
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Soda
+            grade: 3
+            collected: 0
+          - typeId: Coffee
+            grade: 6
+            collected: 0
+          coinsReward: 16
+      - weight: 1
+        task:
+          character: {fileID: 0}
+          items:
+          - typeId: Coffee
+            grade: 7
+            collected: 0
+          - typeId: Cake
+            grade: 7
+            collected: 0
+          coinsReward: 32
+      characters:
+      - {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+      - {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+      - {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+      - {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+      - {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+      - {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+      stopSpawnCoinMultiplier: 1.5
+      maxSimultaneousRandomTasks: 4
+  references:
+    version: 2
+    RefIds:
+    - rid: 7000000000000000100
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Kettle Spawner
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000000200
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Kettle Spawner
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000000300
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Kettle Spawner
+        spawnerGrade: 6
+        spawnFloatingImage: 1
+    - rid: 7000000000000000400
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Kettle Spawner
+        spawnerGrade: 7
+        spawnFloatingImage: 1
+    - rid: 7000000000000000500
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Kettle Spawner
+        spawnerGrade: 8
+        spawnFloatingImage: 1
+    - rid: 7000000000000000600
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 1
+        spawnFloatingImage: 1
+    - rid: 7000000000000000700
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 1
+        spawnFloatingImage: 1
+    - rid: 7000000000000000701
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 1
+        spawnFloatingImage: 1
+    - rid: 7000000000000000800
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000000801
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 2
+        spawnFloatingImage: 1
+    - rid: 7000000000000000900
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000001000
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 6
+        spawnFloatingImage: 1
+    - rid: 7000000000000001001
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 1
+        spawnFloatingImage: 1
+    - rid: 7000000000000001100
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000001101
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 2
+        spawnFloatingImage: 1
+    - rid: 7000000000000001200
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 7
+        spawnFloatingImage: 1
+    - rid: 7000000000000001300
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 2
+        spawnFloatingImage: 1
+    - rid: 7000000000000001400
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Mixer Spawner
+        spawnerGrade: 8
+        spawnFloatingImage: 1
+    - rid: 7000000000000001401
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000001500
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1

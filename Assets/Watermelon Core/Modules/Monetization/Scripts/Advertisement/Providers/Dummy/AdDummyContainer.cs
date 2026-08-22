@@ -5,9 +5,12 @@ using UnityEngine;
 namespace Watermelon
 {
     [System.Serializable]
-    public class AdDummyContainer
+    public class AdDummyContainer : AdsProviderContainer
     {
         [SerializeField] BannerPosition bannerPosition = BannerPosition.Bottom;
         public BannerPosition BannerPosition => bannerPosition;
+
+        public override string ProviderName => "Dummy";
+        public override AdProviderHandler CreateHandler() => new AdDummyHandler();
     }
 }

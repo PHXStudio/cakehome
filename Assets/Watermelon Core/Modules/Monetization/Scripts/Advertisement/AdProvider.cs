@@ -1,11 +1,1 @@
-﻿namespace Watermelon
-{
-    public enum AdProvider
-    {
-        Disable = 0,
-        Dummy = 1,
-        AdMob = 2,
-        UnityAdsLegacy = 3,
-        LevelPlay = 4
-    }
-}
+// Removed — replaced by string-based provider names (AdProviderHandler.ProviderName)

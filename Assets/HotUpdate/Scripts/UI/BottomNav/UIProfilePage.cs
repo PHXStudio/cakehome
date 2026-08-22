@@ -37,17 +37,17 @@ namespace Watermelon
             RefreshHud();
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             AvatarController.RefreshTitles();
             RefreshHud();
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         private void RefreshHud()

@@ -24,7 +24,7 @@ namespace Watermelon
             {
                 foreach (var currency in currencies)
                 {
-                    Currency.FloatingCloudCase floatingCloudCase = currency.FloatingCloud;
+                    Currency.FloatingCloudCase floatingCloudCase = currency.CurrencyCloud;
                     if (floatingCloudCase.AddToCloud)
                     {
                         FloatingCloudSettings floatingCloudSettings;

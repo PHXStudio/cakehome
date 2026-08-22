@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 15
+  m_EditorClassIdentifier: 
+  chapterTitle: The Garden Cup Opens
+  steps:
+  - rid: 98569064345522486
+  - rid: 7740095423295263021
+  - rid: 6017094723360328681
+  - rid: 9013388795491121069
+  - rid: 1624010169242138303
+  - rid: 4750644843132358255
+  - rid: 2603236179278820723
+  - rid: 794585351795024479
+  - rid: 7632278637157118974
+  - rid: 7459902758165588999
+  - rid: 8565043952056864386
+  - rid: 4815553974655003340
+  - rid: 3378386808918064506
+  - rid: 6506342576227592496
+  - rid: 1341209833098369024
+  - rid: 4232608441697667376
+  - rid: 3279309506124032602
+  references:
+    version: 2
+    RefIds:
+    - rid: 98569064345522486
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: It is done.
+    - rid: 794585351795024479
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Grandma left me a house. I thought my job was to restore it.
+    - rid: 1341209833098369024
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: It is too long.
+    - rid: 1624010169242138303
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: And extremely photogenic.
+    - rid: 2603236179278820723
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: The Garden Cup is officially open.
+    - rid: 3279309506124032602
+      type: {class: ThoughtStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: One cup brought us home. The next one can begin a new story.
+    - rid: 3378386808918064506
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: People with coffee.
+    - rid: 4232608441697667376
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        emotion: 0
+        text: Then we will discuss it over another cup.
+    - rid: 4750644843132358255
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: Then I believe an announcement is in order.
+    - rid: 4815553974655003340
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: People.
+    - rid: 6017094723360328681
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: The work is solid.
+    - rid: 6506342576227592496
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: That is a much better slogan.
+    - rid: 7459902758165588999
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Now I think we restored what the house was for.
+    - rid: 7632278637157118974
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        emotion: 0
+        text: And now?
+    - rid: 7740095423295263021
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: The house is standing proud again.
+    - rid: 8565043952056864386
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
+        emotion: 0
+        text: Coffee?
+    - rid: 9013388795491121069
+      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      data:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        emotion: 0
+        text: The garden feels alive.

@@ -27,7 +27,7 @@ namespace Watermelon
             }
         }
 
-        [MenuItem("Window/Watermelon Core/Core Settings", priority = 50)]
+        [MenuItem("Window/Watermelon/Core/Core Settings", priority = 50)]
         private static void SelectSettings()
         {
             CoreSettings coreSettings = EditorUtils.GetAsset<CoreSettings>();

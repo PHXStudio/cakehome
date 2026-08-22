@@ -10,16 +10,9 @@ namespace Watermelon
         public override void Init()
         {
 #if MODULE_MONETIZATION
-            if (Monetization.IsActive)
-            {
-                url = Monetization.Settings.TermsOfUseLink;
-                if (string.IsNullOrEmpty(url))
-                    gameObject.SetActive(false);
-            }
-            else
-            {
+            url = AdsManager.Settings.TermsOfUseLink;
+            if(string.IsNullOrEmpty(url))
                 gameObject.SetActive(false);
-            }
 #else
             gameObject.SetActive(false);
 #endif
@@ -32,7 +25,7 @@ namespace Watermelon
             Application.OpenURL(url);
 
             // Play button sound
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
         }
 
         public override void Select()

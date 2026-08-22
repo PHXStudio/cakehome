@@ -10,8 +10,8 @@ namespace Watermelon
         [InitializeOnLoadMethod]
         public static void CheckCanvasSize()
         {
-#if UNITY_6000
-            UIController uiController = FindFirstObjectByType<UIController>();
+#if UNITY_6000_0_OR_NEWER
+            UIController uiController = FindAnyObjectByType<UIController>();
 #else
             UIController uiController = FindObjectOfType<UIController>();
 #endif
@@ -19,7 +19,7 @@ namespace Watermelon
             if (uiController != null)
             {
                 CanvasScaler canvasScaler = uiController.gameObject.GetComponent<CanvasScaler>();
-                canvasScaler.matchWidthOrHeight = UIUtils.IsWideScreen(Camera.main) ? 1 : 0;
+                canvasScaler.matchWidthOrHeight = UIUtils.IsTablet() ? 1 : 0;
             }
         }
 

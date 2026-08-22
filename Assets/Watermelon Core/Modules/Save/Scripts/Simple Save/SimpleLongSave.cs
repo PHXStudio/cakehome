@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>Minimal <see cref="ISaveObject"/> that persists a single <see langword="long"/> value.</summary>
     [System.Serializable]
     public class SimpleLongSave : ISaveObject
     {
@@ -14,6 +15,6 @@ namespace Watermelon
             }
         }
 
-        public virtual void Flush() { }
+        public virtual void OnBeforeSave() { }
     }
 }

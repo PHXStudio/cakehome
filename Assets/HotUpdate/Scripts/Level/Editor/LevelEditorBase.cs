@@ -26,7 +26,7 @@ namespace Watermelon
         public StringBuilder stringBuilder;
         protected UnityEngine.Object levelsDatabase;
         protected SerializedObject levelsDatabaseSerializedObject;
-        private IEnumerable<SerializedProperty> unmarkedProperties;
+        protected IEnumerable<SerializedProperty> unmarkedProperties;
         protected Vector2 contentScrollViewVector;
         [SerializeField] private WindowConfiguration windowConfiguration;
 
@@ -34,18 +34,21 @@ namespace Watermelon
         private static Color defaultGUIColor;
         private EditorBehaviorMode backupBehaviourMode;
         protected int selectedEditorList;
+        protected GUIStyle boxModifiedStyle;
 
         public static LevelEditorBase Instance { get => instance; }
         public string LEVELS_FOLDER_PATH { get => LEVELS_DATABASE_FOLDER_PATH + PATH_SEPARATOR + LEVELS_FOLDER_NAME; }
         protected virtual string LEVELS_FOLDER_NAME { get => "Levels"; }
         protected virtual string LEVELS_DATABASE_FOLDER_PATH { get => "Assets/Project Files/Data/Level System"; }
+        public virtual string ELEMENT_ASSET_PREFIX { get => "Level "; }
+        public virtual string ELEMENT_FOLDER_PATH { get => LEVELS_FOLDER_PATH; }
         protected Color DefaultGUIColor { get => defaultGUIColor; }
 
         public static float SINGLE_LINE_HEIGHT { get => EditorGUIUtility.singleLineHeight; }
         public static float LABEL_WIDTH{ get => EditorGUIUtility.labelWidth; set => EditorGUIUtility.labelWidth = value; }
 
         [MenuItem("Window/Level Editor")]
-        [MenuItem("Tools/Level Editor")]
+        [MenuItem("Window/Watermelon/Tools/Level Editor")]
         static void ShowWindow()
         {
             System.Type childType = GetChildType();
@@ -56,7 +59,7 @@ namespace Watermelon
         }
 
         [MenuItem("Window/Level Editor", true)]
-        [MenuItem("Tools/Level Editor",true)]
+        [MenuItem("Window/Watermelon/Tools/Level Editor", true)]
         static bool ValidateMenuItem()
         {
             System.Type childType = GetChildType();
@@ -88,7 +91,6 @@ namespace Watermelon
             instance = this;
 
             CreateFolderIfNotExist(LEVELS_DATABASE_FOLDER_PATH);
-            CreateFolderIfNotExist(LEVELS_FOLDER_PATH);
             levelsDatabase = EditorUtils.GetAsset(GetLevelsDatabaseType());
 
             if (levelsDatabase != null)
@@ -273,6 +275,24 @@ namespace Watermelon
         {
         }
 
+        public void DisplayRefreshEditorButton()
+        {
+            if (GUILayout.Button("Refresh", EditorCustomStyles.button))
+            {
+                RefreshEditorWindow();
+            }
+        }
+
+        public void RefreshEditorWindow()
+        {
+            Close();
+
+            EditorApplication.delayCall += () =>
+            {
+                EditorApplication.ExecuteMenuItem("Window/Level Editor");
+            };
+        }
+
         #region useful functions
 
         public static string GetProjectPath()
@@ -354,6 +374,23 @@ namespace Watermelon
             result.SetPixels(pixels);
             result.Apply();
             return result;
+        }
+
+        protected void InitBoxBlockStyle()
+        {
+            boxModifiedStyle = new GUIStyle(EditorCustomStyles.box);
+            boxModifiedStyle.overflow = new RectOffset(0, 0, 0, 0);
+        }
+
+        protected void DrawStyledBoxBlock(string label)
+        {
+            Rect blockRect = EditorGUILayout.BeginVertical(boxModifiedStyle, GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(true));
+            GUI.Box(new Rect(blockRect.x, blockRect.y, blockRect.width, 21), GUIContent.none);
+            GUILayout.Space(14);
+
+            EditorGUI.LabelField(new Rect(blockRect.x + 8, blockRect.y, blockRect.width - 30, 21), label);
+
+            GUILayout.Space(12);
         }
 
         #endregion

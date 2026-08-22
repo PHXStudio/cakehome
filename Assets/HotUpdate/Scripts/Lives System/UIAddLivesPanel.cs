@@ -51,7 +51,7 @@ namespace Watermelon
             panelClosed = null;
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             backgroundImage.color = Color.clear;
             backgroundImage.DOColor(backColor, 0.3f);
@@ -59,17 +59,15 @@ namespace Watermelon
             panel.anchoredPosition = hidePos;
             panel.DOAnchoredPosition(showPos, 0.3f).SetEasing(Ease.Type.SineOut);
 
-            UIController.OnPageOpened(this);
-            UIController.OnPopupWindowOpened(this);
+            NotifyOpened();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             backgroundImage.DOColor(Color.clear, 0.3f);
             panel.DOAnchoredPosition(hidePos, 0.3f).SetEasing(Ease.Type.SineIn).OnComplete(() =>
             {
-                UIController.OnPageClosed(this);
-                UIController.OnPopupWindowClosed(this);
+                NotifyClosed();
             });
         }
 

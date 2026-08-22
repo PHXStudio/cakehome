@@ -69,6 +69,8 @@ namespace Watermelon
                     SerializedProperty iOSIDProperty = tempSerializedProperty.FindPropertyRelative("iOSID");
                     SerializedProperty productKeyTypeProperty = tempSerializedProperty.FindPropertyRelative("productKeyType");
                     SerializedProperty productTypeProperty = tempSerializedProperty.FindPropertyRelative("productType");
+                    SerializedProperty priceProperty = tempSerializedProperty.FindPropertyRelative("defaultUSDPrice");
+                    SerializedProperty rewardsSetProperty = tempSerializedProperty.FindPropertyRelative("rewardsSet");
 
                     ProductKeyType productKeyType = (ProductKeyType)productKeyTypeProperty.intValue;
                     ProductType productType = (ProductType)productTypeProperty.intValue;
@@ -119,6 +121,9 @@ namespace Watermelon
                             androidIDProperty.stringValue = androidIDProperty.stringValue.Trim();
                             iOSIDProperty.stringValue = iOSIDProperty.stringValue.Trim();
                         }
+
+                        GUILayout.Space(8);
+
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.PropertyField(productKeyTypeProperty);
                         if (GUILayout.Button(settingsContent, GUILayout.Width(18), GUILayout.Height(18)))
@@ -126,7 +131,12 @@ namespace Watermelon
                             OpenTypesWindow();
                         }
                         EditorGUILayout.EndHorizontal();
-                        EditorGUILayout.PropertyField(tempSerializedProperty.FindPropertyRelative("productType"));
+                        EditorGUILayout.PropertyField(productTypeProperty);
+
+                        GUILayout.Space(8);
+
+                        EditorGUILayout.PropertyField(priceProperty);
+                        EditorGUILayout.PropertyField(rewardsSetProperty);
 
                         serializedObject.ApplyModifiedProperties();
 
@@ -259,7 +269,7 @@ namespace Watermelon
 
                 if (GUILayout.Button("Add") && newTypeName != "" && uniqueName)
                 {
-                    enumDataList.Add(new EnumData(enumDataList.Count, newTypeName));
+                    enumDataList.Add(new EnumData(GetNextElementID(), newTypeName));
 
                     RegenerateEnum();
 
@@ -341,6 +351,22 @@ namespace Watermelon
                 EditorGUILayout.EndScrollView();
             }
 
+            private int GetNextElementID()
+            {
+                if (enumDataList.IsNullOrEmpty()) return 0;
+
+                int elementID = -1;
+                foreach (EnumData enumData in enumDataList)
+                {
+                    if (enumData.value > elementID)
+                    {
+                        elementID = enumData.value;
+                    }
+                }
+
+                return elementID + 1;
+            }
+
             private void RegenerateEnum()
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -355,7 +381,6 @@ namespace Watermelon
                 sb.AppendLine("    }");
                 sb.AppendLine("}");
 
-                Debug.Log("FilePath:" + filePath);
                 File.WriteAllText(filePath, sb.ToString(), System.Text.Encoding.UTF8);
 
                 AssetDatabase.Refresh();

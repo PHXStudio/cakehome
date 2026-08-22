@@ -97,7 +97,7 @@ namespace Watermelon
                 PropertyData data = GetPropertyData(property);
 
                 // Add properties height
-                foreach (var propertyName in data.CachedProperties)
+                foreach (string propertyName in data.CachedProperties)
                 {
                     height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative(propertyName), true) + 2;
                 }

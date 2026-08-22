@@ -260,7 +260,7 @@ namespace Watermelon
         {
             var result = new K[array.Length];
 
-            for (int i = 0; i < array.Length; i++)
+            for(int i = 0; i <  array.Length; i++)
             {
                 result[i] = converter(array[i]);
             }
@@ -272,7 +272,7 @@ namespace Watermelon
         {
             int sum = 0;
 
-            for (int i = 0; i < array.Length; i++)
+            for(int i = 0; i < array.Length; i++)
             {
                 sum += sumFun(array[i]);
             }
@@ -320,8 +320,7 @@ namespace Watermelon
         {
             for (int i = 0; i < array.Length; i++)
             {
-                if (searchFun(array[i]))
-                    return true;
+                if (searchFun(array[i])) return true;
             }
 
             return false;
@@ -331,8 +330,7 @@ namespace Watermelon
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (searchFun(list[i]))
-                    return true;
+                if (searchFun(list[i])) return true;
             }
 
             return false;
@@ -341,7 +339,7 @@ namespace Watermelon
         public static List<T> MakeCopy<T>(this List<T> list)
         {
             var copy = new List<T>();
-            for (int i = 0; i < list.Count; i++)
+            for(int i = 0; i < list.Count; i++)
             {
                 copy.Add(list[i]);
             }
@@ -350,20 +348,18 @@ namespace Watermelon
 
         public static T[] DropLast<T>(this T[] array, int count)
         {
-            if (count >= array.Length)
-                return new T[0];
+            if (count >= array.Length) return new T[0];
 
             T[] result = new T[array.Length - count];
 
-            for (int i = 0; i < result.Length; i++)
-            {
+            for (int i = 0; i < result.Length; i++) {
                 result[i] = array[i];
             }
 
             return result;
         }
 
-        public static T[] Sort<T, K>(this T[] array, Func<T, K> sortFun) where K : IComparable
+        public static T[] Sort<T, K>(this T[] array, Func<T, K> sortFun) where K: IComparable
         {
             var result = new T[array.Length];
 
@@ -389,9 +385,9 @@ namespace Watermelon
         {
             var result = new List<T>();
 
-            for (int i = 0; i < array.Length; i++)
+            for(int i = 0; i < array.Length; i++)
             {
-                if (!array[i].Equals(itemToRemove))
+                if(!array[i].Equals(itemToRemove))
                 {
                     result.Add(array[i]);
                 }
@@ -402,7 +398,7 @@ namespace Watermelon
 
         public static void ForEach<T>(this T[] array, Action<T> action)
         {
-            for (int i = 0; i < array.Length; i++)
+            for(int i = 0; i < array.Length; i++)
             {
                 action(array[i]);
             }
@@ -412,8 +408,7 @@ namespace Watermelon
         {
             for (int i = 0; i < array.Length; i++)
             {
-                if (action(array[i]))
-                    return array[i];
+                if(action(array[i])) return array[i];
             }
 
             return default(T);
@@ -423,8 +418,7 @@ namespace Watermelon
         {
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i].Equals(t))
-                    return i;
+                if (array[i].Equals(t)) return i;
             }
 
             return -1;
@@ -445,7 +439,7 @@ namespace Watermelon
         {
             for (int i = 0; i < array.Length; i++)
             {
-                Debug.Log(function(array[i]));
+                LogManager.Log(function(array[i]), LogCategory.Systems);
             }
         }
 
@@ -456,7 +450,7 @@ namespace Watermelon
         {
             for (int i = 0; i < array.Count; i++)
             {
-                Debug.Log(function(array[i]));
+                LogManager.Log(function(array[i]), LogCategory.Systems);
             }
         }
 
@@ -538,17 +532,16 @@ namespace Watermelon
             }
         }
 
-        public static T FindRandomOrder<T>(this List<T> list, Func<T, bool> action)
+        public static T FindRandomOrder<T>(this List<T> list, Func<T, bool> action) 
         {
             var tabsIndices = new List<int>(list.Count);
-            for (int i = 0; i < list.Count; i++)
-                tabsIndices.Add(i);
+            for (int i = 0; i < list.Count; i++) tabsIndices.Add(i);
 
             while (tabsIndices.Count > 0)
             {
-                var i = Random.Range(0, tabsIndices.Count);
+                int i = Random.Range(0, tabsIndices.Count);
 
-                var index = tabsIndices[i];
+                int index = tabsIndices[i];
                 tabsIndices.RemoveAt(i);
 
                 if (action(list[index]))
@@ -563,14 +556,13 @@ namespace Watermelon
         public static T FindRandomOrder<T>(this T[] array, Func<T, bool> action)
         {
             var tabsIndices = new List<int>(array.Length);
-            for (int i = 0; i < array.Length; i++)
-                tabsIndices.Add(i);
+            for (int i = 0; i < array.Length; i++) tabsIndices.Add(i);
 
             while (tabsIndices.Count > 0)
             {
-                var i = Random.Range(0, tabsIndices.Count);
+                int i = Random.Range(0, tabsIndices.Count);
 
-                var index = tabsIndices[i];
+                int index = tabsIndices[i];
                 tabsIndices.RemoveAt(i);
 
                 if (action(array[index]))
@@ -659,10 +651,9 @@ namespace Watermelon
         {
             var resultList = new List<T>();
 
-            for (int i = 0; i < array.Length; i++)
+            for(int i = 0; i < array.Length; i++)
             {
-                if (func(array[i]))
-                    resultList.Add(array[i]);
+                if (func(array[i])) resultList.Add(array[i]);
             }
 
             return resultList;
@@ -695,6 +686,16 @@ namespace Watermelon
             // Both arrays are not null, compare using SequenceEqual
             return array1.SequenceEqual(array2);
         }
+
+        public static bool IsInsideMatrix<T>(this T[,] matrix, Vector2Int pos)
+        {
+            return pos.x >= 0 && pos.y >= 0 && pos.x < matrix.GetLength(0) && pos.y < matrix.GetLength(1);
+        }
+
+        public static bool IsInsideMatrix<T>(this T[,] matrix, int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < matrix.GetLength(0) && y < matrix.GetLength(1);
+        }
         #endregion
 
         #region GameObject
@@ -722,7 +723,7 @@ namespace Watermelon
                 return true;
             }
 
-            Debug.LogError($"{gameObject.name} doesn't have {typeof(T)} script added to it", gameObject);
+            Debug.LogError($"{gameObject.name} doesn't have {typeof(T)} script added to it");
 
             component = null;
 
@@ -1089,9 +1090,9 @@ namespace Watermelon
 
         public static Vector3 GetRandomPosition(this Bounds bounds)
         {
-            var halfWidth = bounds.size.x / 2f;
-            var halfHeight = bounds.size.y / 2f;
-            var halfDepth = bounds.size.z / 2f;
+            float halfWidth = bounds.size.x / 2f;
+            float halfHeight = bounds.size.y / 2f;
+            float halfDepth = bounds.size.z / 2f;
 
             var result = bounds.center + new Vector3(
                 Random.Range(-halfWidth, halfWidth),
@@ -1103,9 +1104,9 @@ namespace Watermelon
 
         public static Vector3 GetRandomPosition(this Bounds bounds, Quaternion rotation, float offset = 0)
         {
-            var halfWidth = bounds.size.x / 2f + offset;
-            var halfHeight = bounds.size.y / 2f + offset;
-            var halfDepth = bounds.size.z / 2f + offset;
+            float halfWidth = bounds.size.x / 2f + offset;
+            float halfHeight = bounds.size.y / 2f + offset;
+            float halfDepth = bounds.size.z / 2f + offset;
 
             var result = bounds.center + rotation * new Vector3(
                 Random.Range(-halfWidth, halfWidth),
@@ -1259,6 +1260,119 @@ namespace Watermelon
         }
         #endregion
 
+        #region Vector2Int
+        /// <summary>
+        ///  Adds to each component specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to add</param>
+        /// <returns></returns>
+        public static Vector2Int AddValue(this Vector2Int vector, int value)
+        {
+            vector.x += value;
+            vector.y += value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Adds to x component specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to add</param>
+        /// <returns></returns>
+        public static Vector2Int AddToX(this Vector2Int vector, int value)
+        {
+            vector.x += value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Adds to y component specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to add</param>
+        /// <returns></returns>
+        public static Vector2Int AddToY(this Vector2Int vector, int value)
+        {
+            vector.y += value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Multiplies x component to specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to multiply</param>
+        /// <returns></returns>
+        public static Vector2Int MultX(this Vector2Int vector, int value)
+        {
+            vector.x *= value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Multiplies y component to specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to multiply</param>
+        /// <returns></returns>
+        public static Vector2Int MultY(this Vector2Int vector, int value)
+        {
+            vector.y *= value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Sets to x component specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to set</param>
+        /// <returns></returns>
+        public static Vector2Int SetX(this Vector2Int vector, int value)
+        {
+            vector.x = value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Sets to y component specified value
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="value">value to set</param>
+        /// <returns></returns>
+        public static Vector2Int SetY(this Vector2Int vector, int value)
+        {
+            vector.y = value;
+
+            return vector;
+        }
+
+        /// <summary>
+        /// Convert float value to Vector2
+        /// </summary>
+        /// <param name="value">value to convert</param>
+        /// <returns></returns>
+        public static Vector2Int ToVector2Int(this int value)
+        {
+            return new Vector2Int(value, value);
+        }
+
+        /// <summary>
+        /// Convert Vector2Int to Vector3
+        /// </summary>
+        /// <param name="z">Z value</param>
+        public static Vector3 ToVector3(this Vector2Int vector, float z = 0)
+        {
+            return new Vector3(vector.x, vector.y, z);
+        }
+        #endregion
+
         #region Color
         /// <summary>
         /// Set color alpha
@@ -1336,9 +1450,9 @@ namespace Watermelon
             return dictionary[key];
         }
 
-        public static void ForEachKey<T, K>(this Dictionary<T, K> dictionary, Action<T> action)
+        public static void ForEachKey<T,K>(this Dictionary<T, K> dictionary, Action<T> action)
         {
-            foreach (var key in dictionary.Keys)
+            foreach(var key in dictionary.Keys)
             {
                 action(key);
             }
@@ -1352,6 +1466,31 @@ namespace Watermelon
             }
         }
 
+        public static string ToKeyValueString(this Dictionary<string, string> dict)
+        {
+            if (dict == null || dict.Count == 0)
+                return string.Empty;
+
+            return string.Join(";", dict.Select(kv => $"{kv.Key}:{kv.Value}"));
+        }
+
+        public static void AppendDictionary(this StringBuilder sb, Dictionary<string, string> dict)
+        {
+            if (dict == null || dict.Count == 0)
+                return;
+
+            foreach (KeyValuePair<string, string> kv in dict)
+            {
+                sb.AppendLine();
+                sb.Append("<b>");
+                sb.Append(kv.Key);
+                sb.Append("</b>");
+                sb.Append(" ");
+                sb.Append("=");
+                sb.Append(" ");
+                sb.Append(kv.Value);
+            }
+        }
         #endregion
 
         #region Object
@@ -1367,7 +1506,7 @@ namespace Watermelon
             stringBuilder.AppendLine("");
 
             string fieldsString = GetFields(0, maxDepth, "  ", parentObject);
-            if (!string.IsNullOrEmpty(fieldsString))
+            if(!string.IsNullOrEmpty(fieldsString))
             {
                 stringBuilder.AppendLine("Variables:");
                 stringBuilder.Append(fieldsString);
@@ -1379,7 +1518,7 @@ namespace Watermelon
         private static string GetFields(int depth, int maxDepth, string space, object parentObject)
         {
             depth += 1;
-
+               
             StringBuilder stringBuilder = new StringBuilder();
             Type parentObjectType = parentObject.GetType();
 
@@ -1405,7 +1544,7 @@ namespace Watermelon
                             FieldInfo[] arrayFieldInfos = elementType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
                             IList list = (IList)value;
-                            if (list != null)
+                            if(list != null)
                             {
                                 stringBuilder.AppendLine(space + fieldName + " - " + fieldType.ToString());
 
@@ -1513,9 +1652,9 @@ namespace Watermelon
             }
         }
 
-        #endregion
+#endregion
 
-        #region Rigidbody
+#region Rigidbody
 
         // velocity
 

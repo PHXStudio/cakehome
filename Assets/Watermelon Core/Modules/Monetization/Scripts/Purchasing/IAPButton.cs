@@ -36,6 +36,13 @@ namespace Watermelon
 
         public void UpdateState(ProductData product)
         {
+            if (loadingObject == null || priceText == null || backImage == null)
+            {
+                Debug.LogWarning($"[IAPButton] UI references are not assigned. Skipping UpdateState. Key: {key}");
+
+                return;
+            }
+
             if (product != null)
             {
                 loadingObject.SetActive(false);
@@ -43,7 +50,22 @@ namespace Watermelon
 
                 backImage.sprite = activeBackSprite;
 
-                priceText.text = product.GetLocalPrice();
+                if (product.Price != 0.01m)
+                {
+                    priceText.text = product.GetLocalPrice();
+                }
+                else
+                {
+                    IAPItem iapItem = IAPManager.GetIAPItem(key);
+                    if(iapItem != null)
+                    {
+                        priceText.text = $"USD {iapItem.DefaultUSDPrice}";
+                    }
+                    else
+                    {
+                        priceText.text = product.GetLocalPrice();
+                    }
+                }
             }
             else
             {
@@ -53,19 +75,23 @@ namespace Watermelon
 
         private void SetDisabledState()
         {
-            loadingObject.SetActive(true);
-            priceText.gameObject.SetActive(false);
+            if (loadingObject != null)
+                loadingObject.SetActive(true);
 
-            backImage.sprite = unactiveBackSprite;
+            if (priceText != null)
+                priceText.gameObject.SetActive(false);
+
+            if (backImage != null && unactiveBackSprite != null)
+                backImage.sprite = unactiveBackSprite;
         }
 
         private void OnButtonClicked()
         {
 #if MODULE_HAPTIC
-            Haptic.Play(Haptic.HAPTIC_LIGHT);
+            Haptic.Play(Haptic.HAPTIC_HARD);
 #endif
 
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
 
             IAPManager.BuyProduct(key);
         }

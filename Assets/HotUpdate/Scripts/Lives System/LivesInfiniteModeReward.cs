@@ -11,7 +11,7 @@ namespace Watermelon
         [SerializeField] TextMeshProUGUI durationText;
         [SerializeField] string durationFormat = "{hh}hrs";
 
-        public override void Init()
+        public void Init()
         {
             if (durationText != null)
             {

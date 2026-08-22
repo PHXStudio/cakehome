@@ -2,7 +2,7 @@
 
 namespace Watermelon
 {
-    [CreateAssetMenu(fileName = "Currency Database", menuName = "Data/Core/Currency Database")]
+    [CreateAssetMenu(fileName = "Currency Database", menuName = "Data/Currency/Database")]
     public class CurrencyDatabase : ScriptableObject
     {
         [SerializeField] Currency[] currencies;

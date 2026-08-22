@@ -42,12 +42,12 @@ namespace Watermelon.IAPStore
             coinsUI.Init();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             appearTweenCases.KillActive();
 
@@ -75,7 +75,7 @@ namespace Watermelon.IAPStore
 
             appearTweenCases[^1].OnComplete(() =>
             {
-                UIController.OnPageOpened(this);
+                NotifyOpened();
             });
         }
 

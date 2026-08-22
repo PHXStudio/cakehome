@@ -2,9 +2,9 @@
 {
     public class AdSave : ISaveObject
     {
-        public bool IsForcedAdEnabled = true;
+        public double ForcedAdDisabledUntil = 0;
 
-        public void Flush()
+        public void OnBeforeSave()
         {
 
         }

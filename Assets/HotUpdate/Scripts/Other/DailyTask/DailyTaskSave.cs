@@ -14,7 +14,7 @@ namespace Watermelon
         /// <summary>已领取奖励的任务 bitmask</summary>
         public int ClaimedMask;
 
-        public void Flush()
+        public void OnBeforeSave()
         {
         }
     }

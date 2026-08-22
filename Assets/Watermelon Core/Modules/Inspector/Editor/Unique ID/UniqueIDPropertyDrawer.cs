@@ -67,7 +67,11 @@ namespace Watermelon
                 }
 
                 UniqueIDHandler.IDCase idCase = UniqueIDHandler.GetCase(idValue);
+#if UNITY_6000_4_OR_NEWER
+                int instanceID = property.serializedObject.targetObject.GetEntityId().GetHashCode();
+#else
                 int instanceID = property.serializedObject.targetObject.GetInstanceID();
+#endif
 
                 if (idCase != null)
                 {

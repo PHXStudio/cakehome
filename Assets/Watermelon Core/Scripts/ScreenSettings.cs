@@ -1,6 +1,7 @@
-﻿#pragma warning disable 0649
+#pragma warning disable 0649
 #pragma warning disable 0414
 
+using System.Collections;
 using UnityEngine;
 
 namespace Watermelon
@@ -20,7 +21,7 @@ namespace Watermelon
         [Header("Sleep")]
         [SerializeField] int sleepTimeout = -1;
 
-        public override void CreateComponent()
+        public override IEnumerator InitAsync(GameObject owner)
         {
             Screen.sleepTimeout = sleepTimeout;
 
@@ -53,6 +54,7 @@ namespace Watermelon
                 Application.targetFrameRate = (int)defaultFrameRate;
 #endif
             }
+            yield break;
         }
 
         private enum AllowedFrameRates

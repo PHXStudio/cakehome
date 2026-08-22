@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
@@ -15,8 +14,7 @@ namespace Watermelon
         private bool isDefinesSame;
         private bool isRequireInit;
 
-        [MenuItem("Tools/Editor/Define Manager")]
-        [MenuItem("Window/Watermelon Core/Define Manager", priority = -50)]
+        [MenuItem("Window/Watermelon/Tools/Define Manager", priority = -50)]
         public static void ShowWindow()
         {
             DefineManagerWindow window = GetWindow<DefineManagerWindow>(true);
@@ -30,113 +28,32 @@ namespace Watermelon
 
             CacheVariables();
         }
-                
-        private string[] GetActiveStaticDefines()
-        {
-#if UNITY_6000
-            string definesLine = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
-#else
-            string definesLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
-#endif
-
-            if (!string.IsNullOrEmpty(definesLine))
-            {
-                List<string> activeDefines = new List<string>();
-
-                string[] defines = definesLine.Split(';');
-
-                for (int i = 0; i < DefineSettings.STATIC_DEFINES.Length; i++)
-                {
-                    if (Array.FindIndex(defines, x => x.Equals(DefineSettings.STATIC_DEFINES[i])) != -1)
-                    {
-                        activeDefines.Add(DefineSettings.STATIC_DEFINES[i]);
-                    }
-                }
-
-                return activeDefines.ToArray();
-            }
-
-            return null;
-        }
 
         private void CacheVariables()
         {
-            // Get project defines
             List<Define> defines = new List<Define>();
 
-            // Get static defines
-            string[] activeStaticDefines = GetActiveStaticDefines();
-            if (!activeStaticDefines.IsNullOrEmpty())
+            // Project-type: [DefineAttribute] with no AssemblyType — a manual flag, not auto-detected.
+            List<DefineAttribute> defineAttributes = DefineManager.GetAllDefineAttributes();
+            foreach (DefineAttribute defineAttribute in defineAttributes)
             {
-                for (int i = 0; i < activeStaticDefines.Length; i++)
-                {
-                    defines.Add(new Define(activeStaticDefines[i], Define.Type.Static, true));
-                }
+                if (string.IsNullOrEmpty(defineAttribute.AssemblyType) && defines.FindIndex(x => x.define == defineAttribute.Define) == -1)
+                    defines.Add(new Define(defineAttribute.Define, Define.Type.Project));
             }
 
-            //Get assembly
-            List<Type> gameTypes = new List<Type>();
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
+            // Auto-type: anything DefineManager tracks and manages itself (module presence/absence).
+            // Everything else already present in PlayerSettings is ThirdParty — either orphaned
+            // leftovers, or a define some third-party SDK sets and manages on its own. We deliberately
+            // leave those untouched from CheckAutoDefines: toggling a define we don't own would race
+            // against whatever set it and recompile the project forever.
+            List<RegisteredDefine> registeredDefines = DefineManager.GetDynamicDefines(defineAttributes);
+
+            foreach (string define in DefineManager.GetActiveDefines())
             {
-                if(assembly != null)
-                {
-                    try
-                    {
-                        Type[] tempTypes = assembly.GetTypes();
-
-                        tempTypes = tempTypes.Where(m => m.IsDefined(typeof(DefineAttribute), true)).ToArray();
-
-                        if (!tempTypes.IsNullOrEmpty())
-                            gameTypes.AddRange(tempTypes);
-                    }
-                    catch (ReflectionTypeLoadException e)
-                    {
-                        Debug.LogException(e);
-                    }
-                }
-            }
-
-            foreach (Type type in gameTypes)
-            {
-                //Get attribute
-                DefineAttribute[] defineAttributes = (DefineAttribute[])Attribute.GetCustomAttributes(type, typeof(DefineAttribute));
-
-                for (int i = 0; i < defineAttributes.Length; i++)
-                {
-                    if (string.IsNullOrEmpty(defineAttributes[i].AssemblyType))
-                    {
-                        int methodId = defines.FindIndex(x => x.define == defineAttributes[i].Define);
-                        if (methodId == -1)
-                        {
-                            defines.Add(new Define(defineAttributes[i].Define, Define.Type.Project));
-                        }
-                    }
-                }
-            }
-
-            List<RegisteredDefine> registeredDefines = DefineSettings.GetDynamicDefines();
-
-#if UNITY_6000
-            string defineLine = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
-#else
-            string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
-#endif
-
-            string[] currentDefinesArray = defineLine.Split(';');
-            for(int i = 0; i < currentDefinesArray.Length; i++)
-            {
-                if(!string.IsNullOrEmpty(currentDefinesArray[i]))
-                {
-                    if(registeredDefines.FindIndex(x => x.Define == currentDefinesArray[i]) != -1)
-                    {
-                        defines.Add(new Define(currentDefinesArray[i], Define.Type.Auto, true));
-                    } 
-                    else if (defines.FindIndex(x => x.define == currentDefinesArray[i]) == -1)
-                    {
-                        defines.Add(new Define(currentDefinesArray[i], Define.Type.ThirdParty, true));
-                    }
-                }
+                if (registeredDefines.FindIndex(x => x.Define == define) != -1)
+                    defines.Add(new Define(define, Define.Type.Auto, true));
+                else if (defines.FindIndex(x => x.define == define) == -1)
+                    defines.Add(new Define(define, Define.Type.ThirdParty, true));
             }
 
             projectDefines = defines.ToArray();
@@ -146,76 +63,22 @@ namespace Watermelon
 
         private void LoadActiveDefines()
         {
-#if UNITY_6000
-            string defineLine = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
-#else
-            string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
-#endif
-
-            string[] currentDefinesArray = defineLine.Split(';');
-
-            if(!currentDefinesArray.IsNullOrEmpty())
+            foreach (string define in DefineManager.GetActiveDefines())
             {
-                for(int i = 0; i < currentDefinesArray.Length; i++)
-                {
-                    int defineIndex = Array.FindIndex(projectDefines, x => x.define.Equals(currentDefinesArray[i]));
-
-                    if(defineIndex != -1)
-                    {
-                        projectDefines[defineIndex].isEnabled = true;
-                    }
-                }
+                int defineIndex = Array.FindIndex(projectDefines, x => x.define == define);
+                if (defineIndex != -1)
+                    projectDefines[defineIndex].isEnabled = true;
             }
-        }
-
-        private string GetActiveDefinesLine()
-        {
-            string definesLine = "";
-
-            for(int i = 0; i < projectDefines.Length; i++)
-            {
-                if(projectDefines[i].isEnabled)
-                {
-                    definesLine += projectDefines[i].define + ";";
-                }
-            }
-
-            return definesLine;
-        }
-
-        private void SaveDefines(string definesLine)
-        {
-#if UNITY_6000
-            PlayerSettings.SetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)), definesLine);
-#else
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget), definesLine);
-#endif
         }
 
         private bool CompareDefines()
         {
-#if UNITY_6000
-            string defineLine = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
-#else
-            string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
-#endif
+            string[] currentDefines = DefineManager.GetActiveDefines();
 
-            string[] currentDefinesArray = defineLine.Split(';');
-
-            for (int i = 0; i < projectDefines.Length; i++)
+            foreach (Define define in projectDefines)
             {
-                int findIndex = Array.FindIndex(currentDefinesArray, x => x == projectDefines[i].define);
-
-                if (projectDefines[i].isEnabled)
-                {
-                    if (findIndex == -1)
-                        return false;
-                }
-                else
-                {
-                    if (findIndex != -1)
-                        return false;
-                }
+                if (define.isEnabled != currentDefines.Contains(define.define))
+                    return false;
             }
 
             return true;
@@ -243,17 +106,6 @@ namespace Watermelon
                             EditorGUILayout.LabelField(projectDefines[i].define + " (Auto)");
 
                             break;
-                        case Define.Type.Static:
-
-                            EditorGUI.BeginDisabledGroup(true);
-                            EditorGUILayout.Toggle(true, GUILayout.Width(20));
-                            EditorGUILayout.LabelField(projectDefines[i].define);
-
-                            GUILayout.Space(22);
-
-                            EditorGUI.EndDisabledGroup();
-
-                            break;
                         case Define.Type.Project:
                             projectDefines[i].isEnabled = EditorGUILayout.Toggle(projectDefines[i].isEnabled, GUILayout.Width(20));
                             EditorGUILayout.LabelField(projectDefines[i].define);
@@ -270,23 +122,17 @@ namespace Watermelon
 
                             if (GUILayout.Button("X", EditorCustomStyles.buttonRed, GUILayout.Height(18), GUILayout.Width(18)))
                             {
-                                if (EditorUtility.DisplayDialog("Remove define", "Are you sure you want to remove define?", "Remove", "Cancel"))
+                                if (EditorUtility.DisplayDialog("Remove define", "Are you sure you want to remove define? This removes it from every synced platform, not just the active one.", "Remove", "Cancel"))
                                 {
-#if UNITY_6000
-                                    string defineLine = PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
-#else
-                                    string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
-#endif
-                                    string[] currentDefinesArray = defineLine.Split(';');
+                                    DefineManager.DisableDefineForAllPlatforms(projectDefines[i].define);
 
-                                    defineLine = "";
-                                    for (int k = 0; k < currentDefinesArray.Length; k++)
-                                    {
-                                        if (currentDefinesArray[k] != projectDefines[i].define)
-                                            defineLine += currentDefinesArray[k] + ";";
-                                    }
-                                    
-                                    SaveDefines(defineLine);
+                                    // projectDefines is only rebuilt on OnEnable — without this the
+                                    // removed entry stays in the list with isEnabled still true, and
+                                    // a later "Apply Defines" click would write it right back.
+                                    CacheVariables();
+                                    isRequireInit = true;
+
+                                    return;
                                 }
                             }
 
@@ -322,8 +168,8 @@ namespace Watermelon
 
             if (GUILayout.Button("Apply Defines", EditorCustomStyles.button))
             {
-                SaveDefines(GetActiveDefinesLine());
-                
+                DefineManager.SetActiveDefines(projectDefines.Where(x => x.isEnabled).Select(x => x.define));
+
                 return;
             }
 
@@ -358,7 +204,6 @@ namespace Watermelon
 
             public enum Type
             {
-                Static = 0,
                 Project = 1,
                 ThirdParty = 2,
                 Auto = 3

@@ -10,7 +10,7 @@ namespace Watermelon
 
         public bool IsSelected { get; protected set; }
 
-        private void Awake()
+        private void Start()
         {
             RectTransform = (RectTransform)transform;
 

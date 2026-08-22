@@ -14,9 +14,12 @@ namespace Watermelon
         [Group("Settings")]
         [SerializeField] bool disableAfterPurchase;
 
+        [Group("Settings"), Space]
+        [SerializeField] string analyticsEvent = "Default";
+
         private SimpleBoolSave save;
 
-        private void Awake()
+        private void Start()
         {
             InitializeComponents();
 
@@ -30,34 +33,22 @@ namespace Watermelon
                 return;
             }
 
-            // Check if holder needs to be disabled
-            for (int i = 0; i < rewards.Length; i++)
-            {
-                if (rewards[i].CheckDisableState())
-                {
-                    // Disable holder game object
-                    gameObject.SetActive(false);
-
-                    return;
-                }
-            }
-
             adsButton.onClick.AddListener(OnPurchased);
         }
 
         private void OnPurchased()
         {
 #if MODULE_HAPTIC
-            Haptic.Play(Haptic.HAPTIC_LIGHT);
+            Haptic.Play(Haptic.HAPTIC_HARD);
 #endif
 
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
 
             AdsManager.ShowRewardBasedVideo((reward) =>
             {
                 if (reward)
                 {
-                    ApplyRewards();
+                    rewardSet.ApplyReward();
 
                     save.Value = true;
 
@@ -69,7 +60,7 @@ namespace Watermelon
 
                     SaveController.MarkAsSaveIsRequired();
                 }
-            });
+            }, analyticsEvent);
         }
     }
 }

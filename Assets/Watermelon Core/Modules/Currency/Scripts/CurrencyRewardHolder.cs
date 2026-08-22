@@ -18,7 +18,7 @@ namespace Watermelon
 
         private SimpleBoolSave save;
 
-        private void Awake()
+        private void Start()
         {
             InitializeComponents();
 
@@ -32,25 +32,13 @@ namespace Watermelon
                 return;
             }
 
-            // Check if offer needs to be disabled
-            for (int i = 0; i < rewards.Length; i++)
-            {
-                if (rewards[i].CheckDisableState())
-                {
-                    // Disable offer game object
-                    gameObject.SetActive(false);
-
-                    return;
-                }
-            }
-
             currencyButton.Init(price.Amount, price.CurrencyType);
             currencyButton.Purchased += OnPurchased;
         }
 
         private void OnPurchased()
         {
-            ApplyRewards();
+            rewardSet.ApplyReward();
 
             save.Value = true;
 

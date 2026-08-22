@@ -1,4 +1,4 @@
-﻿#pragma warning disable 649
+#pragma warning disable 649
 
 using System;
 using System.Collections.Generic;
@@ -460,14 +460,12 @@ namespace Watermelon
 
         private void SetAsCurrentLevel()
         {
-            GlobalSave globalSave = SaveController.GetGlobalSave();
-
-            LevelSave gameSave = globalSave.GetSaveObject<LevelSave>("level");
+            LevelSave gameSave = SaveController.GetSaveObject<LevelSave>("level");
             gameSave.RealLevelIndex = levelsHandler.SelectedLevelIndex;
             gameSave.DisplayLevelIndex = levelsHandler.SelectedLevelIndex;
             gameSave.MaxReachedLevelIndex = levelsHandler.SelectedLevelIndex;
 
-            SaveController.SaveCustom(globalSave);
+            SaveController.Save(forceSave: true);
             GameController.AutoRunLevelInEditor = true;
 
             RemoveSceneRepresentation();

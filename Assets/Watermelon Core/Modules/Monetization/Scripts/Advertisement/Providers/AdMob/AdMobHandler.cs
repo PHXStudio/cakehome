@@ -10,23 +10,24 @@ using GoogleMobileAds.Common;
 namespace Watermelon
 {
 #if MODULE_ADMOB
-    /// <summary>
-    /// Class responsible for handling AdMob ad requests and operations
-    /// </summary>
+    [UnityEngine.Scripting.Preserve]
     public class AdMobHandler : AdProviderHandler
     {
+        public override string ProviderName => "AdMob";
+
+        private AdMobContainer Container => adsSettings.GetContainer<AdMobContainer>();
+
         // Ad objects for different types of ads
         private BannerView bannerView;
         private InterstitialAd interstitial;
         private RewardedAd rewardBasedVideo;
         private AppOpenAd appOpenAd;
 
+        private int appOpenRetryAttempt = RETRY_ATTEMPT_DEFAULT_VALUE;
+
         // Time when the App Open Ad expires
         private DateTime appOpenAdExpireTime = new DateTime();
         private bool appOpenAdCanShow = true;
-
-        // Constructor setting the ad provider type
-        public AdMobHandler(AdProvider providerType) : base(providerType) { }
 
         /// <summary>
         /// Asynchronously initializes the AdMob SDK and returns true if successful
@@ -41,7 +42,7 @@ namespace Watermelon
             RequestConfiguration requestConfiguration = new RequestConfiguration()
             {
                 TagForChildDirectedTreatment = TagForChildDirectedTreatment.Unspecified,
-                TestDeviceIds = monetizationSettings.TestDevices
+                TestDeviceIds = adsSettings.TestDevices
             };
 
             MobileAds.SetRequestConfiguration(requestConfiguration);
@@ -57,7 +58,7 @@ namespace Watermelon
                     AdsManager.CallEventInMainThread(() =>
                     {
                         // Load App Open Ad if configured
-                        if (adsSettings.AdMobContainer.UseAppOpenAd)
+                        if (Container.UseAppOpenAd)
                         {
                             LoadAppOpenAd();
                             AppStateEventNotifier.AppStateChanged += OnAppStateChanged;
@@ -151,10 +152,9 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Banner ad loaded");
+                LogManager.Log("[AdsManager]: Banner ad loaded", LogCategory.Services);
 
-                AdsManager.OnProviderAdLoaded(providerType, AdType.Banner);
+                AdsManager.OnProviderAdLoaded(ProviderName, AdType.Banner);
             });
         }
 
@@ -165,9 +165,7 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                // Improved error handling: Log the error message
-                if (Monetization.VerboseLogging)
-                    Debug.LogError($"[AdsManager]: Failed to load banner ad. Error: {error.GetMessage()}");
+                LogManager.LogError($"[AdsManager]: Failed to load banner ad. Error: {error.GetMessage()}", LogCategory.Services);
             });
         }
 
@@ -178,8 +176,7 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Banner ad clicked");
+                LogManager.Log("[AdsManager]: Banner ad clicked", LogCategory.Services);
             });
         }
 
@@ -190,10 +187,9 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Banner ad closed");
+                LogManager.Log("[AdsManager]: Banner ad closed", LogCategory.Services);
 
-                AdsManager.OnProviderAdClosed(providerType, AdType.Banner);
+                AdsManager.OnProviderAdClosed(ProviderName, AdType.Banner);
             });
         }
 
@@ -204,8 +200,7 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log($"[AdsManager]: Banner ad paid {adValue.Value} {adValue.CurrencyCode}");
+                LogManager.Log($"[AdsManager]: Banner ad paid {adValue.Value} {adValue.CurrencyCode}", LogCategory.Services);
             });
         }
 
@@ -214,7 +209,7 @@ namespace Watermelon
         /// </summary>
         private AdSize GetAdSize()
         {
-            return adsSettings.AdMobContainer.BannerType switch
+            return Container.BannerType switch
             {
                 AdMobContainer.BannerPlacementType.MediumRectangle => AdSize.MediumRectangle,
                 AdMobContainer.BannerPlacementType.IABBanner => AdSize.IABBanner,
@@ -228,7 +223,7 @@ namespace Watermelon
         /// </summary>
         private AdPosition GetAdPosition()
         {
-            return adsSettings.AdMobContainer.BannerPosition switch
+            return Container.BannerPosition switch
             {
                 BannerPosition.Top => AdPosition.Top,
                 _ => AdPosition.Bottom,
@@ -243,9 +238,9 @@ namespace Watermelon
 #if UNITY_EDITOR
             return "unused";
 #elif UNITY_ANDROID
-            return adsSettings.AdMobContainer.AndroidBannerID;
+            return Container.AndroidBannerID;
 #elif UNITY_IOS
-            return adsSettings.AdMobContainer.IOSBannerID;
+            return Container.IOSBannerID;
 #else
             return "unexpected_platform";
 #endif
@@ -274,7 +269,7 @@ namespace Watermelon
                 interstitial = ad;
                 interstitialRetryAttempt = RETRY_ATTEMPT_DEFAULT_VALUE;
 
-                AdsManager.OnProviderAdLoaded(providerType, AdType.Interstitial);
+                AdsManager.OnProviderAdLoaded(ProviderName, AdType.Interstitial);
 
                 // Register interstitial events
                 RegisterInterstitialEvents(interstitial);
@@ -308,10 +303,9 @@ namespace Watermelon
             {
                 appOpenAdCanShow = false;
 
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Interstitial ad opened");
+                LogManager.Log("[AdsManager]: Interstitial ad opened", LogCategory.Services);
 
-                AdsManager.OnProviderAdDisplayed(providerType, AdType.Interstitial);
+                AdsManager.OnProviderAdDisplayed(ProviderName, AdType.Interstitial);
             });
         }
 
@@ -324,10 +318,9 @@ namespace Watermelon
             {
                 appOpenAdCanShow = false;
 
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Interstitial ad closed");
+                LogManager.Log("[AdsManager]: Interstitial ad closed", LogCategory.Services);
 
-                AdsManager.OnProviderAdClosed(providerType, AdType.Interstitial);
+                AdsManager.OnProviderAdClosed(ProviderName, AdType.Interstitial);
                 AdsManager.ExecuteInterstitialCallback(true);
 
                 // Reset the interstitial delay and request a new ad
@@ -344,8 +337,7 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Interstitial ad clicked");
+                LogManager.Log("[AdsManager]: Interstitial ad clicked", LogCategory.Services);
             });
         }
 
@@ -365,9 +357,9 @@ namespace Watermelon
 #if UNITY_EDITOR
             return "unused";
 #elif UNITY_ANDROID
-            return adsSettings.AdMobContainer.AndroidInterstitialID;
+            return Container.AndroidInterstitialID;
 #elif UNITY_IOS
-            return adsSettings.AdMobContainer.IOSInterstitialID;
+            return Container.IOSInterstitialID;
 #else
             return "unexpected_platform";
 #endif
@@ -392,7 +384,7 @@ namespace Watermelon
                 rewardBasedVideo = ad;
                 rewardedRetryAttempt = RETRY_ATTEMPT_DEFAULT_VALUE;
 
-                AdsManager.OnProviderAdLoaded(providerType, AdType.RewardedVideo);
+                AdsManager.OnProviderAdLoaded(ProviderName, AdType.RewardedVideo);
 
                 // Register rewarded video events
                 RegisterRewardedVideoEvents(rewardBasedVideo);
@@ -408,11 +400,10 @@ namespace Watermelon
             {
                 AdsManager.CallEventInMainThread(() =>
                 {
-                    AdsManager.OnProviderAdDisplayed(providerType, AdType.RewardedVideo);
+                    AdsManager.OnProviderAdDisplayed(ProviderName, AdType.RewardedVideo);
                     AdsManager.ExecuteRewardVideoCallback(true);
 
-                    if (Monetization.VerboseLogging)
-                        Debug.Log("[AdsManager]: Rewarded video completed");
+                    LogManager.Log("[AdsManager]: Rewarded video completed", LogCategory.Services);
 
                     // Reset the delay and request a new rewarded video
                     AdsManager.ResetInterstitialDelayTime();
@@ -454,8 +445,7 @@ namespace Watermelon
             {
                 appOpenAdCanShow = false;
 
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Rewarded video opened");
+                LogManager.Log("[AdsManager]: Rewarded video opened", LogCategory.Services);
             });
         }
 
@@ -468,10 +458,9 @@ namespace Watermelon
             {
                 appOpenAdCanShow = false;
 
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Rewarded video closed");
+                LogManager.Log("[AdsManager]: Rewarded video closed", LogCategory.Services);
 
-                AdsManager.OnProviderAdClosed(providerType, AdType.RewardedVideo);
+                AdsManager.OnProviderAdClosed(ProviderName, AdType.RewardedVideo);
             });
         }
 
@@ -482,8 +471,7 @@ namespace Watermelon
         {
             AdsManager.CallEventInMainThread(() =>
             {
-                if (Monetization.VerboseLogging)
-                    Debug.Log("[AdsManager]: Rewarded video clicked");
+                LogManager.Log("[AdsManager]: Rewarded video clicked", LogCategory.Services);
             });
         }
 
@@ -503,9 +491,9 @@ namespace Watermelon
 #if UNITY_EDITOR
             return "unused";
 #elif UNITY_ANDROID
-            return adsSettings.AdMobContainer.AndroidRewardedVideoID;
+            return Container.AndroidRewardedVideoID;
 #elif UNITY_IOS
-            return adsSettings.AdMobContainer.IOSRewardedVideoID;
+            return Container.IOSRewardedVideoID;
 #else
             return "unexpected_platform";
 #endif
@@ -526,10 +514,7 @@ namespace Watermelon
         /// </summary>
         private void OnAppStateChanged(AppState state)
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log($"[AdsManager]: App State changed to : {state}");
-
-            Debug.Log($"[AdsManager]: State: {state}; CanShow: {appOpenAdCanShow}");
+            LogManager.Log($"[AdsManager]: App State changed to : {state}", LogCategory.Services);
 
             if(state == AppState.Foreground)
             {
@@ -540,10 +525,6 @@ namespace Watermelon
                     AdsManager.DisableBanner();
                 }
 
-                appOpenAdCanShow = true;
-            }
-            else
-            {
                 appOpenAdCanShow = true;
             }
         }
@@ -557,18 +538,17 @@ namespace Watermelon
             appOpenAd?.Destroy();
             appOpenAd = null;
 
-            Debug.Log("[AdsManager]: Loading the app open ad.");
-
             AppOpenAd.Load(GetAppOpenID(), GetAdRequest(), (AppOpenAd ad, LoadAdError error) =>
             {
                 if (error != null || ad == null)
                 {
-                    Debug.LogError($"[AdsManager]: App open ad failed to load with error: {error}");
+                    HandleAdLoadFailure(AdType.AppOpen, error != null ? error.GetMessage() : "Ad is null", ref appOpenRetryAttempt, LoadAppOpenAd);
                     return;
                 }
 
                 appOpenAd = ad;
-                appOpenAdExpireTime = DateTime.Now + TimeSpan.FromHours(adsSettings.AdMobContainer.AppOpenAdExpirationHoursTime);
+                appOpenRetryAttempt = RETRY_ATTEMPT_DEFAULT_VALUE;
+                appOpenAdExpireTime = DateTime.Now + TimeSpan.FromHours(Container.AppOpenAdExpirationHoursTime);
 
                 // Register app open ad events
                 RegisterAppOpenAdEvents(ad);
@@ -593,8 +573,7 @@ namespace Watermelon
         /// </summary>
         private void HandleAppOpenAdConentFailed(AdError error)
         {
-            if (Monetization.VerboseLogging)
-                Debug.LogError($"[AdsManager]: App open ad failed to open with error: {error}");
+            LogManager.LogError($"[AdsManager]: App open ad failed to open with error: {error}", LogCategory.Services);
 
             // Reload the ad after failure
             LoadAppOpenAd();
@@ -607,8 +586,7 @@ namespace Watermelon
         /// </summary>
         private void HandleAppOpenAdContentClosed()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: App open ad closed.");
+            LogManager.Log("[AdsManager]: App open ad closed.", LogCategory.Services);
 
             // Reload the ad after closing
             LoadAppOpenAd();
@@ -621,8 +599,7 @@ namespace Watermelon
         /// </summary>
         private void HandleAppOpenAdContentOpened()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: App open ad opened.");
+            LogManager.Log("[AdsManager]: App open ad opened.", LogCategory.Services);
         }
 
         /// <summary>
@@ -630,8 +607,7 @@ namespace Watermelon
         /// </summary>
         private void HandleAppOpenAdClicked()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: App open ad clicked.");
+            LogManager.Log("[AdsManager]: App open ad clicked.", LogCategory.Services);
         }
 
         /// <summary>
@@ -639,8 +615,7 @@ namespace Watermelon
         /// </summary>
         private void HandleAppOpenImpressionRecorded()
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log("[AdsManager]: App open ad recorded an impression.");
+            LogManager.Log("[AdsManager]: App open ad recorded an impression.", LogCategory.Services);
         }
 
         /// <summary>
@@ -649,8 +624,7 @@ namespace Watermelon
         /// <param name="value"></param>
         private void HandleAppOpenPaid(AdValue value)
         {
-            if (Monetization.VerboseLogging)
-                Debug.Log($"[AdsManager]: App open ad paid {value.Value} {value.CurrencyCode}.");
+            LogManager.Log($"[AdsManager]: App open ad paid {value.Value} {value.CurrencyCode}.", LogCategory.Services);
         }
 
         /// <summary>
@@ -661,9 +635,9 @@ namespace Watermelon
 #if UNITY_EDITOR
             return "unused";
 #elif UNITY_ANDROID
-            return adsSettings.AdMobContainer.AndroidAppOpenAdID;
+            return Container.AndroidAppOpenAdID;
 #elif UNITY_IOS
-            return adsSettings.AdMobContainer.IOSAppOpenAdID;
+            return Container.IOSAppOpenAdID;
 #else
             return "unexpected_platform";
 #endif

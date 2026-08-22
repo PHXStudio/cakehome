@@ -3,81 +3,115 @@ using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public static class Overlay
+    /// <summary>
+    /// Manages a fullscreen overlay panel used for scene transitions and loading screens.
+    /// Finds an <see cref="IOverlayPanel"/> among direct children of the provided GameObject,
+    /// or creates a <see cref="DummyOverlayPanel"/> as a fallback.
+    /// Initialized via <see cref="OverlayPreInitializer"/>; accessed through the static <see cref="Show"/> and <see cref="Hide"/> methods.
+    /// </summary>
+    public class Overlay
     {
-        private static IOverlayPanel overlayPanel;
+        private const string NOT_INITIALIZED_ERROR = "[Overlay]: Not initialized. Add the OverlayPreInitializer component to the Initializer prefab.";
 
-        public static void Init(UIController uiController)
+        private static Overlay instance;
+
+        private IOverlayPanel panel;
+
+        public Overlay(GameObject parentObject)
         {
-            foreach (Transform child in uiController.transform)
-            {
-                Component component = child.GetComponent(typeof(IOverlayPanel));
+            instance = this;
 
-                if (component != null)
-                {
-                    overlayPanel = (IOverlayPanel)component;
+            panel = FindOverlayPanel(parentObject.transform);
 
-                    break;
-                }
-            }
+            if(panel == null)
+                panel = CreateDummyOverlay(parentObject.transform);
 
-            if(overlayPanel == null)
-            {
-                // Create a custom canvas
-                GameObject canvasObject = new GameObject("[TEMP OVERLAY]");
-                canvasObject.transform.SetParent(uiController.transform);
-                canvasObject.transform.ResetLocal();
-                canvasObject.layer = LayerMask.NameToLayer("UI");
+            panel.Init();
 
-                RectTransform canvasRectTransform = canvasObject.AddComponent<RectTransform>();
-                canvasRectTransform.anchorMin = new Vector2(0, 0);
-                canvasRectTransform.anchorMax = new Vector2(1.0f, 1.0f);
-                canvasRectTransform.sizeDelta = Vector2.zero;
-
-                Canvas overlayCanvas = canvasObject.AddComponent<Canvas>();
-                overlayCanvas.overrideSorting = true;
-                overlayCanvas.sortingOrder = 999;
-
-                canvasObject.AddComponent<GraphicRaycaster>();
-
-                DummyOverlayPanel dummyOverlayPanel = new DummyOverlayPanel();
-                dummyOverlayPanel.SetCanvas(overlayCanvas);
-
-                overlayPanel = dummyOverlayPanel;
-            }
-
-            overlayPanel.Init();
-            overlayPanel.SetState(false);
-            overlayPanel.SetLoadingState(false);
+            panel.SetState(false);
+            panel.SetLoadingState(false);
         }
 
+        /// <summary>
+        /// Fades the overlay in over <paramref name="duration"/> seconds, then invokes <paramref name="onCompleted"/>.
+        /// Has no effect if the overlay is already active.
+        /// </summary>
         public static void Show(float duration, SimpleCallback onCompleted, bool showLoadingAnimation = false)
         {
-            overlayPanel.SetState(true);
-            overlayPanel.Show(duration, onCompleted);
+            if (instance == null) { Debug.LogError(NOT_INITIALIZED_ERROR); return; }
+
+            IOverlayPanel panel = instance.panel;
+            if (panel == null) return;
+            if (panel.IsActive) return;
+
+            panel.SetState(true);
+            panel.Show(duration, onCompleted);
 
             if(showLoadingAnimation)
-                overlayPanel.SetLoadingState(true);
+                panel.SetLoadingState(true);
         }
 
+        /// <summary>
+        /// Fades the overlay out over <paramref name="duration"/> seconds, then invokes <paramref name="onCompleted"/>
+        /// and disables the loading animation. Has no effect if the overlay is not active.
+        /// </summary>
         public static void Hide(float duration, SimpleCallback onCompleted = null)
         {
-            overlayPanel.Hide(duration, () =>
+            if (instance == null) { Debug.LogError(NOT_INITIALIZED_ERROR); return; }
+
+            IOverlayPanel panel = instance.panel;
+            if (panel == null) return;
+            if (!panel.IsActive) return;
+
+            panel.Hide(duration, () =>
             {
-                overlayPanel.SetState(false);
-                overlayPanel.SetLoadingState(false);
+                panel.SetState(false);
+                panel.SetLoadingState(false);
 
                 onCompleted?.Invoke();
             });
         }
 
-        public static void Clear()
+        private static IOverlayPanel FindOverlayPanel(Transform parentTransform)
         {
-            if(overlayPanel != null)
+            foreach (Transform child in parentTransform)
             {
-                overlayPanel.Clear();
-                overlayPanel = null;
+                Component component = child.GetComponent(typeof(IOverlayPanel));
+                if (component != null)
+                    return (IOverlayPanel)component;
             }
+
+            return null;
+        }
+
+        private IOverlayPanel CreateDummyOverlay(Transform parentTransform)
+        {
+            GameObject canvasObject = new("[TEMP OVERLAY]");
+            canvasObject.transform.SetParent(parentTransform);
+            canvasObject.transform.ResetLocal();
+            canvasObject.layer = LayerMask.NameToLayer("UI");
+
+            RectTransform rt = canvasObject.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0, 0);
+            rt.anchorMax = new Vector2(1, 1);
+            rt.sizeDelta = Vector2.zero;
+
+            Canvas overlayCanvas = canvasObject.AddComponent<Canvas>();
+            overlayCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            overlayCanvas.overrideSorting = true;
+            overlayCanvas.sortingOrder = 999;
+
+            canvasObject.AddComponent<GraphicRaycaster>();
+
+            return canvasObject.AddComponent<DummyOverlayPanel>();
+        }
+
+        public void Unload()
+        {
+            panel?.Clear();
+            panel = null;
+
+            instance = null;
         }
     }
 }
