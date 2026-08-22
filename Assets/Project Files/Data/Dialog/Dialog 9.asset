@@ -27,55 +27,55 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 3152893607033695256
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Do you really think people care about every small repair?
     - rid: 6440294235948890204
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: They are not following pieces of wood, stone, or paint.
     - rid: 5086448538733380049
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: What are they following?
     - rid: 8961372947576608060
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: You refusing to give up.
     - rid: 6706739925987178066
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: And Evelyns coffee recipes.
     - rid: 1735712959865492543
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: Mostly Maya refusing to give up while serving Evelyns coffee recipes.
     - rid: 783503763225717436
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: That is a very specific category.
     - rid: 6779659939877411458
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: It is performing extremely well.
     - rid: 3765790047963810951
-      type: {class: ThoughtStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

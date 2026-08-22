@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6143019249933662892}
   - component: {fileID: 7306019137276586666}
   - component: {fileID: 9073547459689873651}
-  - component: {fileID: 4410922402217818701}
   m_Layer: 5
   m_Name: Medium Money Pack
   m_TagString: Untagged
@@ -97,30 +96,27 @@ MonoBehaviour:
       m_Calls: []
   productKey: 3
   purchaseButton: {fileID: 8705807239193426037}
---- !u!114 &4410922402217818701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 989670816950480681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d37bee13975444a82f455f3f2710a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencies:
-  - currencyType: 0
-    amount: 450
-    currencyImage: {fileID: 0}
-    amountText: {fileID: 5398783837197118949}
-    textFormating: x{0}
-    formatTheNumber: 0
-  spawnCurrencyCloud: 1
-  currencyCloudType: 0
-  cloudElementsAmount: 15
-  currencyCloudSpawnPoint: {fileID: 4939875129731407270}
-  currencyCloudTargetPoint: {fileID: 0}
+  rewardSet: {fileID: 11400000, guid: bad2ad382f7344e79b4d4a9bf190902b, type: 2}
+  rewardsView:
+  - rid: 9000000000000000001
+  showPopup: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 9000000000000000001
+      type: {class: CurrencyRewardView, ns: Watermelon, asm: Core.WC}
+      data:
+        currencies:
+        - currencyType: 0
+          currencyImage: {fileID: 0}
+          amountText: {fileID: 5398783837197118949}
+          textFormating: x{0}
+          formatTheNumber: 0
+        spawnCurrencyCloud: 1
+        currencyCloudType: 0
+        cloudElementsAmount: 15
+        currencyCloudSpawnPoint: {fileID: 4939875129731407270}
+        currencyCloudTargetPoint: {fileID: 0}
 --- !u!1 &2627712124441460857
 GameObject:
   m_ObjectHideFlags: 0

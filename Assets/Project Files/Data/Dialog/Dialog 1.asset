@@ -28,62 +28,62 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 192253994624897227
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: I thought I heard tools over here.
     - rid: 763138102802763231
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Daniel?
     - rid: 8191681882082676424
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Maya Hart. I was beginning to think you had forgotten this street
           existed.
     - rid: 6023835998848253709
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I almost did. You still live next door?
     - rid: 1192590345482574821
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Someone has to keep an eye on the neighborhood.
     - rid: 7709643369557191365
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: And apparently on people trying to renovate old houses alone.
     - rid: 7702653191396570680
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I am selling Grandmas coffee to pay for the repairs.
     - rid: 2461522957452664640
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Then you have your first regular customer.
     - rid: 1051488420887199645
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: And, when necessary, an extra pair of hands.
     - rid: 3513801976645411128
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

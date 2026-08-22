@@ -36,7 +36,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2131732083002572800
-      type: {class: ApplovinContainer, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ApplovinContainer, ns: Watermelon, asm: Core.WC}
       data:
         androidBannerID: banner
         iOSBannerID: banner
@@ -48,7 +48,7 @@ MonoBehaviour:
         useAdaptiveBanner: 1
         bannerBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
     - rid: 2131732083002572801
-      type: {class: AdMobContainer, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: AdMobContainer, ns: Watermelon, asm: Core.WC}
       data:
         androidAppId: 
         iosAppId: 
@@ -65,11 +65,11 @@ MonoBehaviour:
         bannerType: 0
         bannerPosition: 0
     - rid: 2131732083002572802
-      type: {class: AdDummyContainer, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: AdDummyContainer, ns: Watermelon, asm: Core.WC}
       data:
         bannerPosition: 0
     - rid: 2131732083002572803
-      type: {class: LevelPlayContainer, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: LevelPlayContainer, ns: Watermelon, asm: Core.WC}
       data:
         androidAppKey: 
         androidBannerID: 

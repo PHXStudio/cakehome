@@ -21,19 +21,19 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 939436084330233856
-      type: {class: NoAdsReward, ns: Watermelon, asm: Watermelon.Advertisement}
+      type: {class: NoAdsReward, ns: Watermelon, asm: Core.WC}
       data:
         disableAdsForever: 1
         disableSeconds: 0
         disableOfferIfNoAdsPurchased: 1
     - rid: 4221807265299824645
-      type: {class: CurrencyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyReward, ns: Watermelon, asm: Core.WC}
       data:
         currencies:
         - currencyType: 1
           amount: 50
         analyticsSource: 
     - rid: 5520887150049755141
-      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 50

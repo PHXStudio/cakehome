@@ -13,6 +13,8 @@ namespace Watermelon
             RewardsMap.Register(typeof(Watermelon.EnergyReward), typeof(Watermelon.EnergyRewardView));
             RewardsMap.Register(typeof(Watermelon.NoAdsReward), typeof(Watermelon.NoAdsRewardView));
             RewardsMap.Register(typeof(Watermelon.SpawnerQueueReward), typeof(Watermelon.SpawnerQueueRewardView));
+            RewardsMap.Register(typeof(Watermelon.PUReward), typeof(Watermelon.PURewardView));
+            RewardsMap.Register(typeof(Watermelon.LivesInfiniteModeReward), typeof(Watermelon.LivesInfiniteModeRewardView));
         }
     }
 }

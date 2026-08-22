@@ -25,40 +25,40 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4952170771345571856
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: The facade is damaged and almost everything outside needs work.
     - rid: 4952170771345571858
-      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ImageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         image: {fileID: 21300000, guid: 2d27a24a57cfecf4aa07285e70311e4e, type: 3}
     - rid: 5520886851360522241
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: But Grandma never chose the easy option.
     - rid: 5520886851360522242
-      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ImageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         image: {fileID: 21300000, guid: c455bd5870a507f48b10616f5d518039, type: 3}
     - rid: 5520886851360522243
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Her coffee recipes are still here. I could open a small coffee stand
           and use the earnings for repairs.
     - rid: 5520886851360522244
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: One cup, one repair, and one piece of home at a time.
     - rid: 5520886963192201216
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

@@ -36,18 +36,18 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4952170898227724302
-      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 15
     - rid: 5520886876361719808
-      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 15
     - rid: 5520886876361719809
-      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 25
     - rid: 5520886876361719812
-      type: {class: EnergyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 25

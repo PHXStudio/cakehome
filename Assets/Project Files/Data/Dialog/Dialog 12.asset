@@ -28,63 +28,63 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 8399111036994764401
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I do not want to promise an event before I know I can finish everything.
     - rid: 253740709873489556
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
         emotion: 0
         text: Then do not promise the event.
     - rid: 3660463620440864409
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Promise the next repair.
     - rid: 4005672747293624695
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: Then complete the one after that.
     - rid: 2566683320045321551
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: And remember to occasionally drink the coffee rather than only selling
           it.
     - rid: 5359564630318242908
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: That sounds manageable.
     - rid: 6480240493301468745
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
         emotion: 0
         text: Most worthwhile things are manageable when you stop treating them
           as one enormous task.
     - rid: 5858105115609950354
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: One order, one repair.
     - rid: 3841741708328889831
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: And one unpaid coffee bill.
     - rid: 1780129654503495604
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

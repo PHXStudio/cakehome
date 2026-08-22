@@ -28,61 +28,61 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2123217314911420156
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: We are no longer simply patching damage.
     - rid: 2905123652122706305
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: What are we doing now?
     - rid: 498118848215310035
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: Restoring the houses character.
     - rid: 6770736937645147603
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Was that a compliment?
     - rid: 1177782488337001811
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: Do not make this difficult.
     - rid: 1430406921273678757
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: Too late. I recorded it.
     - rid: 7222247874017160649
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: No one in town will believe Theo said something encouraging.
     - rid: 3998738910881243194
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: Delete that.
     - rid: 8070670688434673464
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: I will consider it after another cup of coffee.
     - rid: 9115757296249287922
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

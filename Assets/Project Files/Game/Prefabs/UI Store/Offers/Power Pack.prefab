@@ -451,7 +451,6 @@ GameObject:
   - component: {fileID: 2796261438644474719}
   - component: {fileID: 771360820172099045}
   - component: {fileID: 3619524004255298708}
-  - component: {fileID: 2444532338568376467}
   m_Layer: 5
   m_Name: Power Pack
   m_TagString: Untagged
@@ -539,43 +538,33 @@ MonoBehaviour:
       m_Calls: []
   productKey: 5
   purchaseButton: {fileID: 751901132942517943}
---- !u!114 &2444532338568376467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5104722774222317375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4502800d4396642896bf83045dbb2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerUpsData:
-  - powerUpType: 1
-    amount: 5
-    iconImage: {fileID: 1779845560806752883}
-    amountText: {fileID: 9052424286633311387}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: x{0}
-  - powerUpType: 3
-    amount: 5
-    iconImage: {fileID: 1490396824463279595}
-    amountText: {fileID: 2199559157320322124}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: x{0}
-  - powerUpType: 2
-    amount: 5
-    iconImage: {fileID: 1128079498792491744}
-    amountText: {fileID: 4150430136151139912}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: x{0}
-  - powerUpType: 0
-    amount: 5
-    iconImage: {fileID: 9107927786333320973}
-    amountText: {fileID: 8518411356719415395}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: x{0}
+  rewardSet: {fileID: 11400000, guid: a72c32235ba944b7998b37ea507d72ef, type: 2}
+  rewardsView:
+  - rid: 9000000000000000001
+  showPopup: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 9000000000000000001
+      type: {class: PURewardView, ns: Watermelon, asm: HotUpdate}
+      data:
+        powerUps:
+        - iconImage: {fileID: 1779845560806752883}
+          amountText: {fileID: 9052424286633311387}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: x{0}
+        - iconImage: {fileID: 1490396824463279595}
+          amountText: {fileID: 2199559157320322124}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: x{0}
+        - iconImage: {fileID: 1128079498792491744}
+          amountText: {fileID: 4150430136151139912}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: x{0}
+        - iconImage: {fileID: 9107927786333320973}
+          amountText: {fileID: 8518411356719415395}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: x{0}
 --- !u!1 &5279005007631881880
 GameObject:
   m_ObjectHideFlags: 0

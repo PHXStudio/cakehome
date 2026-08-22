@@ -19,7 +19,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 4221807265299824645
-      type: {class: CurrencyReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyReward, ns: Watermelon, asm: Core.WC}
       data:
         currencies:
         - currencyType: 1

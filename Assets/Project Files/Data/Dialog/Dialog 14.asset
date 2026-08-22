@@ -31,79 +31,79 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1920965681560822
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Take a look around.
     - rid: 6094711978068359278
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: One construction step left.
     - rid: 8066664242312389754
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
         emotion: 0
         text: The property is nearly complete.
     - rid: 7600451771867916161
-      type: {class: ThoughtStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I came here believing I had to save this house.
     - rid: 8818307008431728743
-      type: {class: ThoughtStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Somehow, it saved a place for me.
     - rid: 2441749391260591202
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: Evelyn would be proud of you.
     - rid: 2571667046854010408
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I wish she could see it.
     - rid: 6002157965748983665
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 6203bd20709b00b46a60b2afa30d49df, type: 2}
         emotion: 0
         text: Perhaps she can, in the way everyone who remembers her sees it.
     - rid: 5805057090643122809
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: And through several hundred photographs.
     - rid: 8845198165517940495
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Thank you, Sofia.
     - rid: 4423440412943800518
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
         emotion: 0
         text: I felt the moment becoming dangerously serious.
     - rid: 4744726348323523107
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: Ready to finish what you started?
     - rid: 1657321851760372451
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0

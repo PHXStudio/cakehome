@@ -906,26 +906,26 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 2402945539774873600
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 0
     - rid: 4901224295628013570
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 4901224295628013572
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 4901224295628013573
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 4901224295628013574
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -938,7 +938,7 @@ MonoBehaviour:
               typeId: Coffee
               grade: 2
     - rid: 4901224295628013575
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -959,7 +959,7 @@ MonoBehaviour:
               typeId: Soda
               grade: 1
     - rid: 4952171013702156298
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -980,7 +980,7 @@ MonoBehaviour:
               typeId: Soda
               grade: 1
     - rid: 4952171013702156299
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1005,7 +1005,7 @@ MonoBehaviour:
               typeId: Soda
               grade: 2
     - rid: 4952171013702156300
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1034,7 +1034,7 @@ MonoBehaviour:
               typeId: Soda
               grade: 2
     - rid: 4952171013702156301
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1067,49 +1067,49 @@ MonoBehaviour:
               typeId: Soda
               grade: 3
     - rid: 4952171034099056685
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 1
           amount: 1
     - rid: 4952171034099056686
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 1
           amount: 3
     - rid: 4952171034099056687
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 1
           amount: 7
     - rid: 4952171034099056688
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 1
           amount: 15
     - rid: 4952171034099056689
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 1
           amount: 32
     - rid: 4952171034099056690
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 0
           amount: 15
     - rid: 4952171034099056691
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 0
           amount: 32
     - rid: 4952171145833218050
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1123,45 +1123,45 @@ MonoBehaviour:
               grade: 2
         maxSpawns: 3
     - rid: 5520886623642845184
-      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 2
     - rid: 5520886623642845185
-      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 5
     - rid: 5520886623642845186
-      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 10
     - rid: 5520886623642845187
-      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 40
     - rid: 5520886623642845188
-      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 100
     - rid: 5520886623642845189
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 0
           amount: 1
     - rid: 5520886623642845190
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 0
           amount: 3
     - rid: 5520886623642845191
-      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         currencyAmount:
           currencyType: 0
           amount: 7
     - rid: 5520886876361719811
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1170,7 +1170,7 @@ MonoBehaviour:
               typeId: Cake
               grade: 1
     - rid: 5520886940757655552
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1188,7 +1188,7 @@ MonoBehaviour:
               grade: 3
         maxSpawns: 4
     - rid: 5520886940757655553
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1206,7 +1206,7 @@ MonoBehaviour:
               grade: 4
         maxSpawns: 5
     - rid: 5520886940757655554
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1224,7 +1224,7 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 6
     - rid: 5520886940757655555
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1238,7 +1238,7 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 7
     - rid: 5520886940757655556
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1252,7 +1252,7 @@ MonoBehaviour:
               grade: 2
         maxSpawns: 3
     - rid: 5520886940757655557
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1270,7 +1270,7 @@ MonoBehaviour:
               grade: 3
         maxSpawns: 4
     - rid: 5520886940757655558
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1288,7 +1288,7 @@ MonoBehaviour:
               grade: 4
         maxSpawns: 5
     - rid: 5520886940757655559
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1306,7 +1306,7 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 6
     - rid: 5520886940757655560
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1320,7 +1320,7 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 7
     - rid: 5520886940757655561
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1334,7 +1334,7 @@ MonoBehaviour:
               grade: 2
         maxSpawns: 3
     - rid: 5520886940757655562
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1352,7 +1352,7 @@ MonoBehaviour:
               grade: 3
         maxSpawns: 4
     - rid: 5520886940757655563
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1370,7 +1370,7 @@ MonoBehaviour:
               grade: 4
         maxSpawns: 5
     - rid: 5520886940757655564
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1388,7 +1388,7 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 6
     - rid: 5520886940757655565
-      type: {class: ChestGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1402,22 +1402,22 @@ MonoBehaviour:
               grade: 5
         maxSpawns: 7
     - rid: 7100000000000000001
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 7100000000000000002
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 7100000000000000003
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items: []
     - rid: 7100000000000000005
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1438,7 +1438,7 @@ MonoBehaviour:
               typeId: Candy
               grade: 1
     - rid: 7100000000000000006
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1459,7 +1459,7 @@ MonoBehaviour:
               typeId: Candy
               grade: 1
     - rid: 7100000000000000007
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1484,7 +1484,7 @@ MonoBehaviour:
               typeId: Candy
               grade: 2
     - rid: 7100000000000000008
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1513,7 +1513,7 @@ MonoBehaviour:
               typeId: Candy
               grade: 2
     - rid: 7100000000000000009
-      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnPool:
           items:
@@ -1546,126 +1546,126 @@ MonoBehaviour:
               typeId: Candy
               grade: 3
     - rid: 9100000000000000001
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 1
     - rid: 9100000000000000002
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 2
     - rid: 9100000000000000003
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 3
     - rid: 9100000000000000004
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 4
     - rid: 9100000000000000005
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 5
     - rid: 9100000000000000006
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 6
     - rid: 9100000000000000007
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 7
     - rid: 9100000000000000008
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 8
     - rid: 9100000000000000009
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 9
     - rid: 9100000000000000010
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 10
     - rid: 9100000000000000011
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 1
     - rid: 9100000000000000012
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 2
     - rid: 9100000000000000013
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 3
     - rid: 9100000000000000014
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 4
     - rid: 9100000000000000015
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 5
     - rid: 9100000000000000016
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 6
     - rid: 9100000000000000017
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 7
     - rid: 9100000000000000018
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 8
     - rid: 9100000000000000019
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 9
     - rid: 9100000000000000020
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 10
     - rid: 9100000000000000021
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 1
     - rid: 9100000000000000022
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 2
     - rid: 9100000000000000023
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 3
     - rid: 9100000000000000024
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 1
     - rid: 9100000000000000025
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 2
     - rid: 9100000000000000026
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 3
     - rid: 9100000000000000027
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 1
     - rid: 9100000000000000028
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 2
     - rid: 9100000000000000029
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 3
     - rid: 9100000000000000030
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 4
     - rid: 9100000000000000031
-      type: {class: ItemGradeConfig, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
         sellPrice: 5

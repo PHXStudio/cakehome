@@ -19,7 +19,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 5520887150049755140
-      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
       data:
         spawnerTypeId: Energy Chest
         spawnerGrade: 3

@@ -12,7 +12,7 @@ namespace Watermelon
     [System.Serializable]
     internal class CachedPages
     {
-        [SerializeField] PageData[] pages;
+        [SerializeField] PageData[] pages = new PageData[0];
         /// <summary>All configured cached page entries (may include unassigned prefabs).</summary>
         public PageData[] Pages => pages;
 
@@ -23,9 +23,12 @@ namespace Watermelon
         {
             this.controller = controller;
 
+            pages ??= new PageData[0];
+
             pagesMap = new Dictionary<Type, PageData>(pages.Length);
             foreach (PageData page in pages)
             {
+                if (page == null) continue;
                 if (page.PagePrefab == null) continue;
 
                 Type pageType = page.PagePrefab.GetType();

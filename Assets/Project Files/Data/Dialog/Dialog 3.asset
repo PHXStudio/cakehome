@@ -32,86 +32,86 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 1873006708278290937
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: Only because she controlled the coffee.
     - rid: 1922069520451949854
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: Iris Bell. Your grandmother and I spent twenty summers arguing about
           flowers.
     - rid: 2060674621221145238
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: I do not remember it being this busy.
     - rid: 2453699606464745848
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Im sorry. Have we met?
     - rid: 2555781055487072689
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: You knew my grandmother?
     - rid: 3724993882768236600
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: I see you have already started bringing the place back.
     - rid: 4356097222409387371
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
         emotion: 0
         text: I remember. Evelyn usually won.
     - rid: 5513514213381705287
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: Very well. I also brought you something.
     - rid: 5606698600379596508
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: You were young. To you, it probably looked like a collection of adults
           drinking coffee for too long.
     - rid: 5625135962301242240
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: Then perhaps we can make it one again.
     - rid: 8307144790594033373
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: To us, it was the heart of the neighborhood.
     - rid: 8352015199806726811
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
         emotion: 0
         text: That sounds accurate.
     - rid: 8728468718361586307
-      type: {class: MessageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
         emotion: 0
         text: This garden used to be full of people.
     - rid: 8863521708220912032
-      type: {class: ImageStep, ns: Watermelon, asm: Assembly-CSharp}
+      type: {class: ImageStep, ns: Watermelon, asm: Game.Scripts}
       data:
         image: {fileID: 21300000, guid: 9784bcccda0caf547b2b2a22608ff877, type: 3}

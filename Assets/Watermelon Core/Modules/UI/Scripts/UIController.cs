@@ -15,7 +15,7 @@ namespace Watermelon
     {
         private static UIController uiController;
 
-        [SerializeField] CachedPages cachedPages;
+        [SerializeField] CachedPages cachedPages = new CachedPages();
 
         private SafeAreaAdapter notchSafeArea;
 
@@ -119,6 +119,7 @@ namespace Watermelon
                 }
             }
 
+            cachedPages ??= new CachedPages();
             cachedPages.Init(this);
         }
 

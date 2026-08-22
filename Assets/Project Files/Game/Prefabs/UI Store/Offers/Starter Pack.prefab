@@ -1969,10 +1969,6 @@ GameObject:
   - component: {fileID: 1839684820462359461}
   - component: {fileID: 3890516316197719327}
   - component: {fileID: 6554430396771011090}
-  - component: {fileID: 1035755289492367061}
-  - component: {fileID: 5975601209075746422}
-  - component: {fileID: 5267325775226212634}
-  - component: {fileID: 3026597806090860779}
   m_Layer: 5
   m_Name: Starter Pack
   m_TagString: Untagged
@@ -2060,95 +2056,59 @@ MonoBehaviour:
       m_Calls: []
   productKey: 1
   purchaseButton: {fileID: 530447675685525322}
---- !u!114 &1035755289492367061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8763460889229567941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d37bee13975444a82f455f3f2710a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currencies:
-  - currencyType: 0
-    amount: 400
-    currencyImage: {fileID: 0}
-    amountText: {fileID: 1156110666533827553}
-    textFormating: x{0}
-    formatTheNumber: 0
-  spawnCurrencyCloud: 1
-  currencyCloudType: 0
-  cloudElementsAmount: 15
-  currencyCloudSpawnPoint: {fileID: 6483803754461259491}
-  currencyCloudTargetPoint: {fileID: 0}
---- !u!114 &5975601209075746422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8763460889229567941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9707375249d9ad45965f7acee1d387f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  durationInMinutes: 120
-  durationText: {fileID: 2827302919154580366}
-  durationFormat: '{hh}hrs'
---- !u!114 &5267325775226212634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8763460889229567941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c882a45a1f3314fb8d735fea431487, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disableOfferIfNoAdsPurchased: 0
---- !u!114 &3026597806090860779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8763460889229567941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf4502800d4396642896bf83045dbb2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerUpsData:
-  - powerUpType: 1
-    amount: 3
-    iconImage: {fileID: 6471683159369595047}
-    amountText: {fileID: 0}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: 
-  - powerUpType: 3
-    amount: 3
-    iconImage: {fileID: 6069914434606733131}
-    amountText: {fileID: 0}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: 
-  - powerUpType: 2
-    amount: 3
-    iconImage: {fileID: 9147605640177956960}
-    amountText: {fileID: 0}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: 
-  - powerUpType: 0
-    amount: 3
-    iconImage: {fileID: 1821547739941564650}
-    amountText: {fileID: 0}
-    purchaseFloatingText: {fileID: 0}
-    textFormating: 
+  rewardSet: {fileID: 11400000, guid: 8b43657c89ae454fa94bcae9371a13a7, type: 2}
+  rewardsView:
+  - rid: 9000000000000000001
+  - rid: 9000000000000000002
+  - rid: 9000000000000000003
+  - rid: 9000000000000000004
+  showPopup: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 9000000000000000001
+      type: {class: CurrencyRewardView, ns: Watermelon, asm: Core.WC}
+      data:
+        currencies:
+        - currencyType: 0
+          currencyImage: {fileID: 0}
+          amountText: {fileID: 1156110666533827553}
+          textFormating: x{0}
+          formatTheNumber: 0
+        spawnCurrencyCloud: 1
+        currencyCloudType: 0
+        cloudElementsAmount: 15
+        currencyCloudSpawnPoint: {fileID: 6483803754461259491}
+        currencyCloudTargetPoint: {fileID: 0}
+    - rid: 9000000000000000002
+      type: {class: NoAdsRewardView, ns: Watermelon, asm: Core.WC}
+      data:
+        durationText: {fileID: 0}
+    - rid: 9000000000000000003
+      type: {class: LivesInfiniteModeRewardView, ns: Watermelon, asm: HotUpdate}
+      data:
+        durationText: {fileID: 2827302919154580366}
+        durationFormat: '{hh}hrs'
+    - rid: 9000000000000000004
+      type: {class: PURewardView, ns: Watermelon, asm: HotUpdate}
+      data:
+        powerUps:
+        - iconImage: {fileID: 6471683159369595047}
+          amountText: {fileID: 0}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: 
+        - iconImage: {fileID: 6069914434606733131}
+          amountText: {fileID: 0}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: 
+        - iconImage: {fileID: 9147605640177956960}
+          amountText: {fileID: 0}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: 
+        - iconImage: {fileID: 1821547739941564650}
+          amountText: {fileID: 0}
+          purchaseFloatingText: {fileID: 0}
+          textFormating: 
 --- !u!1 &9034982804051567691
 GameObject:
   m_ObjectHideFlags: 0
