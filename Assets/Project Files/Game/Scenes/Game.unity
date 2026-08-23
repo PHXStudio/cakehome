@@ -20426,21 +20426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   registeredElements:
   - {fileID: 4874832461095845449}
-  safeAreaRectTransform: {fileID: 0}
-  coinsPanel: {fileID: 0}
-  quitPopUp: {fileID: 0}
-  levelNumberText: {fileID: 0}
-  gameplayTimer: {fileID: 0}
-  powerUpsUIController: {fileID: 0}
-  exitPopUp: {fileID: 0}
-  exitButton: {fileID: 0}
-  exitButtonFadeAnimation:
-    fadeCanvasGroup: {fileID: 0}
-  devOverlay: {fileID: 0}
-  tutorialPanelObject: {fileID: 0}
-  tutorialTitleText: {fileID: 0}
-  tutorialDescriptionText: {fileID: 0}
-  tutorialSkipButton: {fileID: 0}
+  backgroundImage: {fileID: 1140182369}
+  mapButton: {fileID: 361996077}
 --- !u!114 &6898520872676929183
 MonoBehaviour:
   m_ObjectHideFlags: 0

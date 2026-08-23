@@ -50,11 +50,15 @@ namespace Watermelon
 
         private void OnDestroy()
         {
-            foreach (TransformCase transformCase in activeTransformCases)
+            // Init() may never have run (e.g. scene unloaded before tutorial system started)
+            if (activeTransformCases != null)
             {
-                transformCase.Destroy();
+                foreach (TransformCase transformCase in activeTransformCases)
+                {
+                    transformCase.Destroy();
+                }
+                activeTransformCases.Clear();
             }
-            activeTransformCases.Clear();
 
             fadeTweenCase.KillActive();
             dragLoopTweenCase.KillActive();
