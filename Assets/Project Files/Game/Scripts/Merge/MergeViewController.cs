@@ -12,6 +12,24 @@ namespace Watermelon
     {
         public static bool IsBuildingActive { get; private set; }
 
+        // The merge board page contains nested canvases (Items / Flying Objects) that render
+        // independently of the page's own Canvas — hiding the page is not enough to keep the
+        // board off other tabs, so the root GameObject is toggled alongside.
+        private static GameObject mergeGameRoot;
+
+        private static GameObject MergeGameRoot
+        {
+            get
+            {
+                if (mergeGameRoot == null)
+                {
+                    UIGame page = UIController.GetPage<UIGame>();
+                    if (page != null) mergeGameRoot = page.gameObject;
+                }
+                return mergeGameRoot;
+            }
+        }
+
         /// <summary>Switch between the merge board view (false) and the building/zone view (true).</summary>
         public static void SetBuildingActive(bool active)
         {
@@ -33,6 +51,8 @@ namespace Watermelon
         /// <summary>Called by MergeHubModule when the shop tab becomes active.</summary>
         public static void EnterHub()
         {
+            if (MergeGameRoot != null) MergeGameRoot.SetActive(true);
+
             if (IsBuildingActive)
                 UIController.ShowPage<UIMainMenu>();
             else
@@ -54,6 +74,8 @@ namespace Watermelon
             UIController.HidePage<UIInfoWindow>();
             UIController.HidePage<UIRecoverEnergy>();
             UIController.HidePage<UIDialog>();
+
+            if (MergeGameRoot != null) MergeGameRoot.SetActive(false);
         }
 
         /// <summary>

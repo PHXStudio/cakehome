@@ -108,6 +108,12 @@ namespace Watermelon
             // mirrors mergedev boot — must run in Start so the canvas has been laid out).
             mergeController.InitGrid();
 
+            // Board builds while its page is still active (GridLayoutGroup needs an active
+            // canvas to measure cells) — hide it immediately afterwards: the merge pages have
+            // nested canvases (Items / Flying Objects) that ignore the page-level canvas toggle,
+            // and the default tab is Camper, not the merge board.
+            MergeViewController.ExitHub();
+
             // Zone-start (atUpgrade: 0) progression orders/rewards/dialog.
             // Held back during onboarding like the task queue; FirstStartTutorial
             // triggers it on finish instead (mirrors mergedev).
