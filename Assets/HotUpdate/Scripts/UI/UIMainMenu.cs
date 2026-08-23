@@ -201,6 +201,12 @@ namespace Watermelon
 
         private void ShowAdButton(bool immediately = false)
         {
+            // NO ADS 按钮已移除（2026-08-24）：恢复时删除下面这行即可
+            // （商店内的 No Ads 商品与恢复购买逻辑保留，不受影响）
+            noAdsButton.Hide(immediately: true);
+            return;
+
+#pragma warning disable CS0162
             if (AdsManager.IsForcedAdEnabled())
             {
                 noAdsButton.Show(immediately);
@@ -209,6 +215,7 @@ namespace Watermelon
             {
                 noAdsButton.Hide(immediately: true);
             }
+#pragma warning restore CS0162
         }
 
         private void HideAdButton(bool immediately = false)
