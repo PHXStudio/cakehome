@@ -22,7 +22,7 @@ namespace Watermelon
             if (initialized)
                 return;
 
-            Register(new ShopHubModule());
+            Register(new MergeHubModule());
             Register(new CamperHubModule());
             Register(new ProfileHubModule());
             initialized = true;

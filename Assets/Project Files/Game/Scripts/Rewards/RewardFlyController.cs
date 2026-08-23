@@ -39,8 +39,39 @@ namespace Watermelon
         // any exp-fly the same reward triggered, after any dialog and before the level-up popup.
         public static void FlySpawner(string spawnerTypeId, int spawnerGrade, SimpleCallback onDone)
         {
-            // TODO(模板迁移): 依赖模板 UIMainMenu.BackButtonRectTransform(HotUpdate 程序集),生成器飞行动画暂未接入
-            onDone?.Invoke();
-}
+            UIMainMenu menu = UIController.GetPage<UIMainMenu>();
+            if (menu == null || !menu.IsPageDisplayed)
+            {
+                onDone?.Invoke();
+                return;
+            }
+
+            UIHeader header = UIController.GetPage<UIHeader>();
+            RectTransform flySource = header?.ScreenCenterRectTransform;
+            GameObject flyPrefab = header?.FlyingRewardPrefab;
+            if (flySource == null || flyPrefab == null)
+            {
+                onDone?.Invoke();
+                return;
+            }
+
+            Sprite sprite = MergeDatabase.Instance?.GetItem(spawnerTypeId)?.GetGradeData(spawnerGrade)?.Sprite;
+            if (sprite == null)
+            {
+                onDone?.Invoke();
+                return;
+            }
+
+            string key = $"SpawnerFly_{spawnerTypeId}_{spawnerGrade}";
+            if (!CurrencyCloud.IsRegistered(key))
+            {
+                CurrencyCloudSettings settings = new CurrencyCloudSettings(key, flyPrefab, sprite);
+                settings.SetAudio(MergeDatabase.Instance?.AppearAudioClip, MergeDatabase.Instance?.CollectAudioClip);
+
+                CurrencyCloud.RegisterCase(settings);
+            }
+
+            CurrencyCloud.SpawnCurrency(key, flySource, menu.BackButtonRectTransform, 1, "", () => onDone?.Invoke());
+        }
     }
 }

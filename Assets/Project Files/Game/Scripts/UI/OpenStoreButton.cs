@@ -26,8 +26,7 @@ namespace Watermelon
         {
             if (isLocked) return;
 
-            // TODO(模板迁移): UIStore 在 HotUpdate 程序集,待接入蛋糕商店页
-            // UIController.ShowPage<UIStore>();
+            CakeUIBridge.OpenStore?.Invoke();
 
             AudioController.PlaySound(AudioController.GetClip("button_sound"));
         }

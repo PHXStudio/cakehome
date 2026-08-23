@@ -52,9 +52,12 @@ namespace Watermelon
                     break;
 
                 case FlyType.Spawner:
-                    // TODO(模板迁移): 依赖模板 UIMainMenu(HotUpdate 程序集),暂不可测试
-                    Debug.LogWarning("[FlyingDebugSpawner] Spawner fly 尚未接入蛋糕版主菜单。");
-                    return;
+                    UIMainMenu menu = UIController.GetPage<UIMainMenu>();
+                    if (menu == null || !menu.IsPageDisplayed)
+                    {
+                        Debug.LogWarning("[FlyingDebugSpawner] Open the Main Menu to test the spawner fly (it flies to the Back button).");
+                        return;
+                    }
 
                     RewardFlyController.FlySpawner(spawnerTypeId, spawnerGrade, null);
                     break;

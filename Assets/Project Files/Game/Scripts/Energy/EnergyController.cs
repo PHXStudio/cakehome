@@ -15,6 +15,9 @@ namespace Watermelon
 
         public int RegenIntervalSeconds { get; private set; }
 
+        /// <summary>Static accessor for systems that only have the static API (push reminders etc.).</summary>
+        public static int RegenInterval => instance?.RegenIntervalSeconds ?? 120;
+
         private ResourcesSave save;
         private EnergyData data;
 

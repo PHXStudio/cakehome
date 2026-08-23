@@ -192,6 +192,123 @@ namespace Watermelon
             }
         }
 
+        [MenuItem("Actions/Merge/5. Add Fragment Exchange Entry")]
+        private static void AddFragmentEntry()
+        {
+            Scene gameScene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Single);
+
+            GameObject mergeGame = FindRoot(gameScene, "UI Main Canvas")?.transform.Find("UI Merge Game")?.gameObject;
+            if (mergeGame == null)
+            {
+                Debug.LogError("[MergeImporter] 找不到 UI Merge Game 页面，请先执行步骤 2 (Import Merge Scene)。");
+                return;
+            }
+
+            Transform bottomPanel = FindRecursive(mergeGame.transform, "Bottom Panel");
+            if (bottomPanel == null)
+            {
+                Debug.LogError("[MergeImporter] UI Merge Game 内找不到 Bottom Panel。");
+                return;
+            }
+
+            if (bottomPanel.Find("Fragment Button") != null)
+            {
+                Debug.Log("[MergeImporter] Fragment Button 已存在（幂等跳过）。");
+                return;
+            }
+
+            // 在 Map Button 旁加一个小兑换按钮
+            GameObject buttonGo = new GameObject("Fragment Button", typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button), typeof(OpenFragmentPanelButton));
+            buttonGo.layer = 5;
+            buttonGo.transform.SetParent(bottomPanel, false);
+
+            RectTransform rect = (RectTransform)buttonGo.transform;
+            rect.anchorMin = new Vector2(1f, 0.5f);
+            rect.anchorMax = new Vector2(1f, 0.5f);
+            rect.pivot = new Vector2(1f, 0.5f);
+            rect.sizeDelta = new Vector2(140f, 140f);
+            rect.anchoredPosition = new Vector2(-20f, 0f);
+
+            UnityEngine.UI.Image image = buttonGo.GetComponent<UnityEngine.UI.Image>();
+            image.color = new Color(0.85f, 0.55f, 0.3f, 1f);
+
+            GameObject labelGo = new GameObject("Label", typeof(RectTransform));
+            labelGo.layer = 5;
+            labelGo.transform.SetParent(buttonGo.transform, false);
+            RectTransform labelRect = (RectTransform)labelGo.transform;
+            labelRect.anchorMin = Vector2.zero;
+            labelRect.anchorMax = Vector2.one;
+            labelRect.offsetMin = Vector2.zero;
+            labelRect.offsetMax = Vector2.zero;
+
+            UnityEngine.UI.Text label = labelGo.AddComponent<UnityEngine.UI.Text>();
+            Font font = AssetDatabase.LoadAssetAtPath<Font>("Assets/Project Files/Game/Fonts/Resources/ChineseFont.ttf");
+            label.font = font != null ? font : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            label.text = "碎片";
+            label.fontSize = 40;
+            label.alignment = TextAnchor.MiddleCenter;
+            label.color = Color.white;
+            label.raycastTarget = false;
+
+            EditorSceneManager.MarkSceneDirty(gameScene);
+            EditorSceneManager.SaveScene(gameScene);
+            Debug.Log("[MergeImporter] 已在 UI Merge Game/Bottom Panel 添加碎片兑换入口按钮。");
+        }
+
+        private static Transform FindRecursive(Transform parent, string name)
+        {
+            if (parent.name == name) return parent;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                Transform found = FindRecursive(parent.GetChild(i), name);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        [MenuItem("Actions/Merge/4. Remove Old Shop From Scene")]
+        private static void RemoveOldShop()
+        {
+            Scene gameScene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Single);
+
+            int removed = 0;
+
+            // 根节点 ShopWorld（含 ShopCamera / Environment_Shop1 / DisplayStage / ShopIdleProducer）
+            GameObject shopWorld = FindRoot(gameScene, "ShopWorld");
+            if (shopWorld != null)
+            {
+                Object.DestroyImmediate(shopWorld);
+                removed++;
+                Debug.Log("[MergeImporter] 已删除 ShopWorld 根节点");
+            }
+
+            // 画布下的 UIShopPage prefab 实例
+            GameObject canvas = FindRoot(gameScene, "UI Main Canvas");
+            if (canvas != null)
+            {
+                for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+                {
+                    Transform child = canvas.transform.GetChild(i);
+                    if (child.name == "UIShopPage" || child.name == "UI Shop Page" || child.name.StartsWith("UIShopPage ("))
+                    {
+                        Object.DestroyImmediate(child.gameObject);
+                        removed++;
+                        Debug.Log($"[MergeImporter] 已删除画布子节点 {child.name}");
+                    }
+                }
+            }
+
+            if (removed == 0)
+            {
+                Debug.Log("[MergeImporter] 没有找到旧门店对象（可能已清理）");
+                return;
+            }
+
+            EditorSceneManager.MarkSceneDirty(gameScene);
+            EditorSceneManager.SaveScene(gameScene);
+            Debug.Log($"[MergeImporter] 旧门店场景清理完成，共删除 {removed} 个对象。");
+        }
+
         [MenuItem("Actions/Merge/3. Verify Import")]
         private static void Verify()
         {

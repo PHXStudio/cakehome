@@ -186,7 +186,7 @@ namespace Watermelon
             activeHammerCard.transform.SetSiblingIndex(activeSpawnerCard != null ? 1 : 0);
             activeHammerCard.Setup(() =>
             {
-                // TODO(模板迁移): GameController.SetBuildingActive 为模板 API,待接入蛋糕 GameController
+                MergeViewController.SetBuildingActive(true);
                 UIBuilding.Show();
             });
             activeHammerCard.PlayEnter();

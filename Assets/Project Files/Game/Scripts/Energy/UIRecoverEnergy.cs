@@ -141,7 +141,7 @@ namespace Watermelon
 
             if (!CurrencyController.HasAmount(CurrencyType.Gems, energyData.PaidEnergyCostGems))
             {
-                // TODO(模板迁移): UIStore.OpenAsOverlay 为模板 API,待接入蛋糕 UIStore
+                CakeUIBridge.OpenStore?.Invoke();
                 return;
             }
 

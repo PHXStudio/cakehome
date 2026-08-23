@@ -8,7 +8,7 @@ namespace Watermelon
 
         public int LevelsPlayed;
         public int LevelsWon;
-        public int ShopHarvests;
+        public int MergeOrders;
         public int RewardedVideos;
 
         /// <summary>已领取奖励的任务 bitmask</summary>

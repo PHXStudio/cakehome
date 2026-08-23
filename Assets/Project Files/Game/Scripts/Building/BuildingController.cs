@@ -84,6 +84,19 @@ namespace Watermelon
 
         public static ZoneData[] AllZones => instance?.allZones ?? Array.Empty<ZoneData>();
 
+        /// <summary>Total building upgrade steps across every zone (avatar title conditions, profile stats).</summary>
+        public static int TotalUpgrades
+        {
+            get
+            {
+                if (instance == null) return 0;
+                int total = 0;
+                foreach (int count in instance.upgradeCountByZone.Values)
+                    total += count;
+                return total;
+            }
+        }
+
         // Checked against prefab-authored building data directly (same pattern as IsZoneComplete)
         // so callers don't need a live, instantiated BuildingBehavior — e.g. the task panel's
         // hammer-card visibility, which must react to affordability from the Game scene, before

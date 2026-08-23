@@ -112,6 +112,11 @@ namespace Watermelon
                 CurrencyController.Add(CurrencyType.Coins, coinsReward, "client_order");
             }
 
+            // Merge stats + fragment reward + bridge notification (daily tasks etc.)
+            MergeStatsController.AddOrdersCompleted(1);
+            FragmentController.Add(task.Items.Count >= 3 ? 2 : 1);
+            CakeUIBridge.OrderCompleted?.Invoke(1);
+
             TaskController.Instance.RemoveTask(task);
         }
 

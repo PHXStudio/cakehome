@@ -81,8 +81,8 @@ namespace Watermelon
                     return;
                 }
 
-                // TODO(模板迁移): 原逻辑取模板 UIGame 页面(HotUpdate 程序集),暂按未显示处理
-                bool onBoard = false;
+                UIGame gamePage = UIController.GetPage<UIGame>();
+                bool onBoard = gamePage != null && gamePage.IsPageDisplayed;
 
                 if (!onBoard)
                 {

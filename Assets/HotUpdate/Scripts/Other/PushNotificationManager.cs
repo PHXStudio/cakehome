@@ -6,7 +6,7 @@ namespace Watermelon
     /// <summary>
     /// 本地推送通知（海外渠道次留召回）。
     /// 编辑器/PC 不触发真实通知；真机（Android/iOS）生效。
-    /// 触发点：体力满、商店离线收益、每日任务/签到刷新。
+    /// 触发点：体力满、能量回满、每日任务/签到刷新。
     /// </summary>
     public static class PushNotificationManager
     {
@@ -21,6 +21,7 @@ namespace Watermelon
                     Unity.Notifications.NotificationCenter.RequestAuthorization();
 
                 ScheduleDailyResetReminder();
+                ScheduleEnergyFullReminder();
             }
             catch (System.Exception e)
             {
@@ -55,23 +56,28 @@ namespace Watermelon
 #endif
         }
 
-        /// <summary>商店离线收益累计可观时提醒。</summary>
-        public static void ScheduleShopReadyReminder()
+        /// <summary>能量回满时提醒（合成玩法）。</summary>
+        public static void ScheduleEnergyFullReminder()
         {
 #if UNITY_ANDROID || UNITY_IOS
             try
             {
+                if (EnergyController.Current >= EnergyController.Max)
+                    return;
+
+                double etaSeconds = (EnergyController.Max - EnergyController.Current) * (double)EnergyController.RegenInterval;
+
                 Unity.Notifications.Notification n = new Unity.Notifications.Notification
                 {
-                    Title = "店铺收益待收！",
-                    Text = "你的蛋糕店又赚了一波烘焙积分！",
-                    FireTime = DateTime.Now.AddHours(4)
+                    Title = "能量已满！",
+                    Text = "你的能量已经回满，快回店里继续合成吧！",
+                    FireTime = DateTime.Now.AddSeconds(etaSeconds)
                 };
                 Unity.Notifications.NotificationCenter.ScheduleNotification(n);
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning("[Push] Shop reminder failed: " + e.Message);
+                Debug.LogWarning("[Push] Energy reminder failed: " + e.Message);
             }
 #endif
         }
