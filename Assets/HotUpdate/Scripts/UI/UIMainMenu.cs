@@ -120,12 +120,17 @@ namespace Watermelon
 
         private void CheckDailyTaskPanel()
         {
+            // 每日任务功能已屏蔽（2026-08-23）：恢复时删除下面这行即可
+            return;
+
+#pragma warning disable CS0162
             DailyTaskPanel taskPanel = Object.FindObjectOfType<DailyTaskPanel>(true);
             if (taskPanel != null && DailyTaskController.HasClaimable())
             {
                 taskPanel.Init();
                 taskPanel.Show();
             }
+#pragma warning restore CS0162
         }
 
         protected override void OnHide()
