@@ -112,9 +112,10 @@ namespace Watermelon
                 CurrencyController.Add(CurrencyType.Coins, coinsReward, "client_order");
             }
 
-            // Merge stats + fragment reward + bridge notification (daily tasks etc.)
+            // Merge stats + bridge notification (daily tasks etc.)
             MergeStatsController.AddOrdersCompleted(1);
-            FragmentController.Add(task.Items.Count >= 3 ? 2 : 1);
+            // 碎片功能已禁用（2026-08-24）：恢复时取消下行注释 + 重新激活 Fragment Button + FragmentDropHook
+            // FragmentController.Add(task.Items.Count >= 3 ? 2 : 1);
             CakeUIBridge.OrderCompleted?.Invoke(1);
 
             TaskController.Instance.RemoveTask(task);

@@ -14,10 +14,16 @@ namespace Watermelon
 
         public static void OnMatchCombined(List<ISlotable> match)
         {
+            // 碎片功能已禁用（2026-08-24）：恢复时删除下面这行，并重新激活场景里的
+            // UI Merge Game/Safe Area/Bottom Panel/Fragment Button + UIClientOrderCard 的碎片发放
+            return;
+
+#pragma warning disable CS0162
             if (Random.value > DROP_CHANCE)
                 return;
 
             FragmentController.Add(1);
+#pragma warning restore CS0162
         }
     }
 }

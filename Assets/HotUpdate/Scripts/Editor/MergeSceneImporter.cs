@@ -244,8 +244,10 @@ namespace Watermelon
                 return;
             }
 
-            // 在 Bottom Panel 左侧加一个小兑换按钮（右侧是 Map Button，别叠上去）
+            // 碎片功能已禁用（2026-08-24）：按钮创建为未激活状态。
+            // 恢复：激活场景对象 + 取消 FragmentDropHook / UIClientOrderCard 的屏蔽注释。
             GameObject buttonGo = new GameObject("Fragment Button", typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button), typeof(OpenFragmentPanelButton));
+            buttonGo.SetActive(false);
             buttonGo.layer = 5;
             buttonGo.transform.SetParent(bottomPanel, false);
 
