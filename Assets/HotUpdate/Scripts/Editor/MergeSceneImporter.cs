@@ -244,17 +244,17 @@ namespace Watermelon
                 return;
             }
 
-            // 在 Map Button 旁加一个小兑换按钮
+            // 在 Bottom Panel 左侧加一个小兑换按钮（右侧是 Map Button，别叠上去）
             GameObject buttonGo = new GameObject("Fragment Button", typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button), typeof(OpenFragmentPanelButton));
             buttonGo.layer = 5;
             buttonGo.transform.SetParent(bottomPanel, false);
 
             RectTransform rect = (RectTransform)buttonGo.transform;
-            rect.anchorMin = new Vector2(1f, 0.5f);
-            rect.anchorMax = new Vector2(1f, 0.5f);
-            rect.pivot = new Vector2(1f, 0.5f);
+            rect.anchorMin = new Vector2(0f, 0.5f);
+            rect.anchorMax = new Vector2(0f, 0.5f);
+            rect.pivot = new Vector2(0f, 0.5f);
             rect.sizeDelta = new Vector2(140f, 140f);
-            rect.anchoredPosition = new Vector2(-20f, 0f);
+            rect.anchoredPosition = new Vector2(20f, 0f);
 
             UnityEngine.UI.Image image = buttonGo.GetComponent<UnityEngine.UI.Image>();
             image.color = new Color(0.85f, 0.55f, 0.3f, 1f);
