@@ -7080,6 +7080,24 @@ MonoBehaviour:
   - particleName: Slot Highlight
     particlePrefab: {fileID: 1843363858498662, guid: a55a2847c84752a44b079ab2ddc92bb3,
       type: 3}
+  - particleName: Merge
+    particlePrefab: {fileID: 167592597321332269, guid: 4f0d1f6b086c6954e999e011a0ef8944,
+      type: 3}
+  - particleName: Delete
+    particlePrefab: {fileID: 5848940799238402405, guid: 3764bedaf3689fb48839c770ce76e0e0,
+      type: 3}
+  - particleName: Appear
+    particlePrefab: {fileID: 7117893414468506991, guid: 2026565fd19396c40bc70816c601b865,
+      type: 3}
+  - particleName: Energy Item Usage
+    particlePrefab: {fileID: 7117893414468506991, guid: 2026565fd19396c40bc70816c601b865,
+      type: 3}
+  - particleName: Currency Item Usage
+    particlePrefab: {fileID: 7117893414468506991, guid: 2026565fd19396c40bc70816c601b865,
+      type: 3}
+  - particleName: Building Upgrade
+    particlePrefab: {fileID: 2651325493437297093, guid: 2ccaf4bbd06746f43b40c0e2859d2f1a,
+      type: 3}
 --- !u!114 &1060784213
 MonoBehaviour:
   m_ObjectHideFlags: 0
