@@ -39,12 +39,12 @@ namespace Watermelon
 
         private void OnPurchaseModuleInitted()
         {
-            removeAdsButton.Init(ProductKeyType.NoAds);
+            removeAdsButton.Init(ProductKeyType.NoAdsPack);
         }
 
         private void OnPurchaseCompleted(ProductKeyType productKeyType)
         {
-            if(productKeyType == ProductKeyType.NoAds)
+            if(productKeyType == ProductKeyType.NoAdsPack)
             {
                 AdsManager.DisableForcedAdForever();
 

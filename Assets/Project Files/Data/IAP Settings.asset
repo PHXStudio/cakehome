@@ -15,6 +15,12 @@ MonoBehaviour:
   useFakeStore: 0
   fakeStoreMode: 0
   storeItems:
+  - androidID: com.example.starter.pack
+    iOSID: com.example.starter.pack
+    productKeyType: 1
+    productType: 1
+    defaultUSDPrice: 4.99
+    rewardsSet: {fileID: 11400000, guid: 8b43657c89ae454fa94bcae9371a13a7, type: 2}
   - androidID: com.example.boost.pack
     iOSID: com.example.boost.pack
     productKeyType: 5

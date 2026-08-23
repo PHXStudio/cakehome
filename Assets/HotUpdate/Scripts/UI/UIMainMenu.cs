@@ -225,7 +225,7 @@ namespace Watermelon
 
         private void OnAdPurchased(ProductKeyType productKeyType)
         {
-            if (productKeyType == ProductKeyType.NoAds)
+            if (productKeyType == ProductKeyType.NoAdsPack)
             {
                 HideAdButton(immediately: true);
             }

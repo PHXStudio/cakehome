@@ -565,6 +565,15 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 - `EnergyUIPanel` 多实例注册冲突修复：`CurrencyCloud.IsRegistered` 全局守卫 + Start 自初始化
 - 每日任务面板屏蔽：`UIMainMenu.CheckDailyTaskPanel` 短路（每日签到保留）
 
+### 18.6 商店内容对齐 mergedev（2026-08-24）
+
+- **背景**：大版本升级时 IAP Settings 被 mergedev 版整体覆盖（BoostPack=5…NoAdsPack=13），但商店 UI 与 `ProductKeyType` 枚举仍是旧的（NoAds=0…PUPack=5）——旧 8 个商品全部失效/错配（PUPack=5 撞上 BoostPack 注册）。
+- **最终阵容**（UI IAP Store.prefab）：Starter Pack（保留，新注册 com.example.starter.pack / $4.99 / NonConsumable）→ Boost Pack($3.99) → Pro Pack($7.99) → No Ads Pack($4.99) → 能量×3（25/40/65 **钻石**软货币购买）→ 钻石×6（$1.99~$119.99）。旧 Power Pack/金币×3/广告金币/计时金币下线（prefab 资产保留未删）。
+- **实现方式**：跨项目 YAML 移植——mergedev Game.unity 的 5 个 offer 子树（655 文档）重映射 fileID/rid 后并入商店 prefab；`IAPRewardsHolder` GUID 替换为 Core 版（ad80efb8→c01010db）；`currencyCloudTargetPoint` 场景引用置空（spawnCurrencyCloud 全为 0 无影响）。
+- **枚举**：`ProductKeyType` 重写为 StarterPack=1 + mergedev 阵容（5-13）；`UINoAdsPopUp`/`UIMainMenu` 的 `NoAds` 引用改为 `NoAdsPack`。
+- **顺带修复**：`UI Rewards Confirmation Popup` 的 `rewardUIPrefab` 引用悬空（mergedev 预制体未导入）→ 重指到 `UI Level Up Reward Tile.prefab`；Pro Pack 标题在 mergedev 原数据就误写为 Boost Pack，已修正。
+- 编辑器内 IAP 价格显示 USD 0.00 + 转圈属正常（无真实商品数据），软货币购买已实测通过（25 钻 → +100 能量）。
+
 ---
 
 ## 十四、设计文档摘要（GDD 概念设计）
