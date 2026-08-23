@@ -37,7 +37,7 @@ Assets/
 │   │   ├── IAP Store/               # 内购商店
 │   │   ├── Level/                   # 关卡核心（玩法/数据/场/特效/动画/编辑器）
 │   │   ├── Level Map/               # 关卡大地图
-│   │   ├── Lives System/            # 生命值系统
+│   │   ├── Lives System/            # 能量门票适配层 + 无限模式（旧命数体系已删，见第八章）
 │   │   ├── Other/                   # 背景、开发者面板
 │   │   ├── Power Ups/               # 道具具体实现
 │   │   ├── Power Ups System/        # 道具框架（控制器/UI/数据）
@@ -95,7 +95,7 @@ LoadDll.Start()
 7. **LevelController** — 关卡控制
 8. **ParticlesController** — 粒子系统
 9. **PUController** — 道具系统
-10. **LivesSystem** — 生命系统
+10. **LivesSystem** — 能量门票适配层（Lock/Unlock = 预扣/返还能量）+ 无限模式容器
 11. **MergeController / SpawnerController / TaskController** — 门店合成玩法（棋盘/生成器/订单，Game.Scripts 程序集）
 12. **TutorialController** — 新手引导
 13. **MapBehavior** — 关卡地图
@@ -190,25 +190,22 @@ TileEffectType: None | Unknown | Crate | Ice | Link
 ### 5.1 玩法闭环
 
 ```
-消消乐关卡 ──掉金币/蛋糕碎片──┐
-                              ▼
+消消乐关卡 ──掉金币──┐         （蛋糕碎片掉落已禁用，见 18.3）
+                     ▼
 合成棋盘（7×9 uGUI）  拖拽同级同类物品 → 合成升 1 级
   ├─ 锁定格（LockedCell，藏隐藏物品，被相邻合成波及后解锁）
-  ├─ 生成器（茶壶/搅拌机等）：点按耗 1 能量产出物品
+  ├─ 生成器（茶壶/搅拌机等）：点按耗能量产出物品
   │   （g1-g3 无产出池是原版设计，合成到 g4+ 才能产出）
   └─ 能量：上限 50，120 秒恢复 1 点，离线结算
-        │
+        │   ※ 与消消乐门票共用同一能量池（见第八章）
         ▼
 顾客订单（ClientOrderTask）  需求物品绑定棋盘活体 → Give 交单
-  ├─ 得金币 + 蛋糕碎片（1-2 个/单）
+  ├─ 得金币（碎片奖励已禁用）
   └─ 订单批次按建筑升级数解锁，随机订单池防金币过剩
         │
         ▼
 店铺装修（Zone/Building）  金币升级建筑 → 换外观
   └─ 升级数解锁：新订单批次/对话/经验等级/新区域（Zone 1-3）
-        │
-        ▼
-蛋糕碎片兑换  10 碎片 → +25 能量；20 碎片 → 随机 1 级生成器
 ```
 
 ### 5.2 代码架构
@@ -224,8 +221,8 @@ TileEffectType: None | Unknown | Crate | Ice | Link
 | 桥接 | `MergeViewController` | Game.Scripts | 页面门面（EnterHub/ExitHub/双视图互切/教程激活）——**HotUpdate 不可直接引用模板页面类型，必须走这里** |
 | 桥接 | `CakeUIBridge` | Game.Scripts | 反向桥：OpenStore / OrderCompleted（HotUpdate 启动时赋值） |
 | Hub | `MergeHubModule` | HotUpdate | Tab 生命周期（已替代 ShopHubModule） |
-| 碎片 | `FragmentController` / `FragmentSave` | Game.Scripts | 蛋糕碎片库存 |
-| 碎片 | `FragmentDropHook` / `UIFragmentExchangePanel` / `OpenFragmentPanelButton` | HotUpdate | 关卡掉落（0.15）/ 运行时兑换面板 |
+| 碎片 | `FragmentController` / `FragmentSave` | Game.Scripts | 蛋糕碎片库存（⚠️ 2026-08-24 起功能禁用，代码/存档保留，见 18.3） |
+| 碎片 | `FragmentDropHook` / `UIFragmentExchangePanel` / `OpenFragmentPanelButton` | HotUpdate | 关卡掉落（0.15）/ 运行时兑换面板（⚠️ 已禁用：钩子短路、入口隐藏） |
 | 统计 | `MergeStatsController` / `MergeStatsSave` | Game.Scripts | 订单总数（称号/个人页） |
 
 ### 5.3 场景装配（Game.unity）
@@ -240,8 +237,8 @@ TileEffectType: None | Unknown | Crate | Ice | Link
 
 ### 5.5 称号/日常/推送改接
 
-- 称号：订单 50 单「订单达人」/ 建筑 10 级「装修大师」/ 区域全解锁「区域开拓者」
-- 每日任务：`MergeOrders`（完成 2 订单，经 `CakeUIBridge.OrderCompleted`）
+- 称号：订单 50 单「订单达人」/ 建筑 10 级「装修大师」/ 区域全解锁「区域开拓者」（⚠️ 「我的」Tab 已禁用，称号入口不可见，见 18.2）
+- 每日任务：`MergeOrders`（完成 2 订单，经 `CakeUIBridge.OrderCompleted`；⚠️ 每日任务面板已屏蔽，进度照跑但无 UI 出口）
 - 游客奖励：能量 30 + Kettle 生成器 + 50 金币
 - 推送：能量回满提醒（`ScheduleEnergyFullReminder`）
 
@@ -256,7 +253,7 @@ UIBottomNavBar — 底部导航栏 UI
 HubModuleRouter — 模块路由（单例）
 ├── MergeHubModule   — 门店合成玩法（Tab 枚举仍为 MainHubTab.Shop=0）
 ├── CamperHubModule — 关卡地图 + 主菜单
-└── ProfileHubModule — 个人中心
+└── ProfileHubModule — 个人中心（⚠️ 2026-08-24 起禁用：路由不注册、底栏按钮隐藏，代码保留可恢复，见 18.2）
 ```
 
 ### 6.2 接口 `IHubModule`
@@ -272,9 +269,10 @@ interface IHubModule {
 
 ### 6.3 底部导航栏布局
 
-- 三栏: Shop（门店合成） | Camper（关卡） | Profile（个人）
+- 两栏: Shop（门店合成，锚点 0~0.5） | Camper（关卡，0.5~1）；Profile 按钮已隐藏（m_IsActive: 0）
 - 纯图标样式，使用特定资源
 - 相机渲染方式提升层级
+- `HubModuleRouter.SwitchTo` 先解析目标模块再退出当前模块——未注册的 Tab 会被拦截且不污染当前页
 
 ---
 
@@ -288,22 +286,35 @@ interface IHubModule {
 
 ---
 
-## 八、生命系统
+## 八、能量系统（原生命系统，2026-08-23 已合并）
 
-- `LivesSystem` — 静态单例，管理生命恢复/消耗/无限模式
-- `LivesData` — ScriptableObject 配置（maxLives=5，恢复间隔=1200s/20min）
-- `LivesSave` — 存档（含离线恢复计算）
-- 离线期间自动计算已恢复的生命数
-- 无限生命模式（`EnableInfiniteMode(seconds)`）由 IAP 或奖励触发
+> 消消乐 Lives（5 命/20 分钟恢复）与合成 Energy（50 点/120 秒）已**合并为单一能量池**，
+> 沿用合成的数值与图标/布局（EnergyUIPanel）。旧 Lives 命数体系已删除。
+
+### 8.1 规则
+
+- `EnergyController`（Game.Scripts）— 上限 50，120 秒回 1 点，离线结算（`RecoverOffline`）
+- **进关门票 = 10 能量**：`LivesSystem.LockLife()` 预扣；通关/返回主页 `UnlockLife(false)` **全额返还**（即赢不耗能量）；失败/中途退出不返还
+- **半价重试 = 5 能量**（赢也返还）：`CanStartHalfPrice()`
+- **无限模式保留**：激活期间进关不耗能量（Starter Pack 2h + 签到第 5 天 30 分钟权益不变）；合成生成器照常耗能
+- 能量不足时 Play → 弹 `UIRecoverEnergy`（看广告/钻石购买补足）
+
+### 8.2 适配层
+
+`LivesSystem`（HotUpdate）保留类名/存档，改造为**门票适配层 + 无限模式容器**：
+- `LEVEL_ENERGY_COST = 10` / `HALF_PRICE_ENERGY_COST = 5`
+- 连续 NextLevel 链路天然正确（每关预扣 + 每赢返还 = 净 0，同原"赢免费"）
+- `LivesSave` 保留无限模式字段；命数恢复循环/半价累积器已删除
+- UI：主菜单/失败页/商店页的生命指示器已全部换成 Energy Panel（`EnergyPanelInstaller`，Actions/Merge 步骤 6-7）；`Lives Indicator.prefab`、`Add Lives Panel.prefab` 等已删除
 
 ### 关卡失败流程
 
 ```
 OnSlotsFilled / TimerFinished
   → GameController.OnLevelFailed()
-  → LivesSystem.LockLife()
+  → LivesSystem.LockLife()（= 能量已预扣 10，不返还）
   → UIComplete / UIGameOver 弹出
-  → 复活（激励视频广告） / 重玩 / 返回主菜单
+  → 复活（激励视频广告） / 半价重试（5 能量） / 返回主菜单
 ```
 
 ---
@@ -516,6 +527,43 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 - 客户端：`/tmp/mcp_unity.py`（initialize/tools/call）+ `/tmp/mcp_exec.py`（execute_code 执行 C# 并返回结果）
 - 模式：`execute_code` 里反射调用私有 Editor 方法 + `Application.logMessageReceived` 捕获日志；`read_console` 查编译错误；`AssetDatabase.Refresh(ForceUpdate)` 触发重编译
 - 注意：Play 模式中不能 `EditorSceneManager.OpenScene`（须先停 Play）；动态代码里引用双存在类型（UIGame 等）会歧义，用 `GameObject.Find` 或按程序集反射
+- **改完脚本必须显式 `AssetDatabase.Refresh()` 再进 Play 验证**：编辑器后台不自动检测外部文件改动，否则会拿着旧程序集白测一轮
+
+---
+
+## 十八、2026-08-24 功能裁剪与 UI 修复
+
+### 18.1 UI 页面层级修复（商店/设置"假失效"）
+
+- **根因**：所有 UI 页同在 `UI Main Canvas` 下按**子节点顺序**渲染。合成页面嫁接时排在末尾 → `UI IAP Store`/`UI Settings` 被压在合成页面之下，门店 Tab 打开它们时 `IsPageDisplayed=true` 但不可见。
+- **修复**：两页移到子节点最末尾（modal 层级，覆盖底栏与所有页面）。**以后新加覆盖页必须放最后。**
+- 同批修复：棋盘页 `Fragment Button` 与 `Map Button` 同叠右下角导致 Map 按钮点不到 → 碎片按钮移至左下（后随碎片功能一并隐藏）。
+- **验证方法论**：`onClick.Invoke()` 只能验证逻辑不能验证可见性——要 `EventSystem.RaycastAll` 查遮挡 + `ScreenCapture` 截屏眼见为实。
+
+### 18.2 「我的」Tab 禁用
+
+- 场景隐藏 `Bottom Nav Bar/Tabs/Profile`（锚点重排：Shop 0~0.5 / Camper 0.5~1）
+- `HubModuleRouter` 不再注册 `ProfileHubModule`（代码/Avatar/称号/统计系统保留）
+- 顺手修复：`SwitchTo` 原为先退出当前模块再校验目标 → 改为**先解析目标再切换**，无效 Tab 不再把当前页搞空
+- 恢复：场景激活 Profile 按钮 + 取消路由注册注释
+
+### 18.3 配方碎片功能禁用
+
+- 三处口子全关：`FragmentDropHook`（消除 15% 掉落）短路 return、`UIClientOrderCard` 订单碎片奖励注释、场景 `Fragment Button` 停用（兑换面板无入口）
+- `FragmentController`/兑换面板/碎片存档全部保留；`MergeSceneImporter` 重导入时创建未激活按钮保持一致
+- 恢复：激活场景按钮 + 取消两处注释（各屏蔽点有注释指引）
+
+### 18.4 NO ADS 按钮移除
+
+- `UIMainMenu.ShowAdButton` 短路为始终隐藏（按钮滑屏机制不变，可逆）
+- 保留：商店内 No Ads 商品、设置页恢复购买、强制广告开关
+
+### 18.5 能量体系统一（2026-08-23，补记）
+
+- Lives + Energy 合并为单一能量池（详见第八章）：门票 10 能量赢返还、半价重试 5、无限模式改为免门票 buff
+- `EnergyPanelInstaller`（Actions/Merge 步骤 6-7）：Energy Panel 提取为 prefab 并替换三处宿主页的生命指示器
+- `EnergyUIPanel` 多实例注册冲突修复：`CurrencyCloud.IsRegistered` 全局守卫 + Start 自初始化
+- 每日任务面板屏蔽：`UIMainMenu.CheckDailyTaskPanel` 短路（每日签到保留）
 
 ---
 
@@ -638,13 +686,13 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 
 ### 14.5 设计-实现对照总表
 
-| 模块 | 当前代码实现（2026-08-23） | GDD 远期规划 |
+| 模块 | 当前代码实现（2026-08-24） | GDD 远期规划 |
 |------|--------------------|--------------|
 | 门店 | **合成玩法**：棋盘合成 + 顾客订单 + 店铺装修升级（mergedev 模板，见五/十七章） | 库存网格/动态市场/定价策略 |
-| 经济 | 单货币（Coins）+ Gems + 能量；蛋糕碎片（关卡掉落/订单奖励）兑换能量/生成器 | 单一烘焙积分 + 隐藏配方发现机制 |
-| 消消乐 | 多层网格3消，Dock提交，消除实时加分 | 定向刷原料 |
-| 我的 | Avatar 换装/称号（订单/装修/区域）/订单·装修统计 | 店长换装扩展/写真馆/个人主页 |
-| 留存 | 失败挽留（积分续局/半价重试）+ 每日签到/任务 | Day1-3 分阶段解锁社交 |
+| 经济 | 单货币（Coins）+ Gems + **统一能量池**（消消乐门票与合成燃料同池）；蛋糕碎片已禁用 | 单一烘焙积分 + 隐藏配方发现机制 |
+| 消消乐 | 多层网格3消，Dock提交，消除实时加分；进关耗 10 能量赢返还 | 定向刷原料 |
+| 我的 | ⚠️ **Tab 已禁用**（Avatar/称号/统计代码保留可恢复） | 店长换装扩展/写真馆/个人主页 |
+| 留存 | 失败挽留（积分续局/半价重试 5 能量）+ 每日签到（任务面板已屏蔽） | Day1-3 分阶段解锁社交 |
 | 社交 | 无 | 好友串门/车队公会/点赞大赛 |
 | 新手引导 | FirstLevelTutorial + **FirstStartTutorial 完整版已接入**（合成玩法 onboarding） | — |
 | 关卡地图 | 垂直滚动 Chunk 池化 | 露营车旅行主题联动 |
@@ -663,7 +711,7 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 - 合成棋盘主题化（蛋糕店皮肤/棋盘装饰解锁）
 - 订单策略化：限时订单/偏好顾客/小费机制
 - 装修更多层级与区域（Zone 4+）
-- 碎片兑换商店扩充（专属生成器/宝箱）
+- 钻石消耗出口扩充（买生成器/加速等；当前仅补能量一个出口）
 
 ### Phase 3 — 社交系统
 - 甜品写真馆 + 全服点赞大赛
