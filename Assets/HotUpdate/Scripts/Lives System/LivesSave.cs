@@ -24,19 +24,10 @@ namespace Watermelon
         {
             if (status == null) return;
 
-            LivesCount = status.LivesCount;
-
             InfiniteLives = status.InfiniteMode;
             InfiniteLivesDateBinary = status.InfiniteModeDate.ToBinary();
 
-            if(status.NewLifeTimerEnabled)
-            {
-                NewLifeDateBinary = status.NewLifeDate.ToBinary();
-            }
-            else
-            {
-                NewLifeDateBinary = (DateTime.Now + LivesSystem.OneLifeSpan).ToBinary();
-            }
+            // LivesCount / NewLifeDateBinary 为旧命数制的废弃字段，不再回写（能量由 ResourcesSave 承载）
         }
     }
 }

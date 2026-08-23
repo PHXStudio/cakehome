@@ -5,8 +5,8 @@ namespace Watermelon
 {
     public static class LivesSystemEditorActions
     {
-        [MenuItem("Actions/Lives System/Full Lives")]
-        private static void FullLives()
+        [MenuItem("Actions/Energy System/Full Energy")]
+        private static void FullEnergy()
         {
             if (!Application.isPlaying)
             {
@@ -15,13 +15,13 @@ namespace Watermelon
                 return;
             }
 
-            LivesSystem.AddLife(int.MaxValue, false);
+            EnergyController.Add(EnergyController.Max, ignoreCap: false);
 
-            Debug.Log("FullLives action performed");
+            Debug.Log("FullEnergy action performed");
         }
 
-        [MenuItem("Actions/Lives System/No Lives")]
-        private static void NoLives()
+        [MenuItem("Actions/Energy System/No Energy")]
+        private static void NoEnergy()
         {
             if (!Application.isPlaying)
             {
@@ -30,13 +30,13 @@ namespace Watermelon
                 return;
             }
 
-            LivesSystem.TakeLife(int.MaxValue);
+            EnergyController.Set(0);
 
-            Debug.Log("NoLives action performed");
+            Debug.Log("NoEnergy action performed");
         }
 
-        [MenuItem("Actions/Lives System/Take Life")]
-        private static void TakeLife()
+        [MenuItem("Actions/Energy System/-10 Energy")]
+        private static void TakeEnergy()
         {
             if (!Application.isPlaying)
             {
@@ -45,13 +45,13 @@ namespace Watermelon
                 return;
             }
 
-            LivesSystem.TakeLife();
+            EnergyController.TrySpend(10);
 
-            Debug.Log("TakeLife action performed");
+            Debug.Log("-10 Energy action performed");
         }
 
-        [MenuItem("Actions/Lives System/Add Life")]
-        private static void AddLife()
+        [MenuItem("Actions/Energy System/+10 Energy")]
+        private static void AddEnergy()
         {
             if (!Application.isPlaying)
             {
@@ -60,13 +60,13 @@ namespace Watermelon
                 return;
             }
 
-            LivesSystem.AddLife();
+            EnergyController.Add(10, ignoreCap: true);
 
-            Debug.Log("AddLife action performed");
+            Debug.Log("+10 Energy action performed");
         }
 
-        [MenuItem("Actions/Lives System/Show Add Life Panel")]
-        private static void ShowAddLifePanel()
+        [MenuItem("Actions/Energy System/Show Recover Energy Panel")]
+        private static void ShowRecoverEnergyPanel()
         {
             if (!Application.isPlaying)
             {
@@ -75,20 +75,10 @@ namespace Watermelon
                 return;
             }
 
-            if (!UIAddLivesPanel.Exists())
-            {
-                Debug.Log("UIAddLivesPanel page doesn't exist!");
-
-                return;
-            }
-
-            UIAddLivesPanel.Show((bool rewardedVideoWatched) =>
-            {
-                Debug.Log("Panel Closed; RV watched: " + rewardedVideoWatched);
-            });
+            UIRecoverEnergy.Show();
         }
 
-        [MenuItem("Actions/Lives System/Enable Infinite Mode (30 seconds)")]
+        [MenuItem("Actions/Energy System/Enable Infinite Mode (30 seconds)")]
         private static void EnableInfiniteMode()
         {
             if (!Application.isPlaying)
@@ -98,12 +88,12 @@ namespace Watermelon
                 return;
             }
 
-            LivesSystem.EnableInfiniteMode(5);
+            LivesSystem.EnableInfiniteMode(30);
 
             Debug.Log("EnableInfiniteMode action performed");
         }
 
-        [MenuItem("Actions/Lives System/Disable Infinite Mode")]
+        [MenuItem("Actions/Energy System/Disable Infinite Mode")]
         private static void DisableInfiniteMode()
         {
             if (!Application.isPlaying)
