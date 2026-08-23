@@ -32,30 +32,6 @@ namespace Watermelon
 #endif
         }
 
-        /// <summary>体力快满时提醒（secondsUntilFull 秒后触发）。</summary>
-        public static void ScheduleLivesFullReminder(int secondsUntilFull)
-        {
-            if (secondsUntilFull <= 0)
-                return;
-
-#if UNITY_ANDROID || UNITY_IOS
-            try
-            {
-                Unity.Notifications.Notification n = new Unity.Notifications.Notification
-                {
-                    Title = "体力已满！",
-                    Text = "回来继续闯关吧！",
-                    FireTime = DateTime.Now.AddSeconds(secondsUntilFull)
-                };
-                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogWarning("[Push] Lives reminder failed: " + e.Message);
-            }
-#endif
-        }
-
         /// <summary>能量回满时提醒（合成玩法）。</summary>
         public static void ScheduleEnergyFullReminder()
         {

@@ -51,6 +51,14 @@ namespace Watermelon
             Redraw();
         }
 
+        // Self-initializes so instances dropped into pages other than UIHeader
+        // (UIMainMenu / UIGameOver / UIStore) work without an explicit Init() call.
+        // RegisterCloudCase / Activate are both guarded against double execution.
+        private void Start()
+        {
+            Init();
+        }
+
         private void OnAddButtonClicked()
         {
             if (isAddButtonLocked) return;
@@ -70,6 +78,10 @@ namespace Watermelon
         {
             if (cloudCaseRegistered) return;
             cloudCaseRegistered = true;
+
+            // Multiple panel instances exist across pages (UIMainMenu/UIGameOver/UIStore/UIHeader) —
+            // the cloud case is global, register it only once.
+            if (CurrencyCloud.IsRegistered(CLOUD_KEY)) return;
 
             if (icon != null && icon.sprite != null)
                 CurrencyCloud.RegisterCase(new CurrencyCloudSettings(CLOUD_KEY, icon.sprite, new Vector2(80, 80))

@@ -239,21 +239,15 @@ namespace Watermelon
 
         private void OnPlayTriggered(int levelId)
         {
-            if (LivesSystem.Lives > 0 || LivesSystem.InfiniteMode)
+            if (EnergyController.Current >= LivesSystem.LEVEL_ENERGY_COST || LivesSystem.InfiniteMode)
             {
                 // start level
                 GameController.LoadLevel(levelId);
             }
             else
             {
-                UIAddLivesPanel.Show((bool lifeRecieved) =>
-                {
-                    if (lifeRecieved)
-                    {
-                        // start level
-                        GameController.LoadLevel(levelId);
-                    }
-                });
+                // 能量不足：弹恢复能量面板（补足后再次点击 Play 即可）
+                UIRecoverEnergy.Show();
             }
         }
 
