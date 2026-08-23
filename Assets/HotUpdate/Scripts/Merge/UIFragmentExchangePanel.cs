@@ -36,7 +36,7 @@ namespace Watermelon
         private static void Build()
         {
             Canvas hostCanvas = null;
-            UIController uiController = Object.FindObjectByType<UIController>();
+            UIController uiController = Object.FindObjectOfType<UIController>();
             if (uiController != null)
                 hostCanvas = uiController.GetComponent<Canvas>();
 

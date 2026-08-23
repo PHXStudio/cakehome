@@ -162,7 +162,7 @@ namespace Watermelon
                     Debug.Log($"[MergeImporter] 搬入教程对象 {tutorialName}");
                 }
 
-                // --- 3. 复制控制器组件 ---
+                // --- 3. 复制控制器组件（SerializedObject 逐字段复制，引用保持在已搬入的活体对象上） ---
                 foreach (string typeName in COMPONENTS_TO_COPY)
                 {
                     Component source = sourceScriptsHolder?.GetComponent(typeName);
@@ -177,8 +177,17 @@ namespace Watermelon
                         continue;
                     }
 
-                    ComponentUtility.CopyComponent(source);
-                    ComponentUtility.PasteComponentAsNew(scriptsHolder);
+                    Component target = scriptsHolder.AddComponent(source.GetType());
+                    SerializedObject sourceSo = new SerializedObject(source);
+                    SerializedObject targetSo = new SerializedObject(target);
+                    SerializedProperty prop = sourceSo.GetIterator();
+                    while (prop.NextVisible(true))
+                    {
+                        // 跳过 Unity 对象头字段（m_ObjectHideFlags/m_GameObject/m_Script 等），只拷自定义序列化字段
+                        if (prop.propertyPath.StartsWith("m_")) continue;
+                        targetSo.CopyFromSerializedProperty(prop);
+                    }
+                    targetSo.ApplyModifiedPropertiesWithoutUndo();
                     Debug.Log($"[MergeImporter] 复制组件 {typeName}");
                 }
 
@@ -319,9 +328,9 @@ namespace Watermelon
             GameObject canvas = FindRoot(gameScene, "UI Main Canvas");
             GameObject scriptsHolder = FindRoot(gameScene, "Scripts Holder");
 
-            foreach (var (_, newName) in PAGES)
+            foreach (var (sourceName, newName) in PAGES)
             {
-                string name = newName ?? _;
+                string name = newName ?? sourceName;
                 GameObject page = FindDirectChild(canvas, name);
                 if (page == null) { report.AppendLine($"  ✗ 页面缺失: {name}"); errors++; }
             }
@@ -334,7 +343,7 @@ namespace Watermelon
 
             // missing script 扫描（整个画布 + Scripts Holder）
             int missing = 0;
-            foreach (MonoBehaviour mb in Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+            foreach (MonoBehaviour mb in Object.FindObjectsOfType<MonoBehaviour>())
                 if (mb == null) missing++;
             if (missing > 0) { report.AppendLine($"  ✗ 场景共有 {missing} 个 missing script"); errors++; }
             else report.AppendLine("  ✓ 无 missing script");
