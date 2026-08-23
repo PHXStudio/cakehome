@@ -40,16 +40,33 @@ namespace Watermelon
             "Building Upgrade Hint Tutorial",
         };
 
-        // components to copy from the source Scripts Holder onto the Game scene Scripts Holder
-        private static readonly string[] COMPONENTS_TO_COPY =
+        // components to copy from the source Scripts Holder onto the Game scene Scripts Holder.
+        // Matched by script GUID — several of these classes share full names with cake-side
+        // classes (TutorialController etc.), so name-based lookup is ambiguous.
+        private static readonly (string guid, string typeName)[] COMPONENTS_TO_COPY =
         {
-            "Watermelon.MergeController",
-            "Watermelon.SpawnerController",
-            "Watermelon.TaskController",
-            "Watermelon.ClientOrderHighlightController",
-            "Watermelon.CurrencyCloud",
-            "Watermelon.TutorialController",
+            ("6265c3747ef7fda4595aebfccef916f1", "MergeController"),
+            ("e53c43047e39a7b41a48fd035ea027f5", "SpawnerController"),
+            ("1071c37394fdbe14587b2d5ee761a945", "TaskController"),
+            ("70e4587b0c432c040b49abc1383e92a4", "ClientOrderHighlightController"),
+            ("bde39e8b6dcadf745971df707030d6ac", "CurrencyCloud"),
+            ("3ec6e0c1865447abb4eccd41518f7570", "TutorialController(Watermelon.Tutorial)"),
         };
+
+        private static Component FindComponentByGuid(GameObject holder, string guid)
+        {
+            if (holder == null) return null;
+            foreach (Component c in holder.GetComponents<Component>())
+            {
+                if (c is MonoBehaviour mb && mb != null)
+                {
+                    MonoScript script = MonoScript.FromMonoBehaviour(mb);
+                    if (script != null && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(script, out string g, out long _))
+                        if (g == guid) return c;
+                }
+            }
+            return null;
+        }
 
         [MenuItem("Actions/Merge/1. Import Merge Scene (Dry Run)")]
         private static void DryRun()
@@ -65,9 +82,10 @@ namespace Watermelon
             Scene sourceScene = EditorSceneManager.OpenScene(SOURCE_SCENE_PATH, OpenSceneMode.Additive);
             try
             {
+                GameObject sourceCanvas = FindRoot(sourceScene, "UI Main Canvas");
                 foreach (var (sourceName, newName) in PAGES)
                 {
-                    GameObject page = FindRoot(sourceScene, sourceName);
+                    GameObject page = FindDirectChild(sourceCanvas, sourceName);
                     report.AppendLine(page != null
                         ? $"  ✓ 页面 {sourceName}{(newName != null ? $" → {newName}" : "")}"
                         : $"  ✗ 页面缺失: {sourceName}");
@@ -80,9 +98,9 @@ namespace Watermelon
                     report.AppendLine(t != null ? $"  ✓ 教程对象 {tutorialName}" : $"  ✗ 教程对象缺失: {tutorialName}");
                 }
 
-                foreach (string typeName in COMPONENTS_TO_COPY)
+                foreach (var (guid, typeName) in COMPONENTS_TO_COPY)
                 {
-                    Component c = scriptsHolder?.GetComponent(typeName);
+                    Component c = FindComponentByGuid(scriptsHolder, guid);
                     report.AppendLine(c != null ? $"  ✓ 组件 {typeName}" : $"  ✗ 组件缺失: {typeName}");
                 }
 
@@ -90,7 +108,7 @@ namespace Watermelon
                 int missing = 0;
                 foreach (var (sourceName, _) in PAGES)
                 {
-                    GameObject page = FindRoot(sourceScene, sourceName);
+                    GameObject page = FindDirectChild(sourceCanvas, sourceName);
                     if (page == null) continue;
                     foreach (MonoBehaviour mb in page.GetComponentsInChildren<MonoBehaviour>(true))
                         if (mb == null) missing++;
@@ -108,11 +126,7 @@ namespace Watermelon
         [MenuItem("Actions/Merge/2. Import Merge Scene (Execute)")]
         private static void Execute()
         {
-            if (!EditorUtility.DisplayDialog("Merge Scene Importer",
-                "将把 MergeSource.unity 的合成玩法内容搬进 Game.unity。\n请确认 Game.unity 已提交 git 或有备份。继续？",
-                "执行", "取消"))
-                return;
-
+            // 确认对话框已移除（git 即备份，且需要支持 MCP 自动化执行）
             Scene gameScene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Single);
             Scene sourceScene = EditorSceneManager.OpenScene(SOURCE_SCENE_PATH, OpenSceneMode.Additive);
             try
@@ -128,9 +142,10 @@ namespace Watermelon
 
                 // --- 1. 搬运页面 ---
                 int insertIndex = bottomNav != null ? bottomNav.transform.GetSiblingIndex() : canvas.transform.childCount;
+                GameObject sourceCanvas = FindRoot(sourceScene, "UI Main Canvas");
                 foreach (var (sourceName, newName) in PAGES)
                 {
-                    GameObject page = FindRoot(sourceScene, sourceName);
+                    GameObject page = FindDirectChild(sourceCanvas, sourceName);
                     if (page == null)
                     {
                         Debug.LogWarning($"[MergeImporter] 源场景缺少页面 {sourceName}，跳过");
@@ -142,6 +157,8 @@ namespace Watermelon
                         continue;
                     }
 
+                    // MoveGameObjectToScene 要求对象是所在场景的根节点：先脱离父级再移动
+                    page.transform.SetParent(null, false);
                     SceneManager.MoveGameObjectToScene(page, gameScene);
                     page.transform.SetParent(canvas.transform, false);
                     page.transform.SetSiblingIndex(insertIndex++);
@@ -157,21 +174,22 @@ namespace Watermelon
                     if (t == null) continue;
                     if (scriptsHolder.transform.Find(tutorialName) != null) continue;
 
+                    t.SetParent(null, false);
                     SceneManager.MoveGameObjectToScene(t.gameObject, gameScene);
                     t.SetParent(scriptsHolder.transform, false);
                     Debug.Log($"[MergeImporter] 搬入教程对象 {tutorialName}");
                 }
 
                 // --- 3. 复制控制器组件（SerializedObject 逐字段复制，引用保持在已搬入的活体对象上） ---
-                foreach (string typeName in COMPONENTS_TO_COPY)
+                foreach (var (guid, typeName) in COMPONENTS_TO_COPY)
                 {
-                    Component source = sourceScriptsHolder?.GetComponent(typeName);
+                    Component source = FindComponentByGuid(sourceScriptsHolder, guid);
                     if (source == null)
                     {
                         Debug.LogWarning($"[MergeImporter] 源 Scripts Holder 缺少组件 {typeName}，跳过");
                         continue;
                     }
-                    if (scriptsHolder.GetComponent(typeName) != null)
+                    if (FindComponentByGuid(scriptsHolder, guid) != null)
                     {
                         Debug.LogWarning($"[MergeImporter] Game.unity Scripts Holder 已有 {typeName}，跳过（幂等）");
                         continue;
@@ -298,11 +316,12 @@ namespace Watermelon
                 for (int i = canvas.transform.childCount - 1; i >= 0; i--)
                 {
                     Transform child = canvas.transform.GetChild(i);
-                    if (child.name == "UIShopPage" || child.name == "UI Shop Page" || child.name.StartsWith("UIShopPage ("))
+                    string childName = child.name;
+                    if (childName == "UIShopPage" || childName == "UI Shop Page" || childName.StartsWith("UIShopPage ("))
                     {
                         Object.DestroyImmediate(child.gameObject);
                         removed++;
-                        Debug.Log($"[MergeImporter] 已删除画布子节点 {child.name}");
+                        Debug.Log($"[MergeImporter] 已删除画布子节点 {childName}");
                     }
                 }
             }
@@ -338,8 +357,8 @@ namespace Watermelon
             foreach (string tutorialName in TUTORIAL_OBJECTS)
                 if (scriptsHolder.transform.Find(tutorialName) == null) { report.AppendLine($"  ✗ 教程对象缺失: {tutorialName}"); errors++; }
 
-            foreach (string typeName in COMPONENTS_TO_COPY)
-                if (scriptsHolder.GetComponent(typeName) == null) { report.AppendLine($"  ✗ 组件缺失: {typeName}"); errors++; }
+            foreach (var (guid, typeName) in COMPONENTS_TO_COPY)
+                if (FindComponentByGuid(scriptsHolder, guid) == null) { report.AppendLine($"  ✗ 组件缺失: {typeName}"); errors++; }
 
             // missing script 扫描（整个画布 + Scripts Holder）
             int missing = 0;
@@ -349,19 +368,18 @@ namespace Watermelon
             else report.AppendLine("  ✓ 无 missing script");
 
             // 关键序列化引用非空检查
-            errors += CheckField(report, scriptsHolder, "Watermelon.MergeController", "mergeGrid");
-            errors += CheckField(report, scriptsHolder, "Watermelon.MergeController", "database");
-            errors += CheckField(report, scriptsHolder, "Watermelon.SpawnerController", "mergeGrid");
-            errors += CheckField(report, scriptsHolder, "Watermelon.ClientOrderHighlightController", "highlightPrefab");
-            errors += CheckField(report, scriptsHolder, "Watermelon.TutorialController", "tutorialCanvasController");
+            errors += CheckField(report, FindComponentByGuid(scriptsHolder, "6265c3747ef7fda4595aebfccef916f1"), "MergeController", "mergeGrid");
+            errors += CheckField(report, FindComponentByGuid(scriptsHolder, "6265c3747ef7fda4595aebfccef916f1"), "MergeController", "database");
+            errors += CheckField(report, FindComponentByGuid(scriptsHolder, "e53c43047e39a7b41a48fd035ea027f5"), "SpawnerController", "mergeGrid");
+            errors += CheckField(report, FindComponentByGuid(scriptsHolder, "70e4587b0c432c040b49abc1383e92a4"), "ClientOrderHighlightController", "highlightPrefab");
+            errors += CheckField(report, FindComponentByGuid(scriptsHolder, "3ec6e0c1865447abb4eccd41518f7570"), "TutorialController", "tutorialCanvasController");
 
             report.AppendLine(errors == 0 ? "\n全部通过 ✓" : $"\n共 {errors} 个问题 ✗");
             Debug.Log(report.ToString());
         }
 
-        private static int CheckField(StringBuilder report, GameObject holder, string typeName, string field)
+        private static int CheckField(StringBuilder report, Component c, string typeName, string field)
         {
-            Component c = holder.GetComponent(typeName);
             if (c == null) return 0; // 已在上一步报告
             SerializedObject so = new SerializedObject(c);
             SerializedProperty prop = so.FindProperty(field);

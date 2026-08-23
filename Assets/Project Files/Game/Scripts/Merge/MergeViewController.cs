@@ -55,5 +55,33 @@ namespace Watermelon
             UIController.HidePage<UIRecoverEnergy>();
             UIController.HidePage<UIDialog>();
         }
+
+        /// <summary>
+        /// Activates the merge-side tutorials. Lives here (Game.Scripts) because HotUpdate has its
+        /// own TutorialController class — name resolution there would bind the wrong controller.
+        /// </summary>
+        public static void ActivateTutorials()
+        {
+            TutorialController.ActivateTutorial<FirstStartTutorial>();
+            TutorialController.ActivateTutorial<SpawnerRewardTutorial>();
+            TutorialController.ActivateTutorial<BuildingUpgradeHintTutorial>();
+        }
+
+        // ─── Onboarding gates (HotUpdate can't touch FirstStartTutorial — its base type lives in
+        // the Watermelon.Tutorial assembly, which HotUpdate does not reference) ──────────────
+
+        public static bool IsOnboardingCompleted() => FirstStartTutorial.IsCompleted();
+
+        /// <summary>Keeps interstitials silent while onboarding runs. Pair with <see cref="DetachInterstitialGuard"/>.</summary>
+        public static void AttachInterstitialGuard() => AdsManager.InterstitialConditions += FirstStartTutorial.IsCompleted;
+
+        public static void DetachInterstitialGuard() => AdsManager.InterstitialConditions -= FirstStartTutorial.IsCompleted;
+
+        /// <summary>Fires the zone-start (atUpgrade: 0) progression only when onboarding is done.</summary>
+        public static void TriggerInitialProgressionIfOnboarded()
+        {
+            if (FirstStartTutorial.IsCompleted())
+                BuildingController.TriggerInitialProgression(ZoneController.CurrentZone);
+        }
     }
 }

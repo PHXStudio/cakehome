@@ -74,12 +74,19 @@ namespace Watermelon
             // first task, or its icon lookup resolves to null.
             mergeController.Init();
 
-            // Zone progression tasks stay unlocked — FirstStartTutorial is a stub that is always completed.
-            TaskController.SetProgressionLocked(false);
+            // Zone progression tasks are held while onboarding runs — must be set before
+            // taskController.Init() evaluates the queue; FirstStartTutorial unlocks on finish.
+            TaskController.SetProgressionLocked(!MergeViewController.IsOnboardingCompleted());
+
+            // Interstitials must stay silent for the whole onboarding tutorial.
+            MergeViewController.AttachInterstitialGuard();
 
             taskController.Init();
             clientOrderHighlightController.Init();
             spawnerController.Init();
+
+            FragmentController.Init();
+            MergeStatsController.Init();
 
             // Game.Scripts → HotUpdate bridge: template pages open the IAP store through us
             CakeUIBridge.OpenStore = () => UIController.ShowPage<Watermelon.IAPStore.UIStore>();
@@ -100,6 +107,15 @@ namespace Watermelon
             // Init the merge board grid (board page is hidden until the shop tab opens;
             // mirrors mergedev boot — must run in Start so the canvas has been laid out).
             mergeController.InitGrid();
+
+            // Zone-start (atUpgrade: 0) progression orders/rewards/dialog.
+            // Held back during onboarding like the task queue; FirstStartTutorial
+            // triggers it on finish instead (mirrors mergedev).
+            MergeViewController.TriggerInitialProgressionIfOnboarded();
+
+            // Activate merge-side tutorials (scene objects under Scripts Holder, auto-discovered).
+            // Routed through Game.Scripts — HotUpdate has its own TutorialController type.
+            MergeViewController.ActivateTutorials();
 
             // Kick the loading screen's fade-out first (it fades over 0.6s). The game UI is
             // revealed a beat later so it never overlaps the loading screen when coming in
@@ -305,6 +321,11 @@ namespace Watermelon
             {
                 isGameActive = true;
             });
+        }
+
+        private void OnDestroy()
+        {
+            MergeViewController.DetachInterstitialGuard();
         }
 
         #region Extensions
