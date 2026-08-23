@@ -42,7 +42,7 @@ Assets/
 │   │   ├── Power Ups/               # 道具具体实现
 │   │   ├── Power Ups System/        # 道具框架（控制器/UI/数据）
 │   │   ├── Settings/                # 设置界面
-│   │   ├── Shop/                    # 店铺挂机经济系统
+│   │   ├── Merge/                   # 合成玩法桥接（碎片掉落钩子/兑换面板/入口按钮）
 │   │   ├── Tutorial/                # 新手引导框架
 │   │   └── UI/                      # 游戏 UI 页面
 ├── Project Files/
@@ -96,7 +96,7 @@ LoadDll.Start()
 8. **ParticlesController** — 粒子系统
 9. **PUController** — 道具系统
 10. **LivesSystem** — 生命系统
-11. **ShopController** — 店铺挂机
+11. **MergeController / SpawnerController / TaskController** — 门店合成玩法（棋盘/生成器/订单，Game.Scripts 程序集）
 12. **TutorialController** — 新手引导
 13. **MapBehavior** — 关卡地图
 14. **AdsManager** — 广告
@@ -182,42 +182,68 @@ TileEffectType: None | Unknown | Crate | Ice | Link
 
 ---
 
-## 五、店铺挂机经济系统
+## 五、门店合成玩法（Merge）
 
-### 5.1 架构
+> 2026-08-23 起，门店 Tab 由「挂机货架经济」整体替换为 mergedev 模板的「合成 + 订单 + 装修」玩法。
+> 旧 ShopController/货架/配方/原料系统已彻底删除（详见第十七章迁移记录）。
+
+### 5.1 玩法闭环
 
 ```
-ShopController (静态单例)
-├── CakeCatalog   — 蛋糕种类目录
-├── ShopConfig    — 经济参数配置
-├── ShopSave      — 存档
-├── ShopDailyTheme — 每日热门主题（随机元素，2x 收益）
-└── ShopIdleProducer — 挂机收入 Tick（每秒）
-
-ShopWorld (3D 场景)
-├── 等距摄像机（固定 45° 视角 + 拖拽平移）
-├── 玩具屋环境（Shop1 预制体）
-├── 专用天空盒
-└── ShopShelfSlot[] — 货架展示位
-
-CakeDefinition: id / displayName / elements[] / creditsPerHour / displayColor
-OwnedCake: DefinitionId / PlacedAt（二进制时间戳） / InstanceId
+消消乐关卡 ──掉金币/蛋糕碎片──┐
+                              ▼
+合成棋盘（7×9 uGUI）  拖拽同级同类物品 → 合成升 1 级
+  ├─ 锁定格（LockedCell，藏隐藏物品，被相邻合成波及后解锁）
+  ├─ 生成器（茶壶/搅拌机等）：点按耗 1 能量产出物品
+  │   （g1-g3 无产出池是原版设计，合成到 g4+ 才能产出）
+  └─ 能量：上限 50，120 秒恢复 1 点，离线结算
+        │
+        ▼
+顾客订单（ClientOrderTask）  需求物品绑定棋盘活体 → Give 交单
+  ├─ 得金币 + 蛋糕碎片（1-2 个/单）
+  └─ 订单批次按建筑升级数解锁，随机订单池防金币过剩
+        │
+        ▼
+店铺装修（Zone/Building）  金币升级建筑 → 换外观
+  └─ 升级数解锁：新订单批次/对话/经验等级/新区域（Zone 1-3）
+        │
+        ▼
+蛋糕碎片兑换  10 碎片 → +25 能量；20 碎片 → 随机 1 级生成器
 ```
 
-### 5.2 挂机经济模型
+### 5.2 代码架构
 
-- 在线: `ShopIdleProducer` 每秒调用 `ShopController.TickOnline()` 累计积分
-- 离线: 进入商店时 `SettleOffline()` 最多结算 8 小时
-- 收益计算公式: `Cake.creditsPerHour × multiplier`（managerRecommend: 2x / hotTheme: 2x）
-- 货架: 初始 4 个，可扩展至 8 个（`expandCosts[]` 配置）
-- 冰柜: 未上架蛋糕暂存区（`GetFreezerCakes()`）
-- 系统入口: `ShopHubModule` 切换时初始化 `ShopWorld`
+| 层 | 类 | 程序集 | 职责 |
+|---|---|---|---|
+| 棋盘 | `MergeController` / `MergeGrid` / `MergeCell(Background)` / `MergeFieldObject`(+6 子类) | Game.Scripts | 拖拽磁吸合成、格子状态、初始布局（`MergeLevelData`，60 锁定 + 3 茶壶） |
+| 生成器 | `SpawnerController` / `SpawnerObject` / `ChestObject` | Game.Scripts | 加权产出池、能量门控、宝箱次数 |
+| 订单 | `TaskController` / `ClientOrderTask` / `SpawnerRewardQueue` | Game.Scripts | 顺序+随机订单队列、交单发奖 |
+| 装修 | `ZoneController` / `BuildingController` / `ZoneData` | Game.Scripts | 区域解锁（经验等级）、建筑升级驱动进度 |
+| 能量 | `EnergyController` / `EnergyRegenRunner` | Game.Scripts | 50 上限 / 120s 恢复 / 离线结算 |
+| 数据 | `MergeDatabase`（13 条物品链，`[SerializeReference]` 多态 config） | Game.Scripts | 物品链/产出池/售价配置 |
+| 桥接 | `MergeViewController` | Game.Scripts | 页面门面（EnterHub/ExitHub/双视图互切/教程激活）——**HotUpdate 不可直接引用模板页面类型，必须走这里** |
+| 桥接 | `CakeUIBridge` | Game.Scripts | 反向桥：OpenStore / OrderCompleted（HotUpdate 启动时赋值） |
+| Hub | `MergeHubModule` | HotUpdate | Tab 生命周期（已替代 ShopHubModule） |
+| 碎片 | `FragmentController` / `FragmentSave` | Game.Scripts | 蛋糕碎片库存 |
+| 碎片 | `FragmentDropHook` / `UIFragmentExchangePanel` / `OpenFragmentPanelButton` | HotUpdate | 关卡掉落（0.15）/ 运行时兑换面板 |
+| 统计 | `MergeStatsController` / `MergeStatsSave` | Game.Scripts | 订单总数（称号/个人页） |
 
-### 5.3 Cake 元素（CakeElement）
+### 5.3 场景装配（Game.unity）
 
-枚举：`Strawberry` | `Chocolate` | `Matcha` | `Blueberry` | `Lemon` | `Cream`
+- `UI Main Canvas` 下：`UI Merge Game`（棋盘页，含嵌套 Canvas `Items`/`Flying Objects`）、`UI Merge Menu`（装修页）、`UI Header`（金币/能量/经验）、`UI Building`、`UI Zones`、`UI Info Window`、`UI Recover Energy`、`UI Level Up`、`UI Dialog`、`UI Rewards Confirmation Popup`、`Tutorial Overlay`
+- `Scripts Holder`：`MergeController`、`SpawnerController`、`TaskController`、`ClientOrderHighlightController`、`CurrencyCloud`、`TutorialController(Watermelon.Tutorial)` + 3 个教程对象
+- InitModule（`Project Init Settings`，共 18 个）：新增 Game/Character/UIQueue/Building/Dialog/Energy/Experience/Zone 8 个
 
-每日随机选一个作为热门主题，匹配蛋糕收益 x2。
+### 5.4 显隐规则（重要）
+
+棋盘页内含**嵌套 Canvas**（`Items`/`Flying Objects`，独立渲染根），禁用页面根 Canvas **不能**隐藏棋盘——必须整体激活/禁用 `UI Merge Game` 根节点（由 `MergeViewController.EnterHub/ExitHub` 负责；`GameController.Start` 在 `InitGrid` 后立即 `ExitHub` 隐藏）。`InitGrid` 需要激活的 Canvas 量格子尺寸，故场景内保持激活、靠启动流程隐藏。
+
+### 5.5 称号/日常/推送改接
+
+- 称号：订单 50 单「订单达人」/ 建筑 10 级「装修大师」/ 区域全解锁「区域开拓者」
+- 每日任务：`MergeOrders`（完成 2 订单，经 `CakeUIBridge.OrderCompleted`）
+- 游客奖励：能量 30 + Kettle 生成器 + 50 金币
+- 推送：能量回满提醒（`ScheduleEnergyFullReminder`）
 
 ---
 
@@ -228,8 +254,8 @@ OwnedCake: DefinitionId / PlacedAt（二进制时间戳） / InstanceId
 ```
 UIBottomNavBar — 底部导航栏 UI
 HubModuleRouter — 模块路由（单例）
+├── MergeHubModule   — 门店合成玩法（Tab 枚举仍为 MainHubTab.Shop=0）
 ├── CamperHubModule — 关卡地图 + 主菜单
-├── ShopHubModule   — 店铺挂机 3D 世界
 └── ProfileHubModule — 个人中心
 ```
 
@@ -246,7 +272,7 @@ interface IHubModule {
 
 ### 6.3 底部导航栏布局
 
-- 三栏: Camper（关卡） | Shop（商店） | Profile（个人）
+- 三栏: Shop（门店合成） | Camper（关卡） | Profile（个人）
 - 纯图标样式，使用特定资源
 - 相机渲染方式提升层级
 
@@ -306,8 +332,7 @@ OnSlotsFilled / TimerFinished
 | Level Editor Window | `Level/Editor/LevelEditorWindow.cs` | 关卡可视化编辑窗口（Window → Level Editor） |
 | Tile Texture Generator | `Editor/TileTextureGenerator.cs` | 程序化生成糖果瓦片纹理（64x64 PNG） |
 | Bottom Nav Scene Setup | `Editor/BottomNavSceneSetup.cs` | 代码构建底部导航栏场景结构 |
-| Shop Scene Setup | `Editor/ShopSceneSetup.cs` | 代码构建店铺 3D 场景结构 |
-| Shop Debug Menu | `Editor/ShopDebugMenu.cs` | 运行时调试（送蛋糕/加积分/强制结算） |
+| Merge Scene Importer | `Editor/MergeSceneImporter.cs` | **合成玩法场景搬运**（mergedev → Game.unity，Dry Run/Execute/Verify + 旧门店清理 + 碎片入口） |
 | Custom Actions Menu | `Editor/CustomActionsMenu.cs` | 自定义操作菜单（占位） |
 | HotUpdate Build Processor | `Editor/HotUpdateBuildProcessor.cs` | HybridCLR 构建流程 |
 | Unity MCP 自动启动 | `Editor/UnityMcpAutoStart.cs` | 开启 MCP HTTP 桥接自动启动（uvx mcpforunityserver, 127.0.0.1:8080） |
@@ -366,8 +391,8 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 | 关卡缩放 | `Assets/HotUpdate/Scripts/Level/LevelScaler.cs` | 113 |
 | Dock | `Assets/HotUpdate/Scripts/Level/Dock/DockBehavior.cs` | 616 |
 | 生命系统 | `Assets/HotUpdate/Scripts/Lives System/LivesSystem.cs` | 352 |
-| 商店控制器 | `Assets/HotUpdate/Scripts/Shop/ShopController.cs` | ~300 |
-| 商店世界 | `Assets/HotUpdate/Scripts/Shop/ShopWorld.cs` | ~400 |
+| 合成控制器 | `Assets/Project Files/Game/Scripts/Merge/MergeController.cs` | ~800 |
+| 合成门面 | `Assets/Project Files/Game/Scripts/Merge/MergeViewController.cs` | ~100 |
 | Hub路由器 | `Assets/HotUpdate/Scripts/Hub/HubModuleRouter.cs` | ~100 |
 | 道具控制器 | `Assets/HotUpdate/Scripts/Power Ups System/PUController.cs` | ~200 |
 | 关卡地图 | `Assets/HotUpdate/Scripts/Level Map/MapBehavior.cs` | ~250 |
@@ -422,17 +447,18 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 - Project Init Settings 模块列表（10 个）：Initializer → Save → **Pool（本次补入）** → Tween → Audio → Currencies → Haptic → Monetization → Screen → Lives
 - `AdsSettings.providerContainers` 已注入 `AdDummyContainer`（Dummy  provider 占位）
 
-### 16.3 ⚠️ 遗留：奖励系统需重接线
+### 16.3 ✅ 已解决：奖励系统重接线（2026-08-22，commit `cb9790e`）
 
-新版 `Reward` 不再是 MonoBehaviour，蛋糕预制体里挂的旧奖励组件（`PUReward`/`LivesReward`/`LivesInfiniteModeReward`/`NoAdsReward`/`CurrencyReward`）变成 missing script（Console 报 `ExtensionOfNativeClass` 警告），`RewardsHolder` 报 `Rewards Set isn't linked!`。
-**后续工作**：为各奖励场景创建 `RewardsSet` 资产 + `RewardView` 视图接线，或把奖励展示迁到 `UIRewardsPopup`（已在 `Game.Scripts` 的就绪实现）。详见新 API：`Modules/Reward/Scripts/Reward.cs`、`RewardsHolder.cs`。
+~~新版 `Reward` 不再是 MonoBehaviour，蛋糕预制体里挂的旧奖励组件变成 missing script。~~
+已完成：8 个商品包 prefab 迁移到 `RewardsSet` 资产 + `RewardView` 接线（`Data/Rewards/{IAP,Ads,Timer}/` 8 个新资产）；`PUReward`/`LivesInfiniteModeReward` 重构为纯数据类并新建对应 View；33 个资产 321 处过期程序集名（`asm:`）已修正。详见第十七章。
 
 ### 16.4 模板资源整合（Game.Scripts 程序集）
 
 - 模板游戏代码（Building/Zone/Energy/Merge/Tasks/Dialog/Characters 等）在 `Assets/Project Files/Game/Scripts/`，编译为 `Game.Scripts`
 - 用户迁移中的模板 UI（UIBuilding/UIHeader/UIZoneCard/UILevelUpPopup/OpenStoreButton/RewardFlyElement 等）也已归入该程序集（`Game/Scripts/UI/`）
-- 模板对蛋糕页面的 8 处引用已存根（`TODO(模板迁移)`）：`UIStore.OpenAsOverlay`、`GameController.SetBuildingActive`、飞奖励动画、`FirstStartTutorial`（整体存根，`IsCompleted()=>true`）等
-- 模板存档键映射 `MD_GeneratedSaveKeyRegistration.cs` 移入 `Assets/HotUpdate/Scripts/Other/Save/`（避开 Assembly-CSharp 的 CS0433）；**重新生成（Tools/Save/Regenerate Key Map）后需手动挪回**，且蛋糕存档类型（LivesSave/ShopSave 等）尚未登记
+- ~~模板对蛋糕页面的 8 处引用已存根（`TODO(模板迁移)`）~~ **已全部解决（2026-08-23）**：7 处恢复 mergedev 原版/桥接（`CakeUIBridge.OpenStore`、`MergeViewController.SetBuildingActive` 等），`FirstStartTutorial` 872 行完整版已恢复并接入
+- 模板存档键映射 `MD_GeneratedSaveKeyRegistration.cs` 移入 `Assets/HotUpdate/Scripts/Other/Save/`（避开 Assembly-CSharp 的 CS0433）；**重新生成（Tools/Save/Regenerate Key Map）后需手动挪回**，蛋糕存档类型已登记；新增 `FragmentSave`/`MergeStatsSave` 两个键；废弃 `ShopSave`/`RecipeSave`/`IngredientSave` 三个键已移除
+- **场景整合已完成（2026-08-23）**：11 个模板页面 + 3 个教程对象 + 6 个控制器组件已迁入 Game.unity，8 个 InitModule 已注册，详见第十七章
 
 ### 16.5 被模板覆盖后已恢复的文件（git checkout 自 HEAD）
 
@@ -443,6 +469,53 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 - 重复菜单项警告（Help/Open Editor Folder、Actions/Game Scene 等，模板 Editor Tools 与项目原有菜单重名）
 - 模板关卡编辑器改挂 `Window/Merge Level Editor` 菜单（避开与蛋糕 Level Editor 冲突）
 - CS0436 同名类型遮蔽警告（见注意事项 11）
+
+---
+
+## 十七、2026-08-23 门店玩法替换：合成玩法落地全记录
+
+门店 Tab 由「挂机货架」整体替换为 mergedev 合成玩法（决策：旧系统**彻底删除**、纳入装修层、碎片改接合成）。全部场景操作经 MCP-FOR-UNITY（127.0.0.1:8080）自动化执行 + Play 模式端到端验证。
+
+### 17.1 删除清单
+
+- 代码：`HotUpdate/Scripts/Shop/`（ShopController/ShopWorld/ShopIdleProducer/ShopShelfSlot/CakeCatalog/ShopConfig/ShopDailyTheme/ShopSave/ShopInitModule + 冰柜/原料 UI）、`Other/Recipe/`、`Other/Ingredient/`、`UI/BottomNav/UIShopPage.cs`、`Hub/Modules/ShopHubModule.cs`、`Editor/ShopUIBuilder.cs`、`ShopSceneSetup.cs`、`ShopDebugMenu.cs`
+- 资产：`Prefabs/Shop/`、`Prefabs/UI/Canvas/UIShopPage.prefab`、`Resources/Shop/`、`Resources/Recipe/`
+- 场景：`ShopWorld` 根节点（含 Environment_Shop1/DisplayStage）、画布下 UIShopPage 实例
+- 存档：shop/recipe/ingredient 三键废弃（旧存档条目无害遗留，不迁移）
+
+### 17.2 场景搬运（MergeSceneImporter，Actions/Merge 菜单）
+
+mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**（两场景同源自模板、大量相同 fileID，纯 YAML 合并不可行）：
+- 11 个页面 → `UI Main Canvas`（UI Game→UI Merge Game、UI Main Menu→UI Merge Menu 等）
+- 3 个教程对象 → `Scripts Holder` 子级；6 个控制器组件 → `Scripts Holder`（按**脚本 GUID** 匹配，避开同名类歧义）
+- `MoveGameObjectToScene` 要求根节点：须先 `SetParent(null)` 再移动
+- 组件复制用 SerializedObject 逐字段拷贝（跳过 `m_*` 对象头），引用指向已搬入的活体对象
+- 步骤菜单：1 Dry Run → 2 Execute → 3 Verify（可重入，含重开场景复验）→ 4 清理旧门店 → 5 碎片兑换入口
+
+### 17.3 数据/初始化
+
+- `Data/Level System/Merge/Merge Level Database.asset`（保 GUID f2484a03，避开消除关卡库同名文件）
+- `Merge Game Data.asset`（Game.Scripts GameData，注意：**Game.Scripts 版 GameData.cs 的 GUID 是 d0dd1368，不是模板的 bdfe1560**——后者被 HotUpdate GameData 占用）
+- `Project Init Settings` 注册 8 个模块（Game/Character/UIQueue/Building/Dialog/Energy/Experience/Zone，共 18 个）
+- `AudioInitModule.audioRegistry` 接线（merge 音效全走 GetClip）
+- `Currencies Database` 补 Gems（模板 Header/能量恢复/UIStore 依赖）
+
+### 17.4 踩过的坑（后续维护必读）
+
+1. **同名脚本 GUID 冲突**：模板 `UIGame.cs` 与 HotUpdate `UIGame.cs` 原生同 GUID（3c785c42），导入时模板版被重分配新 GUID（539b905e），场景组件因此绑到 HotUpdate 版 → 页面不注册 + 字段丢失（绑错类期间保存场景，序列化字段被按错误类重写）。**教训：导入同名类后必须核对场景组件的脚本 GUID 指向；绑错类期间不要保存场景。**
+2. **嵌套 Canvas 穿透**：棋盘 `Items`/`Flying Objects` 是独立渲染根，页面 Canvas 禁用管不住 → Tab 显隐必须切换根 GameObject（见 5.4）。
+3. **`FloatingCloud`（UI 模块）是死代码**：其 `Init()` 全工程无调用方，注册表恒空 → `SpawnCurrency` 静默失败，**通关金币从未到账**。活系统是 `CurrencyCloud`（Currency 模块 MonoBehaviour）。UIComplete/UIStore 已切换。
+4. **粒子需场景注册**：mergedev ParticlesController 的 6 个注册项（Merge/Delete/Appear/Energy/Currency Item Usage/Building Upgrade）需手动补入 Game.unity 的 ParticlesController。
+5. **生成器 g1-g3 产出池为空是原版设计**（须合成到 g4+ 才产出），不是数据丢失。
+6. **程序集拓扑**：Game.Scripts ← HotUpdate 单向引用。模板代码要调 HotUpdate 的东西走 `CakeUIBridge`；HotUpdate 要操作模板页面走 `MergeViewController`；`FirstStartTutorial` 基类在 `Watermelon.Tutorial` 程序集（HotUpdate 未引用），相关调用也只能放 Game.Scripts 侧。
+7. **`FindObjectByType` 在当前编译环境不可用**（报 CS0117），统一用 `FindObjectOfType`。
+
+### 17.5 MCP 自动化工作流（可复用）
+
+- 桥接：Unity 内 MCP-FOR-UNITY（uvx mcpforunityserver, `127.0.0.1:8080/mcp`，streamable HTTP）
+- 客户端：`/tmp/mcp_unity.py`（initialize/tools/call）+ `/tmp/mcp_exec.py`（execute_code 执行 C# 并返回结果）
+- 模式：`execute_code` 里反射调用私有 Editor 方法 + `Application.logMessageReceived` 捕获日志；`read_console` 查编译错误；`AssetDatabase.Refresh(ForceUpdate)` 触发重编译
+- 注意：Play 模式中不能 `EditorSceneManager.OpenScene`（须先停 Play）；动态代码里引用双存在类型（UIGame 等）会歧义，用 `GameObject.Find` 或按程序集反射
 
 ---
 
@@ -497,14 +570,13 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 - ✅ **玩家自由选择** — 高手刷消除暴富 / 经营大师靠门店裂变 / 装扮党看广告补积分
 - ✅ **极简数值** — 只需监控 `PlayerCredits` 单变量通胀/紧缩
 
-**代码实现状态**（2026-08-22 更新）:
-- ✅ `CurrencyController` + `CurrencyType.Coins`（统一金币收口，关卡/注册/店铺/消除加分全走 Coins）
-- ✅ `ShopController` 挂机产出 + 顾客购买演出（`CustomerBuys` 回收积分）
-- ✅ 配方碎片闭环：消除掉落碎片（`dropChance`）→ 集满 + 200 积分解封 → 门店售价 ×`unlockedMultiplier`（`RecipeController`/`RecipeConfig`）
-- ✅ 原料采购临时增益（面粉/车厘子/彩虹糖针，乘算进 `GetCakeRate`）
-- ✅ 换装 Avatar（3 部位）+ 称号 + 甜品展馆（`AvatarController`/UIProfilePage）
-- 🟡 保鲜度：上架随时间衰减 + 保鲜折扣（M3 简化版，非三档状态机）
-- 🔴 隐藏配方的"解封前隐藏"机制（配方列表全量可见）
+**代码实现状态**（2026-08-23 更新）:
+- ✅ `CurrencyController` + `CurrencyType.Coins`（统一金币收口，关卡/注册/消除加分/订单奖励全走 Coins）
+- ✅ 门店合成玩法：棋盘合成 + 顾客订单得金币 + 店铺装修升级（替代原挂机产出，见五/十七章）
+- ✅ 蛋糕碎片闭环：消除掉落（0.15）+ 订单奖励 → 兑换能量/生成器（`FragmentController`，替代原配方解封）
+- ✅ 换装 Avatar（3 部位）+ 称号（订单/装修/区域条件）+ 个人页统计（`AvatarController`/UIProfilePage）
+- 🟡 保鲜度：随门店挂机系统一并移除，如需在合成体系重做可参考 M3 设计
+- 🔴 隐藏配方的"解封前隐藏"机制（已随配方系统删除，后续可在合成物品链上实现"图鉴未解锁"形态）
 - 🔴 门店扩建/开分店
 - 🔴 烘焙积分命名（当前是 Coins，需全量重构为 BakingCredits）
 
@@ -566,15 +638,15 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 
 ### 14.5 设计-实现对照总表
 
-| 模块 | 当前代码实现（2026-08-22） | GDD 远期规划 |
+| 模块 | 当前代码实现（2026-08-23） | GDD 远期规划 |
 |------|--------------------|--------------|
-| 门店 | 挂机产出 + 顾客购买 + 保鲜折扣 + 原料增益 + 货架扩展 | 库存网格/动态市场/定价策略 |
-| 经济 | 单货币（Coins）+ 配方碎片解封 2× 闭环 | 单一烘焙积分 + 隐藏配方发现机制 |
+| 门店 | **合成玩法**：棋盘合成 + 顾客订单 + 店铺装修升级（mergedev 模板，见五/十七章） | 库存网格/动态市场/定价策略 |
+| 经济 | 单货币（Coins）+ Gems + 能量；蛋糕碎片（关卡掉落/订单奖励）兑换能量/生成器 | 单一烘焙积分 + 隐藏配方发现机制 |
 | 消消乐 | 多层网格3消，Dock提交，消除实时加分 | 定向刷原料 |
-| 我的 | Avatar 换装/称号/甜品展馆 v1 | 店长换装扩展/写真馆/个人主页 |
+| 我的 | Avatar 换装/称号（订单/装修/区域）/订单·装修统计 | 店长换装扩展/写真馆/个人主页 |
 | 留存 | 失败挽留（积分续局/半价重试）+ 每日签到/任务 | Day1-3 分阶段解锁社交 |
 | 社交 | 无 | 好友串门/车队公会/点赞大赛 |
-| 新手引导 | FirstLevelTutorial + 新框架教程系统已接入（模板 FirstStartTutorial 存根） | — |
+| 新手引导 | FirstLevelTutorial + **FirstStartTutorial 完整版已接入**（合成玩法 onboarding） | — |
 | 关卡地图 | 垂直滚动 Chunk 池化 | 露营车旅行主题联动 |
 | 框架 | Watermelon Core 新版（2026-08-22 升级，见十六章）+ Merge 模板资源整合于 Game.Scripts | — |
 
@@ -587,11 +659,11 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 - 消消乐通关产出积分 + 隐藏配方碎片
 - 门店购入原材料消耗积分
 
-### Phase 2 — 门店策略化
-- 货架网格系统（替换当前 Slot 列表）
-- 保鲜度/过期机制
-- 动态市场/顾客偏好
-- 定价与清仓策略
+### Phase 2 — 门店策略化（已转向：合成玩法已落地，以下为在其上的深化）
+- 合成棋盘主题化（蛋糕店皮肤/棋盘装饰解锁）
+- 订单策略化：限时订单/偏好顾客/小费机制
+- 装修更多层级与区域（Zone 4+）
+- 碎片兑换商店扩充（专属生成器/宝箱）
 
 ### Phase 3 — 社交系统
 - 甜品写真馆 + 全服点赞大赛
