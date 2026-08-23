@@ -79,7 +79,7 @@ namespace Watermelon
             {
                 rewardLabel.Transform.DOPushScale(Vector3.one * 1.1f, Vector3.one, 0.2f, 0.2f).OnComplete(delegate
                 {
-                    FloatingCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
+                    CurrencyCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                     {
                         CurrencyController.Add(CurrencyType.Coins, currentReward);
 
@@ -172,7 +172,7 @@ namespace Watermelon
 
                     ShowRewardLabel(currentReward * rewardMult, false, 0.3f, delegate
                     {
-                        FloatingCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
+                        CurrencyCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                         {
                             CurrencyController.Add(CurrencyType.Coins, currentReward * rewardMult);
                             DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
