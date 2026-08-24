@@ -87,3 +87,8 @@
 *.fontsettings binary
 *.lighting binary
 *.exr  binary
+
+# =====================
+# Git hooks（必须 LF：Windows 下 CRLF 会导致 sh 执行失败）
+# =====================
+/.githooks/** text eol=lf

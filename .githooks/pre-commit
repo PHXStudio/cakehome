@@ -1,0 +1,59 @@
+#!/bin/sh
+# ============================================================================
+# 🔴 敏感信息提交防护 Hook
+# 扫描本次暂存内容，命中 token/密钥模式则阻止提交（示例密钥白名单除外）。
+# 团队启用：git config core.hooksPath .githooks
+# 临时绕过：git commit --no-verify（确认内容安全后使用）
+# ============================================================================
+
+# 敏感模式（grep -E 语法，每行一个）
+SENSITIVE_PATTERNS='
+gh[opu]_[A-Za-z0-9]{20,}
+github_pat_[A-Za-z0-9_]{20,}
+sk-[A-Za-z0-9]{20,}
+AKIA[0-9A-Z]{16}
+AIza[0-9A-Za-z_-]{35}
+xox[baprs]-[0-9A-Za-z-]{10,}
+BEGIN [A-Z ]*PRIVATE KEY
+(password|passwd|api[_-]?key|secret|client[_-]?secret)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']{8,}["'"']
+'
+
+# 文档/测试中的示例密钥白名单（刻意放置的假值，放行；仅在确实为假值时追加）
+ALLOWED_SAMPLES='
+sk-ABC1234567890abcdefghijklmnopqrstuvwxyz
+ghp_ABC1234567890abcdefghijklmnopqrstuvwxyz
+'
+
+PATFILE="$(mktemp 2>/dev/null || echo "/tmp/precommit-pat.$$")"
+SAMPLEFILE="$(mktemp 2>/dev/null || echo "/tmp/precommit-samples.$$")"
+printf '%s\n' "$SENSITIVE_PATTERNS" | grep -v '^[[:space:]]*$' > "$PATFILE"
+printf '%s\n' "$ALLOWED_SAMPLES"    | grep -v '^[[:space:]]*$' > "$SAMPLEFILE"
+trap 'rm -f "$PATFILE" "$SAMPLEFILE"' EXIT
+
+FOUND=0
+for f in $(git diff --cached --name-only --diff-filter=ACM); do
+    # 跳过二进制文件（numstat 第一列为 '-' 表示二进制）
+    if git diff --cached --numstat -- "$f" | grep -qE '^-\t'; then
+        continue
+    fi
+    CONTENT=$(git show ":$f" 2>/dev/null)
+    [ -z "$CONTENT" ] && continue
+
+    # 收集所有命中，逐个过滤白名单（不能只看第一个，避免示例在前时漏检真实 token）
+    for m in $(printf '%s\n' "$CONTENT" | grep -Ef "$PATFILE" -o); do
+        if ! grep -qxF "$m" "$SAMPLEFILE" 2>/dev/null; then
+            echo "❌ 敏感信息拦截: $f"
+            echo "   命中: $m"
+            echo "   （临时绕过: git commit --no-verify）"
+            FOUND=1
+            break
+        fi
+    done
+done
+
+if [ "$FOUND" -ne 0 ]; then
+    echo ""
+    echo "🚫 提交已阻止。请移除敏感信息后重试。"
+    exit 1
+fi
+exit 0
