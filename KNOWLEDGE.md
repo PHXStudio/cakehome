@@ -584,6 +584,99 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 
 ---
 
+## 附录 A、玩家存档总览（2026-08-24 盘点）
+
+### A.1 存档机制
+
+- 单一文件：`~/Library/Application Support/DefaultCompany/tilematch/save.save`
+- 结构：`{"containers":[{key, json}]}`——所有系统共用一个容器列表，按 key 区分；`SaveController.GetSaveObject<T>(key)` 读写
+- 另有 `SavePresets/`（开发用存档预设，非玩家数据）
+
+### A.2 全部 53 个 key 盘点
+
+**活跃系统（27 个）**
+
+| key | 所属 | 内容 |
+|---|---|---|
+| audio / haptic | 设置 | 音量、震动开关 |
+| currency:0 / currency:1 | 货币 | 金币、钻石余额 |
+| level | 关卡 | 关卡进度（MaxReached 等 5 字段） |
+| powerUp_Hint/Shuffle/Undo/ExtraSlot | 道具 | 4 道具数量 |
+| advertisement_forced_ad | 广告 | 强制广告关闭截止时间 |
+| iapGlobalSave | IAP | 首购标记 |
+| iap_StarterPack / iap_BoostPack / iap_ProPack / iap_Gems1~6 / iap_NoAdsPack | IAP | 现阵容 10 商品的购买次数 |
+| Lives | 能量适配层 | 无限模式状态（旧命数字段已废弃） |
+| Resources | 能量 | Energy 值 + 恢复时间戳 |
+| Experience | 经验 | 等级 + 进度 |
+| Zone | 区域 | 当前区域 ID |
+| Building | 装修 | 各建筑升级步数 |
+| Tasks_{zoneId} | 订单 | 进行中订单 + 队列状态（每区域一份） |
+| MergeGrid | 棋盘 | 7×9 格子全量状态（最大的一份） |
+| SpawnerQueue | 生成器奖励队列 | 待领取生成器（Kettle g5/g6、Energy Chest…） |
+| Fragments | 碎片（已禁用） | 碎片数（功能停用，数据保留） |
+| MergeStats | 统计 | 订单完成总数 |
+| TUTORIAL:FirstLevel / TUTORIAL:FirstStartTutorial | 教程 | 完成标记 |
+| CurrencyProduct_{guid} ×3 | 软货币商品 | 能量商品购买标记（1 已购 2 未购） |
+| TimerProduct_uniqueTimerSaveID | 计时商品 | 旧计时金币残留（功能已下线） |
+
+**已下线系统的遗留（5 个）**：`shop`（旧挂机门店）、`recipe`（旧配方）、`ingredient`（旧原料）、`iap_NoAds / iap_GoldSmall / iap_GoldMedium / iap_GoldBig / iap_PUPack`（旧商品枚举键）、`iap_0 / iap_2 / iap_3 / iap_4`（更早期的数字键 IAP 存档）——**三代 IAP key 同存**（数字键→旧名→新名），均只读无害，新玩家不会再产生。
+
+**功能禁用但保留（4 个）**：`avatar`（我的 Tab）、`daily_reward`（签到）、`daily_task`（每日任务）、`TimerProduct_*`。
+
+### A.3 结论
+
+- 存档**物理上已是单文件**；分散的是代码里的 key 注册点（19 处 `GetSaveObject` 调用，跨 HotUpdate/Game.Scripts 两程序集），上表即统一索引
+- 测试污染的存档建议直接删除重置：`rm ~/Library/Application\ Support/DefaultCompany/tilematch/save.save`
+- 若要对线上玩家做死 key 清理：shop/recipe/ingredient/旧 iap 键可在加载后一键移除（目前未做，无害）
+
+---
+
+## 附录 B、合成配方数据分析（Merge Database，13 条链）
+
+### B.1 链拓扑
+
+```
+Kettle Spawner g4~g9 (茶壶)                Mixer Spawner g4~g9 (搅拌机)
+  ├─ Coffee g1~g12 (主链, 权重 95→65%)       ├─ Cake g1~g12 (主链, 权重 95→65%)
+  └─ Soda g1~g5 (副链, 5→10%)                └─ Candy g1~g5 (副链, 5→10%)
+
+Coins/Gems/Energy Chest g1~g5 (宝箱, 次数 3→7)
+  └─ Coins/Gems/Energy Item g1~g5 (货币棋子, 合成升级后收取)
+
+Placeholders g1~g7 (占位链)
+```
+
+### B.2 生成器产出池（Kettle/Mixer 完全对称）
+
+| 等级 | 主链 g1 | 主链 g2 | 主链 g3 | 主链 g4 | 副链 g1 | 副链 g2 | 副链 g3 |
+|---|---|---|---|---|---|---|---|
+| g4 | 95 | 5 | – | – | – | – | – |
+| g5 | 84 | 8 | 3 | – | 5 | – | – |
+| g6 | 80 | 10 | 4 | – | 6 | – | – |
+| g7 | 76 | 11 | 5 | – | 7 | 1 | – |
+| g8 | 71 | 13 | 5 | 1 | 8 | 2 | – |
+| g9 | 65 | 15 | 5 | 1 | 10 | 3 | 1 |
+
+- **g1~g3 产出池为空**（原版设计，低级生成器是合成材料不是产源）
+- 能耗：每次点按 1 能量（`SpawnerObject.ENERGY_COST=1` 常量，非按等级配置）
+- 高等级生成器提升高阶产出权重，g1 产出从 95% 递减到 65%——升级生成器显著降低合成工作量
+
+### B.3 宝箱（Coins/Gems/Energy Chest）
+
+- 次数：g1=3 / g2=4 / g3=5 / g4=6 / g5=7 次点击
+- 产出池随等级上移：g1 箱(88% g1 + 12% g2) → g5 箱(55% g4 + 45% g5)
+- 货币棋子 g1~g5 可继续合成升级（5 级满），是金币/钻石/能量的补充来源
+- 获取渠道：Booster/Pro 包（Coins Chest g2/g4）、商店能量区（Energy Chest）、生成器奖励队列
+
+### B.4 数据观察
+
+1. **经济对称性**：两条产线（咖啡/蛋糕）权重表完全一致，换皮不换数值——后续调平衡改一处要同步另一处
+2. **主链 12 级是订单需求天花板**：订单索要高阶物品时，按 g9 生成器 65% g1 产出率估算，合一个 g12 物品约需 2^11/0.65 ≈ 3150 次点按（3150 能量）——高阶订单必须靠宝箱/生成器升级/等待恢复来摊薄
+3. **副链只有 5 级**：定位是快速可得的订单填充物
+4. **能量消耗是硬编码常量**：想按生成器等级差异化能耗（如高级生成器 2 能量/次），需要把 `ENERGY_COST` 改为读 `SpawnerGradeConfig` 数据
+
+---
+
 ## 十四、设计文档摘要（GDD 概念设计）
 
 > 以下 4 份设计文档（外部 .md 文件）规划了游戏的完整愿景。  
