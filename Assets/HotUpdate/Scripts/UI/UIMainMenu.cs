@@ -81,7 +81,7 @@ namespace Watermelon
             showHideStoreAdButtonDelayTweenCase?.Kill();
 
             HideAdButton(true);
-            iapStoreButton.Hide(true);
+            // 商店按钮不做滑入动画：与门店 Tab 一致静态常驻（2026-08-24）
             ShowTapToPlay();
 
             coinsLabelScalable.Show();
@@ -93,7 +93,6 @@ namespace Watermelon
             showHideStoreAdButtonDelayTweenCase = Tween.DelayedCall(0.12f, delegate
             {
                 ShowAdButton();
-                iapStoreButton.Show();
             });
 
             // 每日签到 + 每日任务：延迟检查弹出（次留召回）
@@ -147,7 +146,6 @@ namespace Watermelon
 
             coinsLabelScalable.Hide(immediately: true);
             livesIndicatorScalable.Hide(immediately: true);
-            iapStoreButton.Hide(immediately: true);
 
             HideAdButton(immediately: true);
 
