@@ -3,16 +3,13 @@
     [System.Serializable]
     public class DefineState
     {
-        private string define;
-        public string Define => define;
-
-        private bool state;
-        public bool State => state;
+        public readonly string Define;
+        public readonly bool State;
 
         public DefineState(string define, bool state)
         {
-            this.define = define;
-            this.state = state;
+            Define = define;
+            State = state;
         }
     }
 }

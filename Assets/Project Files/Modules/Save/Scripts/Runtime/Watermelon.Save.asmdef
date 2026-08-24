@@ -1,0 +1,17 @@
+{
+    "name": "Watermelon.Save",
+    "rootNamespace": "",
+    "references": [
+        "Core.WC",
+        "Core.UE"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,4 +1,4 @@
-﻿
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -50,7 +50,7 @@ namespace Watermelon
         }
 
         #region Show/Hide
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             rewardLabel.Hide(immediately: true);
             multiplyRewardButtonFade.Hide(immediately: true);
@@ -79,7 +79,7 @@ namespace Watermelon
             {
                 rewardLabel.Transform.DOPushScale(Vector3.one * 1.1f, Vector3.one, 0.2f, 0.2f).OnComplete(delegate
                 {
-                    FloatingCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
+                    CurrencyCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                     {
                         CurrencyController.Add(CurrencyType.Coins, currentReward);
 
@@ -96,7 +96,7 @@ namespace Watermelon
             });
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             if (!isPageDisplayed)
                 return;
@@ -109,7 +109,7 @@ namespace Watermelon
                 canvas.enabled = false;
                 isPageDisplayed = false;
 
-                UIController.OnPageClosed(this);
+                NotifyClosed();
             });
         }
 
@@ -172,7 +172,7 @@ namespace Watermelon
 
                     ShowRewardLabel(currentReward * rewardMult, false, 0.3f, delegate
                     {
-                        FloatingCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
+                        CurrencyCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                         {
                             CurrencyController.Add(CurrencyType.Coins, currentReward * rewardMult);
                             DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);

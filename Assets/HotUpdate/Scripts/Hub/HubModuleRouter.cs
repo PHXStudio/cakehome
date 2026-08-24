@@ -22,9 +22,11 @@ namespace Watermelon
             if (initialized)
                 return;
 
-            Register(new ShopHubModule());
+            Register(new MergeHubModule());
             Register(new CamperHubModule());
-            Register(new ProfileHubModule());
+            // 「我的」Tab 已禁用（2026-08-23）：Profile 按钮在场景中已隐藏。
+            // 恢复：取消下面这行注释 + 场景中重新激活 Bottom Nav Bar/Tabs/Profile。
+            // Register(new ProfileHubModule());
             initialized = true;
         }
 
@@ -53,6 +55,14 @@ namespace Watermelon
             if (!force && activeModule != null && activeModule.Tab == tab && activeModule.IsActive)
                 return;
 
+            // Resolve the target BEFORE tearing down the current module — an unregistered tab
+            // must leave the current module untouched instead of blanking the hub.
+            if (!modules.TryGetValue(tab, out IHubModule next) || next == null)
+            {
+                Debug.LogWarning($"[Hub] No module registered for tab {tab}");
+                return;
+            }
+
             if (UIController.IsDisplayed<Watermelon.IAPStore.UIStore>())
                 UIController.HidePage<Watermelon.IAPStore.UIStore>();
 
@@ -60,12 +70,6 @@ namespace Watermelon
             {
                 activeModule.Exit();
                 activeModule = null;
-            }
-
-            if (!modules.TryGetValue(tab, out IHubModule next) || next == null)
-            {
-                Debug.LogWarning($"[Hub] No module registered for tab {tab}");
-                return;
             }
 
             activeModule = next;

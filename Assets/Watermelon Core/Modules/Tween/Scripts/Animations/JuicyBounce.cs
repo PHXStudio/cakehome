@@ -55,13 +55,13 @@ namespace Watermelon
 
         private float GetStartBounceTime(int depth = 0)
         {
-            var target = bounceScaleY.Evaluate(bounceValue);
+            float target = bounceScaleY.Evaluate(bounceValue);
 
-            var step = depth == 0 ? 0.01f : 0.01f / (10 * depth);
+            float step = depth == 0 ? 0.01f : 0.01f / (10 * depth);
 
-            var error = 0.01f;
+            float error = 0.01f;
 
-            for (var pointer = 0f; pointer <= 1f; pointer += step)
+            for (float pointer = 0f; pointer <= 1f; pointer += step)
             {
                 if (Mathf.Abs(bounceScaleY.Evaluate(pointer) - target) < error)
                 {

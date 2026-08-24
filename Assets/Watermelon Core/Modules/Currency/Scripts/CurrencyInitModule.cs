@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Watermelon
@@ -10,9 +11,18 @@ namespace Watermelon
         [SerializeField] CurrencyDatabase currenciesDatabase;
         public CurrencyDatabase Database => currenciesDatabase;
 
-        public override void CreateComponent()
+        private CurrencyController currencyController;
+
+        public override IEnumerator InitAsync(GameObject owner)
         {
-            CurrencyController.Init(currenciesDatabase);
+            currencyController = new CurrencyController(currenciesDatabase);
+            yield break;
+        }
+
+        public override void Unload()
+        {
+            currencyController.Unload();
+            currencyController = null;
         }
     }
 }

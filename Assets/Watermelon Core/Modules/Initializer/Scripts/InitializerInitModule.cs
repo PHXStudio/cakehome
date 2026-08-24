@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 namespace Watermelon
 {
@@ -7,35 +8,11 @@ namespace Watermelon
     {
         public override string ModuleName => "Initializer Settings";
 
-        [Tooltip("If manual mode is enabled, the loading screen will be active until GameLoading.MarkAsReadyToHide method has been called.")]
-        [Header("Loading")]
-        [SerializeField] bool manualControlMode;
-
-        [Space]
-        [SerializeField] GameObject systemMessagesPrefab;
-
-        public override void CreateComponent()
+        // 系统消息画布由 Initializer.prefab 上的 SystemMessagePreInitializer 统一初始化注册,
+        // 此处不再重复实例化(否则会出现双画布、loading 面板常驻)。
+        public override IEnumerator InitAsync(GameObject owner)
         {
-            if (manualControlMode)
-                GameLoading.EnableManualControlMode();
-
-            if(systemMessagesPrefab != null)
-            {
-                if(systemMessagesPrefab.GetComponent<SystemMessage>() != null)
-                {
-                    GameObject messagesCanvasObject = Instantiate(systemMessagesPrefab);
-                    messagesCanvasObject.name = systemMessagesPrefab.name;
-                    messagesCanvasObject.transform.SetParent(Initializer.Transform);
-                }
-                else
-                {
-                    Debug.LogError("The Linked System Message prefab doesn't have the SystemMessage component attached to it.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("The System Message prefab isn't linked. This may affect the user experience while playing your game.");
-            }
+            yield break;
         }
     }
 }

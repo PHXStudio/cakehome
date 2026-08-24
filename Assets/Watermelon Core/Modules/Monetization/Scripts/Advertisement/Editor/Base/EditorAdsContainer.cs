@@ -1,35 +1,25 @@
-﻿using UnityEditor;
-using System.Collections.Generic;
+using UnityEditor;
 
 namespace Watermelon
 {
     public abstract class EditorAdsContainer
     {
         protected SerializedProperty containerProperty;
-        private IEnumerable<SerializedProperty> containerProperties;
 
-        protected string containerName;
-        protected string propertyName;
+        protected abstract string ContainerDisplayName { get; }
 
-        public EditorAdsContainer(string containerName, string propertyName)
+        public virtual void Init(SerializedProperty containerProp)
         {
-            this.containerName = containerName;
-            this.propertyName = propertyName;
-        }
-
-        public virtual void Init(SerializedObject serializedObject)
-        {
-            containerProperty = serializedObject.FindProperty(propertyName);
-            containerProperties = containerProperty.GetChildren();
+            containerProperty = containerProp;
         }
 
         public virtual void DrawContainer()
         {
-            containerProperty.isExpanded = EditorGUILayoutCustom.BeginExpandBoxGroup(containerName, containerProperty.isExpanded);
+            containerProperty.isExpanded = EditorGUILayoutCustom.BeginExpandBoxGroup(ContainerDisplayName, containerProperty.isExpanded);
 
             if (containerProperty.isExpanded)
             {
-                foreach (SerializedProperty prop in containerProperties)
+                foreach (SerializedProperty prop in containerProperty.GetChildren())
                 {
                     EditorGUILayout.PropertyField(prop);
                 }

@@ -25,14 +25,12 @@ namespace Watermelon
         {
             gameObject.SetActive(true);
 
-            UIController.OnPopupWindowOpened(this);
         }
 
         public void Hide()
         {
             gameObject.SetActive(false);
 
-            UIController.OnPopupWindowClosed(this);
         }
 
         public void ExitPopCloseButton()

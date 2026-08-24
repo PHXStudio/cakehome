@@ -27,6 +27,11 @@ namespace Watermelon
         private static PUController powerUpController;
         private static TutorialController tutorialController;
 
+        private static MergeController mergeController;
+        private static SpawnerController spawnerController;
+        private static TaskController taskController;
+        private static ClientOrderHighlightController clientOrderHighlightController;
+
         public static GameData Data => gameController.data;
 
         private static bool isGameActive;
@@ -40,8 +45,13 @@ namespace Watermelon
             CacheComponent(out particlesController);
             CacheComponent(out floatingTextController);
             CacheComponent(out levelController);
-            CacheComponent(out powerUpController); 
+            CacheComponent(out powerUpController);
             CacheComponent(out tutorialController);
+
+            CacheComponent(out mergeController);
+            CacheComponent(out spawnerController);
+            CacheComponent(out taskController);
+            CacheComponent(out clientOrderHighlightController);
 
             musicSource.Init();
             musicSource.Activate();
@@ -55,25 +65,64 @@ namespace Watermelon
             levelController.Init();
             tutorialController.Init();
 
-            ShopController.EnsureInitialized();
             HubModuleRouter.EnsureInitialized();
 
             uiController.InitPages();
+
+            // Merge side (mirrors mergedev boot order):
+            // MergeDatabase must exist before TaskController fires OnTasksChanged for the
+            // first task, or its icon lookup resolves to null.
+            mergeController.Init();
+
+            // Zone progression tasks are held while onboarding runs — must be set before
+            // taskController.Init() evaluates the queue; FirstStartTutorial unlocks on finish.
+            TaskController.SetProgressionLocked(!MergeViewController.IsOnboardingCompleted());
+
+            // Interstitials must stay silent for the whole onboarding tutorial.
+            MergeViewController.AttachInterstitialGuard();
+
+            taskController.Init();
+            clientOrderHighlightController.Init();
+            spawnerController.Init();
+
+            FragmentController.Init();
+            MergeStatsController.Init();
+
+            // Game.Scripts → HotUpdate bridge: template pages open the IAP store through us
+            CakeUIBridge.OpenStore = () => UIController.ShowPage<Watermelon.IAPStore.UIStore>();
+            CakeUIBridge.OrderCompleted = count => DailyTaskController.AddProgress(DailyTaskType.MergeOrders, count);
 
             AdsManager.TryToLoadFirstAds();
             CustomAnalytics.Init();
             DailyRewardController.Init();
             DailyRewardController.ResetStreakIfMissed();
             DailyTaskController.Init();
-            RecipeController.Init();
             AvatarController.Init();
-            IngredientController.Init();
             MatchBonusController.Init();
             PushNotificationManager.Init();
         }
 
         private void Start()
         {
+            // Init the merge board grid (board page is hidden until the shop tab opens;
+            // mirrors mergedev boot — must run in Start so the canvas has been laid out).
+            mergeController.InitGrid();
+
+            // Board builds while its page is still active (GridLayoutGroup needs an active
+            // canvas to measure cells) — hide it immediately afterwards: the merge pages have
+            // nested canvases (Items / Flying Objects) that ignore the page-level canvas toggle,
+            // and the default tab is Camper, not the merge board.
+            MergeViewController.ExitHub();
+
+            // Zone-start (atUpgrade: 0) progression orders/rewards/dialog.
+            // Held back during onboarding like the task queue; FirstStartTutorial
+            // triggers it on finish instead (mirrors mergedev).
+            MergeViewController.TriggerInitialProgressionIfOnboarded();
+
+            // Activate merge-side tutorials (scene objects under Scripts Holder, auto-discovered).
+            // Routed through Game.Scripts — HotUpdate has its own TutorialController type.
+            MergeViewController.ActivateTutorials();
+
             // Kick the loading screen's fade-out first (it fades over 0.6s). The game UI is
             // revealed a beat later so it never overlaps the loading screen when coming in
             // from the Init scene (LoadingGraphics is DontDestroyOnLoad, so it is still up).
@@ -118,9 +167,6 @@ namespace Watermelon
             DailyTaskController.AddProgress(DailyTaskType.LevelsPlayed);
 
             LivesSystem.LockLife(halfPrice);
-
-            // M2 配方：设置当前关卡的关联配方（掉落碎片池）
-            RecipeController.SetLevelContext(index);
 
             // 积分棋子：进入关卡启用
             MatchBonusController.OnLevelStarted();
@@ -281,6 +327,11 @@ namespace Watermelon
             {
                 isGameActive = true;
             });
+        }
+
+        private void OnDestroy()
+        {
+            MergeViewController.DetachInterstitialGuard();
         }
 
         #region Extensions

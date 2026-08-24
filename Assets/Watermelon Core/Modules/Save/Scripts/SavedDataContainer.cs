@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Watermelon
 {
@@ -21,9 +21,9 @@ namespace Watermelon
             Restored = true;
         }
 
-        public void Flush()
+        public void OnBeforeSave()
         {
-            if (saveObject != null) saveObject.Flush();
+            if (saveObject != null) saveObject.OnBeforeSave();
             if (Restored) json = JsonUtility.ToJson(saveObject);
         }
 

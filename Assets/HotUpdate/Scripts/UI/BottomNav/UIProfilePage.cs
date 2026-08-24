@@ -37,26 +37,24 @@ namespace Watermelon
             RefreshHud();
         }
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             AvatarController.RefreshTitles();
             RefreshHud();
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         private void RefreshHud()
         {
             if (galleryCountText != null)
             {
-                int owned = AvatarController.GetGalleryCount();
-                int total = ShopController.Catalog != null ? ShopController.Catalog.Count : 0;
-                galleryCountText.text = $"甜品展馆 {owned}/{total}";
+                galleryCountText.text = $"完成订单 {MergeStatsController.OrdersCompleted} 单 · 建筑升级 {BuildingController.TotalUpgrades} 级";
             }
 
             RefreshSlotVisuals();

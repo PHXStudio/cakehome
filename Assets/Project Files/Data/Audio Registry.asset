@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c65e784c94ab5a343b8688ea3f318d8a, type: 3}
+  m_Name: Audio Registry
+  m_EditorClassIdentifier: 
+  entries:
+  - clipName: music_main
+    assetPath: Assets/Project Files/Game/Audio/Music/music_main.wav
+    clip: {fileID: 8300000, guid: 5983bf0a85d036f47986b57127c0ffae, type: 3}
+  - clipName: building_available
+    assetPath: Assets/Project Files/Game/Audio/Sounds/building_available.wav
+    clip: {fileID: 8300000, guid: 44433a3a4824afc4089f8d2047a5e777, type: 3}
+  - clipName: building_hammer
+    assetPath: Assets/Project Files/Game/Audio/Sounds/building_hammer.wav
+    clip: {fileID: 8300000, guid: b9d6e31f883e35649a45fb2c20ecddf4, type: 3}
+  - clipName: button_sound
+    assetPath: Assets/Project Files/Game/Audio/Sounds/button_sound.wav
+    clip: {fileID: 8300000, guid: b128a9007857245ffb9f9268b1f7f373, type: 3}
+  - clipName: coin pickup
+    assetPath: Assets/Project Files/Game/Audio/Sounds/coin pickup.wav
+    clip: {fileID: 8300000, guid: 1b3a9aa133dd17e4a80144d16ef86d0b, type: 3}
+  - clipName: coin_appear
+    assetPath: Assets/Project Files/Game/Audio/Sounds/coin_appear.wav
+    clip: {fileID: 8300000, guid: 7ed02add2c2a9df4baaa5a74a78e355a, type: 3}
+  - clipName: coin_pickup
+    assetPath: Assets/Project Files/Game/Audio/Sounds/coin_pickup.wav
+    clip: {fileID: 8300000, guid: 7aa08e9948a5d493b9c3127c553236a8, type: 3}
+  - clipName: coins reward
+    assetPath: Assets/Project Files/Game/Audio/Sounds/coins reward.wav
+    clip: {fileID: 8300000, guid: 8db4e5b130b97684faf58b30011cc8cf, type: 3}
+  - clipName: crate crack
+    assetPath: Assets/Project Files/Game/Audio/Sounds/crate crack.wav
+    clip: {fileID: 8300000, guid: 61d643d5f28f3064585b8c1bed7034fd, type: 3}
+  - clipName: energy_pick_up
+    assetPath: Assets/Project Files/Game/Audio/Sounds/energy_pick_up.wav
+    clip: {fileID: 8300000, guid: adeb9294d6b7da64b872a44f98cb9c4c, type: 3}
+  - clipName: energy_restore
+    assetPath: Assets/Project Files/Game/Audio/Sounds/energy_restore.wav
+    clip: {fileID: 8300000, guid: 87212e7a9d630ea4eb631b6bc9c935a0, type: 3}
+  - clipName: ice crack
+    assetPath: Assets/Project Files/Game/Audio/Sounds/ice crack.wav
+    clip: {fileID: 8300000, guid: 52274d22290d0994ea08cdee4761cfbd, type: 3}
+  - clipName: item_flying
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_flying.wav
+    clip: {fileID: 8300000, guid: e5d1717a4dd7682488fb00cdf3503b05, type: 3}
+  - clipName: item_merge
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_merge.wav
+    clip: {fileID: 8300000, guid: 01c7321b6cfdfc84cba601aceb67b5a6, type: 3}
+  - clipName: item_pickup
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_pickup.wav
+    clip: {fileID: 8300000, guid: 81de9f6a1235edf40a89e8340c4ec5e3, type: 3}
+  - clipName: item_place
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_place.wav
+    clip: {fileID: 8300000, guid: 4547a75b0660e3a4dbb9d1fdc19e2d85, type: 3}
+  - clipName: item_pop_01
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_pop_01.wav
+    clip: {fileID: 8300000, guid: 5cf4a7ee179c7fb4ebf111f39b8d457a, type: 3}
+  - clipName: item_pop_02
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_pop_02.wav
+    clip: {fileID: 8300000, guid: 99b30c5c3eba44d4393ec44bbab9546b, type: 3}
+  - clipName: item_pop_03
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_pop_03.wav
+    clip: {fileID: 8300000, guid: 0658aed4eba498b49a583467d099eeac, type: 3}
+  - clipName: item_pop_04
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_pop_04.wav
+    clip: {fileID: 8300000, guid: dec7d133e0da4f14b9b84d25f921fc26, type: 3}
+  - clipName: item_swoosh
+    assetPath: Assets/Project Files/Game/Audio/Sounds/item_swoosh.wav
+    clip: {fileID: 8300000, guid: 1dd3ae2ec73876d4785c188f92b9c485, type: 3}
+  - clipName: level complete
+    assetPath: Assets/Project Files/Game/Audio/Sounds/level complete.wav
+    clip: {fileID: 8300000, guid: 5ad54e4fe5d6de14ab12740dd7d4fe6f, type: 3}
+  - clipName: level failed
+    assetPath: Assets/Project Files/Game/Audio/Sounds/level failed.wav
+    clip: {fileID: 8300000, guid: a4e148d7284277e4c910bc146938eb6c, type: 3}
+  - clipName: level_sparks
+    assetPath: Assets/Project Files/Game/Audio/Sounds/level_sparks.wav
+    clip: {fileID: 8300000, guid: f7e06f18be4f1bc46baf4915b72e2a27, type: 3}
+  - clipName: level_up
+    assetPath: Assets/Project Files/Game/Audio/Sounds/level_up.wav
+    clip: {fileID: 8300000, guid: 11c11de2cd1f37e459717d49e0d213ec, type: 3}
+  - clipName: life received
+    assetPath: Assets/Project Files/Game/Audio/Sounds/life received.wav
+    clip: {fileID: 8300000, guid: f1c168e64e3eec149a783ebc09973a39, type: 3}
+  - clipName: merge sound
+    assetPath: Assets/Project Files/Game/Audio/Sounds/merge sound.wav
+    clip: {fileID: 8300000, guid: 96812e9c0c1185e4b8ca4424870ae9bf, type: 3}
+  - clipName: message_appear
+    assetPath: Assets/Project Files/Game/Audio/Sounds/message_appear.wav
+    clip: {fileID: 8300000, guid: 0ad6485dd4f67e94a97cbf2ab21c43e7, type: 3}
+  - clipName: power up
+    assetPath: Assets/Project Files/Game/Audio/Sounds/power up.wav
+    clip: {fileID: 8300000, guid: f0169daf6a8de3543bfdf3aa066a643f, type: 3}
+  - clipName: rubber quick
+    assetPath: Assets/Project Files/Game/Audio/Sounds/rubber quick.wav
+    clip: {fileID: 8300000, guid: 8ff5f03f02e45c347be66bbfaecd0323, type: 3}
+  - clipName: spawner_activate
+    assetPath: Assets/Project Files/Game/Audio/Sounds/spawner_activate.wav
+    clip: {fileID: 8300000, guid: a12b5b57e863d0c44b83c292049b9d1f, type: 3}
+  - clipName: task_complete
+    assetPath: Assets/Project Files/Game/Audio/Sounds/task_complete.wav
+    clip: {fileID: 8300000, guid: 01cd874335b375f408e3a48bfbc0febc, type: 3}
+  - clipName: tile click blocked
+    assetPath: Assets/Project Files/Game/Audio/Sounds/tile click blocked.wav
+    clip: {fileID: 8300000, guid: 3d4b98ebef03cd747a203c2ff1237573, type: 3}
+  - clipName: tile click
+    assetPath: Assets/Project Files/Game/Audio/Sounds/tile click.wav
+    clip: {fileID: 8300000, guid: d808a5dc73a632d4ea0a158629dbf1ca, type: 3}
+  - clipName: ui_button_1
+    assetPath: Assets/Project Files/Game/Audio/Sounds/ui_button_1.wav
+    clip: {fileID: 8300000, guid: 43778771ca132fe44baa768ab4be8bc2, type: 3}
+  ignorePatterns: []

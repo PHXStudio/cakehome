@@ -7,7 +7,6 @@ namespace Watermelon
     public class ProductData
     {
         public ProductType ProductType { get; }
-        public bool IsPurchased { get; }
 
         public decimal Price { get; }
         public string ISOCurrencyCode { get; } 
@@ -23,8 +22,6 @@ namespace Watermelon
             Price = 0.00m;
             ISOCurrencyCode = "USD";
 
-            IsPurchased = false;
-
             IsSubscribed = false;
         }
 
@@ -34,8 +31,6 @@ namespace Watermelon
 
             Price = 0.00m;
             ISOCurrencyCode = "USD";
-
-            IsPurchased = false;
 
             IsSubscribed = false;
         }
@@ -51,8 +46,6 @@ namespace Watermelon
             Product = product;
 
             ProductType = (ProductType)product.definition.type;
-
-            IsPurchased = product.hasReceipt;
 
             Price = product.metadata.localizedPrice;
             ISOCurrencyCode = product.metadata.isoCurrencyCode;

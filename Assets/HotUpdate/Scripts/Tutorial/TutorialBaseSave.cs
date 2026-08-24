@@ -11,7 +11,7 @@ namespace Watermelon
 
         public int progress;
 
-        public void Flush()
+        public void OnBeforeSave()
         {
 
         }

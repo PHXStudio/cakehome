@@ -1,5 +1,8 @@
-﻿#pragma warning disable 0414
+#pragma warning disable 0414
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Watermelon
@@ -8,20 +11,37 @@ namespace Watermelon
     public class AdsSettings : ScriptableObject
     {
         [BoxGroup("Advertisement", "Advertisement")]
-        [SerializeField] AdProvider bannerType = AdProvider.Dummy;
-        public AdProvider BannerType => bannerType;
-
-        [BoxGroup("Advertisement")]
-        [SerializeField] AdProvider interstitialType = AdProvider.Dummy;
-        public AdProvider InterstitialType => interstitialType;
-
-        [BoxGroup("Advertisement")]
-        [SerializeField] AdProvider rewardedVideoType = AdProvider.Dummy;
-        public AdProvider RewardedVideoType => rewardedVideoType;
+        [SerializeField, Hide] string activeProvider = "Dummy";
+        public string ActiveProvider => activeProvider;
 
         [BoxGroup("Settings", "Settings")]
+        [SerializeField] bool debugMode = false;
+        public bool DebugMode => debugMode;
+
+        [BoxGroup("Settings")]
+        [ShowIf("debugMode")]
+        [SerializeField] List<string> testDevices;
+        public List<string> TestDevices => testDevices;
+
+        [BoxGroup("Settings")]
         [SerializeField] bool loadAdsOnStart = true;
         public bool LoadAdsOnStart => loadAdsOnStart;
+
+        [BoxGroup("Settings/Ad Types")]
+        [SerializeField] bool bannerEnabled = true;
+        public bool BannerEnabled => bannerEnabled;
+
+        [BoxGroup("Settings/Ad Types")]
+        [SerializeField] bool interstitialEnabled = true;
+        public bool InterstitialEnabled => interstitialEnabled;
+
+        [BoxGroup("Settings/Ad Types")]
+        [SerializeField] bool rewardedVideoEnabled = true;
+        public bool RewardedVideoEnabled => rewardedVideoEnabled;
+
+        [BoxGroup("Reward", "Reward")]
+        [SerializeField] Sprite noAdsRewardSprite;
+        public Sprite NoAdsRewardSprite => noAdsRewardSprite;
 
         [Space]
         [BoxGroup("Settings/Interstitial")]
@@ -39,10 +59,6 @@ namespace Watermelon
         [SerializeField] float interstitialShowingDelay = 30f;
         public float InterstitialShowingDelay => interstitialShowingDelay;
 
-        [BoxGroup("Settings/Interstitial")]
-        [SerializeField] bool autoShowInterstitial;
-        public bool AutoShowInterstitial => autoShowInterstitial;
-
         [BoxGroup("Settings/Delay")]
         [SerializeField] float loadingAdDuration = 0f;
         public float LoadingAdDuration => loadingAdDuration;
@@ -51,61 +67,33 @@ namespace Watermelon
         [SerializeField] string loadingMessage = "Ad is loading..";
         public string LoadingMessage => loadingMessage;
 
-        [BoxGroup("UMP", "UMP")]
-        [SerializeField] bool isUMPEnabled = true;
-        public bool IsUMPEnabled => isUMPEnabled;
+        [SerializeReference, Hide]
+        private List<AdsProviderContainer> providerContainers = new List<AdsProviderContainer>();
 
-        [BoxGroup("UMP")]
-        [ShowIf("isUMPEnabled")]
-        [Tooltip("Set TagForUnderAgeOfConsent (TFUA) to indicate whether a user is under the age of consent. Consent is not requested from the user when TFUA is set to true. Mixed audience apps should set this parameter for child users to ensure consent is not requested.")]
-        [SerializeField] bool umpTagForUnderAgeOfConsent = false;
-        public bool UMPTagForUnderAgeOfConsent => umpTagForUnderAgeOfConsent;
+        public T GetContainer<T>() where T : AdsProviderContainer
+            => providerContainers.OfType<T>().FirstOrDefault();
 
-        [Space]
-        [BoxGroup("UMP")]
-        [ShowIf("isUMPEnabled")]
-        [SerializeField] bool umpDebugMode = false;
-        public bool UMPDebugMode => umpDebugMode;
+        public AdsProviderContainer GetContainer(string providerName)
+            => providerContainers.FirstOrDefault(c => c != null && c.ProviderName == providerName);
 
-        [BoxGroup("UMP")]
-        [ShowIf("isUMPEnabled")]
-        [SerializeField] DebugGeography umpDebugGeography;
-        public DebugGeography UMPDebugGeography => umpDebugGeography;
+        public bool HasContainer(Type containerType)
+            => providerContainers.Any(c => c != null && c.GetType() == containerType);
 
-        [BoxGroup("IDFA", "IDFA")]
-        [SerializeField] bool isIDFAEnabled = false;
-        public bool IsIDFAEnabled => isIDFAEnabled;
-
-        [BoxGroup("IDFA")]
-        [ShowIf("isIDFAEnabled")]
-        [SerializeField] string trackingDescription = "Your data will be used to deliver personalized ads to you.";
-        public string TrackingDescription => trackingDescription;
-
-        // Providers
-        [SerializeField, Hide] AdMobContainer adMobContainer;
-        public AdMobContainer AdMobContainer => adMobContainer;
-
-        [SerializeField, Hide] UnityAdsLegacyContainer unityAdsContainer;
-        public UnityAdsLegacyContainer UnityAdsContainer => unityAdsContainer;
-
-        [SerializeField, Hide] LevelPlayContainer levelPlayContainer;
-        public LevelPlayContainer LevelPlayContainer => levelPlayContainer;
-
-        [SerializeField, Hide] AdDummyContainer dummyContainer;
-        public AdDummyContainer DummyContainer => dummyContainer;
-
-        public bool IsDummyEnabled()
+        public void AddContainer(AdsProviderContainer container)
         {
-            if (bannerType == AdProvider.Dummy)
-                return true;
-
-            if (interstitialType == AdProvider.Dummy)
-                return true;
-
-            if (rewardedVideoType == AdProvider.Dummy)
-                return true;
-
-            return false;
+            providerContainers.Add(container);
         }
+
+        public void DisableBanner() => bannerEnabled = false;
+        public void DisableInterstitial() => interstitialEnabled = false;
+        public void DisableRewardedVideo() => rewardedVideoEnabled = false;
+
+        [BoxGroup("Legal", "Legal")]
+        [SerializeField] string privacyLink = "";
+        public string PrivacyLink => privacyLink;
+
+        [BoxGroup("Legal")]
+        [SerializeField] string termsOfUseLink = "";
+        public string TermsOfUseLink => termsOfUseLink;
     }
 }

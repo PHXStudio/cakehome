@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 26
-  productGUID: b5887e28f772740a0b949a43f71120dd
+  productGUID: f09a24c49f7b042a0b138cd6cd0d124c
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -143,8 +143,8 @@ PlayerSettings:
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0.0
   preloadedAssets:
-  - {fileID: -944628639613478452, guid: 1da06fb2a2627aa4ab453259577aa53e, type: 3}
-  - {fileID: 11400000, guid: de1821ecad3716047bbfc5a595a0f9b9, type: 2}
+  - {fileID: 11400000, guid: 97736d9a5ad1861479e34b45f1786682, type: 2}
+  - {fileID: -944628639613478452, guid: d619bd23d9a14ea499e7df8deea459b4, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,8 +165,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.WatermelonGames.TileMatch
-    Standalone: com.Watermelon-Games.Tile-Match
+    Android: com.WatermelonGames.MergeAdventure
+    Standalone: com.Watermelon-Games.MergeAdventure
+    iPhone: com.WatermelonGames.MergeAdventure
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -191,7 +192,7 @@ PlayerSettings:
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
   iOSSimulatorArchitecture: 0
-  iOSTargetOSVersionString: 12.0
+  iOSTargetOSVersionString: 15.0
   tvOSSdkVersion: 0
   tvOSSimulatorArchitecture: 0
   tvOSRequireExtendedGameController: 0
@@ -258,7 +259,7 @@ PlayerSettings:
   clonedFromGUID: 09ff95d1898406648a6985a4e5dc1d97
   templatePackageId: 
   templateDefaultScene: 
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
   useCustomLauncherGradleManifest: 0
@@ -294,7 +295,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: b95d874918340c640aa20ec56be7817e, type: 3}
+      m_Icon: {fileID: 2800000, guid: 1a498b7957283cc4cb45a8b72d023e01, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -774,7 +775,23 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_MONETIZATION;MODULE_POWERUPS;MODULE_HAPTIC
+    Android: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    EmbeddedLinux: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    GameCoreScarlett: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    GameCoreXboxOne: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    LinuxHeadlessSimulation: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    Nintendo Switch: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    PS4: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    PS5: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    QNX: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    Stadia: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    Standalone: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_MONETIZATION;MODULE_POWERUPS;MODULE_HAPTIC;MODULE_ADS
+    VisionOS: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    WebGL: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    Windows Store Apps: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    XboxOne: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    iPhone: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
+    tvOS: MODULE_INPUT_SYSTEM;MODULE_TMP;MODULE_HAPTIC;MODULE_ADS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -794,14 +811,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: tilematch
+  metroPackageName: cakehome
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: tilematch
+  metroApplicationDescription: cakehome
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -851,7 +868,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 

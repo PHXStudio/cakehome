@@ -298,7 +298,7 @@ namespace Watermelon
             selectedSkins = newSelectedSkins;
         }
 
-        public void Flush()
+        public void OnBeforeSave()
         {
 
         }

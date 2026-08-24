@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -59,7 +59,7 @@ namespace Watermelon
 
         #region Show/Hide
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             coinsPanel.Activate();
             exitButtonFadeAnimation.Show();
@@ -77,10 +77,10 @@ namespace Watermelon
                 gameplayTimer.gameObject.SetActive(false);
             }
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             coinsPanel.Disable();
             exitButtonFadeAnimation.Hide();
@@ -93,7 +93,7 @@ namespace Watermelon
                 gameplayTimer.Hide();
             }
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         public void UpdateLevelNumber(int levelNumber)

@@ -2,11 +2,15 @@
 {
     public enum ProductKeyType
     {
-        NoAds = 0,
         StarterPack = 1,
-        GoldSmall = 2,
-        GoldMedium = 3,
-        GoldBig = 4,
-        PUPack = 5
+        BoostPack = 5,
+        ProPack = 6,
+        Gems1 = 7,
+        Gems2 = 8,
+        Gems3 = 9,
+        Gems4 = 10,
+        Gems5 = 11,
+        Gems6 = 12,
+        NoAdsPack = 13,
     }
 }

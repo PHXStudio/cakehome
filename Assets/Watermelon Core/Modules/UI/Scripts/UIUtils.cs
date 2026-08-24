@@ -5,16 +5,12 @@ namespace Watermelon
 {
     public static class UIUtils
     {
-        public static bool IsWideScreen(Camera camera)
+        public static bool IsTablet()
         {
 #if UNITY_IOS
-            bool deviceIsIpad = UnityEngine.iOS.Device.generation.ToString().Contains("iPad");
-            if (deviceIsIpad)
-                return true;
-
-            return false;
+            return UnityEngine.iOS.Device.generation.ToString().Contains("iPad");
 #else
-            return camera.aspect > (9f / 16f);
+            return (float)Screen.width / Screen.height > (9f / 16f);
 #endif
         }
 

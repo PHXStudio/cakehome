@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 6
+  m_EditorClassIdentifier:
+  chapterTitle: Theos Approval
+  steps:
+  - rid: 7478107015841187976
+  - rid: 3186918032358132746
+  - rid: 1227388623051005694
+  - rid: 5283218623699715994
+  - rid: 1497489147840142795
+  - rid: 8079132639872943152
+  - rid: 4861821753149285341
+  - rid: 3186984414252168929
+  - rid: 4939067043235720618
+  references:
+    version: 2
+    RefIds:
+    - rid: 7478107015841187976
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: This part is solid now.
+    - rid: 3186918032358132746
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: You sound surprised.
+    - rid: 1227388623051005694
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: I am careful with praise.
+    - rid: 5283218623699715994
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: He means he likes it.
+    - rid: 1497489147840142795
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: I mean I will not have to redo it.
+    - rid: 8079132639872943152
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: That is practically a standing ovation from Theo.
+    - rid: 4861821753149285341
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: I will treasure the moment.
+    - rid: 3186984414252168929
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 524d737709eaff74c9db275b7ab92f00, type: 2}
+        emotion: 0
+        text: Do not become overconfident.
+    - rid: 4939067043235720618
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: I think that was another compliment.

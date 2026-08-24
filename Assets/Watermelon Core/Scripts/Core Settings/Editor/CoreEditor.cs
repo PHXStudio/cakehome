@@ -10,7 +10,7 @@ namespace Watermelon
         // Folders
         public static string FOLDER_CORE { get; private set; }
 
-        public static string FOLDER_CORE_MODULES => Path.Combine(FOLDER_CORE, "Modules");
+        public static string FOLDER_CORE_MODULES => Path.Combine(FOLDER_CORE, "Systems");
 
         public static string FOLDER_DATA;
         public static string FOLDER_SCENES;
@@ -21,9 +21,6 @@ namespace Watermelon
 
         public static bool AutoLoadInitializer { get; private set; } = true;
         public static string InitSceneName { get; private set; } = "Init";
-
-        public static Color AdsDummyBackgroundColor { get; private set; } = new Color(0.2f, 0.2f, 0.3f);
-        public static Color AdsDummyMainColor { get; private set; } = new Color(0.2f, 0.3f, 0.7f);
 
         public static bool ShowWatermelonPromotions { get; private set; } = true;
 
@@ -48,14 +45,16 @@ namespace Watermelon
 
                 coreSettings = ScriptableObject.CreateInstance<CoreSettings>();
 
-                FOLDER_CORE = Path.Combine("Assets", "Watermelon Core");
+                FOLDER_CORE = Path.Combine("Packages", "Watermelon Core");
 
                 if (!AssetDatabase.IsValidFolder(FOLDER_CORE))
                 {
-                    AssetDatabase.CreateFolder("Assets/", "Watermelon Core");
+                    FOLDER_CORE = Path.Combine("Assets", "Watermelon Core");
+                    if (!AssetDatabase.IsValidFolder(FOLDER_CORE))
+                        AssetDatabase.CreateFolder("Assets/", "Watermelon Core");
                 }
 
-                AssetDatabase.CreateAsset(coreSettings, Path.Combine("Assets", "Watermelon Core", "Core Settings.asset"));
+                AssetDatabase.CreateAsset(coreSettings, Path.Combine(FOLDER_CORE, "Core Settings.asset"));
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
@@ -80,10 +79,6 @@ namespace Watermelon
             // Editor
             UseCustomInspector = settings.UseCustomInspector;
             UseHierarchyIcons = settings.UseHierarchyIcons;
-
-            // Ads
-            AdsDummyBackgroundColor = settings.AdsDummyBackgroundColor;
-            AdsDummyMainColor = settings.AdsDummyMainColor;
 
             // Other
             ShowWatermelonPromotions = settings.ShowWatermelonPromotions;

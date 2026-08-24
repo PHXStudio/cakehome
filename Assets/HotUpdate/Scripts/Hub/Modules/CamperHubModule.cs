@@ -21,6 +21,9 @@ namespace Watermelon
             if (UIController.GetPage<UIMainMenu>() != null)
                 UIController.ShowPage<UIMainMenu>();
 
+            // 与门店 Tab 共用的顶栏（经验徽章 + 能量/金币/钻石）
+            MergeViewController.SetHeaderVisible(true);
+
             isActive = true;
         }
 
@@ -28,6 +31,8 @@ namespace Watermelon
         {
             if (UIController.IsDisplayed<UIMainMenu>())
                 UIController.HidePage<UIMainMenu>();
+
+            MergeViewController.SetHeaderVisible(false);
 
             MapBehavior.SetMapVisible(false);
             MapBehavior.DisableScroll();

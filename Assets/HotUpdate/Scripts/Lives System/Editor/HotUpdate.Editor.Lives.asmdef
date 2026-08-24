@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "HotUpdate",
+        "Game.Scripts",
         "Core.WC",
         "Core.UE",
         "Core.UE.Editor",

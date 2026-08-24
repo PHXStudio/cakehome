@@ -74,7 +74,7 @@ namespace Watermelon
             }
 
 #if MODULE_MONETIZATION
-            if (AdsManager.Settings != null && AdsManager.Settings.BannerType != AdProvider.Disable && AdsManager.IsForcedAdEnabled())
+            if (AdsManager.Settings != null && AdsManager.Settings.BannerEnabled && AdsManager.IsForcedAdEnabled())
             {
                 rect.y += 90;
                 rect.height -= 90;

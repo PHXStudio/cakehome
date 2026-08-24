@@ -1,0 +1,1671 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f14a07b84455f4e82753fa1f5f7b32, type: 3}
+  m_Name: Merge Database
+  m_EditorClassIdentifier: 
+  items:
+  - typeId: Cake
+    itemType: 0
+    prefab: {fileID: 1712356470392593485, guid: cff73b4ecf3243646b3792ae5874a45e,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: d9595a1e6c6190a47889957083bfc0e5, type: 3}
+      displayName: Flour Sack
+      description: A sack of flour, marked with wheat - the first step to a fresh
+        bake.
+      config:
+        rid: -2
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: fcb19c1afd58f3845a8b949cd69c28e4, type: 3}
+      displayName: Dough Bowl
+      description: Soft dough rising in a bowl, dusted with flour.
+      config:
+        rid: -2
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: b8fdda559bec7b94fb0467dec25fb597, type: 3}
+      displayName: Sponge Cake
+      description: Light and fluffy, ready for frosting.
+      config:
+        rid: 9100000000000000001
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 1ab47bc2ee5c25e44a9544cc393957ab, type: 3}
+      displayName: Choc Chip Cookie
+      description: A soft cookie studded with chocolate chips.
+      config:
+        rid: 9100000000000000002
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: a3948108bb4113d4bb1a5e7b7e0f06f9, type: 3}
+      displayName: Muffin
+      description: A golden muffin, fresh from its paper liner.
+      config:
+        rid: 9100000000000000003
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 3ed3470e9c8fcab45b42eec3bac22888, type: 3}
+      displayName: Berry Muffin
+      description: A muffin packed with blueberries and cranberries, dusted with
+        sugar.
+      config:
+        rid: 9100000000000000004
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: b89203559383aa0458af42236a58d6fd, type: 3}
+      displayName: Strawberry Tart
+      description: A buttery tart shell filled with cream and topped with fresh strawberries.
+      config:
+        rid: 9100000000000000005
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 4d8a19fb6a39fa347bdec48ae005a7fc, type: 3}
+      displayName: Cherry Cheesecake
+      description: A creamy cheesecake square on a graham crust, topped with glossy
+        cherries.
+      config:
+        rid: 9100000000000000006
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ec2c52a5a06e1a64e91d519737e6584b, type: 3}
+      displayName: Tiramisu
+      description: Layers of coffee-soaked ladyfingers and cream, dusted with cocoa.
+      config:
+        rid: 9100000000000000007
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2ec688e64a4ad1e41b4e6f94c5fa8eb4, type: 3}
+      displayName: Cake Slice
+      description: A triple-layer slice with silky frosting, crowned with a fresh
+        strawberry.
+      config:
+        rid: 9100000000000000008
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 31e6d4a1090d99c479d2f2420c5567d5, type: 3}
+      displayName: Berry Cheesecake Slice
+      description: A cheesecake slice glazed in berry sauce, topped with blueberries.
+      config:
+        rid: 9100000000000000009
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 16d8b24fdd9e046438461232f80d3ecf, type: 3}
+      displayName: Berry Trifle
+      description: Cake, custard, and berries in a glass, finished with chocolate
+        and mint.
+      config:
+        rid: 9100000000000000010
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Coffee
+    itemType: 0
+    prefab: {fileID: 1712356470392593485, guid: cff73b4ecf3243646b3792ae5874a45e,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: 60dc5c76ebbbd5d4d970cb65a9fe5906, type: 3}
+      displayName: Coffee Beans
+      description: Freshly roasted and ready to brew.
+      config:
+        rid: 2402945539774873600
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 7, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2a600ca971575774bb3728b64a848988, type: 3}
+      displayName: Ground Coffee
+      description: Finely ground coffee, ready to brew a strong cup.
+      config:
+        rid: -2
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 5, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2fb204410468f934da0a3278fd0c9e53, type: 3}
+      displayName: Coffee Cup
+      description: A warm cup to start the morning.
+      config:
+        rid: 9100000000000000011
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -15, z: 0}
+      customShadowScale: {x: 0.85, y: 0.85, z: 0.85}
+    - sprite: {fileID: 21300000, guid: 7b8d7cd125f73ca47949ad7d4bd38b29, type: 3}
+      displayName: To-Go Coffee
+      description: Black coffee in a sleeved to-go cup with a stir stick.
+      config:
+        rid: 9100000000000000012
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -19, z: 0}
+      customShadowScale: {x: 0.85, y: 0.85, z: 0.85}
+    - sprite: {fileID: 21300000, guid: c786a6fd545bbda4aa146200967ba1ce, type: 3}
+      displayName: Espresso Cup
+      description: A small cup of strong black coffee, no milk in sight.
+      config:
+        rid: 9100000000000000013
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -5, z: 0}
+      customShadowScale: {x: 0.75, y: 0.75, z: 0.75}
+    - sprite: {fileID: 21300000, guid: 575a6a879d50e844b987a0328fcca22a, type: 3}
+      displayName: Black Coffee
+      description: Black coffee served in a classic white cup with a spoon.
+      config:
+        rid: 9100000000000000014
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -5, z: 0}
+      customShadowScale: {x: 0.9, y: 0.9, z: 0.9}
+    - sprite: {fileID: 21300000, guid: 4c13adcd17e7331438fd56957975e770, type: 3}
+      displayName: Latte Art
+      description: Steamed milk poured into espresso, finished with a heart in the
+        foam.
+      config:
+        rid: 9100000000000000015
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -5, z: 0}
+      customShadowScale: {x: 0.9, y: 0.9, z: 0.9}
+    - sprite: {fileID: 21300000, guid: 3c0c9d24a39381849aea869b48fbbfbf, type: 3}
+      displayName: Flower Latte
+      description: Latte art in a blue cup, garnished with a delicate flower.
+      config:
+        rid: 9100000000000000016
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 8bb371bcc92824a4c8f3bb7bb7bf3689, type: 3}
+      displayName: Cat Latte
+      description: A playful cat face crafted in milk foam, dusted with cinnamon.
+      config:
+        rid: 9100000000000000017
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 39999194ebd28e241bd30616f5cf3b62, type: 3}
+      displayName: Iced Coffee
+      description: Cold brew over ice, finished with a sprig of fresh mint.
+      config:
+        rid: 9100000000000000018
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -8, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: fc4c308939b75fa4aab3914a70fb363c, type: 3}
+      displayName: Affogato
+      description: Vanilla ice cream scoops floating in a glass of hot coffee.
+      config:
+        rid: 9100000000000000019
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -8, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 6b5d93216a2f1ee49909a019cecb02f2, type: 3}
+      displayName: Party Affogato
+      description: Ice cream scooped into coffee, dusted with cocoa and a cocktail
+        umbrella.
+      config:
+        rid: 9100000000000000020
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -8, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Kettle Spawner
+    itemType: 3
+    prefab: {fileID: 796883718165712129, guid: bf8639f7a4c389d41996fd086422d5b6, type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: e3b241ba38f618b4fb1f24b9cbff14a8, type: 3}
+      displayName: Clay Teapot
+      description: A simple clay teapot, humble but gets the job done.
+      config:
+        rid: 4901224295628013570
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ed01a205bd1e7144e9ae9ec0a9d0dfb8, type: 3}
+      displayName: Red Teapot
+      description: A glossy red ceramic teapot with a rounded belly.
+      config:
+        rid: 4901224295628013572
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 05c9538ba2f3374409e70c815414f23e, type: 3}
+      displayName: Tall Teapot
+      description: A tall, elegant red teapot with a gently domed lid.
+      config:
+        rid: 4901224295628013573
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: c08d98d51c890e24f940da0cd472e19a, type: 3}
+      displayName: Stovetop Kettle
+      description: A polished stovetop kettle with a fold-down handle, ready for
+        the stove.
+      config:
+        rid: 4901224295628013574
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 7a6305edf2d1d574d82959ea7d3d4a3f, type: 3}
+      displayName: Pour-Over Pot
+      description: A slender stainless pour-over pot with a sturdy side handle.
+      config:
+        rid: 4901224295628013575
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 625417958e5c65b45bcd3597024d9512, type: 3}
+      displayName: Coffee Carafe
+      description: A glass carafe brimming with freshly brewed coffee, held by a
+        black handle.
+      config:
+        rid: 4952171013702156298
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 8c34c2376855f9740b7d3b14573537f8, type: 3}
+      displayName: Coffee Maker
+      description: An electric coffee maker with a power light and a window to watch
+        it brew.
+      config:
+        rid: 4952171013702156299
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: abdc1bc97297181448741c9f8483661e, type: 3}
+      displayName: Espresso Machine
+      description: A compact espresso machine, pulling a fresh shot straight into
+        the cup.
+      config:
+        rid: 4952171013702156300
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2389d8dc0f7ae2b4eb5c4b2e39db2516, type: 3}
+      displayName: Dual Espresso Machine
+      description: A dual-spout espresso machine with a gauge, brewing two cups at
+        once.
+      config:
+        rid: 4952171013702156301
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Coins Item
+    itemType: 1
+    prefab: {fileID: 7152627182747154683, guid: f38ed3bfd8bc95f468c35da220bec778,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: 67929c1663f402d4287370df41bb30f4, type: 3}
+      displayName: Coin
+      description: Merge 2 same items to level up! Tap to get 1 coin.
+      config:
+        rid: 5520886623642845189
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 916e6f2a0eed1ab43910ad692c53fe7e, type: 3}
+      displayName: Coin Pouch
+      description: Merge 2 same items to level up! Tap to get 3 coins.
+      config:
+        rid: 5520886623642845190
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ef39eb3a03f85644fa5c70679f10e444, type: 3}
+      displayName: Coin Stack
+      description: Merge 2 same items to level up! Tap to get 7 coins.
+      config:
+        rid: 5520886623642845191
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 27251a84d7f2c5a48b01265d34510b4d, type: 3}
+      displayName: Coin Chest
+      description: Merge 2 same items to level up! Tap to get 15 coins.
+      config:
+        rid: 4952171034099056690
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: d1d7976fb23721241ab0e983ea03fafe, type: 3}
+      displayName: Coin Vault
+      description: Tap to get 32 coinss. This item is max-level already!
+      config:
+        rid: 4952171034099056691
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Gems Item
+    itemType: 1
+    prefab: {fileID: 7152627182747154683, guid: f38ed3bfd8bc95f468c35da220bec778,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: e4aa9d51517fddf4e82310d16b2aa48a, type: 3}
+      displayName: Gem
+      description: Merge 2 same items to level up! Tap to get 1 gem.
+      config:
+        rid: 4952171034099056685
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 0e477988dfee0d4468c80998866b24e8, type: 3}
+      displayName: Gem Cluster
+      description: Merge 2 same items to level up! Tap to get 3 gems.
+      config:
+        rid: 4952171034099056686
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 598064407d1b49940922c111e83fc353, type: 3}
+      displayName: Gem Pouch
+      description: Merge 2 same items to level up! Tap to get 7 gems.
+      config:
+        rid: 4952171034099056687
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ee4601286e0b37f42ba426f09e930f5d, type: 3}
+      displayName: Gem Case
+      description: Merge 2 same items to level up! Tap to get 15 gems.
+      config:
+        rid: 4952171034099056688
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: a1ceecc099c5e664e966babbfc4a55c8, type: 3}
+      displayName: Gem Vault
+      description: Tap to get 32 gems. This item is max-level already!
+      config:
+        rid: 4952171034099056689
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Energy Item
+    itemType: 2
+    prefab: {fileID: 6313768492983076812, guid: 4254ceb977ccb5d4784913d80871c913,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: 3a1ae8a42efca63478c700fb87f22f5c, type: 3}
+      displayName: Energy Spark
+      description: Merge 2 same items to level up! Tap to get 2 energy.
+      config:
+        rid: 5520886623642845184
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2cb870be3e32bfb4d9668fc545b283cf, type: 3}
+      displayName: Energy Cell
+      description: Merge 2 same items to level up! Tap to get 5 energy.
+      config:
+        rid: 5520886623642845185
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 45c9155859afb3443a723d0125d4eac2, type: 3}
+      displayName: Energy Flask
+      description: Merge 2 same items to level up! Tap to get 10 energy.
+      config:
+        rid: 5520886623642845186
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 202ce186f75a28048a70ec5e7c842cc3, type: 3}
+      displayName: Energy Battery
+      description: Merge 2 same items to level up! Tap to get 40 energy.
+      config:
+        rid: 5520886623642845187
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ca1e70f886064c64cb6de2c29bb2fe03, type: 3}
+      displayName: Energy Core
+      description: Tap to get 100 energy. This item is max-level already!
+      config:
+        rid: 5520886623642845188
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Mixer Spawner
+    itemType: 3
+    prefab: {fileID: 796883718165712129, guid: bf8639f7a4c389d41996fd086422d5b6, type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: d2356a194346d824ca4400e9622675a5, type: 3}
+      displayName: Wooden Spoon
+      description: A wooden spoon with a cheerful heart-cut handle, perfect for a
+        good stir.
+      config:
+        rid: 7100000000000000001
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 2bafa5da99dbec54eb4703634fd5013b, type: 3}
+      displayName: Whisk
+      description: A simple wire whisk for beating batter by hand.
+      config:
+        rid: 7100000000000000002
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 228d6709d4b5402468b36c613ffe5bea, type: 3}
+      displayName: Batter Bowl
+      description: A bowl of batter, whisked smooth and ready to bake.
+      config:
+        rid: 7100000000000000003
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: a62b07ccd9dd99c4292118d34c0ba25e, type: 3}
+      displayName: Whisked Batter
+      description: A whisk resting in a bowl of freshly mixed batter.
+      config:
+        rid: 5520886876361719811
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: d0855ff0bacea2c42b87364070e7450a, type: 3}
+      displayName: Hand Blender
+      description: An electric hand blender with a heart-shaped button, built for
+        fast mixing.
+      config:
+        rid: 7100000000000000005
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 6b8bd3450c16024488b76f73a61e2f7b, type: 3}
+      displayName: Hand Mixer
+      description: A classic electric hand mixer, whisk beater spinning at the ready.
+      config:
+        rid: 7100000000000000006
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 6e4d56e31b9c9024e821d8ff5c2b0acd, type: 3}
+      displayName: Dual Beater Mixer
+      description: A sturdy hand mixer with dual beaters and a big comfortable handle.
+      config:
+        rid: 7100000000000000007
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 1fdbb3ffca74d544eaec4824754ea546, type: 3}
+      displayName: Stand Mixer
+      description: A hands-free stand mixer, whipping batter smooth in its own bowl.
+      config:
+        rid: 7100000000000000008
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: d83a2cc05fa0427478791ea29a9164a8, type: 3}
+      displayName: Gold Stand Mixer
+      description: A premium stand mixer in mint and gold, with a gleaming steel
+        bowl.
+      config:
+        rid: 7100000000000000009
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Soda
+    itemType: 0
+    prefab: {fileID: 1712356470392593485, guid: cff73b4ecf3243646b3792ae5874a45e,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: f99fe98dac7167c42aa800738a3cfcf2, type: 3}
+      displayName: Ice Cubes
+      description: A pile of clear ice cubes, chilled and ready for a drink.
+      config:
+        rid: -2
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -3, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 0bec3045357fac44498b14abf5509d66, type: 3}
+      displayName: Glass Bottle
+      description: An empty glass bottle, classic curvy shape, ready to be filled.
+      config:
+        rid: -2
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -20, z: 0}
+      customShadowScale: {x: 0.6, y: 0.6, z: 0.6}
+    - sprite: {fileID: 21300000, guid: 737bf660a8a3b1941acf7ebaa0a8e917, type: 3}
+      displayName: Soda Bottle
+      description: A capped bottle of dark, fizzy soda.
+      config:
+        rid: 9100000000000000021
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -20, z: 0}
+      customShadowScale: {x: 0.6, y: 0.6, z: 0.6}
+    - sprite: {fileID: 21300000, guid: 394fa85f08f85b54095bbf7df12a0b84, type: 3}
+      displayName: Soda with Straw
+      description: An opened bottle of soda with a striped straw poking out.
+      config:
+        rid: 9100000000000000022
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -20, z: 0}
+      customShadowScale: {x: 0.6, y: 0.6, z: 0.6}
+    - sprite: {fileID: 21300000, guid: 9c226c7fe2d56bd49886663697e60b9d, type: 3}
+      displayName: Soda & Ice
+      description: A bottle of soda poured alongside a glass full of ice.
+      config:
+        rid: 9100000000000000023
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -20, z: 0}
+      customShadowScale: {x: 0.8, y: 0.6, z: 0.6}
+  - typeId: Candy
+    itemType: 0
+    prefab: {fileID: 1712356470392593485, guid: cff73b4ecf3243646b3792ae5874a45e,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: f097fb23d830f49419799fb8df947131, type: 3}
+      displayName: Candy Drop
+      description: A small, sweet pick-me-up.
+      config:
+        rid: -2
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 10, z: 0}
+      customShadowScale: {x: 0.7, y: 0.7, z: 0.7}
+    - sprite: {fileID: 21300000, guid: eae025ef8285149498999503125b3794, type: 3}
+      displayName: Wrapped Candy
+      description: A round candy twisted up in a crisp wrapper.
+      config:
+        rid: -2
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 15, z: 0}
+      customShadowScale: {x: 0.8, y: 0.8, z: 0.8}
+    - sprite: {fileID: 21300000, guid: 3f030ab66962aff4892c7f8a884fe543, type: 3}
+      displayName: Lollipop
+      description: A pastel swirl lollipop on a stick - spin it, lick it, love it.
+      config:
+        rid: 9100000000000000024
+      customShadow: 1
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: -15, z: 0}
+      customShadowScale: {x: 0.4, y: 0.4, z: 0.4}
+    - sprite: {fileID: 21300000, guid: 911386c425074f644bd00baf2490c37a, type: 3}
+      displayName: Candy Jar
+      description: A jar full of sugary treats.
+      config:
+        rid: 9100000000000000025
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: a16ea5683e8338246a95d97f8a561512, type: 3}
+      displayName: Candy Chest
+      description: A jeweled treasure chest overflowing with lollipops, gumballs,
+        and sweets.
+      config:
+        rid: 9100000000000000026
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Placeholders
+    itemType: 0
+    prefab: {fileID: 1712356470392593485, guid: cff73b4ecf3243646b3792ae5874a45e,
+      type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: d69dd0d4194d25a4bb0de0c2510ebd18, type: 3}
+      displayName: Cozy Cafe
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: -2
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 5b80d633c10ed0547935fb2b2cf73b15, type: 3}
+      displayName: Road Trip
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: -2
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: d54cdd20142eda04780f607163d7765b, type: 3}
+      displayName: Mountain Valley
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: 9100000000000000027
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 1331cdbf9f3e82a4b93a56121078d486, type: 3}
+      displayName: Wildflower Meadow
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: 9100000000000000028
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: a7b384b90ba4fa842a56235b04389662, type: 3}
+      displayName: Forest Path
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: 9100000000000000029
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 970c6884af4c1454cbb2a7c58ecbc7b6, type: 3}
+      displayName: Tropical Beach
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: 9100000000000000030
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 73df537a9cb33a04394774b30ce4add9, type: 3}
+      displayName: Sunset Lake
+      description: This is a placeholder item. Add more items to the game or replace
+        it.
+      config:
+        rid: 9100000000000000031
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Coins Chest
+    itemType: 4
+    prefab: {fileID: 796883718165712129, guid: ca32fdaeadddabe40b69b0a19d018814, type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: 833ee978cd02b3241b49cbf97b87935e, type: 3}
+      displayName: Coin Box
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 4952171145833218050
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 88809978a1e3a274cbb35adbfc0508ad, type: 3}
+      displayName: Coin Coffer
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655552
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 74c3dbe993b857f46bd46ef99c4ca348, type: 3}
+      displayName: Coin Strongbox
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655553
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: ced698f19e0493041aeefcf92e4b9ab9, type: 3}
+      displayName: Coin Trunk
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655554
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 8ae1fb7804ebdf8439620f9b359b450b, type: 3}
+      displayName: Coin Treasury
+      description: Double tap to open the chest. This item is max-level already!
+      config:
+        rid: 5520886940757655555
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Gems Chest
+    itemType: 4
+    prefab: {fileID: 796883718165712129, guid: ca32fdaeadddabe40b69b0a19d018814, type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: fc3ca2d4b5a15214e87afdb63efbdd50, type: 3}
+      displayName: Gem Box
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655556
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: b26c8797d36ca9045a0637b01947f3ff, type: 3}
+      displayName: Gem Coffer
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655557
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 0b5565acc92f96f4093778080d1e65e9, type: 3}
+      displayName: Gem Strongbox
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655558
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 08ca7881eaddb71428949f6164d113d5, type: 3}
+      displayName: Gem Trunk
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655559
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: b3535ed3c05da034a9aea769cb9172a3, type: 3}
+      displayName: Gem Treasury
+      description: Double tap to open the chest. This item is max-level already!
+      config:
+        rid: 5520886940757655560
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  - typeId: Energy Chest
+    itemType: 4
+    prefab: {fileID: 796883718165712129, guid: ca32fdaeadddabe40b69b0a19d018814, type: 3}
+    grades:
+    - sprite: {fileID: 21300000, guid: f8941769d61e99e4b9cc73ef63d9afdd, type: 3}
+      displayName: Energy Capsule
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655561
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 8e9200890abe5be40a0f03fb77146a2f, type: 3}
+      displayName: Energy Canister
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655562
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: c9e7ed540fba16447a6c127e3b6992ad, type: 3}
+      displayName: Energy Reservoir
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655563
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 61e506bdfaf699343836be489c49a055, type: 3}
+      displayName: Energy Generator
+      description: Merge 2 same items to level up! Double tap to open the chest.
+      config:
+        rid: 5520886940757655564
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+    - sprite: {fileID: 21300000, guid: 203b33ac0eb323048a492b5c05c8ee02, type: 3}
+      displayName: Energy Reactor
+      description: Double tap to open the chest. This item is max-level already!
+      config:
+        rid: 5520886940757655565
+      customShadow: 0
+      customShadowSprite: {fileID: 0}
+      shadowPositionOffset: {x: 0, y: 0, z: 0}
+      customShadowScale: {x: 1, y: 1, z: 1}
+  rareSpawnChancePercent: 15
+  appearAudioClip: {fileID: 8300000, guid: 7ed02add2c2a9df4baaa5a74a78e355a, type: 3}
+  collectAudioClip: {fileID: 8300000, guid: 1b3a9aa133dd17e4a80144d16ef86d0b, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 2402945539774873600
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 0
+    - rid: 4901224295628013570
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 4901224295628013572
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 4901224295628013573
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 4901224295628013574
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 95
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 5
+            item:
+              typeId: Coffee
+              grade: 2
+    - rid: 4901224295628013575
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 84
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 8
+            item:
+              typeId: Coffee
+              grade: 2
+          - weight: 3
+            item:
+              typeId: Coffee
+              grade: 3
+          - weight: 5
+            item:
+              typeId: Soda
+              grade: 1
+    - rid: 4952171013702156298
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 80
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 10
+            item:
+              typeId: Coffee
+              grade: 2
+          - weight: 4
+            item:
+              typeId: Coffee
+              grade: 3
+          - weight: 6
+            item:
+              typeId: Soda
+              grade: 1
+    - rid: 4952171013702156299
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 76
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 11
+            item:
+              typeId: Coffee
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Coffee
+              grade: 3
+          - weight: 7
+            item:
+              typeId: Soda
+              grade: 1
+          - weight: 1
+            item:
+              typeId: Soda
+              grade: 2
+    - rid: 4952171013702156300
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 71
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 13
+            item:
+              typeId: Coffee
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Coffee
+              grade: 3
+          - weight: 1
+            item:
+              typeId: Coffee
+              grade: 4
+          - weight: 8
+            item:
+              typeId: Soda
+              grade: 1
+          - weight: 2
+            item:
+              typeId: Soda
+              grade: 2
+    - rid: 4952171013702156301
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 65
+            item:
+              typeId: Coffee
+              grade: 1
+          - weight: 15
+            item:
+              typeId: Coffee
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Coffee
+              grade: 3
+          - weight: 1
+            item:
+              typeId: Coffee
+              grade: 4
+          - weight: 10
+            item:
+              typeId: Soda
+              grade: 1
+          - weight: 3
+            item:
+              typeId: Soda
+              grade: 2
+          - weight: 1
+            item:
+              typeId: Soda
+              grade: 3
+    - rid: 4952171034099056685
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 1
+          amount: 1
+    - rid: 4952171034099056686
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 1
+          amount: 3
+    - rid: 4952171034099056687
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 1
+          amount: 7
+    - rid: 4952171034099056688
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 1
+          amount: 15
+    - rid: 4952171034099056689
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 1
+          amount: 32
+    - rid: 4952171034099056690
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 0
+          amount: 15
+    - rid: 4952171034099056691
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 0
+          amount: 32
+    - rid: 4952171145833218050
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 88
+            item:
+              typeId: Coins Item
+              grade: 1
+          - weight: 12
+            item:
+              typeId: Coins Item
+              grade: 2
+        maxSpawns: 3
+    - rid: 5520886623642845184
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 2
+    - rid: 5520886623642845185
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 5
+    - rid: 5520886623642845186
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 10
+    - rid: 5520886623642845187
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 40
+    - rid: 5520886623642845188
+      type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 100
+    - rid: 5520886623642845189
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 0
+          amount: 1
+    - rid: 5520886623642845190
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 0
+          amount: 3
+    - rid: 5520886623642845191
+      type: {class: CurrencyGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        currencyAmount:
+          currencyType: 0
+          amount: 7
+    - rid: 5520886876361719811
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 100
+            item:
+              typeId: Cake
+              grade: 1
+    - rid: 5520886940757655552
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Coins Item
+              grade: 1
+          - weight: 35
+            item:
+              typeId: Coins Item
+              grade: 2
+          - weight: 10
+            item:
+              typeId: Coins Item
+              grade: 3
+        maxSpawns: 4
+    - rid: 5520886940757655553
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Coins Item
+              grade: 2
+          - weight: 35
+            item:
+              typeId: Coins Item
+              grade: 3
+          - weight: 10
+            item:
+              typeId: Coins Item
+              grade: 4
+        maxSpawns: 5
+    - rid: 5520886940757655554
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Coins Item
+              grade: 3
+          - weight: 35
+            item:
+              typeId: Coins Item
+              grade: 4
+          - weight: 10
+            item:
+              typeId: Coins Item
+              grade: 5
+        maxSpawns: 6
+    - rid: 5520886940757655555
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Coins Item
+              grade: 4
+          - weight: 45
+            item:
+              typeId: Coins Item
+              grade: 5
+        maxSpawns: 7
+    - rid: 5520886940757655556
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 88
+            item:
+              typeId: Gems Item
+              grade: 1
+          - weight: 12
+            item:
+              typeId: Gems Item
+              grade: 2
+        maxSpawns: 3
+    - rid: 5520886940757655557
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Gems Item
+              grade: 1
+          - weight: 35
+            item:
+              typeId: Gems Item
+              grade: 2
+          - weight: 10
+            item:
+              typeId: Gems Item
+              grade: 3
+        maxSpawns: 4
+    - rid: 5520886940757655558
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Gems Item
+              grade: 2
+          - weight: 35
+            item:
+              typeId: Gems Item
+              grade: 3
+          - weight: 10
+            item:
+              typeId: Gems Item
+              grade: 4
+        maxSpawns: 5
+    - rid: 5520886940757655559
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Gems Item
+              grade: 3
+          - weight: 35
+            item:
+              typeId: Gems Item
+              grade: 4
+          - weight: 10
+            item:
+              typeId: Gems Item
+              grade: 5
+        maxSpawns: 6
+    - rid: 5520886940757655560
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Gems Item
+              grade: 4
+          - weight: 45
+            item:
+              typeId: Gems Item
+              grade: 5
+        maxSpawns: 7
+    - rid: 5520886940757655561
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 88
+            item:
+              typeId: Energy Item
+              grade: 1
+          - weight: 12
+            item:
+              typeId: Energy Item
+              grade: 2
+        maxSpawns: 3
+    - rid: 5520886940757655562
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Energy Item
+              grade: 1
+          - weight: 35
+            item:
+              typeId: Energy Item
+              grade: 2
+          - weight: 10
+            item:
+              typeId: Energy Item
+              grade: 3
+        maxSpawns: 4
+    - rid: 5520886940757655563
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Energy Item
+              grade: 2
+          - weight: 35
+            item:
+              typeId: Energy Item
+              grade: 3
+          - weight: 10
+            item:
+              typeId: Energy Item
+              grade: 4
+        maxSpawns: 5
+    - rid: 5520886940757655564
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Energy Item
+              grade: 3
+          - weight: 35
+            item:
+              typeId: Energy Item
+              grade: 4
+          - weight: 10
+            item:
+              typeId: Energy Item
+              grade: 5
+        maxSpawns: 6
+    - rid: 5520886940757655565
+      type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 55
+            item:
+              typeId: Energy Item
+              grade: 4
+          - weight: 45
+            item:
+              typeId: Energy Item
+              grade: 5
+        maxSpawns: 7
+    - rid: 7100000000000000001
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 7100000000000000002
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 7100000000000000003
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items: []
+    - rid: 7100000000000000005
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 84
+            item:
+              typeId: Cake
+              grade: 1
+          - weight: 8
+            item:
+              typeId: Cake
+              grade: 2
+          - weight: 3
+            item:
+              typeId: Cake
+              grade: 3
+          - weight: 5
+            item:
+              typeId: Candy
+              grade: 1
+    - rid: 7100000000000000006
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 80
+            item:
+              typeId: Cake
+              grade: 1
+          - weight: 10
+            item:
+              typeId: Cake
+              grade: 2
+          - weight: 4
+            item:
+              typeId: Cake
+              grade: 3
+          - weight: 6
+            item:
+              typeId: Candy
+              grade: 1
+    - rid: 7100000000000000007
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 76
+            item:
+              typeId: Cake
+              grade: 1
+          - weight: 11
+            item:
+              typeId: Cake
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Cake
+              grade: 3
+          - weight: 7
+            item:
+              typeId: Candy
+              grade: 1
+          - weight: 1
+            item:
+              typeId: Candy
+              grade: 2
+    - rid: 7100000000000000008
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 71
+            item:
+              typeId: Cake
+              grade: 1
+          - weight: 13
+            item:
+              typeId: Cake
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Cake
+              grade: 3
+          - weight: 1
+            item:
+              typeId: Cake
+              grade: 4
+          - weight: 8
+            item:
+              typeId: Candy
+              grade: 1
+          - weight: 2
+            item:
+              typeId: Candy
+              grade: 2
+    - rid: 7100000000000000009
+      type: {class: SpawnerGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnPool:
+          items:
+          - weight: 65
+            item:
+              typeId: Cake
+              grade: 1
+          - weight: 15
+            item:
+              typeId: Cake
+              grade: 2
+          - weight: 5
+            item:
+              typeId: Cake
+              grade: 3
+          - weight: 1
+            item:
+              typeId: Cake
+              grade: 4
+          - weight: 10
+            item:
+              typeId: Candy
+              grade: 1
+          - weight: 3
+            item:
+              typeId: Candy
+              grade: 2
+          - weight: 1
+            item:
+              typeId: Candy
+              grade: 3
+    - rid: 9100000000000000001
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 1
+    - rid: 9100000000000000002
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 2
+    - rid: 9100000000000000003
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 3
+    - rid: 9100000000000000004
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 4
+    - rid: 9100000000000000005
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 5
+    - rid: 9100000000000000006
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 6
+    - rid: 9100000000000000007
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 7
+    - rid: 9100000000000000008
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 8
+    - rid: 9100000000000000009
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 9
+    - rid: 9100000000000000010
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 10
+    - rid: 9100000000000000011
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 1
+    - rid: 9100000000000000012
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 2
+    - rid: 9100000000000000013
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 3
+    - rid: 9100000000000000014
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 4
+    - rid: 9100000000000000015
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 5
+    - rid: 9100000000000000016
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 6
+    - rid: 9100000000000000017
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 7
+    - rid: 9100000000000000018
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 8
+    - rid: 9100000000000000019
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 9
+    - rid: 9100000000000000020
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 10
+    - rid: 9100000000000000021
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 1
+    - rid: 9100000000000000022
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 2
+    - rid: 9100000000000000023
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 3
+    - rid: 9100000000000000024
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 1
+    - rid: 9100000000000000025
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 2
+    - rid: 9100000000000000026
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 3
+    - rid: 9100000000000000027
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 1
+    - rid: 9100000000000000028
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 2
+    - rid: 9100000000000000029
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 3
+    - rid: 9100000000000000030
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 4
+    - rid: 9100000000000000031
+      type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
+      data:
+        sellPrice: 5

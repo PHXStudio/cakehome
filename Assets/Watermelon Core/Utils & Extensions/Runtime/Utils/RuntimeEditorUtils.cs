@@ -58,6 +58,13 @@ namespace Watermelon
             return null;
         }
 
+        public static void Undo(Object obj, string name)
+        {
+#if UNITY_EDITOR
+            UnityEditor.Undo.RecordObject(obj, name);
+#endif
+        }
+
         public static void SetDirty(Object obj)
         {
 #if UNITY_EDITOR

@@ -25,8 +25,6 @@ namespace Watermelon
 
             Transform canvas = uiController.transform;
 
-            if (canvas.GetComponentInChildren<UIShopPage>(true) == null)
-                EnsureShopPage(canvas);
             if (canvas.GetComponentInChildren<UIProfilePage>(true) == null)
                 EnsureProfilePage(canvas);
             if (canvas.GetComponentInChildren<UIBottomNavBar>(true) == null)
@@ -37,22 +35,6 @@ namespace Watermelon
             EditorSceneManager.SaveScene(scene);
 
             Debug.Log("[BottomNav] Bottom navigation setup complete.");
-        }
-
-        private static void EnsureShopPage(Transform canvas)
-        {
-            // No full-page Background — 3D ShopWorld / sky fills the viewport.
-            GameObject page = CreatePageRoot(canvas, "UI Shop Page", createBackground: false,
-                out RectTransform safeArea, out Text title, out Text subtitle);
-            UIShopPage component = page.AddComponent<UIShopPage>();
-            SerializedObject so = new SerializedObject(component);
-            so.FindProperty("safeAreaRectTransform").objectReferenceValue = safeArea;
-            so.ApplyModifiedPropertiesWithoutUndo();
-            // Disable placeholder labels; runtime HUD rebuilds them.
-            if (title != null)
-                title.gameObject.SetActive(false);
-            if (subtitle != null)
-                subtitle.gameObject.SetActive(false);
         }
 
         private static void EnsureProfilePage(Transform canvas)

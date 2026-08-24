@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 9
+  m_EditorClassIdentifier:
+  chapterTitle: A Story People Follow
+  steps:
+  - rid: 3152893607033695256
+  - rid: 6440294235948890204
+  - rid: 5086448538733380049
+  - rid: 8961372947576608060
+  - rid: 6706739925987178066
+  - rid: 1735712959865492543
+  - rid: 783503763225717436
+  - rid: 6779659939877411458
+  - rid: 3765790047963810951
+  references:
+    version: 2
+    RefIds:
+    - rid: 3152893607033695256
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Do you really think people care about every small repair?
+    - rid: 6440294235948890204
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: They are not following pieces of wood, stone, or paint.
+    - rid: 5086448538733380049
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: What are they following?
+    - rid: 8961372947576608060
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: You refusing to give up.
+    - rid: 6706739925987178066
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: ad4a74f0f2261874b962f568ba22424d, type: 2}
+        emotion: 0
+        text: And Evelyns coffee recipes.
+    - rid: 1735712959865492543
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: Mostly Maya refusing to give up while serving Evelyns coffee recipes.
+    - rid: 783503763225717436
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: That is a very specific category.
+    - rid: 6779659939877411458
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 79f9981bdaa752d4fb771968622c6775, type: 2}
+        emotion: 0
+        text: It is performing extremely well.
+    - rid: 3765790047963810951
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Maybe this place can become more than a personal project.

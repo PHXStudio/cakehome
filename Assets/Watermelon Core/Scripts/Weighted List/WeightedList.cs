@@ -28,21 +28,27 @@ namespace Watermelon
             items.Add(item);
         }
 
-        public T GetRandomItem()
+        public T GetRandomItem() => GetRandomItemWithChance().Item;
+
+        // Returns the drawn item together with its own odds (0-100) within this list —
+        // lets callers react to how rare the specific draw was (e.g. rare-item VFX/text)
+        // without re-deriving weight/TotalWeight themselves.
+        public (T Item, float ChancePercent) GetRandomItemWithChance()
         {
             if (items.IsNullOrEmpty())
             {
                 Debug.LogError("Weighted list can't be empty");
-                return null;
+                return (null, 0f);
             }
 
-            if (TotalWeight == 0f)
+            float totalWeight = TotalWeight;
+            if (totalWeight == 0f)
             {
-                Debug.LogWarning("All weights are 0. Returning element with index 0.");
-                return items[0].Item;
+                LogManager.LogWarning("All weights are 0. Returning element with index 0.", LogCategory.Systems);
+                return (items[0].Item, 100f / items.Count);
             }
 
-            float randomValue = Random.Range(0f, TotalWeight);
+            float randomValue = Random.Range(0f, totalWeight);
             float currentWeight = 0f;
 
             foreach (WeightedItem<T> item in items)
@@ -51,12 +57,13 @@ namespace Watermelon
 
                 if (currentWeight >= randomValue)
                 {
-                    return item.Item;
+                    return (item.Item, item.Weight / totalWeight * 100f);
                 }
             }
 
             // probably impossible case, but we have to return something just in case
-            return items[0].Item;
+            WeightedItem<T> fallback = items[0];
+            return (fallback.Item, fallback.Weight / totalWeight * 100f);
         }
     }
 

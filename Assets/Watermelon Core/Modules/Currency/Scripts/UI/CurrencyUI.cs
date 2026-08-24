@@ -102,7 +102,7 @@ namespace Watermelon
         public void ResetDisable()
         {
             if (disableTweenCase != null && !disableTweenCase.IsCompleted)
-                disableTweenCase.Reset();
+                disableTweenCase.Restart();
         }
 
         public void KillDisable()

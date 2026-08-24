@@ -93,7 +93,7 @@ namespace Watermelon
                         tmp.alignment = TextAlignmentOptions.BottomRight;
                         break;
                 }
-#if UNITY_6000
+#if UNITY_6000_0_OR_NEWER
                 tmp.textWrappingMode = textComp.horizontalOverflow == HorizontalWrapMode.Wrap ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
 #else
                 tmp.enableWordWrapping = textComp.horizontalOverflow == HorizontalWrapMode.Wrap;

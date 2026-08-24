@@ -11,7 +11,7 @@ namespace Watermelon
     {
         LevelsPlayed = 0,   // 玩 N 关
         LevelsWon = 1,      // 赢 N 关
-        ShopHarvests = 2,   // 商店收获 N 次
+        MergeOrders = 2,    // 完成 N 个合成订单
         RewardedVideos = 3, // 看 N 次激励视频
     }
 
@@ -48,7 +48,7 @@ namespace Watermelon
             save.TaskDay = Today;
             save.LevelsPlayed = 0;
             save.LevelsWon = 0;
-            save.ShopHarvests = 0;
+            save.MergeOrders = 0;
             save.RewardedVideos = 0;
             save.ClaimedMask = 0;
             SaveController.MarkAsSaveIsRequired();
@@ -62,7 +62,7 @@ namespace Watermelon
             {
                 case DailyTaskType.LevelsPlayed: return 3;
                 case DailyTaskType.LevelsWon: return 1;
-                case DailyTaskType.ShopHarvests: return 2;
+                case DailyTaskType.MergeOrders: return 2;
                 case DailyTaskType.RewardedVideos: return 1;
                 default: return 1;
             }
@@ -74,7 +74,7 @@ namespace Watermelon
             {
                 case DailyTaskType.LevelsPlayed: return 30;
                 case DailyTaskType.LevelsWon: return 50;
-                case DailyTaskType.ShopHarvests: return 40;
+                case DailyTaskType.MergeOrders: return 40;
                 case DailyTaskType.RewardedVideos: return 25;
                 default: return 30;
             }
@@ -86,7 +86,7 @@ namespace Watermelon
             {
                 case DailyTaskType.LevelsPlayed: return "完成 3 关";
                 case DailyTaskType.LevelsWon: return "通关 1 关";
-                case DailyTaskType.ShopHarvests: return "收获 2 次";
+                case DailyTaskType.MergeOrders: return "完成 2 个订单";
                 case DailyTaskType.RewardedVideos: return "看 1 次广告";
                 default: return "";
             }
@@ -101,7 +101,7 @@ namespace Watermelon
             {
                 case DailyTaskType.LevelsPlayed: return save.LevelsPlayed;
                 case DailyTaskType.LevelsWon: return save.LevelsWon;
-                case DailyTaskType.ShopHarvests: return save.ShopHarvests;
+                case DailyTaskType.MergeOrders: return save.MergeOrders;
                 case DailyTaskType.RewardedVideos: return save.RewardedVideos;
                 default: return 0;
             }
@@ -116,7 +116,7 @@ namespace Watermelon
             {
                 case DailyTaskType.LevelsPlayed: save.LevelsPlayed += amount; break;
                 case DailyTaskType.LevelsWon: save.LevelsWon += amount; break;
-                case DailyTaskType.ShopHarvests: save.ShopHarvests += amount; break;
+                case DailyTaskType.MergeOrders: save.MergeOrders += amount; break;
                 case DailyTaskType.RewardedVideos: save.RewardedVideos += amount; break;
             }
 

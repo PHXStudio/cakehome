@@ -1,82 +1,84 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public class CurrencyReward : Reward
+    [Serializable]
+    [RegisterReward(typeof(CurrencyRewardView))]
+    public sealed class CurrencyReward : Reward
     {
-        [SerializeField] CurrencyData[] currencies;
+        [SerializeField] CurrencyAmount[] currencies;
+        public CurrencyAmount[] Currencies => currencies;
 
-        [SerializeField] bool spawnCurrencyCloud;
+        [Space]
+        [SerializeField] string analyticsSource;
 
-        [ShowIf("spawnCurrencyCloud")]
-        [SerializeField] CurrencyType currencyCloudType;
-        [ShowIf("spawnCurrencyCloud")]
-        [SerializeField] int cloudElementsAmount = 10;
-        [ShowIf("spawnCurrencyCloud")]
-        [SerializeField] RectTransform currencyCloudSpawnPoint;
-        [ShowIf("spawnCurrencyCloud")]
-        [SerializeField] RectTransform currencyCloudTargetPoint;
-
-        public override void Init()
+        public CurrencyReward() { }
+        public CurrencyReward(CurrencyAmount[] currencies, string analyticsSource = "")
         {
-            foreach (CurrencyData currencyData in currencies)
-            {
-                Currency currency = CurrencyController.GetCurrency(currencyData.CurrencyType);
-
-                if (currencyData.CurrencyImage != null)
-                    currencyData.CurrencyImage.sprite = currency.Icon;
-
-                if (currencyData.AmountText != null)
-                {
-                    string numberText = currencyData.FormatTheNumber ? CurrencyHelper.Format(currencyData.Amount) : currencyData.Amount.ToString();
-                    currencyData.AmountText.text = string.Format(currencyData.TextFormating == "" ? "{0}" : currencyData.TextFormating, numberText);
-                }
-            }
+            this.currencies = currencies;
+            this.analyticsSource = analyticsSource;
         }
 
         public override void ApplyReward()
         {
-            void ApplyCurrency()
+#if MODULE_ANALYTICS
+            Dictionary<CurrencyType, int> analyticsDictionary = new Dictionary<CurrencyType, int>();
+#endif
+
+            foreach (CurrencyAmount currency in currencies)
             {
-                foreach (CurrencyData currencyData in currencies)
-                {
-                    CurrencyController.Add(currencyData.CurrencyType, currencyData.Amount);
-                }
+                CurrencyController.Add(currency.CurrencyType, currency.Amount);
+
+#if MODULE_ANALYTICS
+                analyticsDictionary.TryAdd(currency.CurrencyType, currency.Amount);
+#endif
             }
 
-            if(spawnCurrencyCloud)
+#if MODULE_ANALYTICS
+            if (!string.IsNullOrEmpty(analyticsSource))
             {
-                FloatingCloud.SpawnCurrency(currencyCloudType.ToString(), currencyCloudSpawnPoint, currencyCloudTargetPoint, cloudElementsAmount, "", ApplyCurrency);
+                Analytics.TrackEvent(AnalyticsEvents.CurrencySource, new AnalyticsCurrencyData(analyticsSource, analyticsDictionary));
             }
-            else
-            {
-                ApplyCurrency();
-            }
+#endif
         }
 
-        [System.Serializable]
-        public class CurrencyData
+        public int GetAmount(CurrencyType currencyType)
         {
-            [SerializeField] CurrencyType currencyType;
-            public CurrencyType CurrencyType => currencyType;
+            foreach (CurrencyAmount currency in currencies)
+            {
+                if (currency.CurrencyType == currencyType)
+                    return currency.Amount;
+            }
 
-            [SerializeField] int amount;
-            public int Amount => amount;
+            return 0;
+        }
 
-            [Space]
-            [SerializeField] Image currencyImage;
-            public Image CurrencyImage => currencyImage;
+        public override List<IRewardPreview> GetRewardPreviews()
+        {
+            if(!currencies.IsNullOrEmpty())
+            {
+                List<IRewardPreview> previews = new List<IRewardPreview>();
+                foreach (CurrencyAmount currencyAmount in currencies)
+                {
+                    Currency currency = currencyAmount.Currency;
 
-            [SerializeField] TextMeshProUGUI amountText;
-            public TextMeshProUGUI AmountText => amountText;
+                    CurrencyRewardPreviewSettings previewSettings = currency.PreviewSettings;
+                    if (previewSettings != null)
+                    {
+                        previews.Add(previewSettings.GetPreview(currencyAmount));
+                    }
+                    else
+                    {
+                        previews.Add(new RewardPreview(currency.Icon, $"{CurrencyHelper.Format(currencyAmount.Amount)}", CurrencyRewardPreviewSettings.DEFAULT_SORING_ORDER));
+                    }
+                }
 
-            [SerializeField] string textFormating = "x{0}";
-            public string TextFormating => textFormating;
+                return previews;
+            }
 
-            [SerializeField] bool formatTheNumber;
-            public bool FormatTheNumber => formatTheNumber;
+            return null;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Watermelon
             {
                 SavedDataContainer saveObject = saveObjectsList[i];
 
-                saveObject.Flush();
+                saveObject.OnBeforeSave();
             }
 
             gameTime += Time - lastFlushTime;

@@ -12,11 +12,9 @@ namespace Watermelon
 {
     public class SavePresets
     {
-        private const string PRESET_FOLDER_PREFIX = "SavePresets/";
         private const string PRESETS_FOLDER_NAME = "SavePresets";
         private const string SAVE_FILE_NAME = "save";
         public static bool saveDataMofied = false;
-        private const char SEPARATOR = '/';
         public const string DEFAULT_DIRECTORY = "Custom";
         public const string META_SUFFIX = ".meta";
 
@@ -45,21 +43,34 @@ namespace Watermelon
 
             if (currentSceneName.Equals("Init") || (currentSceneName.Equals("Level Editor")))
             {
-                CoreSettings coreSettings = UnityEditor.AssetDatabase.LoadAssetAtPath<CoreSettings>("Assets/Watermelon Core/Core Settings.asset");
-                string scenesFolder = coreSettings != null ? coreSettings.ScenesFolder : "Assets/Project Files/Game/Scenes";
-
-                EditorSceneManager.OpenScene(Path.Combine(scenesFolder, "Game.unity"));
+                //EditorSceneManager.OpenScene(Path.Combine(CoreEditor.FOLDER_SCENES, "Game.unity"));
             }
 
             // Replace current save file with the preset
             File.Copy(presetPath, GetSavePath(), true);
+
+            // Restore any named save files bundled alongside this preset (e.g. per-world saves)
+            string extrasDirectory = GetPresetExtrasDirectory(presetPath);
+
+            if (Directory.Exists(extrasDirectory))
+            {
+                string[] extraFilePaths = Directory.GetFiles(extrasDirectory, "*.json");
+
+                for (int i = 0; i < extraFilePaths.Length; i++)
+                {
+                    string extraFileName = Path.GetFileNameWithoutExtension(extraFilePaths[i]);
+                    string extraTargetPath = Path.Combine(Application.persistentDataPath, extraFileName + ".save");
+
+                    File.Copy(extraFilePaths[i], extraTargetPath, true);
+                }
+            }
 
             // Start game
             EditorApplication.isPlaying = true;
 #endif
         }
 
-        private static void CreateSavePreset(string saveName, string tabName = DEFAULT_DIRECTORY)
+        private static void CreateSavePreset(string saveName, string tabName = DEFAULT_DIRECTORY, string[] extraFiles = null)
         {
 #if UNITY_EDITOR
             if (EditorApplication.isPlaying)
@@ -87,7 +98,25 @@ namespace Watermelon
 
             if (EditorApplication.isPlaying)
             {
-                SaveController.PresetsSave(PRESET_FOLDER_PREFIX + tabName + SEPARATOR + saveName);
+                SaveFile saveFileCopy = SaveController.GetSaveFileCopy();
+                File.WriteAllText(presetPath, JsonUtility.ToJson(saveFileCopy));
+
+                if (extraFiles != null && extraFiles.Length > 0)
+                {
+                    string extrasDirectory = GetPresetExtrasDirectory(presetPath);
+                    Directory.CreateDirectory(extrasDirectory);
+
+                    for (int i = 0; i < extraFiles.Length; i++)
+                    {
+                        SaveFile extraFileCopy = SaveController.GetFile(extraFiles[i]);
+
+                        if (extraFileCopy == null)
+                            continue;
+
+                        extraFileCopy.Flush(updateLastSaved: false);
+                        File.WriteAllText(Path.Combine(extrasDirectory, extraFiles[i] + ".json"), JsonUtility.ToJson(extraFileCopy));
+                    }
+                }
             }
             else
             {
@@ -99,12 +128,33 @@ namespace Watermelon
                 }
 
                 File.Copy(savePath, presetPath, true);
+
+                if (extraFiles != null && extraFiles.Length > 0)
+                {
+                    string extrasDirectory = GetPresetExtrasDirectory(presetPath);
+                    Directory.CreateDirectory(extrasDirectory);
+
+                    for (int i = 0; i < extraFiles.Length; i++)
+                    {
+                        string extraSourcePath = Path.Combine(Application.persistentDataPath, extraFiles[i] + ".save");
+
+                        if (File.Exists(extraSourcePath))
+                        {
+                            File.Copy(extraSourcePath, Path.Combine(extrasDirectory, extraFiles[i] + ".json"), true);
+                        }
+                    }
+                }
             }
 
             File.SetCreationTime(presetPath, DateTime.Now);
 
             saveDataMofied = true;
 #endif
+        }
+
+        private static string GetPresetExtrasDirectory(string presetPath)
+        {
+            return Path.ChangeExtension(presetPath, null);
         }
 
 
@@ -115,7 +165,7 @@ namespace Watermelon
             LoadSaveFromPath(presetPath);
         }
 
-        public static void CreateSave(string saveName, string tabName = DEFAULT_DIRECTORY, string id = "")
+        public static void CreateSave(string saveName, string tabName = DEFAULT_DIRECTORY, string id = "", string[] extraFiles = null)
         {
 #if UNITY_EDITOR
             if (id.Length == 0)
@@ -123,7 +173,7 @@ namespace Watermelon
                 id = saveName;
             }
 
-            CreateSavePreset(saveName, tabName);
+            CreateSavePreset(saveName, tabName, extraFiles);
             SetId(saveName, tabName, id);
 #endif
         }
@@ -175,6 +225,13 @@ namespace Watermelon
         public static void RemoveSave(string saveName, string tabName = DEFAULT_DIRECTORY)
         {
             string presetPath = GetPresetPath(saveName, tabName);
+
+            string extrasDirectory = GetPresetExtrasDirectory(presetPath);
+
+            if (Directory.Exists(extrasDirectory))
+            {
+                Directory.Delete(extrasDirectory, true);
+            }
 
             if (File.Exists(presetPath))
             {
@@ -229,6 +286,13 @@ namespace Watermelon
                 return;
             }
 
+            string extrasDirectory = GetPresetExtrasDirectory(presetPath);
+
+            if (Directory.Exists(extrasDirectory))
+            {
+                Directory.Delete(extrasDirectory, true);
+            }
+
             if (File.Exists(presetPath))
             {
                 File.Delete(presetPath);
@@ -245,12 +309,12 @@ namespace Watermelon
 
         public static string GetSavePath()
         {
-            return Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
+            return Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME + ".save");
         }
 
         public static string GetPresetPath(string saveName, string tabName)
         {
-            return Path.Combine(Application.persistentDataPath, PRESETS_FOLDER_NAME, tabName, saveName);
+            return Path.Combine(Application.persistentDataPath, PRESETS_FOLDER_NAME, tabName, saveName + ".json");
         }
 
         public static string GetDirectoryPath()

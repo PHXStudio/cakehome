@@ -11,6 +11,8 @@ namespace Watermelon
 
         private void InitStyles()
         {
+            if (multiListLablesStyle != null) return;
+
             Color labelColor = EditorGUIUtility.isProSkin ? new Color(1.0f, 1.0f, 1.0f) : new Color(0.12f, 0.12f, 0.12f);
 
             multiListLablesStyle = new GUIStyle();
@@ -49,17 +51,7 @@ namespace Watermelon
 
                 using (new EditorGUI.DisabledScope(true))
                 {
-                    EditorGUI.IntField(new Rect(x, y, width - 40, height), new GUIContent("Prefabs amount:"), arraySize);
-                }
-
-                if (GUI.Button(new Rect(x + width - 38, y, 18, 18), "-"))
-                {
-
-                }
-
-                if (GUI.Button(new Rect(x + width - 18, y, 18, 18), "+"))
-                {
-
+                    EditorGUI.IntField(new Rect(x, y, width, height), new GUIContent("Prefabs amount:"), arraySize);
                 }
 
                 // Titles

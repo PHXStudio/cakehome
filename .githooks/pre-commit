@@ -1,7 +1,8 @@
 #!/bin/sh
 # ============================================================================
-# 🔴 敏感信息提交防护 Hook
-# 扫描本次暂存内容，命中 token/密钥模式则阻止提交（示例密钥白名单除外）。
+# 🔴 敏感信息提交防护 Hook v2
+# 单次扫描本次暂存 diff 的新增/修改行，命中 token/密钥模式则阻止提交。
+# v1 逐文件 git show 在文件多时极慢（大 merge 会卡死），v2 改为一次 diff。
 # 团队启用：git config core.hooksPath .githooks
 # 临时绕过：git commit --no-verify（确认内容安全后使用）
 # ============================================================================
@@ -30,26 +31,25 @@ printf '%s\n' "$SENSITIVE_PATTERNS" | grep -v '^[[:space:]]*$' > "$PATFILE"
 printf '%s\n' "$ALLOWED_SAMPLES"    | grep -v '^[[:space:]]*$' > "$SAMPLEFILE"
 trap 'rm -f "$PATFILE" "$SAMPLEFILE"' EXIT
 
-FOUND=0
-for f in $(git diff --cached --name-only --diff-filter=ACM); do
-    # 跳过二进制文件（numstat 第一列为 '-' 表示二进制）
-    if git diff --cached --numstat -- "$f" | grep -qE '^-\t'; then
-        continue
-    fi
-    CONTENT=$(git show ":$f" 2>/dev/null)
-    [ -z "$CONTENT" ] && continue
+# 单次取全部暂存 diff（-U0 无上下文；二进制只显示 "Binary files ..." 摘要，天然安全）
+DIFF="$(git diff --cached -U0 --no-color 2>/dev/null)"
+[ -z "$DIFF" ] && exit 0
 
-    # 收集所有命中，逐个过滤白名单（不能只看第一个，避免示例在前时漏检真实 token）
-    for m in $(printf '%s\n' "$CONTENT" | grep -Ef "$PATFILE" -o); do
+# 提取新增行（^+ 开头，排除 +++ 文件头），收集所有命中
+HITS="$(printf '%s\n' "$DIFF" | grep '^+' | grep -v '^+++' | grep -Ef "$PATFILE" -o 2>/dev/null || true)"
+
+FOUND=0
+if [ -n "$HITS" ]; then
+    while read -r m; do
         if ! grep -qxF "$m" "$SAMPLEFILE" 2>/dev/null; then
-            echo "❌ 敏感信息拦截: $f"
-            echo "   命中: $m"
+            echo "❌ 敏感信息拦截: 本次新增内容命中 '$m'"
             echo "   （临时绕过: git commit --no-verify）"
             FOUND=1
-            break
         fi
-    done
-done
+    done <<EOF
+$HITS
+EOF
+fi
 
 if [ "$FOUND" -ne 0 ]; then
     echo ""

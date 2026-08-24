@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Watermelon
 {
@@ -9,5 +9,6 @@ namespace Watermelon
         public abstract void BuyProduct(ProductKeyType productKeyType);
         public abstract ProductData GetProductData(ProductKeyType productKeyType);
         public abstract bool IsSubscribed(ProductKeyType productKeyType);
+        public abstract bool IsPurchased(string id);
     }
 }

@@ -410,6 +410,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d10ab2178ab6ad54c9c243f98e858184, type: 3}
+--- !u!114 &991889552 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8281468796910421049, guid: d10ab2178ab6ad54c9c243f98e858184,
+    type: 3}
+  m_PrefabInstance: {fileID: 991889551}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836bc27011b015943a903153cd837bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1006774999
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +619,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1825515167}
   - component: {fileID: 1825515166}
+  - component: {fileID: 1825515168}
   m_Layer: 0
   m_Name: Loading Graphics
   m_TagString: Untagged
@@ -647,6 +660,20 @@ Transform:
   - {fileID: 1851918363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1825515168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825515165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c36cc4ba77f9904e9c2ee805bcc4533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initializer: {fileID: 991889552}
+  useManualControl: 0
 --- !u!1 &1851918360
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,33 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Static easing library. Provides 31 built-in mathematical easing functions plus support
+    /// for custom <see cref="AnimationCurve"/>-based easings registered via <see cref="Init"/>.
+    ///
+    /// <para><b>Quick start:</b>
+    /// <code>
+    /// // Use a built-in type directly:
+    /// float value = Ease.Interpolate(t, Ease.Type.CubicOut);
+    ///
+    /// // Use an IEasingFunction object (cached, allocation-free):
+    /// var fn = Ease.GetFunction(Ease.Type.BounceOut);
+    /// float value = fn.Interpolate(t);
+    /// </code>
+    /// </para>
+    ///
+    /// <para>All built-in functions satisfy <c>f(0) ≈ 0</c> and <c>f(1) ≈ 1</c>.
+    /// Elastic, Back, and Bounce variants may temporarily overshoot these bounds.
+    /// See <see href="http://easings.net">easings.net</see> for visual examples.</para>
+    /// </summary>
     public class Ease
     {
         /// <summary>
-        /// All allowed ease type. See examples <see href="http://easings.net">here</see>.
+        /// All built-in easing curve types. The integer value is used as a direct index into the
+        /// internal function table so the enum order must not be changed.
+        /// See visual examples at <see href="http://easings.net">easings.net</see>.
         /// </summary>
         public enum Type
         {
@@ -43,38 +64,39 @@ namespace Watermelon
             BounceInOut
         }
 
-        private static readonly IEasingFunction[] easingFunctions = new IEasingFunction[30]
+        private static readonly IEasingFunction[] easingFunctions = new IEasingFunction[31]
         {
-            new LinearEasingFunction(), // Linear
-            new QuadInEasingFunction(), // QuadIn,
-            new QuadOutEasingFunction(), // QuadOut,
-            new QuadOutInEasingFunction(), // QuadOutIn,
-            new CubicInEasingFunction(), // CubicIn,
-            new CubicOutEasingFunction(), // CubicOut,
-            new CubicInOutEasingFunction(), // CubicInOut,
-            new QuartInEasingFunction(), // QuartIn,
-            new QuartOutEasingFunction(), // QuartOut,
-            new QuartInOutEasingFunction(), // QuartInOut,
-            new QuintInEasingFunction(), // QuintIn,
-            new QuintOutEasingFunction(), // QuintOut,
-            new QuintInOutEasingFunction(), // QuintInOut,
-            new SineInEasingFunction(), // SineIn,
-            new SineOutEasingFunction(), // SineOut,
-            new SineInOutEasingFunction(), // SineInOut,
-            new CircInEasingFunction(), // CircIn,
-            new CircOutEasingFunction(), // CircOut,
-            new CircInOutEasingFunction(), // CircInOut,
-            new ExpoInEasingFunction(), // ExpoIn,
-            new ExpoOutEasingFunction(), // ExpoOut,
-            new ExpoInOutEasingFunction(), // ExpoInOut,
-            new ElasticInEasingFunction(), // ElasticIn,
-            new ElasticOutEasingFunction(), // ElasticOut,
-            new ElastinInOutEasingFunction(), // ElastinInOut,
-            new BackInEasingFunction(), // BackIn,
-            new BackOutEasingFunction(), // BackOut,
-            new BackInOutEasingFunction(), // BackInOut,
-            new BounceInEasingFunction(), // BounceIn,
-            new BounceOutEasingFunction(), // BounceOut,
+            new LinearEasingFunction(),       // Linear
+            new QuadInEasingFunction(),       // QuadIn
+            new QuadOutEasingFunction(),      // QuadOut
+            new QuadOutInEasingFunction(),    // QuadOutIn
+            new CubicInEasingFunction(),      // CubicIn
+            new CubicOutEasingFunction(),     // CubicOut
+            new CubicInOutEasingFunction(),   // CubicInOut
+            new QuartInEasingFunction(),      // QuartIn
+            new QuartOutEasingFunction(),     // QuartOut
+            new QuartInOutEasingFunction(),   // QuartInOut
+            new QuintInEasingFunction(),      // QuintIn
+            new QuintOutEasingFunction(),     // QuintOut
+            new QuintInOutEasingFunction(),   // QuintInOut
+            new SineInEasingFunction(),       // SineIn
+            new SineOutEasingFunction(),      // SineOut
+            new SineInOutEasingFunction(),    // SineInOut
+            new CircInEasingFunction(),       // CircIn
+            new CircOutEasingFunction(),      // CircOut
+            new CircInOutEasingFunction(),    // CircInOut
+            new ExpoInEasingFunction(),       // ExpoIn
+            new ExpoOutEasingFunction(),      // ExpoOut
+            new ExpoInOutEasingFunction(),    // ExpoInOut
+            new ElasticInEasingFunction(),    // ElasticIn
+            new ElasticOutEasingFunction(),   // ElasticOut
+            new ElastinInOutEasingFunction(), // ElastinInOut
+            new BackInEasingFunction(),       // BackIn
+            new BackOutEasingFunction(),      // BackOut
+            new BackInOutEasingFunction(),    // BackInOut
+            new BounceInEasingFunction(),     // BounceIn
+            new BounceOutEasingFunction(),    // BounceOut
+            new BounceInOutEasingFunction(),  // BounceInOut
         };
 
         private const float PI = Mathf.PI;
@@ -84,6 +106,12 @@ namespace Watermelon
         private static CustomEasingFunction[] customEasingFunctions;
         private static Dictionary<int, int> customEasingFunctionsLink;
 
+        /// <summary>
+        /// Registers project-specific <see cref="CustomEasingFunction"/> presets.
+        /// Must be called once at startup (done automatically by <see cref="TweenInitModule"/>).
+        /// Functions are indexed by name hash for O(1) lookup via <see cref="GetCustomEasingFunction(string)"/>.
+        /// </summary>
+        /// <param name="easingFunctions">Array of named custom easing functions (may be empty).</param>
         public static void Init(CustomEasingFunction[] easingFunctions)
         {
             customEasingFunctionsLink = new Dictionary<int, int>();
@@ -106,6 +134,10 @@ namespace Watermelon
             defaultEasingFunction = new CustomEasingFunction("default", new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1)));
         }
 
+        /// <summary>
+        /// Returns a registered <see cref="CustomEasingFunction"/> by name.
+        /// Falls back to a linear default and logs an error if the name is not found.
+        /// </summary>
         public static CustomEasingFunction GetCustomEasingFunction(string name)
         {
             int hash = name.GetHashCode();
@@ -119,6 +151,10 @@ namespace Watermelon
             return defaultEasingFunction;
         }
 
+        /// <summary>
+        /// Returns a registered <see cref="CustomEasingFunction"/> by pre-computed name hash.
+        /// Falls back to a linear default and logs an error if the hash is not found.
+        /// </summary>
         public static CustomEasingFunction GetCustomEasingFunction(int hash)
         {
             if (customEasingFunctionsLink.ContainsKey(hash))
@@ -131,11 +167,23 @@ namespace Watermelon
             return defaultEasingFunction;
         }
 
+        /// <summary>
+        /// Evaluates the built-in easing function for <paramref name="ease"/> at progress <paramref name="p"/>.
+        /// Equivalent to calling <c>GetFunction(ease).Interpolate(p)</c> but avoids a virtual dispatch
+        /// by going through the same cached instance.
+        /// </summary>
+        /// <param name="p">Normalised progress in [0, 1].</param>
+        /// <param name="ease">The easing curve to apply.</param>
+        /// <returns>Eased output value (may exceed [0, 1] for elastic/back/bounce variants).</returns>
         public static float Interpolate(float p, Type ease)
         {
             return easingFunctions[(int)ease].Interpolate(p);
         }
 
+        /// <summary>
+        /// Returns the cached <see cref="IEasingFunction"/> instance for <paramref name="ease"/>.
+        /// Store the result if you need to call it repeatedly to avoid the array lookup overhead.
+        /// </summary>
         public static IEasingFunction GetFunction(Type ease)
         {
             return easingFunctions[(int)ease];
@@ -222,8 +270,17 @@ namespace Watermelon
         public class BounceOutEasingFunction : IEasingFunction { public float Interpolate(float p) { return BounceEaseOut(p); } }
         public class BounceInOutEasingFunction : IEasingFunction { public float Interpolate(float p) { return BounceEaseInOut(p); } }
 
+        /// <summary>
+        /// Contract for any easing function — built-in or custom.
+        /// Implement this interface to create a fully custom easing curve usable with <see cref="TweenCase.SetCustomEasing"/>.
+        /// </summary>
         public interface IEasingFunction
         {
+            /// <summary>
+            /// Maps a normalised input progress <paramref name="p"/> to an eased output value.
+            /// </summary>
+            /// <param name="p">Normalised input in [0, 1].</param>
+            /// <returns>Eased output — typically in [0, 1], may overshoot for elastic/back variants.</returns>
             public float Interpolate(float p);
         }
     }

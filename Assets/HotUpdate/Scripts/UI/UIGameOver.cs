@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using TMPro;
 using UnityEngine;
@@ -49,7 +49,7 @@ namespace Watermelon
 
         #region Show/Hide
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             levelFailed.Hide(immediately: true);
             menuButtonScalable.Hide(immediately: true);
@@ -81,19 +81,19 @@ namespace Watermelon
 
                 continuePingPongCase = reviveButtonScalable.Transform.DOPingPongScale(1.0f, 1.05f, 0.9f, Ease.Type.QuadIn, Ease.Type.QuadOut, unscaledTime: true);
 
-                UIController.OnPageOpened(this);
+                NotifyOpened();
             });
 
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             backgroundFade.Hide(immediately: true);
 
             if (continuePingPongCase != null && continuePingPongCase.IsActive)
                 continuePingPongCase.Kill();
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         #endregion
@@ -107,8 +107,8 @@ namespace Watermelon
             // D4 积分续局：花费积分直接续命（替代原广告复活）
             if (!GameController.ReviveWithCoins(reviveCoinCost))
             {
-                Debug.Log("[GameOver] 积分不足，无法续局");
-                UIAddLivesPanel.Show();
+                Debug.Log("[GameOver] 积分不足，无法续局，打开内购商店");
+                UIController.ShowPage<Watermelon.IAPStore.UIStore>();
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace Watermelon
         {
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
-            // D4 半价重试：两次半价重试 = 1 体力
+            // D4 半价重试：5 能量（门票的一半）
             if (LivesSystem.CanStartHalfPrice())
             {
                 UIController.HidePage<UIGameOver>();
@@ -129,7 +129,7 @@ namespace Watermelon
             }
             else
             {
-                UIAddLivesPanel.Show();
+                UIRecoverEnergy.Show();
             }
         }
 

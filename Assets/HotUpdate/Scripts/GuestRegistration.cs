@@ -29,18 +29,17 @@ namespace Watermelon
         public static void ClaimRegistrationReward()
         {
             if (IsRewardClaimed()) return;
-            // Grant 3 random cakes
-            ShopController.EnsureInitialized();
-            for (int i = 0; i < 3; i++)
-            {
-                ShopController.GrantRandomCake();
-            }
+
+            // Grant energy + a grade-1 Kettle spawner for the merge board
+            EnergyController.Add(30, ignoreCap: true);
+            TaskController.Instance?.SpawnerQueue?.Push("Kettle", 1);
+
             // Grant 50 coins
             CurrencyController.Add(CurrencyType.Coins, 50);
             PlayerPrefs.SetInt(REG_REWARD_KEY, 1);
             PlayerPrefs.Save();
             CustomAnalytics.TrackCurrencyGain("coins", 50, "registration_reward");
-            Debug.Log("[GuestReg] Rewards claimed: 3 cakes + 50 coins");
+            Debug.Log("[GuestReg] Rewards claimed: 30 energy + Kettle spawner + 50 coins");
         }
         public static bool ShouldShowRegistrationPopup()
         {

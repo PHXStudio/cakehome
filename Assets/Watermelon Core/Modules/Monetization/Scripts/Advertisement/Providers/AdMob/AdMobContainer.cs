@@ -3,7 +3,7 @@
 namespace Watermelon
 {
     [System.Serializable]
-    public class AdMobContainer
+    public class AdMobContainer : AdsProviderContainer
     {
         public static readonly string ANDROID_BANNER_TEST_ID = "ca-app-pub-3940256099942544/6300978111";
         public static readonly string IOS_BANNER_TEST_ID = "ca-app-pub-3940256099942544/2934735716";
@@ -56,6 +56,16 @@ namespace Watermelon
             MediumRectangle = 1,
             IABBanner = 2,
             Leaderboard = 3,
+        }
+
+        public override string ProviderName => "AdMob";
+        public override AdProviderHandler CreateHandler()
+        {
+#if MODULE_ADMOB
+            return new AdMobHandler();
+#else
+            return null;
+#endif
         }
     }
 }

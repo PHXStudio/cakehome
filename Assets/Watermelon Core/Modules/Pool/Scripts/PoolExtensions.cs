@@ -2,9 +2,12 @@ using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Extension methods for pool management and pooled object transform manipulation.
+    /// </summary>
     public static class PoolExtensions
     {
-        public static IPool GetPool(this GameObject gameObject)
+        public static IPool GetOrCreatePool(this GameObject gameObject)
         {
             if(PoolManager.HasPool(gameObject.name))
                 return PoolManager.GetPoolByName(gameObject.name);

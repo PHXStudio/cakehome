@@ -40,7 +40,7 @@ namespace Watermelon
         private string documentationUrl;
         private float defaultLength;
 
-        [MenuItem("Window/Watermelon Core/About", priority = 10000)]
+        [MenuItem("Window/Watermelon/Core/About", priority = 10000)]
         static void ShowWindow()
         {
             AboutWindow tempWindow = (AboutWindow)GetWindow(typeof(AboutWindow), true, WINDOW_TITLE);

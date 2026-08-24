@@ -103,7 +103,7 @@ namespace Watermelon
 
             public void Restore()
             {
-#if UNITY_6000
+#if UNITY_6000_0_OR_NEWER
                 rb.linearVelocity = Vector3.zero;
 #else
                 rb.velocity = Vector3.zero;

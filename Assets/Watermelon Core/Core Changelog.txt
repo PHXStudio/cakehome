@@ -1,3 +1,53 @@
+v3.1.0
+Save: Save serialization reworked from JsonUtility to Newtonsoft.Json via new SaveJson helper, with a contract resolver mirroring JsonUtility's field-selection rules for drop-in compatibility with existing ISaveObject types.
+Save: SaveFileContainer gained a private parameterless constructor to support Newtonsoft deserialization of container arrays.
+Inspector: Fixed TextArea attribute drawing a duplicate, misplaced label when nested inside custom inspector groups.
+Inspector: Reward drawer now defers to a concrete reward type's own CustomPropertyDrawer when one is registered, instead of always falling back to generic field-by-field drawing.
+Logging: Log category toggles blocked with a warning while the game is running, to prevent runtime define changes.
+Core: Removed unused "Menu Scene" action from the Actions menu.
+Core: Unity 6.3/6000.4 compatibility fixes across editor tooling (hierarchy highlighting, Unique ID lookup, object-finding APIs) — 2022.3-safe conditional compilation.
+
+v3.0.0
+Core: Monetization module split into two independent modules — Ads and IAP — each with its own assembly definition (Core.Ads, Core.IAP).
+Core: Introduced assembly definitions across all core systems (Core.Runtime, Core.Save, Core.Pool, Core.Tween, Core.Analytics, Core.Initializer, Core.Inspector, Core.Ads, Core.IAP). Modules compile independently, reducing rebuild times.
+Analytics: Reworked analytics architecture. TrackEvent(string, IAnalyticsData) replaces typed event methods. Event name constants moved to AnalyticsEvents class.
+Defines: Moved individual defines to separate files for easier module isolation.
+Initializer: Added IPreInitializable interface for pre-initialization hooks. Added custom editor.
+UI: Reworked UIController architecture.
+Modules: FloatingCloud moved to Currency module.
+Modules: Added Logs system to module infrastructure.
+Tween: Added KillAll method for immediate cleanup before scene reload.
+
+v2.8.0
+UI: Added IPausePopup class and pause logic to UIController. Now game automatically pauses when a popup with interface is opened.
+UI: Reworked UIController architecture and introduced the CachedPages class for managing page loading from prefabs. This optimization improves performance by dynamically loading and unloading canvases, reducing memory and CPU overhead.
+Monetization: Reworked restore purchases logic to IAPManager. Now purchase callback has an extra parameter that indicates if the purchase was restored.
+Monetization: Added AppLovin ads provider.
+Monetization: Removed ATT and UMP from the Monetization module. Now they are part of the Initializer system.
+Monetization: Added Remote Config fields to control ad frequency.
+Monetization: Reworked disable logic for banners and interstitials. Now it is possible to disable them only for certain periods of time.
+Monetization: Added IAPFirstPurchase and AdFreePeriodExpired events to analytics module.
+Monetization: Added support for IAP package v5.
+Monetization: Implemented a Reward system for all IAP products to ensure rewards are granted consistently from any part of the game.
+Monetization: Added LevelPlay 9.1.0 support
+Monetization: Removed support for Unity Ads Legacy
+Monetization: Added AdMob 10.6.0 support
+Monetization: Added automatic purchase restoration logic.
+Analytics: Added analytics placeholder. Currently in beta.
+Analytics: Added support for in-app purchase, advertisement, and currency tracking events.
+Initializer: Reworked initialization logic. Added SDKInitializer to manage initialization of all SDKs.
+Initializer: Added ATT and UMP initialization to the Initializer system.
+Initializer: Added RemoteConfig system placeholder. Currently in beta.
+Initializer: Initialization logic was moved from Awake to a coroutine to improve startup performance.
+Initializer: Reworked the auto-loading process for non-Init scenes. The system now loads the Init scene first, then the currently open scene, instead of spawning the prefab directly. This adjustment guarantees correct Remote Config operation.
+Currency: Added Remote Config field to control default count. 
+Currency: Added overloads for HasAmount, Set, Add, and Subtract methods in CurrencyController that accept a CurrencyAmount parameter.
+Haptic: Adjusted intensity of default presets.
+Haptic: Fixed a bug where the haptics stopped working after the app lost focus on iOS.
+Reward: Completely reworked module structure. Each reward now consists of a Reward and a RewardView class.
+Audio: Added constructors to the AudioClipHandler class.
+Utils & Extensions: Introduced the VerboseLogging class, which allows toggling of DEBUG_LOGS. Enabling this define provides detailed logging from Core modules.
+
 v2.7.5
 Monetization: Fixed a bug in the custom editor for 'Monetization Settings' where tabs appeared incorrectly on 4K screens.
 Monetization: Added workaround for AdMob UMP canvas sorting order for Unity Editor
@@ -7,6 +57,8 @@ Monetization: UnityAds potential banner fix
 Save: Added SaveController.GetSaveObject method without parameters. The type of the save object is used as a unique identifier
 Save: Added modifiable prefix for WebGL localStorage save
 Currency: Renamed CurrencyPrice class to CurrencyAmount
+Inspector: Fixed an issue with arrays of MonoBehaviours containing a field marked with UniqueIDAttribute
+Utils & Extensions: Added extension methods for the Vector2Int type
 
 v2.7.4
 Monetization: Fixed Android restore purchases issue

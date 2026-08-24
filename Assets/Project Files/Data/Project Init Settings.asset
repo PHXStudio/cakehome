@@ -28,7 +28,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739328186e8220e4dbd35270e195d7cf, type: 3}
   m_Name: Watermelon.HapticInitModule
   m_EditorClassIdentifier: 
-  verboseLogging: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,12 +43,21 @@ MonoBehaviour:
   modules:
   - {fileID: 465105545023070882}
   - {fileID: 150167048453217202}
+  - {fileID: 878099118089065219}
   - {fileID: 6377013955087300433}
   - {fileID: 2650117374181925186}
   - {fileID: 1166592688446620423}
   - {fileID: -681380019574015404}
   - {fileID: 4654385860053538920}
   - {fileID: -1698856556168776260}
+  - {fileID: 1990511703769288412}
+  - {fileID: -2099443433334515161}
+  - {fileID: -4660671584405937685}
+  - {fileID: -1357201684616088859}
+  - {fileID: -8342669818566765593}
+  - {fileID: 885495447045815077}
+  - {fileID: 6489932013437285787}
+  - {fileID: 6403399534343897184}
   - {fileID: 4753392133717379282}
 --- !u!114 &150167048453217202
 MonoBehaviour:
@@ -64,7 +72,8 @@ MonoBehaviour:
   m_Name: Watermelon.SaveInitModule
   m_EditorClassIdentifier: 
   autoSaveDelay: 0
-  cleanSaveStart: 0
+  webGLPrefix: gameName
+  namedFiles: []
 --- !u!114 &465105545023070882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,9 +86,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d448ec3af5e46f04aa350a8a9ccbb3ef, type: 3}
   m_Name: Watermelon.InitializerInitModule
   m_EditorClassIdentifier: 
-  manualControlMode: 0
   systemMessagesPrefab: {fileID: 6951761026347705287, guid: 15892f63869a33e41aa27c6098e3caf3,
     type: 3}
+--- !u!114 &878099118089065219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208c742dc404cef4994446e9ea4e3217, type: 3}
+  m_Name: Watermelon.PoolInitModule
+  m_EditorClassIdentifier: 
 --- !u!114 &1166592688446620423
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e27433fc73d0e094491cb89c195d0cf8, type: 3}
   m_Name: Watermelon.AudioInitModule
   m_EditorClassIdentifier: 
+  audioRegistry: {fileID: 11400000, guid: 4efb7757b5d734348bc991f3c62aff56, type: 2}
   audioSettings: {fileID: 11400000, guid: 503b1ff9b67b4c644b15ce25918d2d63, type: 2}
   audioSourcesPoolSize: 4
   maxDistance: 30
@@ -133,6 +154,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  spawnGlobalMusicSource: 1
+  globalMusicClip: {fileID: 0}
 --- !u!114 &4654385860053538920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -372,4 +395,105 @@ MonoBehaviour:
   tweensUpdateCount: 300
   tweensFixedUpdateCount: 30
   tweensLateUpdateCount: 0
-  verboseLogging: 0
+--- !u!114 &1990511703769288412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c0e38fd92a9be4e94362f338e27c46, type: 3}
+  m_Name: Watermelon.GameInitModule
+  m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: 0b6348cbcbb340e1b364f9c69f27bd70, type: 2}
+--- !u!114 &-2099443433334515161
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd86889415718040ad1c5ca8cb9e3f0, type: 3}
+  m_Name: Watermelon.CharacterInitModule
+  m_EditorClassIdentifier: 
+  charactersDatabase: {fileID: 11400000, guid: 3e0ab8613a6b81241aff2a810564834a, type: 2}
+--- !u!114 &-4660671584405937685
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dff94075d7a5d244aef4a25a793928e, type: 3}
+  m_Name: Watermelon.UIQueueInitModule
+  m_EditorClassIdentifier: 
+--- !u!114 &-1357201684616088859
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0879b72b1f3cad4f82c7a49f241ffc4, type: 3}
+  m_Name: Watermelon.BuildingInitModule
+  m_EditorClassIdentifier: 
+  levelDatabase: {fileID: 11400000, guid: f2484a03e222a83469d0e135f4185307, type: 2}
+--- !u!114 &-8342669818566765593
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b206aa0ceae193439a96f05d29eb234, type: 3}
+  m_Name: Watermelon.DialogInitModule
+  m_EditorClassIdentifier: 
+--- !u!114 &885495447045815077
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96baf34188184e4aa4e904611c6287d, type: 3}
+  m_Name: Watermelon.EnergyInitModule
+  m_EditorClassIdentifier: 
+  energyData: {fileID: 11400000, guid: 4fe2c8539b611fb4494d2a5e208f3d64, type: 2}
+--- !u!114 &6489932013437285787
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5fcf1c299bd7d0458224f42ab39b539, type: 3}
+  m_Name: Watermelon.ExperienceInitModule
+  m_EditorClassIdentifier: 
+  levelDatabase: {fileID: 11400000, guid: b9e11c723c3f3584383876ac3ef2e533, type: 2}
+--- !u!114 &6403399534343897184
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810fec3edd2ed2e48a98651f4afad2b4, type: 3}
+  m_Name: Watermelon.ZoneInitModule
+  m_EditorClassIdentifier: 
+  levelDatabase: {fileID: 11400000, guid: f2484a03e222a83469d0e135f4185307, type: 2}

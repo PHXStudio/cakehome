@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8a015dee3c7904d89c21eb150f84c2, type: 3}
+  m_Name: Dialog 2
+  m_EditorClassIdentifier:
+  chapterTitle: The First Sign of Progress
+  steps:
+  - rid: 35192588719496683
+  - rid: 1121235660944851240
+  - rid: 1649893629176358916
+  - rid: 1586568789148481548
+  - rid: 6262238917093620645
+  - rid: 909640216147464231
+  - rid: 309156393946171218
+  - rid: 736682355874275152
+  references:
+    version: 2
+    RefIds:
+    - rid: 35192588719496683
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: That already changes the way the place feels.
+    - rid: 1121235660944851240
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: It is only one more small repair.
+    - rid: 1649893629176358916
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: Small repairs are how you prove something is not beyond saving.
+    - rid: 1586568789148481548
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: When did you become philosophical?
+    - rid: 6262238917093620645
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: About five minutes before you started serving free samples.
+    - rid: 909640216147464231
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: They were not free. You said you would pay later.
+    - rid: 309156393946171218
+      type: {class: MessageStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: 2757966820b1c56408bfbbd8d30dd10f, type: 2}
+        emotion: 0
+        text: And I intend to remain consistent.
+    - rid: 736682355874275152
+      type: {class: ThoughtStep, ns: Watermelon, asm: Game.Scripts}
+      data:
+        character: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
+        emotion: 0
+        text: Maybe doing this alone was never part of the plan.

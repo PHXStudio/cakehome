@@ -39,18 +39,17 @@ namespace Watermelon
 
         private void OnPurchaseModuleInitted()
         {
-            removeAdsButton.Init(ProductKeyType.NoAds);
+            removeAdsButton.Init(ProductKeyType.NoAdsPack);
         }
 
         private void OnPurchaseCompleted(ProductKeyType productKeyType)
         {
-            if(productKeyType == ProductKeyType.NoAds)
+            if(productKeyType == ProductKeyType.NoAdsPack)
             {
-                AdsManager.DisableForcedAd();
+                AdsManager.DisableForcedAdForever();
 
                 gameObject.SetActive(false);
 
-                UIController.OnPopupWindowClosed(this);
             }
         }
 
@@ -65,7 +64,6 @@ namespace Watermelon
                 panelScalable.Show(immediately: false, duration: 0.3f);
             });
 
-            UIController.OnPopupWindowOpened(this);
         }
 
         private void ClosePanel()
@@ -79,7 +77,6 @@ namespace Watermelon
                 gameObject.SetActive(false);
             });
 
-            UIController.OnPopupWindowClosed(this);
         }
     }
 }

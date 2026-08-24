@@ -26,6 +26,8 @@ namespace Watermelon
                 bounceCase.Kill();
 
             bounceCase = new TweenCaseSimpleBounce(this, 0, 1).SetDuration(bounceDuration).OnComplete(onComplete).StartTween();
+
+            BounceTween(0);
         }
 
         private void BounceTween(float t)

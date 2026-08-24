@@ -12,17 +12,24 @@ namespace Watermelon
     {
         public static void ClickButton(this Button button)
         {
+            if (button == null) return;
+
+            button.StartCoroutine(ClickButtonCoroutine(button));
+        }
+
+        private static readonly WaitForSecondsRealtime ClickDelay = new(0.2f);
+
+        private static IEnumerator ClickButtonCoroutine(Button button)
+        {
             EventSystem.current.SetSelectedGameObject(button.gameObject);
 
-            Tween.NextFrame(() =>
-            {
-                var eventData = new PointerEventData(EventSystem.current);
+            yield return null;
 
-                eventData.button = PointerEventData.InputButton.Left;
-                button.OnPointerClick(eventData);
+            button.OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
 
-                Tween.DelayedCall(0.2f, () => EventSystem.current.SetSelectedGameObject(null));
-            }, unscaledTime: true);
+            yield return ClickDelay;
+
+            EventSystem.current.SetSelectedGameObject(null);
         }
 
         public static void AddEvent(this Component behaviour, EventTriggerType triggerType, Action<PointerEventData> call)

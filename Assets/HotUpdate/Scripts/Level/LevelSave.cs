@@ -1,4 +1,4 @@
-﻿namespace Watermelon
+namespace Watermelon
 {
     [System.Serializable]
     public class LevelSave : ISaveObject
@@ -11,7 +11,7 @@
 
         public int LastPlayerLevelIndex = -1;
         
-        public void Flush()
+        public void OnBeforeSave()
         {
 
         }

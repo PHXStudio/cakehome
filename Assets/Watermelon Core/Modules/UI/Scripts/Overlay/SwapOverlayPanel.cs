@@ -3,24 +3,19 @@ using UnityEngine.UI;
 
 namespace Watermelon
 {
-    [RequireComponent(typeof(Canvas))]
-    public class SwapOverlayPanel : MonoBehaviour, IOverlayPanel
+    public class SwapOverlayPanel : BaseOverlayPanel
     {
         [SerializeField] RawImage image;
         [SerializeField] Gradient gradient;
 
-        [Space]
-        [SerializeField] GameObject loadingObject;
-
         private Vector2 size;
         private Vector2 center;
 
-        private Canvas canvas;
         private CanvasScaler scaler;
 
         private TweenCase tweenCase;
 
-        public void Init()
+        public override void Init()
         {
             canvas = gameObject.GetComponent<Canvas>();
 
@@ -28,27 +23,27 @@ namespace Watermelon
 
             float screenWidth;
             float screenHeight;
-            if (UIController.IsTablet)
+            if (UIUtils.IsTablet())
             {
-                var height = canvas.pixelRect.height;
+                float height = canvas.pixelRect.height;
                 screenHeight = scaler.referenceResolution.y;
 
                 screenWidth = canvas.pixelRect.width / height * screenHeight;
             }
             else
             {
-                var width = canvas.pixelRect.width;
+                float width = canvas.pixelRect.width;
                 screenWidth = scaler.referenceResolution.x;
 
                 screenHeight = canvas.pixelRect.height / width * screenWidth;
             }
 
-            var start = 0f;
-            var end = 1f;
+            float start = 0f;
+            float end = 1f;
 
             for (int i = 0; i < gradient.alphaKeys.Length; i++)
             {
-                var key = gradient.alphaKeys[i];
+                GradientAlphaKey key = gradient.alphaKeys[i];
 
                 if (key.alpha == 1f)
                 {
@@ -59,7 +54,7 @@ namespace Watermelon
 
             for (int i = gradient.alphaKeys.Length - 1; i >= 0; i--)
             {
-                var key = gradient.alphaKeys[i];
+                GradientAlphaKey key = gradient.alphaKeys[i];
 
                 if (key.alpha == 1f)
                 {
@@ -93,7 +88,7 @@ namespace Watermelon
             center = new Vector3(0, ((end + start) / 2 - 0.5f) * size.y);
         }
 
-        public void Show(float duration, SimpleCallback onCompleted)
+        public override void Show(float duration, SimpleCallback onCompleted)
         {
             tweenCase.KillActive();
 
@@ -101,7 +96,7 @@ namespace Watermelon
             tweenCase = image.DOAnchoredPosition(center, duration, unscaledTime: true).SetEasing(Ease.Type.Linear).OnComplete(onCompleted);
         }
 
-        public void Hide(float duration, SimpleCallback onCompleted)
+        public override void Hide(float duration, SimpleCallback onCompleted)
         {
             tweenCase.KillActive();
 
@@ -109,22 +104,9 @@ namespace Watermelon
             tweenCase = image.DOAnchoredPosition(new Vector2(0, -size.y), duration, unscaledTime: true).SetEasing(Ease.Type.Linear).OnComplete(onCompleted);
         }
 
-        public void Clear()
+        public override void Clear()
         {
             tweenCase.KillActive();
-        }
-
-        public void SetState(bool state)
-        {
-            canvas.enabled = state;
-        }
-
-        public void SetLoadingState(bool state)
-        {
-            if(loadingObject != null)
-            {
-                loadingObject.gameObject.SetActive(state);
-            }
         }
     }
 }

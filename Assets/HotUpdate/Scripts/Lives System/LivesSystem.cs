@@ -1,9 +1,15 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// 体力门票适配层 + 无限模式容器（体力已统一为能量池，见 EnergyController）。
+    /// 门票语义：进关预扣能量（LockLife），通关/回主菜单返还（UnlockLife(false)），
+    /// 失败/中途退出不返还（UnlockLife(true)）。锁存续期间连续 NextLevel 只算一张票。
+    /// 无限模式期间进关免门票（合成生成器照常耗能）。
+    /// </summary>
     [StaticUnload]
     public static class LivesSystem
     {
@@ -11,53 +17,45 @@ namespace Watermelon
         public const string TEXT_TIMESPAN_FORMAT = "{0:mm\\:ss}";
         public const string TEXT_LONG_TIMESPAN_FORMAT = "{0:hh\\:mm\\:ss}";
 
+        /// <summary>进一关的门票能量。</summary>
+        public const int LEVEL_ENERGY_COST = 10;
+        /// <summary>D4 半价重试的门票能量。</summary>
+        public const int HALF_PRICE_ENERGY_COST = 5;
+
         private static LivesSave save;
 
         public static LivesStatus Status { get; private set; }
 
-        public static int Lives { get => Status.LivesCount; private set => Status.SetLives(value); }
-        public static int MaxLivesCount { get; private set; }
+        /// <summary>当前能量（兼容旧 Lives 语义的读取方；UI 请直接用 EnergyController.Current）。</summary>
+        public static int Lives => EnergyController.Current;
 
         public static bool InfiniteMode { get => Status.InfiniteMode; }
 
-        public static bool IsFull { get => Lives >= MaxLivesCount; }
-
-        public static TimeSpan OneLifeSpan { get; private set; }
+        /// <summary>能量是否已满（供 UI 兼容）。</summary>
+        public static bool IsFull => EnergyController.Current >= EnergyController.Max;
 
         private static Coroutine infiniteModeCoroutine;
-        private static Coroutine newLifeCoroutine;
 
-        // D4 半价重试：累积 0.5 体力，满 1 才实际扣 1（两次半价重试 = 1 体力）
-        private static bool halfPriceLocked;
-        private static float halfLifeAccumulator;
+        // 当前锁的那张票花了多少能量（0 = 无限模式免票）。锁存续期间连续进关不重复扣。
+        private static int lockedTicketCost;
 
         public static event StatusChangedDelegate StatusChanged;
 
         public static void Init(LivesData livesData)
         {
-            MaxLivesCount = livesData.MaxLivesCount;
-            OneLifeSpan = TimeSpan.FromSeconds(livesData.OneLifeRestorationDuration);
-
             Status = new LivesStatus();
 
             save = SaveController.GetSaveObject<LivesSave>("Lives");
             save.Init(Status);
 
-            // Prepare save
-            if (save.LivesCount == -1)
-            {
-                save.LivesCount = MaxLivesCount;
-                save.LifeLocked = false;
-            }
+            lockedTicketCost = 0;
 
-            // If game was left during the lock of live, decrease lives count
+            // 杀进程时票已预扣、锁未解：门票不退（等同原来的"锁中离局扣一命"），只清锁标记
             if (save.LifeLocked)
             {
-                save.LivesCount = Mathf.Clamp(save.LivesCount - 1, 0, int.MaxValue);
                 save.LifeLocked = false;
+                SaveController.MarkAsSaveIsRequired();
             }
-
-            Lives = save.LivesCount;
 
             if (save.InfiniteLives)
             {
@@ -74,99 +72,25 @@ namespace Watermelon
                 }
             }
 
-            if (!Status.InfiniteMode && Lives < MaxLivesCount)
-            {
-                DateTime lastSavedDate = DateTime.FromBinary(save.NewLifeDateBinary);
-                TimeSpan offlineTime = DateTime.Now - lastSavedDate;
-
-                // Check if the NewLifeDate is in the future
-                if (offlineTime < TimeSpan.Zero)
-                {
-                    // NewLifeDate is in the future, set the new life date to lastSavedDate
-                    Status.SetNewLifeDate(lastSavedDate);
-                    Status.SetNewLifeTimerState(true);
-
-                    // Start the coroutine to handle the life restoration process
-                    newLifeCoroutine = Tween.InvokeCoroutine(LivesCoroutine());
-                }
-                else
-                {
-                    // NewLifeDate has already passed, add one life for reaching the NewLifeDate
-                    Lives = Mathf.Clamp(Lives + 1, 0, MaxLivesCount);
-
-                    // Check if lives are still not full
-                    if (Lives < MaxLivesCount)
-                    {
-                        // Calculate additional lives that can be added based on the offline time
-                        int additionalLives = Math.Max(0, (int)(offlineTime.TotalSeconds / OneLifeSpan.TotalSeconds));
-
-                        if (additionalLives > 0)
-                        {
-                            // Add the additional lives
-                            Lives = Mathf.Clamp(Lives + additionalLives, 0, MaxLivesCount);
-
-                            // Check if lives are still not full
-                            if (Lives < MaxLivesCount)
-                            {
-                                // Calculate the remaining time for the next life
-                                TimeSpan remainingTime = TimeSpan.FromSeconds(OneLifeSpan.TotalSeconds - (offlineTime.TotalSeconds % OneLifeSpan.TotalSeconds));
-
-                                // Set the new life date and start the timer
-                                Status.SetNewLifeDate(DateTime.Now + remainingTime);
-                                Status.SetNewLifeTimerState(true);
-
-                                // Start the coroutine to handle the life restoration process
-                                newLifeCoroutine = Tween.InvokeCoroutine(LivesCoroutine());
-                            }
-                        }
-                        else
-                        {
-                            // If no additional lives can be added, set the new life date based on the remaining time
-                            Status.SetNewLifeDate(DateTime.Now + TimeSpan.FromSeconds(OneLifeSpan.TotalSeconds - offlineTime.TotalSeconds));
-                            Status.SetNewLifeTimerState(true);
-
-                            // Start the coroutine to handle the life restoration process
-                            newLifeCoroutine = Tween.InvokeCoroutine(LivesCoroutine());
-                        }
-                    }
-                }
-            }
-
             UpdateStatus();
         }
 
-        public static void AddLife(int amount = 1, bool overrideMax = false)
-        {
-            if(overrideMax)
-            {
-                Lives += amount;
-            }
-            else
-            {
-                int livesDiff = (Lives + amount) - MaxLivesCount;
-                if (livesDiff <= 0)
-                {
-                    Lives += amount;
-                }
-                else
-                {
-                    Lives += amount - livesDiff;
-                }
-            }
-
-            SaveController.MarkAsSaveIsRequired();
-
-            UpdateNewLife();
-        }
-
+        /// <summary>进关打锁并预扣门票能量（无限模式免票）。锁存续期间重复调用不再扣（NextLevel 连胜只算一票）。</summary>
         public static void LockLife(bool halfPrice = false)
         {
-            save.LifeLocked = true;
-            halfPriceLocked = halfPrice;
+            if (!save.LifeLocked)
+            {
+                lockedTicketCost = InfiniteMode ? 0 : (halfPrice ? HALF_PRICE_ENERGY_COST : LEVEL_ENERGY_COST);
 
-            SaveController.MarkAsSaveIsRequired();
+                if (lockedTicketCost > 0)
+                    EnergyController.TrySpend(lockedTicketCost);
+
+                save.LifeLocked = true;
+                SaveController.MarkAsSaveIsRequired();
+            }
         }
 
+        /// <summary>解锁结算：decrease=false（通关/回主菜单）返还门票；decrease=true（失败/中途退出）不返还。</summary>
         public static void UnlockLife(bool decrease)
         {
             if (!save.LifeLocked) return;
@@ -175,76 +99,16 @@ namespace Watermelon
 
             SaveController.MarkAsSaveIsRequired();
 
-            if (decrease)
-            {
-                if (halfPriceLocked)
-                {
-                    // D4 半价重试：累加 0.5，满 1 才扣 1 体力
-                    halfLifeAccumulator += 0.5f;
-                    if (halfLifeAccumulator >= 1f)
-                    {
-                        int whole = Mathf.FloorToInt(halfLifeAccumulator);
-                        halfLifeAccumulator -= whole;
-                        TakeLife(whole);
-                    }
+            if (!decrease && lockedTicketCost > 0)
+                EnergyController.Add(lockedTicketCost, ignoreCap: true);
 
-                    halfPriceLocked = false;
-                }
-                else
-                {
-                    TakeLife();
-                }
-            }
+            lockedTicketCost = 0;
         }
 
-        /// <summary>半价重试可用性：无限模式，或至少还有 1 体力（两次半价 = 1 体力）。</summary>
+        /// <summary>半价重试可用性：无限模式，或能量够半价票。</summary>
         public static bool CanStartHalfPrice()
         {
-            return InfiniteMode || Lives >= 1;
-        }
-
-        private static void UpdateNewLife()
-        {
-            if (!InfiniteMode)
-            {
-                if (Lives >= MaxLivesCount)
-                {
-                    if (newLifeCoroutine != null)
-                    {
-                        Tween.StopCustomCoroutine(newLifeCoroutine);
-
-                        newLifeCoroutine = null;
-                    }
-
-                    Status.SetNewLifeTimerState(false);
-                }
-                else
-                {
-                    if (newLifeCoroutine == null)
-                    {
-                        Status.SetNewLifeDate(DateTime.Now + OneLifeSpan);
-                        Status.SetNewLifeTimerState(true);
-
-                        newLifeCoroutine = Tween.InvokeCoroutine(LivesCoroutine());
-                    }
-                }
-            }
-
-            SaveController.MarkAsSaveIsRequired();
-
-            UpdateStatus();
-        }
-
-        public static void TakeLife(int amount = 1)
-        {
-            Lives -= amount;
-
-            if (Lives < 0)
-                Lives = 0;
-
-            SaveController.MarkAsSaveIsRequired();
-
-            UpdateNewLife();
+            return InfiniteMode || EnergyController.Current >= HALF_PRICE_ENERGY_COST;
         }
 
         public static void EnableInfiniteMode(double seconds)
@@ -275,7 +139,7 @@ namespace Watermelon
                 infiniteModeCoroutine = null;
             }
 
-            UpdateNewLife();
+            UpdateStatus();
         }
 
         private static IEnumerator InfiniteLivesCoroutine()
@@ -296,58 +160,11 @@ namespace Watermelon
 
             Status.SetInfiniteModeState(false);
 
-            if(Lives < MaxLivesCount)
-                Status.SetLives(MaxLivesCount);
-
             UpdateStatus();
 
             SaveController.MarkAsSaveIsRequired();
 
             infiniteModeCoroutine = null;
-        }
-
-        private static IEnumerator LivesCoroutine()
-        {
-            WaitForSeconds wait = new WaitForSeconds(0.25f);
-
-            while (Lives < MaxLivesCount)
-            {
-                TimeSpan timespan = DateTime.Now - Status.NewLifeDate;
-
-                Status.SetNewLifeTime(timespan);
-
-                if (timespan.Ticks > 0)
-                {
-                    Lives++;
-
-                    if(Lives < MaxLivesCount)
-                    {
-                        Status.SetNewLifeDate(DateTime.Now + OneLifeSpan);
-
-                        UpdateStatus();
-
-                        continue;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                UpdateStatus();
-
-                SaveController.MarkAsSaveIsRequired();
-
-                yield return wait;
-            }
-
-            Status.SetNewLifeTimerState(false);
-
-            UpdateStatus();
-
-            SaveController.MarkAsSaveIsRequired();
-
-            newLifeCoroutine = null;
         }
 
         public static string GetFormatedTime(TimeSpan time)
@@ -374,7 +191,7 @@ namespace Watermelon
             save = null;
 
             infiniteModeCoroutine = null;
-            newLifeCoroutine = null;
+            lockedTicketCost = 0;
         }
 
         public delegate void StatusChangedDelegate(LivesStatus status);

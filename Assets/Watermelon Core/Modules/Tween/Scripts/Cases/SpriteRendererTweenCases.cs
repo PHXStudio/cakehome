@@ -1,29 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Tween extensions for <see cref="SpriteRenderer"/> components.
+    /// </summary>
     public static class SpriteRendererTweenCases
     {
         #region Extensions
-        /// <summary>
-        /// Change color of sprite renderer
-        /// </summary>
+        /// <summary>Animates the full RGBA <see cref="SpriteRenderer.color"/> to <paramref name="resultValue"/>.</summary>
         public static TweenCase DOColor(this SpriteRenderer tweenObject, Color resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod updateMethod = UpdateMethod.Update)
         {
             return new ColorChange(tweenObject, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(updateMethod).StartTween();
         }
 
-        /// <summary>
-        /// Change sprite renderer color alpha
-        /// </summary>
+        /// <summary>Animates only the alpha channel of <see cref="SpriteRenderer.color"/> to <paramref name="resultValue"/> (0 = transparent, 1 = opaque).</summary>
         public static TweenCase DOFade(this SpriteRenderer tweenObject, float resultValue, float time, float delay = 0, bool unscaledTime = false, UpdateMethod updateMethod = UpdateMethod.Update)
         {
             return new Fade(tweenObject, resultValue).SetDelay(delay).SetDuration(time).SetUnscaledMode(unscaledTime).SetUpdateMethod(updateMethod).StartTween();
         }
         #endregion
 
+        /// <summary>Interpolates the full RGBA color of a <see cref="SpriteRenderer"/> to <c>resultValue</c>.</summary>
         public class ColorChange : TweenCaseFunction<SpriteRenderer, Color>
         {
             public ColorChange(SpriteRenderer tweenObject, Color resultValue) : base(tweenObject, resultValue)
@@ -49,6 +47,7 @@ namespace Watermelon
             }
         }
 
+        /// <summary>Interpolates only the alpha channel of a <see cref="SpriteRenderer"/>'s color, leaving RGB unchanged.</summary>
         public class Fade : TweenCaseFunction<SpriteRenderer, float>
         {
             public Fade(SpriteRenderer tweenObject, float resultValue) : base(tweenObject, resultValue)

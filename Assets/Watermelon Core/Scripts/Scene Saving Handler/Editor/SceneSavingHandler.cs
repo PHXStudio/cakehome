@@ -20,7 +20,7 @@ namespace Watermelon
             EditorApplication.playModeStateChanged += PlayModeStateChanged;
 
             Type monobehaviourType = typeof(MonoBehaviour);
-            Type type = typeof(ISceneSavingCallback);
+            Type type = typeof(ISceneSavingReceiver);
 
             registeredTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(p => !p.IsAbstract && type.IsAssignableFrom(p) && p.IsSubclassOf(monobehaviourType));
         }
@@ -42,15 +42,15 @@ namespace Watermelon
         {
             foreach (var type in registeredTypes)
             {
-#if UNITY_6000
-                UnityEngine.Object[] sceneObjects = GameObject.FindObjectsByType(type, FindObjectsInactive.Include, FindObjectsSortMode.None);
+#if UNITY_6000_4_OR_NEWER
+                UnityEngine.Object[] sceneObjects = GameObject.FindObjectsByType(type, FindObjectsInactive.Include);
 #else
-                UnityEngine.Object[] sceneObjects = GameObject.FindObjectsOfType(type, true);
+                UnityEngine.Object[] sceneObjects = GameObject.FindObjectsByType(type, FindObjectsInactive.Include, FindObjectsSortMode.None);
 #endif
 
                 foreach (UnityEngine.Object sceneObject in sceneObjects)
                 {
-                    ISceneSavingCallback sceneSavingCallback = (ISceneSavingCallback)sceneObject;
+                    ISceneSavingReceiver sceneSavingCallback = (ISceneSavingReceiver)sceneObject;
                     if (sceneSavingCallback != null)
                     {
                         sceneSavingCallback.OnSceneSaving();

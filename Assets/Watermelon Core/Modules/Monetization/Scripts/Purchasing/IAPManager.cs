@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 #if MODULE_IAP
@@ -7,12 +7,21 @@ using UnityEngine.Purchasing;
 
 namespace Watermelon
 {
-    [StaticUnload]
-    public static class IAPManager
+    public class IAPManager : MonoBehaviour
     {
-        private static Dictionary<ProductKeyType, IAPItem> productsTypeToProductLink;
+        // IAP
+        public const string ANALYTICS_IAP_CLICKED = "iap_clicked";
+        public const string ANALYTICS_IAP_PURCHASED = "iap_purchased";
+        public const string ANALYTICS_IAP_FAILED = "iap_failed";
+        public const string ANALYTICS_IAP_FIRST_PURCHASE = "iap_first_purchase";
 
-        public static bool IsInitialized { get; private set; } = false;
+        private static IAPManager instance;
+
+        private static Dictionary<ProductKeyType, IAPItem> productsTypeToProductLink;
+        private static Dictionary<string, IAPItem> productsIDToProductLink;
+
+        private static bool isInitialized;
+        public static bool IsInitialized => isInitialized;
 
         private static IAPWrapper wrapper;
 
@@ -21,102 +30,44 @@ namespace Watermelon
         public static event ProductFailCallback PurchaseFailed;
 
         private static IAPSettings settings;
+        private static Save save;
 
-        public static void Init(MonetizationSettings monetizationSettings)
-        {
-            if (IsInitialized)
-            {
-                Debug.LogError("[IAP Manager]: Module is already initialized!");
-                return;
-            }
-
-            settings = monetizationSettings?.IAPSettings;
-            if (settings == null)
-            {
-                Debug.LogError("[IAP Manager]: IAPSettings is null!");
-                return;
-            }
-
-            productsTypeToProductLink = new Dictionary<ProductKeyType, IAPItem>();
-
-            IAPItem[] items = settings.StoreItems;
-            if (items != null)
-            {
-                foreach (IAPItem item in items)
-                {
-                    if (!productsTypeToProductLink.ContainsKey(item.ProductKeyType))
-                    {
-                        productsTypeToProductLink.Add(item.ProductKeyType, item);
-                    }
-                    else
-                    {
-                        Debug.LogError($"[IAP Manager]: Product with the type {item.ProductKeyType} has duplicates in the list!", settings);
-                    }
-                }
-            }
-
-            wrapper = GetPlatformWrapper();
-            wrapper.Init(settings);
-        }
+        // Static facade
 
         public static IAPItem GetIAPItem(string productID)
         {
             if (string.IsNullOrEmpty(productID)) return null;
 
-            foreach (IAPItem item in productsTypeToProductLink.Values)
-            {
-                if (item.ID == productID)
-                    return item;
-            }
-
-            return null;
+            productsIDToProductLink.TryGetValue(productID, out IAPItem item);
+            return item;
         }
 
         public static IAPItem GetIAPItem(ProductKeyType productKeyType)
         {
             productsTypeToProductLink.TryGetValue(productKeyType, out IAPItem item);
-
             return item;
         }
 
-#if MODULE_IAP
-        public static Product GetProduct(ProductKeyType productKeyType)
-        {
-            var iapItem = GetIAPItem(productKeyType);
-            return iapItem != null ? UnityIAPWrapper.Controller.products.WithID(iapItem.ID) : null;
-        }
-#endif
-
         public static void RestorePurchases()
         {
-            if (!Monetization.IsActive || !IsInitialized) return;
+            if (!isInitialized) return;
 
             wrapper.RestorePurchases();
         }
 
         public static void SubscribeOnPurchaseModuleInitted(SimpleCallback callback)
         {
-            if (IsInitialized)
-            {
+            if (isInitialized)
                 callback?.Invoke();
-            }
             else
-            {
                 Initialized += callback;
-            }
         }
 
         public static void BuyProduct(ProductKeyType productKeyType)
         {
-            if (!Monetization.IsActive)
+            if (!isInitialized)
             {
-                Debug.LogWarning("[IAP Manager]: Mobile monetization is disabled!", settings);
-                return;
-            }
-
-            if (!IsInitialized)
-            {
-                Debug.LogWarning("[IAP Manager]: The module is not initialized!", settings);
+                Debug.LogWarning("[IAP Manager]: The module is not initialized!");
                 return;
             }
 
@@ -125,13 +76,13 @@ namespace Watermelon
 
         public static ProductData GetProductData(ProductKeyType productKeyType)
         {
-            if (!Monetization.IsActive || !IsInitialized) return new ProductData();
+            if (!isInitialized) return new ProductData();
 
-            var product = wrapper.GetProductData(productKeyType);
+            ProductData product = wrapper.GetProductData(productKeyType);
 
             if (product == null)
             {
-                Debug.LogWarning($"[IAP Manager]: Product of type '{productKeyType}' was not found in Monetization Settings. Please ensure it is added to the products list.", settings);
+                Debug.LogWarning($"[IAP Manager]: Product of type '{productKeyType}' was not found in IAP Settings. Please ensure it is added to the products list.");
             }
 
             return product;
@@ -139,37 +90,136 @@ namespace Watermelon
 
         public static bool IsSubscribed(ProductKeyType productKeyType)
         {
-            if (!Monetization.IsActive || !IsInitialized) return false;
+            if (!isInitialized) return false;
 
             return wrapper.IsSubscribed(productKeyType);
         }
 
+        public static bool IsPurchased(ProductKeyType productKeyType)
+        {
+#if MODULE_IAP
+            IAPItem iapItem = GetIAPItem(productKeyType);
+            if (iapItem != null)
+                return wrapper.IsPurchased(iapItem.ID);
+#endif
+            return false;
+        }
+
         public static string GetProductLocalPriceString(ProductKeyType productKeyType)
         {
-            var product = GetProductData(productKeyType);
+            ProductData product = GetProductData(productKeyType);
 
             if (product == null)
             {
-                Debug.LogWarning($"[IAP Manager]: Product of type '{productKeyType}' was not found in Monetization Settings. Please ensure it is added to the products list.", settings);
+                Debug.LogWarning($"[IAP Manager]: Product of type '{productKeyType}' was not found in IAP Settings. Please ensure it is added to the products list.");
                 return string.Empty;
             }
 
             return $"{product.ISOCurrencyCode} {product.Price}";
         }
 
-        public static void OnModuleInitialized()
+        public static bool IsPayableUser() => save != null && save.FirstPurchase;
+
+        // Instance methods
+
+        public void Init(IAPSettings iapSettings)
         {
-            IsInitialized = true;
+            if (isInitialized)
+            {
+                Debug.LogError("[IAP Manager]: Module is already initialized!");
+                return;
+            }
 
-            Initialized?.Invoke();
+            if (iapSettings == null)
+            {
+                Debug.LogError("[IAP Manager]: IAPSettings is null!");
+                return;
+            }
 
-            if (Monetization.VerboseLogging)
-                Debug.Log("[IAPManager]: Module is initialized!");
+            instance = this;
+            settings = iapSettings;
+
+            save = SaveController.GetSaveObject<Save>("iapGlobalSave");
+
+            productsTypeToProductLink = new Dictionary<ProductKeyType, IAPItem>();
+            productsIDToProductLink = new Dictionary<string, IAPItem>();
+
+#if MODULE_REMOTE_CONFIG
+            IAPRemoteConfigData remoteConfigData = RemoteConfigController.TryGetConfig<IAPRemoteConfigData>("iaps");
+#endif
+
+            IAPItem[] items = settings.StoreItems;
+            if (items != null)
+            {
+                foreach (IAPItem item in items)
+                {
+                    item.Init();
+
+#if MODULE_REMOTE_CONFIG
+                    IAPRemoteConfigData.IAP remoteConfigItem = remoteConfigData?.GetOverride(item.ID);
+                    item.OverrideDefaultPrice(remoteConfigItem);
+#endif
+
+                    if (!productsTypeToProductLink.ContainsKey(item.ProductKeyType))
+                    {
+                        productsTypeToProductLink.Add(item.ProductKeyType, item);
+                        productsIDToProductLink[item.ID] = item;
+                    }
+                    else
+                    {
+                        Debug.LogError($"[IAP Manager]: Product with the type {item.ProductKeyType} has duplicates in the list!");
+                    }
+                }
+            }
+
+            wrapper = GetPlatformWrapper();
+            _ = wrapper.Init(settings);
         }
 
-        public static void OnPurchaseCompleted(ProductKeyType productKey)
+        // Wrapper callbacks (static — wrappers call via IAPManager.X)
+
+        public static void OnModuleInitialized()
         {
-            PurchaseCompleted?.Invoke(productKey);
+            isInitialized = true;
+
+            if (Initialized != null)
+            {
+                System.Delegate[] listDelegates = Initialized.GetInvocationList();
+                foreach (var d in listDelegates)
+                {
+                    SimpleCallback cb = (SimpleCallback)d;
+
+                    if (d.Target is UnityEngine.Object uo && uo == null)
+                        continue;
+
+                    try
+                    {
+                        cb?.Invoke();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                }
+            }
+            
+            LogManager.Log("[IAPManager]: Module is initialized!", LogCategory.Services);
+        }
+
+        public static void OnPurchaseCompleted(IAPItem item)
+        {
+            if (!save.FirstPurchase)
+            {
+#if MODULE_ANALYTICS
+                Analytics.TrackEvent(ANALYTICS_IAP_FIRST_PURCHASE);
+#endif
+
+                save.FirstPurchase = true;
+            }
+
+            item.OnProductPurchased();
+
+            PurchaseCompleted?.Invoke(item.ProductKeyType);
         }
 
         public static void OnPurchaseFailed(ProductKeyType productKey, Watermelon.PurchaseFailureReason failureReason)
@@ -177,29 +227,45 @@ namespace Watermelon
             PurchaseFailed?.Invoke(productKey, failureReason);
         }
 
+        public void Unload()
+        {
+            isInitialized = false;
+
+            Initialized = null;
+            PurchaseCompleted = null;
+            PurchaseFailed = null;
+
+            productsTypeToProductLink = null;
+            productsIDToProductLink = null;
+            wrapper = null;
+            settings = null;
+            save = null;
+
+            instance = null;
+        }
+
         private static IAPWrapper GetPlatformWrapper()
         {
 #if MODULE_IAP
+#if UNITY_IAP_NEW
+            return new UnityIAP5Wrapper();
+#else
             return new UnityIAPWrapper();
+#endif
 #else
             return new DummyIAPWrapper();
 #endif
         }
 
-        private static void UnloadStatic()
-        {
-            IsInitialized = false;
-
-            productsTypeToProductLink = null;
-            wrapper = null;
-            settings = null;
-
-            Initialized = null;
-            PurchaseCompleted = null;
-            PurchaseFailed = null;
-        }
-
         public delegate void ProductCallback(ProductKeyType productKeyType);
         public delegate void ProductFailCallback(ProductKeyType productKeyType, Watermelon.PurchaseFailureReason failureReason);
+
+        [System.Serializable]
+        public class Save : ISaveObject
+        {
+            public bool FirstPurchase = false;
+
+            public void OnBeforeSave() { }
+        }
     }
 }

@@ -74,14 +74,14 @@ namespace Watermelon
 
         #region Show/Hide
 
-        public override void PlayShowAnimation()
+        protected override void OnShow()
         {
             ApplyBottomNavPadding();
 
             showHideStoreAdButtonDelayTweenCase?.Kill();
 
             HideAdButton(true);
-            iapStoreButton.Hide(true);
+            // 商店按钮不做滑入动画：与门店 Tab 一致静态常驻（2026-08-24）
             ShowTapToPlay();
 
             coinsLabelScalable.Show();
@@ -93,7 +93,6 @@ namespace Watermelon
             showHideStoreAdButtonDelayTweenCase = Tween.DelayedCall(0.12f, delegate
             {
                 ShowAdButton();
-                iapStoreButton.Show();
             });
 
             // 每日签到 + 每日任务：延迟检查弹出（次留召回）
@@ -101,11 +100,16 @@ namespace Watermelon
 
             MapLevelAbstractBehavior.OnLevelClicked += OnLevelOnMapSelected;
 
-            UIController.OnPageOpened(this);
+            NotifyOpened();
         }
 
         private void CheckDailyPanels()
         {
+            // 每日签到功能已屏蔽（2026-08-24）：恢复时删除下面这行即可
+            // （DailyRewardController 数据层与 DailyRewardPanel 预制体保留）
+            return;
+
+#pragma warning disable CS0162
             DailyRewardPanel rewardPanel = Object.FindObjectOfType<DailyRewardPanel>(true);
             if (DailyRewardController.CanClaimToday() && rewardPanel != null)
             {
@@ -116,19 +120,25 @@ namespace Watermelon
             {
                 CheckDailyTaskPanel();
             }
+#pragma warning restore CS0162
         }
 
         private void CheckDailyTaskPanel()
         {
+            // 每日任务功能已屏蔽（2026-08-23）：恢复时删除下面这行即可
+            return;
+
+#pragma warning disable CS0162
             DailyTaskPanel taskPanel = Object.FindObjectOfType<DailyTaskPanel>(true);
             if (taskPanel != null && DailyTaskController.HasClaimable())
             {
                 taskPanel.Init();
                 taskPanel.Show();
             }
+#pragma warning restore CS0162
         }
 
-        public override void PlayHideAnimation()
+        protected override void OnHide()
         {
             showHideStoreAdButtonDelayTweenCase?.Kill();
 
@@ -136,13 +146,12 @@ namespace Watermelon
 
             coinsLabelScalable.Hide(immediately: true);
             livesIndicatorScalable.Hide(immediately: true);
-            iapStoreButton.Hide(immediately: true);
 
             HideAdButton(immediately: true);
 
             MapLevelAbstractBehavior.OnLevelClicked -= OnLevelOnMapSelected;
 
-            UIController.OnPageClosed(this);
+            NotifyClosed();
         }
 
         #endregion
@@ -196,6 +205,12 @@ namespace Watermelon
 
         private void ShowAdButton(bool immediately = false)
         {
+            // NO ADS 按钮已移除（2026-08-24）：恢复时删除下面这行即可
+            // （商店内的 No Ads 商品与恢复购买逻辑保留，不受影响）
+            noAdsButton.Hide(immediately: true);
+            return;
+
+#pragma warning disable CS0162
             if (AdsManager.IsForcedAdEnabled())
             {
                 noAdsButton.Show(immediately);
@@ -204,6 +219,7 @@ namespace Watermelon
             {
                 noAdsButton.Hide(immediately: true);
             }
+#pragma warning restore CS0162
         }
 
         private void HideAdButton(bool immediately = false)
@@ -213,7 +229,7 @@ namespace Watermelon
 
         private void OnAdPurchased(ProductKeyType productKeyType)
         {
-            if (productKeyType == ProductKeyType.NoAds)
+            if (productKeyType == ProductKeyType.NoAdsPack)
             {
                 HideAdButton(immediately: true);
             }
@@ -239,21 +255,15 @@ namespace Watermelon
 
         private void OnPlayTriggered(int levelId)
         {
-            if (LivesSystem.Lives > 0 || LivesSystem.InfiniteMode)
+            if (EnergyController.Current >= LivesSystem.LEVEL_ENERGY_COST || LivesSystem.InfiniteMode)
             {
                 // start level
                 GameController.LoadLevel(levelId);
             }
             else
             {
-                UIAddLivesPanel.Show((bool lifeRecieved) =>
-                {
-                    if (lifeRecieved)
-                    {
-                        // start level
-                        GameController.LoadLevel(levelId);
-                    }
-                });
+                // 能量不足：弹恢复能量面板（补足后再次点击 Play 即可）
+                UIRecoverEnergy.Show();
             }
         }
 

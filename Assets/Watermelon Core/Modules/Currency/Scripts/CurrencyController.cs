@@ -3,30 +3,45 @@ using UnityEngine;
 
 namespace Watermelon
 {
-    [StaticUnload]
-    public static class CurrencyController
+    public class CurrencyController
     {
-        private static Currency[] currencies;
-        public static Currency[] Currencies => currencies;
+        private static CurrencyController instance;
 
-        private static Dictionary<CurrencyType, int> currenciesLink;
-
-        private static bool isInitialized;
-
-        public static void Init(CurrencyDatabase currenciesDatabase)
+        private Currency[] currencies;
+        public static Currency[] Currencies
         {
-            if (isInitialized) return;
+            get
+            {
+                if (!IsInitialized) { LogNotInitialized(); return null; }
+                return instance.currencies;
+            }
+        }
 
-            // Store active currencies
+        private Dictionary<CurrencyType, int> currenciesLink;
+
+        public static bool IsInitialized => instance != null;
+
+        public CurrencyController(CurrencyDatabase currenciesDatabase)
+        {
+            if (instance != null)
+            {
+                Debug.LogWarning("[CurrencyController]: Already initialized.");
+                return;
+            }
+
+            instance = this;
+
             currencies = currenciesDatabase.Currencies;
-            
-            // Initialize currencies
+
             foreach (Currency currency in currencies)
             {
                 currency.Init();
             }
 
-            // Link currencies by the type
+#if MODULE_REMOTE_CONFIG
+            CurrencyRemoteConfigData remoteConfigData = RemoteConfigController.TryGetConfig<CurrencyRemoteConfigData>("currencies");
+#endif
+
             currenciesLink = new Dictionary<CurrencyType, int>();
             for (int i = 0; i < currencies.Length; i++)
             {
@@ -36,39 +51,64 @@ namespace Watermelon
                 }
                 else
                 {
-                    Debug.LogError(string.Format("[Currency Syste]: Currency with type {0} added to database twice!", currencies[i].CurrencyType));
+                    Debug.LogError(string.Format("[CurrencyController]: Currency with type {0} added to database twice!", currencies[i].CurrencyType));
                 }
 
                 Currency.Save save = SaveController.GetSaveObject<Currency.Save>("currency" + ":" + (int)currencies[i].CurrencyType);
-                if(save.Amount == -1)
-                    save.Amount = currencies[i].DefaultAmount;
+                if (save.Amount == -1)
+                {
+                    int defaultAmount = currencies[i].DefaultAmount;
+
+#if MODULE_REMOTE_CONFIG
+                    if (remoteConfigData != null)
+                    {
+                        CurrencyRemoteConfigData.Currency currencyOverride = remoteConfigData.GetCurrencyOverride(currencies[i].CurrencyType);
+                        if (currencyOverride != null)
+                        {
+                            defaultAmount = currencyOverride.defaultCount;
+                        }
+                    }
+#endif
+
+                    save.Amount = defaultAmount;
+                }
 
                 currencies[i].SetSave(save);
             }
+        }
 
-            isInitialized = true;
+        public void Unload()
+        {
+            foreach (Currency currency in currencies)
+            {
+                currency.ClearListeners();
+            }
+
+            instance = null;
         }
 
         public static bool HasAmount(CurrencyType currencyType, int amount)
         {
-            return currencies[currenciesLink[currencyType]].Amount >= amount;
+            if (!IsInitialized) { LogNotInitialized(); return false; }
+            return instance.currencies[instance.currenciesLink[currencyType]].Amount >= amount;
         }
 
         public static int Get(CurrencyType currencyType)
         {
-            return currencies[currenciesLink[currencyType]].Amount;
+            if (!IsInitialized) { LogNotInitialized(); return 0; }
+            return instance.currencies[instance.currenciesLink[currencyType]].Amount;
         }
 
         public static Currency GetCurrency(CurrencyType currencyType)
         {
 #if UNITY_EDITOR
-            if(!Application.isPlaying)
+            if (!Application.isPlaying)
             {
                 ProjectInitSettings projectInitSettings = RuntimeEditorUtils.GetAsset<ProjectInitSettings>();
                 if (projectInitSettings != null)
                 {
                     CurrencyInitModule currencyInitModule = projectInitSettings.GetModule<CurrencyInitModule>();
-                    if(currencyInitModule != null)
+                    if (currencyInitModule != null)
                     {
                         CurrencyDatabase currencyDatabase = currencyInitModule.Database;
                         if (currencyDatabase != null)
@@ -82,74 +122,80 @@ namespace Watermelon
             }
 #endif
 
-            return currencies[currenciesLink[currencyType]];
+            if (!IsInitialized) { LogNotInitialized(); return null; }
+            return instance.currencies[instance.currenciesLink[currencyType]];
         }
 
         public static void Set(CurrencyType currencyType, int amount)
         {
-            Currency currency = currencies[currenciesLink[currencyType]];
+            if (!IsInitialized) { LogNotInitialized(); return; }
 
+            Currency currency = instance.currencies[instance.currenciesLink[currencyType]];
             currency.Amount = amount;
 
-            // Change save state to required
             SaveController.MarkAsSaveIsRequired();
-
-            // Invoke currency change event
             currency.InvokeChangeEvent(0);
         }
 
-        public static void Add(CurrencyType currencyType, int amount)
+        public static void Add(CurrencyType currencyType, int amount, string analyticsEvent = "")
         {
-            Currency currency = currencies[currenciesLink[currencyType]];
+            if (!IsInitialized) { LogNotInitialized(); return; }
 
+            Currency currency = instance.currencies[instance.currenciesLink[currencyType]];
             currency.Amount += amount;
 
-            // Change save state to required
             SaveController.MarkAsSaveIsRequired();
-
-            // Invoke currency change event;
             currency.InvokeChangeEvent(amount);
+
+            if (!string.IsNullOrEmpty(analyticsEvent))
+            {
+#if MODULE_ANALYTICS
+                Analytics.TrackEvent(AnalyticsEvents.CurrencySource, new AnalyticsCurrencyData(analyticsEvent, new Dictionary<CurrencyType, int>() { { currencyType, amount } }));
+#endif
+            }
         }
 
-        public static void Substract(CurrencyType currencyType, int amount)
+        public static void Substract(CurrencyType currencyType, int amount, string analyticsEvent = "")
         {
-            Currency currency = currencies[currenciesLink[currencyType]];
+            if (!IsInitialized) { LogNotInitialized(); return; }
 
+            Currency currency = instance.currencies[instance.currenciesLink[currencyType]];
             currency.Amount -= amount;
 
-            // Change save state to required
             SaveController.MarkAsSaveIsRequired();
-
-            // Invoke currency change event
             currency.InvokeChangeEvent(-amount);
+
+            if (!string.IsNullOrEmpty(analyticsEvent))
+            {
+#if MODULE_ANALYTICS
+                Analytics.TrackEvent(AnalyticsEvents.CurrencySink, new AnalyticsCurrencyData(analyticsEvent, new Dictionary<CurrencyType, int>() { { currencyType, amount } }));
+#endif
+            }
         }
 
         public static void SubscribeGlobalCallback(CurrencyCallback currencyChange)
         {
-            for(int i = 0; i < currencies.Length; i++)
+            if (!IsInitialized) { LogNotInitialized(); return; }
+
+            for (int i = 0; i < instance.currencies.Length; i++)
             {
-                currencies[i].OnCurrencyChanged += currencyChange;
+                instance.currencies[i].OnCurrencyChanged += currencyChange;
             }
         }
 
         public static void UnsubscribeGlobalCallback(CurrencyCallback currencyChange)
         {
-            if(!currencies.IsNullOrEmpty())
+            if (!IsInitialized) return;
+
+            for (int i = 0; i < instance.currencies.Length; i++)
             {
-                for (int i = 0; i < currencies.Length; i++)
-                {
-                    currencies[i].OnCurrencyChanged -= currencyChange;
-                }
+                instance.currencies[i].OnCurrencyChanged -= currencyChange;
             }
         }
 
-        private static void UnloadStatic()
+        private static void LogNotInitialized()
         {
-            currencies = null;
-
-            currenciesLink = null;
-
-            isInitialized = false;
+            Debug.LogError("[CurrencyController]: Not initialized. Add CurrencyInitModule to the ProjectInitSettings modules list.");
         }
     }
 

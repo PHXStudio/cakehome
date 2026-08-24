@@ -9,17 +9,20 @@ namespace Watermelon
         private PropertyGrouper propertyGrouper;
         private GroupAttribute groupAttribute;
         private CustomInspector editor;
+        private string effectiveID;
 
-        public string GroupID => groupAttribute.ID;
+        public string GroupID => effectiveID;
         public string ParentPath { get; private set; }
 
-        public GroupGUIRenderer(CustomInspector editor, GroupAttribute groupAttribute, List<GUIRenderer> renderers)
+        public GroupGUIRenderer(CustomInspector editor, GroupAttribute groupAttribute, List<GUIRenderer> renderers, string idPrefix = "")
         {
             this.editor = editor;
             this.renderers = renderers;
             this.groupAttribute = groupAttribute;
 
-            ParentPath = PropertyUtility.GetSubstringBeforeLastSlash(groupAttribute.ID);
+            effectiveID = idPrefix + groupAttribute.ID;
+            string parentPath = PropertyUtility.GetSubstringBeforeLastSlash(groupAttribute.ID);
+            ParentPath = string.IsNullOrEmpty(parentPath) ? "" : idPrefix + parentPath;
 
             propertyGrouper = CustomAttributesDatabase.GetGroupAttribute(groupAttribute.GetType());
 
@@ -32,7 +35,7 @@ namespace Watermelon
                 BoxFoldoutAttribute foldoutAttribute = (BoxFoldoutAttribute)groupAttribute;
 
                 // Override default state
-                editor.GetFoldout(groupAttribute.ID, foldoutAttribute.DefaultState);
+                editor.GetFoldout(effectiveID, foldoutAttribute.DefaultState);
             }
         }
 
@@ -45,9 +48,9 @@ namespace Watermelon
         {
             if (!IsVisible) return;
 
-            propertyGrouper.BeginGroup(editor, groupAttribute.ID, groupAttribute.Label);
+            propertyGrouper.BeginGroup(editor, effectiveID, groupAttribute.Label);
 
-            if (propertyGrouper.DrawRenderers(editor, groupAttribute.ID))
+            if (propertyGrouper.DrawRenderers(editor, effectiveID))
             {
                 foreach (GUIRenderer renderer in renderers)
                 {

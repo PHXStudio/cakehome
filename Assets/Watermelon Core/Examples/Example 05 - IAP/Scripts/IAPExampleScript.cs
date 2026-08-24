@@ -47,7 +47,7 @@ namespace Watermelon
                 itemPanelScript.Name =  values[i].ToString();
                 itemPanelScript.Price = string.Format("({0} {1})", product.Price, product.ISOCurrencyCode);
 
-                itemPanelScript.SetPurchasedTextActive(product.IsPurchased);
+                itemPanelScript.SetPurchasedTextActive(IAPManager.IsPurchased(values[i]));
                 
                 if((product.ProductType == ProductType.Subscription) && (IAPManager.IsSubscribed(values[i])))
                 {

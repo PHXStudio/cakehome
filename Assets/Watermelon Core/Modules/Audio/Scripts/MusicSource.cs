@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Watermelon
 {
-    [StaticUnload]
     [RequireComponent(typeof(AudioSource))]
     public class MusicSource : MonoBehaviour
     {
@@ -18,11 +18,15 @@ namespace Watermelon
         private AudioSource audioSource;
         public AudioSource AudioSource => audioSource;
 
-        private TweenCase fadeTweenCase;
+        // Raw 0–1 volume, independent of global volume and volumeMultiplier
+        private float currentRawVolume = 0f;
+        private Coroutine fadeCoroutine;
 
         private float volumeMultiplier = 1.0f;
 
-        private void Awake()
+        private bool isInitialized;
+
+        private void Start()
         {
             if(activateAutomatically)
             {
@@ -33,25 +37,37 @@ namespace Watermelon
 
         public void Init()
         {
+            if (isInitialized) return;
+            isInitialized = true;
+
             audioSource = GetComponent<AudioSource>();
             audioSource.loop = true;
             audioSource.playOnAwake = false;
 
             volumeMultiplier = audioSource.volume;
-
-            audioSource.volume = AudioController.GetVolume(AudioType.Music) * volumeMultiplier;
+            currentRawVolume = 0f;
+            audioSource.volume = 0f;
 
             AudioController.VolumeChanged += OnVolumeChanged;
         }
 
         public void Unload()
         {
+            if (!isInitialized) return;
+
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine);
+                fadeCoroutine = null;
+            }
+
             AudioController.VolumeChanged -= OnVolumeChanged;
+            isInitialized = false;
         }
 
         private void OnDestroy()
         {
-            AudioController.VolumeChanged -= OnVolumeChanged;
+            Unload();
         }
 
         public void SetAsDefault()
@@ -67,6 +83,7 @@ namespace Watermelon
             {
                 activeMusicSource.audioSource.volume = 0.0f;
                 activeMusicSource.audioSource.Stop();
+                activeMusicSource.currentRawVolume = 0f;
             }
 
             audioSource.Play();
@@ -78,24 +95,46 @@ namespace Watermelon
 
         public void SetVolume(float volume)
         {
+            currentRawVolume = volume;
             audioSource.volume = volume * AudioController.GetVolume(AudioType.Music) * volumeMultiplier;
         }
 
-        public void Fade(float value, float duration, float delay = 0, SimpleCallback onComplete = null)
+        public void Fade(float targetVolume, float duration, float delay = 0, SimpleCallback onComplete = null)
         {
-            fadeTweenCase.KillActive();
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
 
-            fadeTweenCase = Tween.DoFloat(audioSource.volume, value, duration, (value) =>
+            fadeCoroutine = StartCoroutine(FadeRoutine(targetVolume, duration, delay, onComplete));
+        }
+
+        private IEnumerator FadeRoutine(float target, float duration, float delay, SimpleCallback onComplete)
+        {
+            if (delay > 0f)
+                yield return new WaitForSeconds(delay);
+
+            float start = currentRawVolume;
+            float elapsed = 0f;
+
+            while (elapsed < duration)
             {
-                audioSource.volume = value * AudioController.GetVolume(AudioType.Music) * volumeMultiplier;
-            }, delay).OnComplete(onComplete);
+                elapsed += Time.deltaTime;
+                currentRawVolume = Mathf.Lerp(start, target, Mathf.Clamp01(elapsed / duration));
+                audioSource.volume = currentRawVolume * AudioController.GetVolume(AudioType.Music) * volumeMultiplier;
+                yield return null;
+            }
+
+            currentRawVolume = target;
+            audioSource.volume = currentRawVolume * AudioController.GetVolume(AudioType.Music) * volumeMultiplier;
+
+            fadeCoroutine = null;
+            onComplete?.Invoke();
         }
 
         private void OnVolumeChanged(AudioType audioType, float volume)
         {
             if (audioType != AudioType.Music) return;
 
-            audioSource.volume = volume * volumeMultiplier;
+            audioSource.volume = currentRawVolume * volume * volumeMultiplier;
         }
 
         public bool IsActive()
@@ -107,41 +146,9 @@ namespace Watermelon
         {
             if (activeMusicSource == defaultMusicSource) return;
 
-            defaultMusicSource.Activate();
+            if (defaultMusicSource != null)
+                defaultMusicSource.Activate();
         }
 
-        private static void UnloadStatic()
-        {
-            defaultMusicSource = null;
-            activeMusicSource = null;
-        }
     }
 }
-
-// -----------------
-// Audio Controller v 0.4
-// -----------------
-
-// Changelog
-// v 0.4
-// • Vibration settings removed
-// v 0.3.3
-// • Method for separate music and sound volume override
-// v 0.3.2
-// • Added audio listener creation method
-// v 0.3.2
-// • Added volume float
-// • AudioSettings variable removed (now sounds, music and vibrations can be reached directly)
-// v 0.3.1
-// • Added OnVolumeChanged callback
-// • Renamed AudioSettings to Settings
-// v 0.3
-// • Added IsAudioModuleEnabled method
-// • Added IsVibrationModuleEnabled method
-// • Removed VibrationToggleButton class
-// v 0.2
-// • Removed MODULE_VIBRATION
-// v 0.1
-// • Added basic version
-// • Added support of new initialization
-// • Music and Sound volume is combined

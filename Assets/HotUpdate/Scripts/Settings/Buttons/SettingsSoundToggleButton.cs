@@ -60,7 +60,7 @@ namespace Watermelon
             SetState(isActive);
 
             // Play button sound
-            AudioController.PlaySound(AudioController.AudioClips.buttonSound);
+            AudioController.PlaySound(AudioController.GetClip("button_sound"));
         }
 
         private void OnVolumeChanged(AudioType audioType, float volume)

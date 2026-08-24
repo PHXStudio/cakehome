@@ -1,96 +1,38 @@
-using TMPro;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public class PUReward : Reward
+    /// <summary>
+    /// Data-only reward that grants power-ups. UI display is handled by <see cref="PURewardView"/>.
+    /// </summary>
+    [Serializable]
+    [RegisterReward(typeof(PURewardView))]
+    public sealed class PUReward : Reward
     {
-        [SerializeField] PUData[] powerUpsData;
-
-        public override void Init()
-        {
-            foreach (PUData powerUpData in powerUpsData)
-            {
-                powerUpData.Init();
-
-                if (powerUpData.IconImage != null)
-                {
-                    PUBehavior powerUpBehavior = PUController.GetPowerUpBehavior(powerUpData.PowerUpType);
-                    if (powerUpBehavior != null)
-                    {
-                        powerUpData.IconImage.sprite = powerUpBehavior.Settings.Icon;
-                    }
-                }
-
-                if (powerUpData.AmountText != null)
-                {
-                    powerUpData.AmountText.text = string.Format(string.IsNullOrEmpty(powerUpData.TextFormating) ? powerUpData.Amount.ToString() : string.Format(powerUpData.TextFormating, powerUpData.Amount));
-                }
-            }
-        }
+        [SerializeField] PUItem[] powerUps;
+        public PUItem[] PowerUps => powerUps;
 
         public override void ApplyReward()
         {
-            foreach (PUData powerUpData in powerUpsData)
+            if (powerUps.IsNullOrEmpty()) return;
+
+            foreach (PUItem item in powerUps)
             {
-                PUController.AddPowerUp(powerUpData.PowerUpType, powerUpData.Amount);
+                if (item == null) continue;
 
-                TextMeshProUGUI floatingText = powerUpData.PurchaseFloatingText;
-                if (floatingText != null)
-                {
-                    floatingText.gameObject.SetActive(true);
-
-                    floatingText.text = string.Format("+{0}", powerUpData.Amount);
-
-                    RectTransform textRectTransform = floatingText.rectTransform;
-                    textRectTransform.anchoredPosition = powerUpData.FloatingTextPosition;
-
-                    floatingText.color = floatingText.color.SetAlpha(1.0f);
-
-                    textRectTransform.DOAnchoredPosition(textRectTransform.anchoredPosition + new Vector2(0, 100), 1.0f).SetEasing(Ease.Type.SineIn);
-                    floatingText.DOFade(0.0f, 1.0f).SetEasing(Ease.Type.QuintIn).OnComplete(() =>
-                    {
-                        textRectTransform.anchoredPosition = powerUpData.FloatingTextPosition;
-                        floatingText.gameObject.SetActive(false);
-                    });
-                }
+                PUController.AddPowerUp(item.PowerUpType, item.Amount);
             }
         }
 
-
-        [System.Serializable]
-        public class PUData
+        [Serializable]
+        public class PUItem
         {
             [SerializeField] PUType powerUpType;
             public PUType PowerUpType => powerUpType;
 
             [SerializeField] int amount;
             public int Amount => amount;
-
-            [Space]
-            [SerializeField] Image iconImage;
-            public Image IconImage => iconImage;
-
-            [SerializeField] TextMeshProUGUI amountText;
-            public TextMeshProUGUI AmountText => amountText;
-
-            [SerializeField] TextMeshProUGUI purchaseFloatingText;
-            public TextMeshProUGUI PurchaseFloatingText => purchaseFloatingText;
-
-            [SerializeField] string textFormating = "x{0}";
-            public string TextFormating => textFormating;
-
-            private Vector2 floatingTextPosition;
-            public Vector2 FloatingTextPosition => floatingTextPosition;
-
-            public void Init()
-            {
-                if(purchaseFloatingText != null)
-                {
-                    floatingTextPosition = purchaseFloatingText.rectTransform.anchoredPosition;
-                }
-            }
         }
     }
 }

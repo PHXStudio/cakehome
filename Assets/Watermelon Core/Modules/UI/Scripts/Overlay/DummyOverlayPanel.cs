@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public class DummyOverlayPanel : IOverlayPanel
+    /// <summary>
+    /// Fallback overlay panel created at runtime when no custom <see cref="IOverlayPanel"/> is found.
+    /// Renders a black fullscreen <see cref="UnityEngine.UI.Image"/> and fades it using a coroutine
+    /// with <see cref="Time.unscaledDeltaTime"/> so it works correctly while the game is paused.
+    /// </summary>
+    public class DummyOverlayPanel : BaseOverlayPanel
     {
-        private Canvas canvas;
-
         private Image image;
-        private TweenCase fadeTweenCase;
+        private Coroutine fadeCoroutine;
 
-        public void Init()
+        public override void Init()
         {
             GameObject overlayObject = new GameObject("Overlay Image");
             overlayObject.transform.SetParent(canvas.transform);
@@ -26,38 +30,53 @@ namespace Watermelon
             image.raycastTarget = true;
         }
 
-        public void SetCanvas(Canvas canvas)
+        public override void Show(float duration, SimpleCallback onCompleted)
         {
-            this.canvas = canvas;
+            StopFade();
+            fadeCoroutine = StartCoroutine(FadeCoroutine(1.0f, duration, onCompleted));
         }
 
-        public void Show(float duration, SimpleCallback onCompleted)
+        public override void Hide(float duration, SimpleCallback onCompleted)
         {
-            fadeTweenCase.KillActive();
-            fadeTweenCase = image.DOFade(1.0f, duration, unscaledTime: true).SetEasing(Ease.Type.Linear).OnComplete(onCompleted);
+            StopFade();
+            fadeCoroutine = StartCoroutine(FadeCoroutine(0.0f, duration, onCompleted));
         }
 
-        public void Hide(float duration, SimpleCallback onCompleted)
+        public override void Clear()
         {
-            fadeTweenCase.KillActive();
-            fadeTweenCase = image.DOFade(0.0f, duration, unscaledTime: true).SetEasing(Ease.Type.Linear).OnComplete(onCompleted);
+            StopFade();
+
+            Object.Destroy(gameObject);
         }
 
-        public void Clear()
+        private void StopFade()
         {
-            fadeTweenCase.KillActive();
-
-            Object.Destroy(canvas.gameObject);
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine);
+                fadeCoroutine = null;
+            }
         }
 
-        public void SetState(bool state)
+        private IEnumerator FadeCoroutine(float targetAlpha, float duration, SimpleCallback onCompleted)
         {
-            canvas.enabled = state;
-        }
+            Color color = image.color;
+            float startAlpha = color.a;
+            float elapsed = 0f;
 
-        public void SetLoadingState(bool state)
-        {
-            // Loading isn't supported implemented for dummy panel
+            while (elapsed < duration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                color.a = Mathf.Lerp(startAlpha, targetAlpha, Mathf.Clamp01(elapsed / duration));
+                image.color = color;
+                yield return null;
+            }
+
+            color.a = targetAlpha;
+            image.color = color;
+            fadeCoroutine = null;
+
+            onCompleted?.Invoke();
         }
     }
 }

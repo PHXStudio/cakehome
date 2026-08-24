@@ -212,6 +212,8 @@ namespace Watermelon
             }
 
             pooledObjects.Clear();
+            pooledObjects = null;
+            inited = false;
         }
     }
 }

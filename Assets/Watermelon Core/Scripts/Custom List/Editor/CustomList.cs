@@ -152,6 +152,7 @@ namespace Watermelon.List
         private float bodyHeight;
         private bool ignoreDragEvents;
         private bool ignoreKeyboardArrows;
+        private bool reorderConfirmationEnabled = true;
 
         private float CollapsedElementHeight => style.element.collapsedElementHeight;
         public int SelectedIndex { get => selectedIndex; set => selectedIndex = value; }
@@ -160,6 +161,7 @@ namespace Watermelon.List
         public bool StretchWidth { get => stretchWidth; set => stretchWidth = value; }
         public bool IgnoreDragEvents { get => ignoreDragEvents; set => ignoreDragEvents = value; }
         public bool IgnoreKeyboardArrows { get => ignoreKeyboardArrows; set => ignoreKeyboardArrows = value; }
+        public bool ReorderConfirmationEnabled { get => reorderConfirmationEnabled; set => reorderConfirmationEnabled = value; }
 
         public CustomList(SerializedObject serializedObject, SerializedProperty elements, string labelPropertyName)
         {
@@ -1144,6 +1146,23 @@ namespace Watermelon.List
         private void DraggingFinished()
         {
             dragging = false;
+
+            if (ReorderConfirmationEnabled)
+            {
+                if(startDragIndex == currentDragIndex)
+                {
+                    currentEvent.Use();
+                    return;
+                }
+
+                if (!EditorUtility.DisplayDialog("List reorder confirmation", $"Are you sure you want to move the element from position #{startDragIndex + 1} to position #{currentDragIndex + 1}?", "Yes", "Cancel"))
+                {
+                    currentEvent.Use();
+                    return;
+                }
+            }
+
+
             MoveElement(startDragIndex, currentDragIndex);
             OnSelectionChanged(currentDragIndex, false);
 

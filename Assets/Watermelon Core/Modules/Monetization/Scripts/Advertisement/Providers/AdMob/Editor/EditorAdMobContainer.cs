@@ -5,8 +5,11 @@ using System.Reflection;
 
 namespace Watermelon
 {
+    [AdsEditorContainer(typeof(AdMobContainer))]
     public class EditorAdMobContainer : EditorAdsContainer
     {
+        protected override string ContainerDisplayName => "AdMob";
+
         //App section
         private const string SETTINGS_FILE_PATH = "Assets/GoogleMobileAds/Resources/GoogleMobileAdsSettings.asset";
         private const string TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
@@ -49,13 +52,9 @@ namespace Watermelon
         private GUIContent testIdContent;
         private GUIStyle groupStyle;
 
-        public EditorAdMobContainer(string containerName, string propertyName) : base(containerName, propertyName)
+        public override void Init(SerializedProperty containerProp)
         {
-        }
-
-        public override void Init(SerializedObject serializedObject)
-        {
-            base.Init(serializedObject);
+            base.Init(containerProp);
 
             //for add units section
             bannerTypeProperty = containerProperty.FindPropertyRelative(BANNER_TYPE_PROPERTY_PATH);
@@ -146,7 +145,7 @@ namespace Watermelon
 
         public override void DrawContainer()
         {
-            containerProperty.isExpanded = EditorGUILayoutCustom.BeginExpandBoxGroup(containerName, containerProperty.isExpanded);
+            containerProperty.isExpanded = EditorGUILayoutCustom.BeginExpandBoxGroup(ContainerDisplayName, containerProperty.isExpanded);
 
             if (containerProperty.isExpanded)
             {
@@ -271,7 +270,7 @@ namespace Watermelon
 
             GUILayout.Space(8);
 
-            EditorGUILayout.HelpBox("Tested with AdMob Plugin v9.6.0", MessageType.Info);
+            EditorGUILayout.HelpBox("Tested with AdMob Plugin v11.0.0", MessageType.Info);
         }
 
         protected override void SpecialButtons()

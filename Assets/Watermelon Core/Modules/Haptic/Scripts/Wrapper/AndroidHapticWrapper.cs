@@ -103,34 +103,40 @@ namespace Watermelon
 
             public AndroidHapticPattern(HapticPattern hapticPattern)
             {
-                List<long> patternList = new List<long>();
-                List<int> amplitudeList = new List<int>();
+                // Sort by StartTime so overlaps are predictable regardless of authoring order
+                HapticEvent[] sorted = (HapticEvent[])hapticPattern.Pattern.Clone();
+                System.Array.Sort(sorted, (a, b) => a.StartTime.CompareTo(b.StartTime));
+
+                List<long> patternList   = new List<long>();
+                List<int>  amplitudeList = new List<int>();
 
                 float previousEndTime = 0f;
 
-                foreach (HapticEvent hapticEvent in hapticPattern.Pattern)
+                for (int i = 0; i < sorted.Length; i++)
                 {
-                    // Calculate the delay (pause) before the current haptic event
-                    if (hapticEvent.StartTime > previousEndTime)
+                    HapticEvent ev = sorted[i];
+
+                    // Overlap resolution: truncate this event so it ends when the next one starts
+                    float effectiveDuration = ev.Duration;
+                    if (i < sorted.Length - 1)
+                        effectiveDuration = Mathf.Min(effectiveDuration, sorted[i + 1].StartTime - ev.StartTime);
+
+                    if (effectiveDuration <= 0f) continue;
+
+                    // Pause before this event
+                    if (ev.StartTime > previousEndTime)
                     {
-                        patternList.Add((long)((hapticEvent.StartTime - previousEndTime) * 1000)); // convert to milliseconds
-                        amplitudeList.Add(0); // no vibration during the pause
+                        patternList.Add((long)((ev.StartTime - previousEndTime) * 1000));
+                        amplitudeList.Add(0);
                     }
 
-                    // Add the duration of the haptic event
-                    long duration = (long)(hapticEvent.Duration * 1000); // convert to milliseconds
-                    patternList.Add(duration);
+                    patternList.Add((long)(effectiveDuration * 1000));
+                    amplitudeList.Add((int)Mathf.Lerp(1, 255, ev.Intensity));
 
-                    // Convert intensity to a value between 0 and 255
-                    int intensity = (int)Mathf.Lerp(1, 255, hapticEvent.Intensity);
-                    amplitudeList.Add(intensity);
-
-                    // Update previousEndTime
-                    previousEndTime = hapticEvent.StartTime + hapticEvent.Duration;
+                    previousEndTime = ev.StartTime + effectiveDuration;
                 }
 
-                // Convert lists to arrays
-                Pattern = patternList.ToArray();
+                Pattern    = patternList.ToArray();
                 Amplitudes = amplitudeList.ToArray();
             }
         }

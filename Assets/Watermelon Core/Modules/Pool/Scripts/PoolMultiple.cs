@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Watermelon
 {
+    /// <summary>
+    /// Multi-prefab pool. Selects a prefab at random using weighted probability on each spawn.
+    /// </summary>
     [System.Serializable]
     public sealed class PoolMultiple : IPool
     {
@@ -18,6 +21,7 @@ namespace Watermelon
 
         private List<List<GameObject>> multiPooledObjects;
         private bool inited = false;
+        private int totalWeight;
 
         public PoolMultiple(List<MultiPoolPrefab> multiPoolPrefabs, string name, Transform container = null)
         {
@@ -68,6 +72,10 @@ namespace Watermelon
             PoolManager.AddPool(this);
 
             inited = true;
+
+            totalWeight = 0;
+            for (int i = 0; i < multiPoolPrefabsList.Count; i++)
+                totalWeight += multiPoolPrefabsList[i].Weight;
         }
 
         public GameObject GetPooledObject()
@@ -95,7 +103,6 @@ namespace Watermelon
             }
             else
             {
-                int totalWeight = multiPoolPrefabsList.Sum(x => x.Weight);
                 int randomValue = Random.Range(1, totalWeight + 1);
                 int currentWeight = 0;
 
@@ -161,6 +168,8 @@ namespace Watermelon
 
         public void ReturnToPoolEverything(bool resetParent = false)
         {
+            if (!inited) return;
+
             for (int i = 0; i < multiPooledObjects.Count; i++)
             {
                 for (int j = 0; j < multiPooledObjects[i].Count; j++)
@@ -180,6 +189,8 @@ namespace Watermelon
         /// </summary>
         public void Clear()
         {
+            if (!inited) return;
+
             for (int i = 0; i < multiPooledObjects.Count; i++)
             {
                 for (int j = 0; j < multiPooledObjects[i].Count; j++)
@@ -189,6 +200,9 @@ namespace Watermelon
 
                 multiPooledObjects[i].Clear();
             }
+
+            multiPooledObjects = null;
+            inited = false;
         }
 
         /// <summary>

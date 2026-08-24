@@ -1,44 +1,44 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
 namespace Watermelon
 {
-    public class LoadingGraphics : MonoBehaviour
+    public class LoadingGraphics : MonoBehaviour, ILoadingGraphics
     {
         [SerializeField] TextMeshProUGUI loadingText;
         [SerializeField] Image backgroundImage;
         [SerializeField] CanvasScaler canvasScaler;
         [SerializeField] Camera loadingCamera;
 
-        private void Awake()
+        public void Init(GameLoading gameLoading)
         {
-            DontDestroyOnLoad(gameObject);
-
             canvasScaler.MatchSize();
 
-            OnLoading(0.0f, "Loading..");
+            SetLoadingState(0.0f, "Loading..");
         }
 
-        private void OnEnable()
+        public void SetLoadingState(float progress, string message)
         {
-            GameLoading.OnLoading += OnLoading;
-            GameLoading.OnLoadingFinished += OnLoadingFinished;
+            if (loadingText != null)
+                loadingText.text = message;
         }
 
-        private void OnDisable()
-        {
-            GameLoading.OnLoading -= OnLoading;
-            GameLoading.OnLoadingFinished -= OnLoadingFinished;
-        }
-
-        private void OnLoading(float state, string message)
+        public void ShowErrorMessage(string message)
         {
             loadingText.text = message;
         }
 
-        private void OnLoadingFinished()
+        public void HideErrorMessage() { }
+
+        public void OnLoadingFinished()
         {
+            if (loadingText == null || backgroundImage == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             loadingText.DOFade(0.0f, 0.6f, unscaledTime: true);
             backgroundImage.DOFade(0.0f, 0.6f, unscaledTime: true).OnComplete(delegate
             {

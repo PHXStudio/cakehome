@@ -7,12 +7,14 @@ namespace Watermelon
     {
         public string Define { get; private set; }
         public string AssemblyType { get; private set; }
+        public string FilePath { get; private set; }
 
-        public DefineAttribute(string define, string assemblyType = "")
+        public DefineAttribute(string define, string assemblyType = "", string filePath = "")
         {
             Define = define;
 
             AssemblyType = assemblyType;
+            FilePath = filePath;
         }
     }
 }

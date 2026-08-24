@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
-using UnityEditor.IMGUI.Controls;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using static System.Linq.Expressions.Expression;
@@ -40,18 +39,11 @@ namespace Watermelon
         private static void PrepareData()
         {
             sceneHierarchyWindowType = typeof(Editor).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
+
             sceneHierarchyProperty = sceneHierarchyWindowType.GetProperty("sceneHierarchy");
 
             sceneHierarchyType = typeof(Editor).Assembly.GetType("UnityEditor.SceneHierarchy");
             hierarchyTreeViewField = sceneHierarchyType.GetField("m_TreeView", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            treeViewControllerType = typeof(TreeViewState).Assembly.GetType("UnityEditor.IMGUI.Controls.TreeViewController");
-            treeViewGUIProperty = treeViewControllerType.GetProperty("gui");
-
-            treeViewGUIType = typeof(UnityEditor.IMGUI.Controls.TreeView).Assembly.GetType("UnityEditor.IMGUI.Controls.TreeViewGUI");
-
-            iconWidthField = treeViewGUIType.GetField("k_IconWidth");
-            iconSpaceField = treeViewGUIType.GetField("k_SpaceBetweenIconAndText");
 
             lastInteractedHierarchyWindow = sceneHierarchyWindowType.GetProperty("lastInteractedHierarchyWindow", BindingFlags.Public | BindingFlags.Static);
             getLastInteractedHierarchyWindow = Lambda<Func<object>>(Property(null, lastInteractedHierarchyWindow)).Compile();
@@ -62,8 +54,18 @@ namespace Watermelon
             this.window = window;
 
             sceneHierarchy = sceneHierarchyProperty.GetValue(window);
+
             treeViewController = hierarchyTreeViewField.GetValue(sceneHierarchy);
+
+            treeViewControllerType = treeViewController.GetType();
+            treeViewGUIProperty = treeViewControllerType.GetProperty("gui");
+
             treeViewGUI = treeViewGUIProperty.GetValue(treeViewController);
+
+            treeViewGUIType = treeViewGUI.GetType();
+
+            iconWidthField = treeViewGUIType.GetField("k_IconWidth");
+            iconSpaceField = treeViewGUIType.GetField("k_SpaceBetweenIconAndText");
 
             defaultIconWidth = (float)iconWidthField.GetValue(treeViewGUI);
             defaultSpaceBeforeIcon = (float)iconSpaceField.GetValue(treeViewGUI);
@@ -82,9 +84,17 @@ namespace Watermelon
             SetIconWidth(defaultIconWidth, defaultSpaceBeforeIcon);
         }
 
+#if UNITY_6000_4_OR_NEWER
+        public void DrawElementGUI(EntityId instanceID, Rect selectionRect)
+        {
+            GameObject instanceObject = EditorUtility.EntityIdToObject(instanceID) as GameObject;
+#else
         public void DrawElementGUI(int instanceID, Rect selectionRect)
         {
+#pragma warning disable CS0618 // no EntityId equivalent available below Unity 6000.4
             GameObject instanceObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+#pragma warning restore CS0618
+#endif
 
             if (!instanceObject) return;
 

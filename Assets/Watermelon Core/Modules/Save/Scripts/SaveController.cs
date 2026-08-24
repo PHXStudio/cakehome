@@ -1,209 +1,244 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using System.Threading;
 
 namespace Watermelon
 {
-    [StaticUnload]
-    public static class SaveController
+    /// <summary>
+    /// MonoBehaviour facade over <see cref="SaveManager"/>. Manages Unity lifecycle (auto-save, cloud sync coroutines,
+    /// focus/pause hooks) and exposes a static API for game code.
+    /// Created automatically by <see cref="SaveInitModule"/> on the Initializer's GameObject.
+    /// </summary>
+    public class SaveController : MonoBehaviour
     {
-        private const string SAVE_FILE_NAME = "save";
+        /// <summary>File name used for the primary save file (without extension).</summary>
+        public const string DEFAULT_FILE_NAME = "save";
 
-        private static GlobalSave globalSave;
+        private const float INIT_TIMEOUT_SECONDS = 15f;
+#if UNITY_EDITOR
+        private const float CLOUD_SYNC_INTERVAL = 30f;   // shorter for editor testing
+#else
+        private const float CLOUD_SYNC_INTERVAL = 300f;  // 5 minutes in production
+#endif
 
-        private static bool isSaveLoaded;
-        public static bool IsSaveLoaded => isSaveLoaded;
+        private static SaveController instance;
 
-        private static bool isSaveRequired;
+        // Created at field-init so Configure() can be called before InitAsync() (see SaveInitModule)
+        private readonly SaveManager manager = new SaveManager(GetWrapper());
 
-        public static float GameTime => globalSave.GameTime;
-
-        public static DateTime LastExitTime => globalSave.LastExitTime;
-
+        /// <summary>Fires once when the save system finishes loading (including cloud sync or timeout fallback).</summary>
         public static event SimpleCallback OnSaveLoaded;
 
-        public static void Init(float autoSaveDelay, bool clearSave = false, float overrideTime = -1f)
+        /// <summary>
+        /// Initializes the save system: auto-discovers a cloud handler, loads the default save file,
+        /// performs cloud sync (with a timeout fallback), then starts auto-save and cloud sync coroutines.
+        /// </summary>
+        public IEnumerator InitAsync(float autoSaveDelay, string[] namedFiles = null)
         {
-            Serializer.Init();
+            instance = this;
 
-            GameObject saveCallbackReciever = new GameObject("[SAVE CALLBACK RECIEVER]");
-            saveCallbackReciever.hideFlags = HideFlags.HideInHierarchy;
-
-            GameObject.DontDestroyOnLoad(saveCallbackReciever);
-
-            UnityCallbackReciever unityCallbackReciever = saveCallbackReciever.AddComponent<UnityCallbackReciever>();
-
-            if (clearSave)
+            // Auto-discover cloud save handler — search self + children of the Initializer GameObject.
+            // Scoped to this hierarchy; faster and more predictable than FindObjectOfType.
+            CloudSaveBehavior cloudBehavior = GetComponentInChildren<CloudSaveBehavior>(true);
+            if (cloudBehavior != null)
             {
-                InitClear(overrideTime != -1f ? overrideTime : Time.time);
-            }
-            else
-            {
-                Load(overrideTime != -1f ? overrideTime : Time.time);
-            }
-
-            if (autoSaveDelay > 0)
-            {
-                // Enable auto-save coroutine
-                unityCallbackReciever.StartCoroutine(AutoSaveCoroutine(autoSaveDelay));
-            }
-        }
-
-        public static void UpdateTime(float time)
-        {
-            globalSave.Time = time;
-        }
-
-        public static T GetSaveObject<T>(int hash) where T : ISaveObject, new()
-        {
-            if (!isSaveLoaded)
-            {
-                Debug.LogError("Save controller has not been initialized");
-                return default;
+                ICloudSaveHandler handler = cloudBehavior.GetConfiguredHandler();
+                if (handler != null)
+                {
+                    manager.SetCloudHandler(handler);
+                    LogManager.Log("[Save Controller]: Cloud handler auto-discovered and configured", LogCategory.Systems);
+                }
             }
 
-            return globalSave.GetSaveObject<T>(hash);
-        }
+            manager.Init(DEFAULT_FILE_NAME, namedFiles, null);
 
-        public static T GetSaveObject<T>() where T : ISaveObject, new()
-        {
-            return GetSaveObject<T>(typeof(T).GetHashCode());
-        }
+            // Wait for cloud sync with a timeout — prevents infinite hang if SDK never fires callback
+            float elapsed = 0f;
+            while (!manager.IsSaveLoaded && elapsed < INIT_TIMEOUT_SECONDS)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                yield return null;
+            }
 
-        public static T GetSaveObject<T>(string uniqueName) where T : ISaveObject, new()
-        {
-            return GetSaveObject<T>(uniqueName.GetHashCode());
-        }
+            if (!manager.IsSaveLoaded)
+            {
+                Debug.LogError($"[Save Controller]: Init timed out after {INIT_TIMEOUT_SECONDS}s. Falling back to local save.");
+                manager.ForceCompleteInit();
+            }
 
-        private static void InitClear(float time)
-        {
-            globalSave = new GlobalSave();
-            globalSave.Init(time);
+            // Upload local save to cloud if it was determined to be newer during init
+            // (covers LocalPreferred and NoConflict cases where cloud needs to be updated)
+            manager.SyncPendingToCloud();
 
-            Debug.Log("[Save Controller]: Created clear save!");
-
-            isSaveLoaded = true;
-        }
-
-        private static void Load(float time)
-        {
-            if (isSaveLoaded)
-                return;
-
-            // Try to read and deserialize file or create new one
-            globalSave = BaseSaveWrapper.ActiveWrapper.Load(SAVE_FILE_NAME);
-
-            globalSave.Init(time);
-
-            Debug.Log("[Save Controller]: Save is loaded!");
-
-            isSaveLoaded = true;
-
+            LogManager.Log("[Save Controller]: Save loaded.", LogCategory.Systems);
             OnSaveLoaded?.Invoke();
+
+            if (autoSaveDelay > 0f)
+                StartCoroutine(AutoSaveCoroutine(autoSaveDelay));
+
+            StartCoroutine(CloudSyncCoroutine());
         }
 
-        public static void Save(bool forceSave = false, bool useThreads = true)
+        /// <summary>Applies platform-specific wrapper configuration (e.g. WebGL prefix) before initialization.</summary>
+        public void Configure(SaveWrapperConfig config) => manager.Configure(config);
+
+        private void OnDestroy()
         {
-            if (!forceSave && !isSaveRequired) return;
-            if (globalSave == null) return;
-
-            globalSave.Flush(true);
-
-            BaseSaveWrapper saveWrapper = BaseSaveWrapper.ActiveWrapper;
-            if(useThreads && saveWrapper.UseThreads())
-            {
-                Thread saveThread = new Thread(() => BaseSaveWrapper.ActiveWrapper.Save(globalSave, SAVE_FILE_NAME));
-                saveThread.Start();
-            }
-            else
-            {
-                BaseSaveWrapper.ActiveWrapper.Save(globalSave, SAVE_FILE_NAME);
-            }
-
-            Debug.Log("[Save Controller]: Game is saved!");
-
-            isSaveRequired = false;
+#if UNITY_EDITOR
+            // Synchronous save on editor stop to avoid lost data
+            manager.Save(forceSave: true, useThreads: false);
+#endif
+            OnSaveLoaded = null;
+            instance = null;
         }
 
-        public static void SaveCustom(GlobalSave globalSave)
+#if !UNITY_EDITOR
+        private void OnApplicationFocus(bool focus)
         {
-            if(globalSave != null)
+            if (!focus)
             {
-                globalSave.Flush(false);
-
-                BaseSaveWrapper.ActiveWrapper.Save(globalSave, SAVE_FILE_NAME);
+                manager.Save();
+                manager.SyncPendingToCloud();
             }
         }
 
-        public static void MarkAsSaveIsRequired()
+        private void OnApplicationPause(bool pause)
         {
-            isSaveRequired = true;
+            if (pause)
+            {
+                manager.Save();
+                manager.SyncPendingToCloud();
+            }
         }
+#endif
 
-        private static IEnumerator AutoSaveCoroutine(float saveDelay)
+        private IEnumerator AutoSaveCoroutine(float saveDelay)
         {
-            WaitForSeconds waitForSeconds = new WaitForSeconds(saveDelay);
+            var wait = new WaitForSeconds(saveDelay);
 
             while (true)
             {
-                yield return waitForSeconds;
-
-                Save();
+                yield return wait;
+                manager.Save();
             }
         }
 
-        public static void PresetsSave(string fullFileName)
+        private IEnumerator CloudSyncCoroutine()
         {
-            globalSave.Flush(false);
+            var wait = new WaitForSeconds(CLOUD_SYNC_INTERVAL);
 
-            BaseSaveWrapper.ActiveWrapper.Save(globalSave, fullFileName);
+            while (true)
+            {
+                yield return wait;
+                manager.SyncPendingToCloud();
+            }
         }
 
-        public static void Info()
+        // --- Static API (delegates to manager) ---
+
+        /// <summary>Returns the save object for type T from the default save file, resolving the key automatically.</summary>
+        public static T GetSaveObject<T>() where T : ISaveObject, new()
+            => instance.manager.GetSaveObject<T>();
+
+        /// <summary>Returns the save object stored under the given explicit key in the default save file.</summary>
+        public static T GetSaveObject<T>(string key) where T : ISaveObject, new()
+            => instance.manager.GetSaveObject<T>(key);
+
+        /// <summary>Returns the save object from a named save file; key is optional and resolved automatically if omitted.</summary>
+        public static T GetSaveObject<T>(string fileName, string key = null) where T : ISaveObject, new()
+            => instance != null ? instance.manager.GetSaveObject<T>(fileName, key) : default;
+
+        /// <summary>Marks all loaded save files as dirty so they are written on the next <see cref="Save"/> call.</summary>
+        public static void MarkAsSaveIsRequired()
         {
-            globalSave.Info();
+            if (instance != null) instance.manager.MarkAllAsDirty();
         }
 
+        /// <summary>Returns a named save file by its file name, loading it from disk on first access.</summary>
+        public static SaveFile GetFile(string fileName)
+        {
+            if (instance == null) return null;
+            return instance.manager.GetFile(fileName);
+        }
+
+        /// <summary>Flushes all dirty save files to disk; pass <c>forceSave: true</c> to write regardless of dirty state.</summary>
+        public static void Save(bool forceSave = false, bool useThreads = true)
+        {
+            if (instance != null) instance.manager.Save(forceSave, useThreads);
+        }
+
+        /// <summary>Uploads all locally-saved files that are pending cloud sync.</summary>
+        public static void SyncToCloud()
+        {
+            if (instance != null) instance.manager.SyncPendingToCloud();
+        }
+
+        /// <summary>Deletes a named save file from disk and cloud.</summary>
+        public static void DeleteFile(string fileName)
+        {
+            if (instance != null) instance.manager.DeleteFile(fileName);
+        }
+
+        /// <summary>Deletes the default save file from disk and cloud.</summary>
         public static void DeleteSaveFile()
         {
-            BaseSaveWrapper.ActiveWrapper.Delete(SAVE_FILE_NAME);
-        }
-
-        public static GlobalSave GetGlobalSave()
-        {
-            GlobalSave tempGlobalSave = BaseSaveWrapper.ActiveWrapper.Load(SAVE_FILE_NAME);
-
-            tempGlobalSave.Init(Time.time);
-
-            return tempGlobalSave;
-        }
-
-        private static void UnloadStatic()
-        {
-            globalSave = null;
-
-            isSaveLoaded = false;
-            isSaveRequired = false;
-
-            OnSaveLoaded = null;
-        }
-
-        private class UnityCallbackReciever : MonoBehaviour
-        {
-            private void OnDestroy()
-            {
+            if (instance != null) { instance.manager.DeleteDefaultFile(); return; }
+            
 #if UNITY_EDITOR
-                SaveController.Save(true);
+            DefaultSaveWrapper wrapper = new DefaultSaveWrapper();
+            wrapper.Init();
+            wrapper.Delete(DEFAULT_FILE_NAME);
 #endif
-            }
+        }
 
-            private void OnApplicationFocus(bool focus)
-            {
-#if !UNITY_EDITOR
-                if(!focus) SaveController.Save();
+        /// <summary>Returns a deep copy of the current default save file; reflects in-memory changes even before the next flush.</summary>
+        public static SaveFile GetSaveFileCopy()
+        {
+            if (instance != null) return instance.manager.GetDefaultFileCopy();
+#if UNITY_EDITOR
+            DefaultSaveWrapper wrapper = new DefaultSaveWrapper();
+            wrapper.Init();
+            return wrapper.Load(DEFAULT_FILE_NAME);
+#else
+            return null;
 #endif
-            }
+        }
+
+        /// <summary>Writes a custom <see cref="SaveFile"/> to disk without updating its <c>lastSaved</c> or <c>saveCount</c> metadata.</summary>
+        public static void SaveCustom(SaveFile saveFile, string fileName = null)
+        {
+            if (instance != null) { instance.manager.SaveCustom(saveFile, fileName); return; }
+#if UNITY_EDITOR
+            if (saveFile == null) return;
+            string targetFile = fileName ?? DEFAULT_FILE_NAME;
+            DefaultSaveWrapper wrapper = new DefaultSaveWrapper();
+            wrapper.Init();
+            saveFile.Flush(updateLastSaved: false);
+            wrapper.SaveRaw(targetFile, SaveJson.ToJson(saveFile));
+#endif
+        }
+
+        /// <summary>Exports the default save file to an arbitrary path on disk, typically used for preset authoring in the editor.</summary>
+        public static void PresetsSave(string presetPath)
+        {
+            if (instance != null) instance.manager.PresetsSave(presetPath);
+        }
+
+        /// <summary>Logs save file info (last saved time, container keys) to the Unity console.</summary>
+        public static void Info()
+        {
+            if (instance != null) instance.manager.Info();
+        }
+
+        /// <summary>Returns the appropriate <see cref="ISaveWrapper"/> for the current platform: <see cref="WebGLSaveWrapper"/> on WebGL, <see cref="DefaultSaveWrapper"/> otherwise.</summary>
+        public static ISaveWrapper GetWrapper()
+        {
+#if UNITY_EDITOR
+            return new DefaultSaveWrapper();
+#elif UNITY_WEBGL
+            return new WebGLSaveWrapper();
+#else
+            return new DefaultSaveWrapper();
+#endif
         }
     }
 }

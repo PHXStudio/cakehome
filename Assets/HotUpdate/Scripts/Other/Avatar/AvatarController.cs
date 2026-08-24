@@ -34,7 +34,7 @@ namespace Watermelon
 
         // ------------------------------------------------------------------ 称号
 
-        public static string[] Titles = { "绝味蛋糕师", "扩张大师", "甜品收藏家" };
+        public static string[] Titles = { "订单达人", "装修大师", "区域开拓者" };
 
         public static void Init()
         {
@@ -106,22 +106,21 @@ namespace Watermelon
             return (save.UnlockedTitles & (1 << index)) != 0;
         }
 
-        /// <summary>刷新称号解锁状态（由达成条件触发，如配方全解封/货架满）。</summary>
+        /// <summary>刷新称号解锁状态（由达成条件触发，如订单数/装修升级/区域解锁）。</summary>
         public static void RefreshTitles()
         {
             EnsureInit();
 
-            // 绝味蛋糕师：全部配方已解封
-            if (!IsTitleUnlocked(0) && AllRecipesUnlocked())
+            // 订单达人：累计完成 50 个顾客订单
+            if (!IsTitleUnlocked(0) && MergeStatsController.OrdersCompleted >= 50)
                 UnlockTitle(0);
 
-            // 扩张大师：货架满格
-            if (!IsTitleUnlocked(1) && ShopController.Save != null &&
-                ShopController.Save.UnlockedShelfCount >= ShopController.Config.MaxShelfCount)
+            // 装修大师：店铺建筑累计升级 10 级
+            if (!IsTitleUnlocked(1) && BuildingController.TotalUpgrades >= 10)
                 UnlockTitle(1);
 
-            // 甜品收藏家：拥有全部蛋糕类型
-            if (!IsTitleUnlocked(2) && AllCakeTypesOwned())
+            // 区域开拓者：全部区域已解锁
+            if (!IsTitleUnlocked(2) && AllZonesUnlocked())
                 UnlockTitle(2);
         }
 
@@ -132,38 +131,15 @@ namespace Watermelon
             OnAvatarChanged?.Invoke();
         }
 
-        private static bool AllRecipesUnlocked()
+        private static bool AllZonesUnlocked()
         {
-            RecipeDefinition[] recipes = RecipeController.Recipes;
-            if (recipes == null || recipes.Length == 0)
+            ZoneData[] zones = ZoneController.AllZones;
+            if (zones == null || zones.Length == 0)
                 return false;
 
-            for (int i = 0; i < recipes.Length; i++)
+            for (int i = 0; i < zones.Length; i++)
             {
-                if (!RecipeController.IsUnlocked(recipes[i].Id))
-                    return false;
-            }
-
-            return true;
-        }
-
-        private static bool AllCakeTypesOwned()
-        {
-            CakeCatalog catalog = ShopController.Catalog;
-            if (catalog == null || catalog.Count == 0)
-                return false;
-
-            System.Collections.Generic.HashSet<string> owned = new System.Collections.Generic.HashSet<string>();
-            var cakes = ShopController.Save.Cakes;
-            if (cakes == null)
-                return false;
-
-            for (int i = 0; i < cakes.Count; i++)
-                owned.Add(cakes[i].DefinitionId);
-
-            for (int i = 0; i < catalog.Count; i++)
-            {
-                if (!owned.Contains(catalog.GetByIndex(i).Id))
+                if (!ZoneController.IsUnlocked(zones[i]))
                     return false;
             }
 
@@ -172,20 +148,10 @@ namespace Watermelon
 
         // ------------------------------------------------------------------ 展馆
 
-        /// <summary>展馆蛋糕数量（拥有的不同蛋糕类型数）。</summary>
-        public static int GetGalleryCount()
+        /// <summary>个人页统计：累计完成订单数。</summary>
+        public static int GetOrdersCompletedCount()
         {
-            EnsureInit();
-
-            System.Collections.Generic.HashSet<string> owned = new System.Collections.Generic.HashSet<string>();
-            var cakes = ShopController.Save.Cakes;
-            if (cakes != null)
-            {
-                for (int i = 0; i < cakes.Count; i++)
-                    owned.Add(cakes[i].DefinitionId);
-            }
-
-            return owned.Count;
+            return MergeStatsController.OrdersCompleted;
         }
 
         private static void EnsureInit()

@@ -1,20 +1,26 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 
 namespace Watermelon
 {
     [RegisterModule("Monetization")]
     public class MonetizationInitModule : InitModule
     {
-        public override string ModuleName => "Monetization"; 
+        public override string ModuleName => "Monetization";
 
         [SerializeField] MonetizationSettings settings;
 
-        public override void CreateComponent()
+        public override IEnumerator InitAsync(GameObject owner)
         {
             Monetization.Init(settings);
 
-            AdsManager.Init(settings);
-            IAPManager.Init(settings);
+            AdsManager adsManager = new AdsManager();
+            adsManager.Init(settings.AdsSettings, owner.GetComponent<Initializer>());
+
+            IAPManager iapManager = owner.AddComponent<IAPManager>();
+            iapManager.Init(settings.IAPSettings);
+
+            yield break;
         }
     }
 }

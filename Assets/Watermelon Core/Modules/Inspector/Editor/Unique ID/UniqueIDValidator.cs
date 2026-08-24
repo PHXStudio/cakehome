@@ -12,7 +12,7 @@ namespace Watermelon
     {
         private const string VALIDATOR_TITLE = "ID Validator";
 
-        [MenuItem("Tools/Editor/Validate IDs")]
+        [MenuItem("Window/Watermelon/Tools/Validate IDs")]
         public static void ValidateIDs()
         {
             IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes()).Where(x => !x.IsGenericType && x.IsSubclassOf(typeof(MonoBehaviour)) && x.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Any(v => v.GetCustomAttribute<UniqueIDAttribute>() != null));
@@ -26,7 +26,11 @@ namespace Watermelon
 
             foreach (var type in types)
             {
+#if UNITY_6000_4_OR_NEWER
+                UnityEngine.Object[] objects = GameObject.FindObjectsByType(type, FindObjectsInactive.Include);
+#else
                 UnityEngine.Object[] objects = GameObject.FindObjectsByType(type, FindObjectsInactive.Include, FindObjectsSortMode.None);
+#endif
 
                 foreach(var obj in objects)
                 {
