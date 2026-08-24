@@ -273,6 +273,7 @@ interface IHubModule {
 - 纯图标样式，使用特定资源
 - 相机渲染方式提升层级
 - `HubModuleRouter.SwitchTo` 先解析目标模块再退出当前模块——未注册的 Tab 会被拦截且不污染当前页
+- **两个 Tab 共用同一顶栏**（UIHeader：经验徽章 + 能量/金币/钻石 + 商店按钮），由各自 Hub 模块在 Enter/Exit 时经 `MergeViewController.SetHeaderVisible` 管理；进关卡自动隐藏，回主菜单自动恢复（见 18.7）
 
 ---
 
@@ -573,6 +574,13 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 - **枚举**：`ProductKeyType` 重写为 StarterPack=1 + mergedev 阵容（5-13）；`UINoAdsPopUp`/`UIMainMenu` 的 `NoAds` 引用改为 `NoAdsPack`。
 - **顺带修复**：`UI Rewards Confirmation Popup` 的 `rewardUIPrefab` 引用悬空（mergedev 预制体未导入）→ 重指到 `UI Level Up Reward Tile.prefab`；Pro Pack 标题在 mergedev 原数据就误写为 Boost Pack，已修正。
 - 编辑器内 IAP 价格显示 USD 0.00 + 转圈属正常（无真实商品数据），软货币购买已实测通过（25 钻 → +100 能量）。
+
+### 18.7 双 Tab 顶栏统一（2026-08-24）
+
+- **UIHeader 共用**：`MergeViewController.SetHeaderVisible(bool)` 新门面；`CamperHubModule.Enter/Exit` 与门店侧对称管理顶栏（经验徽章 + 能量/金币/钻石）。进关经 `LoadLevel→ExitAll` 自动隐藏，回主菜单自动恢复。
+- **露营车主菜单清理**：停用旧金币/能量面板（顶栏替代）；商店按钮换门店同款（`ui_icon_store`，静态无滑入动画、无红点徽章）；每日签到屏蔽（`CheckDailyPanels` 短路，数据层保留）。
+- **位置对齐教训**：跨页面拷贝 anchoredPosition 必须核对 **pivot 与父容器**——露营车商店按钮 pivot(1,1) 套门店 pivot(0.5,0.5) 的坐标导致偏移 50px；正确做法是在 Play 模式实测世界坐标反推（门店中心 right-100/top-70 ↔ 露营车 pivot(1,1) 的 (-50,-20)）。
+- **框架修复**：`IAPRewardsHolder.OnIAPManagerLoaded/OnPurchaseComplete` 对 `product==null`（编辑器无商品数据）加守卫——此前开机刷 8 条 NRE。
 
 ---
 
