@@ -106,6 +106,11 @@ namespace Watermelon
 
         private void CheckDailyPanels()
         {
+            // 每日签到功能已屏蔽（2026-08-24）：恢复时删除下面这行即可
+            // （DailyRewardController 数据层与 DailyRewardPanel 预制体保留）
+            return;
+
+#pragma warning disable CS0162
             DailyRewardPanel rewardPanel = Object.FindObjectOfType<DailyRewardPanel>(true);
             if (DailyRewardController.CanClaimToday() && rewardPanel != null)
             {
@@ -116,6 +121,7 @@ namespace Watermelon
             {
                 CheckDailyTaskPanel();
             }
+#pragma warning restore CS0162
         }
 
         private void CheckDailyTaskPanel()
