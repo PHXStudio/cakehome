@@ -61,6 +61,18 @@ namespace Watermelon
             UIController.ShowPage<UIHeader>();
         }
 
+        /// <summary>
+        /// Shows/hides the shared top header (exp badge + energy/coins/gems) independently of the
+        /// merge pages — the camper tab uses the same header via this hook.
+        /// </summary>
+        public static void SetHeaderVisible(bool visible)
+        {
+            if (visible)
+                UIController.ShowPage<UIHeader>();
+            else
+                UIController.HidePage<UIHeader>();
+        }
+
         /// <summary>Called by MergeHubModule when leaving the shop tab. Hides the hub pages and any overlay pages.</summary>
         public static void ExitHub()
         {

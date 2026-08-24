@@ -1095,8 +1095,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 115, y: -115}
-  m_SizeDelta: {x: 110, y: 110}
+  m_AnchoredPosition: {x: 75, y: -179.8}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1759571055589518847
 CanvasRenderer:
@@ -1244,8 +1244,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -30, y: -320}
-  m_SizeDelta: {x: 160, y: 160}
+  m_AnchoredPosition: {x: -100, y: -70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1759571055689426403
 CanvasRenderer:
@@ -2741,6 +2741,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Currency Panel Simple
       objectReference: {fileID: 0}
+    - target: {fileID: 5770846571886544758, guid: 8bd707ccc762a5c40b83682643736deb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7694990730049815158, guid: 8bd707ccc762a5c40b83682643736deb,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2882,6 +2887,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Energy Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2850794482358887272, guid: 959741639bcaf4ea9bfa971520d55e21,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4201776617427644667, guid: 959741639bcaf4ea9bfa971520d55e21,
         type: 3}
