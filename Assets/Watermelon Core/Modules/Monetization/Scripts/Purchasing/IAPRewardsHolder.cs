@@ -52,6 +52,10 @@ namespace Watermelon
             // If there is problem with the internet connection or server didn't return product data loading animation appeared
             purchaseButton.UpdateState(product);
 
+            // 商品数据不可用（编辑器环境/未注册/断网）：按钮保持 loading，跳过购买态检查
+            if (product == null)
+                return;
+
             if (IAPManager.IsPurchased(productKey) || product.ProductType == ProductType.NonConsumable && save.IsPurchased)
             {
                 // Disable holder if it's an one time purchase (non-consumable) product 
@@ -79,8 +83,8 @@ namespace Watermelon
             // Check if the purchased product type is equal to holder's product type
             if (productKey == key)
             {
-                // Disable holder if it's an one time purchase (non-consumable) product 
-                if (product.ProductType == ProductType.NonConsumable)
+                // Disable holder if it's an one time purchase (non-consumable) product
+                if (product != null && product.ProductType == ProductType.NonConsumable)
                 {
                     // Disable holder game object
                     gameObject.SetActive(false);
