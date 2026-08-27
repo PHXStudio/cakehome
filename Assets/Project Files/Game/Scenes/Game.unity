@@ -6439,14 +6439,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f106ef4adec3e43970bb488dd881f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeGrid: {fileID: 0}
-  introDialog: {fileID: 0}
-  heroineCharacter: {fileID: 0}
+  mergeGrid: {fileID: 1751046928}
+  introDialog: {fileID: 11400000, guid: 4727a49c31eb8e242820ac868e9cbe0c, type: 2}
+  heroineCharacter: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
   heroineEmotion: 0
   boardButtonHintText: Let's head to the board and gather resources to put out the
     fire!
   taskId: tutorial_first_order
-  taskCharacter: {fileID: 0}
+  taskCharacter: {fileID: 11400000, guid: b0be64a9950f7b74e8fc6a7b3c511307, type: 2}
   taskItems: []
   taskCoinsReward: 50
   step3Cells: []
@@ -10245,7 +10245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 15.26, y: -192.50002}
+  m_AnchoredPosition: {x: 15.26, y: -192.5}
   m_SizeDelta: {x: 734.8, y: 766.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1481053039
@@ -18060,7 +18060,7 @@ PrefabInstance:
     - target: {fileID: 7069787924616044244, guid: a6a57bc430670554483b9c3ee65a7f34,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -299.12012
+      value: -299.1201
       objectReference: {fileID: 0}
     - target: {fileID: 7434222944510334150, guid: a6a57bc430670554483b9c3ee65a7f34,
         type: 3}
@@ -19942,6 +19942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5490409678138228517}
   - component: {fileID: 5490409678138228516}
+  - component: {fileID: 5490409678138228519}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -19949,6 +19950,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5490409678138228519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5490409678138228518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!114 &5491837638089066822
 MonoBehaviour:
   m_ObjectHideFlags: 0

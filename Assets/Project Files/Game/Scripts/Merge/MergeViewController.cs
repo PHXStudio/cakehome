@@ -12,6 +12,13 @@ namespace Watermelon
     {
         public static bool IsBuildingActive { get; private set; }
 
+        /// <summary>
+        /// Master switch for ALL tutorials (wired to GameData.ShowTutorial by GameController at
+        /// boot). When false, ActivateTutorials() is a no-op and onboarding counts as completed,
+        /// so the zone progression / order chain unlocks immediately instead of freezing.
+        /// </summary>
+        public static bool TutorialsEnabled { get; set; } = true;
+
         // The merge board page contains nested canvases (Items / Flying Objects) that render
         // independently of the page's own Canvas — hiding the page is not enough to keep the
         // board off other tabs, so the root GameObject is toggled alongside.
@@ -96,6 +103,15 @@ namespace Watermelon
         /// </summary>
         public static void ActivateTutorials()
         {
+            if (!TutorialsEnabled) return;
+
+            // The Game.Scripts-side TutorialController (Watermelon.Tutorial assembly) has no
+            // InitModule owner and HotUpdate's GameController initializes only its own same-named
+            // type — without this Init its static instance stays null and every ActivateTutorial
+            // call below silently no-ops, freezing the whole onboarding/order progression chain.
+            TutorialController controller = Object.FindObjectOfType<TutorialController>(true);
+            if (controller != null) controller.Init();
+
             TutorialController.ActivateTutorial<FirstStartTutorial>();
             TutorialController.ActivateTutorial<SpawnerRewardTutorial>();
             TutorialController.ActivateTutorial<BuildingUpgradeHintTutorial>();
@@ -104,17 +120,22 @@ namespace Watermelon
         // ─── Onboarding gates (HotUpdate can't touch FirstStartTutorial — its base type lives in
         // the Watermelon.Tutorial assembly, which HotUpdate does not reference) ──────────────
 
-        public static bool IsOnboardingCompleted() => FirstStartTutorial.IsCompleted();
+        public static bool IsOnboardingCompleted() => !TutorialsEnabled || FirstStartTutorial.IsCompleted();
 
         /// <summary>Keeps interstitials silent while onboarding runs. Pair with <see cref="DetachInterstitialGuard"/>.</summary>
-        public static void AttachInterstitialGuard() => AdsManager.InterstitialConditions += FirstStartTutorial.IsCompleted;
+        public static void AttachInterstitialGuard() => AdsManager.InterstitialConditions += IsOnboardingCompletedStatic;
 
-        public static void DetachInterstitialGuard() => AdsManager.InterstitialConditions -= FirstStartTutorial.IsCompleted;
+        public static void DetachInterstitialGuard() => AdsManager.InterstitialConditions -= IsOnboardingCompletedStatic;
+
+        // Method-group wrapper (InterstitialConditions takes Func<bool>; IsOnboardingCompleted
+        // already short-circuits to true when tutorials are disabled, so ads are never blocked
+        // by a tutorial that will never run).
+        private static bool IsOnboardingCompletedStatic() => IsOnboardingCompleted();
 
         /// <summary>Fires the zone-start (atUpgrade: 0) progression only when onboarding is done.</summary>
         public static void TriggerInitialProgressionIfOnboarded()
         {
-            if (FirstStartTutorial.IsCompleted())
+            if (IsOnboardingCompleted())
                 BuildingController.TriggerInitialProgression(ZoneController.CurrentZone);
         }
     }

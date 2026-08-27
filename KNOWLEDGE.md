@@ -521,6 +521,9 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 5. **生成器 g1-g3 产出池为空是原版设计**（须合成到 g4+ 才产出），不是数据丢失。
 6. **程序集拓扑**：Game.Scripts ← HotUpdate 单向引用。模板代码要调 HotUpdate 的东西走 `CakeUIBridge`；HotUpdate 要操作模板页面走 `MergeViewController`；`FirstStartTutorial` 基类在 `Watermelon.Tutorial` 程序集（HotUpdate 未引用），相关调用也只能放 Game.Scripts 侧。
 7. **`FindObjectByType` 在当前编译环境不可用**（报 CS0117），统一用 `FindObjectOfType`。
+8. **Game.Scripts 侧 `TutorialController` 无初始化方**（2026-08-27 修复）：HotUpdate `GameController` 只 Init 同名的 HotUpdate 版，模板版 `instance` 恒为 null → `ActivateTutorial` 静默返回 → FirstStartTutorial 永不启动 → 订单/进度全冻结（无报错、无警告，极难察觉）。修复：`MergeViewController.ActivateTutorials()` 开头补 `FindObjectOfType<TutorialController>(true).Init()`。
+9. **FirstStartTutorial 场景引用悬空**（2026-08-27 修复）：`introDialog`/`mergeGrid`/`heroineCharacter`/`taskCharacter` 四个 `[SerializeField]` 均未接线（教程从未运行所以从未暴露；Intro 步 `DialogController.Play(null)` 直接 NRE）。已接线：`Intro Dialog.asset`、`Game Area`(MergeGrid)、`C1 Maya`×2。`cachedGiveCard` 等 cached/pending 字段是运行时赋值，NULL 属正常。
+10. **新手引导总开关**（2026-08-27）：`GameData.showTutorial=false` 时 `MergeViewController.TutorialsEnabled=false` → `ActivateTutorials()` 跳过、`IsOnboardingCompleted()` 恒 true（订单/进度直接解锁）、插屏守卫走 `IsOnboardingCompleted` 包装（教程关闭不会永久屏蔽广告）。**注意**：Zone 1 进度从 atUpgrade:1 起步，0 金币时门店侧无订单属正常——赢第一关拿游客奖励 50 金币 → 首次建筑升级后订单链启动。
 
 ### 17.5 MCP 自动化工作流（可复用）
 
@@ -588,7 +591,7 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 
 ### A.1 存档机制
 
-- 单一文件：`~/Library/Application Support/DefaultCompany/tilematch/save.save`
+- 单一文件：`~/Library/Application Support/CakeHome/CakeHome/save.save`（⚠️ 2026-08-27 起 Company/Product 改为 CakeHome/CakeHome，旧路径 `DefaultCompany/tilematch` 已作废）
 - 结构：`{"containers":[{key, json}]}`——所有系统共用一个容器列表，按 key 区分；`SaveController.GetSaveObject<T>(key)` 读写
 - 另有 `SavePresets/`（开发用存档预设，非玩家数据）
 
@@ -626,7 +629,7 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 ### A.3 结论
 
 - 存档**物理上已是单文件**；分散的是代码里的 key 注册点（19 处 `GetSaveObject` 调用，跨 HotUpdate/Game.Scripts 两程序集），上表即统一索引
-- 测试污染的存档建议直接删除重置：`rm ~/Library/Application\ Support/DefaultCompany/tilematch/save.save`
+- 测试污染的存档建议直接删除重置：`rm ~/Library/Application\ Support/CakeHome/CakeHome/save.save`（彻底重置还需清 PlayerPrefs：`GuestReg`/`RegRewardClaimed`/`FirstLaunch` 等键）
 - 若要对线上玩家做死 key 清理：shop/recipe/ingredient/旧 iap 键可在加载后一键移除（目前未做，无害）
 
 ---

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdfe15605739d3844adf6c12ca0e15dc, type: 3}
   m_Name: Game Data
   m_EditorClassIdentifier: 
-  showTutorial: 1
+  showTutorial: 0
   maxTileSize: 1.5
   tileSize: {x: 1, y: 1}
   infiniteLevels: 1

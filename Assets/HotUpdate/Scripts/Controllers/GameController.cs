@@ -74,6 +74,10 @@ namespace Watermelon
             // first task, or its icon lookup resolves to null.
             mergeController.Init();
 
+            // Master tutorial switch: when GameData.showTutorial is off, onboarding counts as
+            // completed (progression/order chain unlocks immediately, no tutorial UI).
+            MergeViewController.TutorialsEnabled = data.ShowTutorial;
+
             // Zone progression tasks are held while onboarding runs — must be set before
             // taskController.Init() evaluates the queue; FirstStartTutorial unlocks on finish.
             TaskController.SetProgressionLocked(!MergeViewController.IsOnboardingCompleted());
