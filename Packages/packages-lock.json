@@ -71,13 +71,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.mobile.notifications": {
-      "version": "2.3.2",
+      "version": "file:com.unity.mobile.notifications",
       "depth": 0,
-      "source": "registry",
+      "source": "embedded",
       "dependencies": {
         "com.unity.modules.androidjni": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
+      }
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.1",

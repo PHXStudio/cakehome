@@ -8,7 +8,7 @@
     "com.unity.inputsystem": "1.14.0",
     "com.unity.mathematics": "1.3.2",
     "com.unity.mobile.android-logcat": "1.4.5",
-    "com.unity.mobile.notifications": "2.3.2",
+    "com.unity.mobile.notifications": "file:com.unity.mobile.notifications",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
     "com.unity.render-pipelines.core": "14.0.12",
     "com.unity.render-pipelines.universal": "14.0.12",

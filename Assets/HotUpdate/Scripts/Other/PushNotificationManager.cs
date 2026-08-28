@@ -17,8 +17,7 @@ namespace Watermelon
 #if UNITY_ANDROID || UNITY_IOS
             try
             {
-                if (!Unity.Notifications.NotificationCenter.CheckAuthorizationStatus())
-                    Unity.Notifications.NotificationCenter.RequestAuthorization();
+                Unity.Notifications.NotificationCenter.RequestPermission();
 
                 ScheduleDailyResetReminder();
                 ScheduleEnergyFullReminder();
@@ -43,13 +42,16 @@ namespace Watermelon
 
                 double etaSeconds = (EnergyController.Max - EnergyController.Current) * (double)EnergyController.RegenInterval;
 
-                Unity.Notifications.Notification n = new Unity.Notifications.Notification
+                var n = new Unity.Notifications.Notification
                 {
                     Title = "能量已满！",
-                    Text = "你的能量已经回满，快回店里继续合成吧！",
-                    FireTime = DateTime.Now.AddSeconds(etaSeconds)
+                    Text = "你的能量已经回满，快回店里继续合成吧！"
                 };
-                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
+                Unity.Notifications.NotificationCenter.ScheduleNotification(n,
+                    new Unity.Notifications.NotificationDateTimeSchedule
+                    {
+                        FireTime = DateTime.Now.AddSeconds(etaSeconds)
+                    });
             }
             catch (System.Exception e)
             {
@@ -64,14 +66,16 @@ namespace Watermelon
 #if UNITY_ANDROID || UNITY_IOS
             try
             {
-                DateTime fireTime = DateTime.Now.Date.AddDays(1).AddHours(18);
-                Unity.Notifications.Notification n = new Unity.Notifications.Notification
+                var n = new Unity.Notifications.Notification
                 {
                     Title = "每日奖励刷新！",
-                    Text = "登录领取今日签到与任务奖励！",
-                    FireTime = fireTime
+                    Text = "登录领取今日签到与任务奖励！"
                 };
-                Unity.Notifications.NotificationCenter.ScheduleNotification(n);
+                Unity.Notifications.NotificationCenter.ScheduleNotification(n,
+                    new Unity.Notifications.NotificationDateTimeSchedule
+                    {
+                        FireTime = DateTime.Now.Date.AddDays(1).AddHours(18)
+                    });
             }
             catch (System.Exception e)
             {
