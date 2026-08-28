@@ -21,8 +21,12 @@ namespace Watermelon
 
         public override void Unload()
         {
-            currencyController.Unload();
-            currencyController = null;
+            // 防: Play 中途停止时模块可能尚未初始化（currencyController 为 null）
+            if (currencyController != null)
+            {
+                currencyController.Unload();
+                currencyController = null;
+            }
         }
     }
 }

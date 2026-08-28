@@ -52,7 +52,11 @@ namespace Watermelon
         private IEnumerator BootstrapCoroutine()
         {
             yield return null;
-            yield return new WaitForEndOfFrame();
+            // WaitForEndOfFrame 依赖渲染帧尾，batchmode/-runTests 下不触发 → 换成普通帧等待
+            if (!Application.isBatchMode)
+                yield return new WaitForEndOfFrame();
+            else
+                yield return null;
 
             initializer.Init();
 

@@ -52,8 +52,12 @@ namespace Watermelon
 
         override public void Unload()
         {
-            audioController.Unload();
-            audioController = null;
+            // 防: Play 中途停止时模块可能尚未初始化（audioController 为 null）
+            if (audioController != null)
+            {
+                audioController.Unload();
+                audioController = null;
+            }
         }
     }
 }
