@@ -234,6 +234,9 @@ namespace Watermelon
             // 结算页杀进程会被吞。Next Level 会重新 LockLife 预扣下一张票，经济净额不变。
             LivesSystem.UnlockLife(false);
 
+            // 轻引导（C.6 观察 1）：首胜后让门店 Tab 红点出现
+            UIBottomNavBar.NotifyLevelCompleted();
+
             SaveController.Save();
 
             UIController.HidePage<UIGame>(() =>
