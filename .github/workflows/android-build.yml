@@ -1,0 +1,61 @@
+name: Android Build (Cloud)
+
+# 手动触发：Actions → Android Build (Cloud) → Run workflow
+# 签名：默认 Unity debug keystore（可直接装测试机）；如需发布签名，配置 secrets:
+#   ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASS / ANDROID_KEY_ALIAS / ANDROID_KEY_PASS
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-Android-${{ runner.os }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-${{ runner.os }}-
+
+      # 缓存 Unity 编辑器下载（Linux: ~/.cache/unity3d），避免每次重下 ~2GB
+      - name: Cache Unity editor download
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/unity3d
+            ~/Library/Unity/cache
+          key: unity-cache-${{ runner.os }}-2022.3.62f3
+
+      - name: Build Android APK (Unity)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASS: ${{ secrets.ANDROID_KEY_PASS }}
+        with:
+          targetPlatform: Android
+          projectPath: .
+          unityVersion: 2022.3.62f3
+          buildMethod: BuildAndroid.Build
+          buildName: CakeHome
+          buildPath: builds/android
+          allowDirtyBuild: true
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CakeHome-Android
+          path: builds/android
+          if-no-files-found: error
