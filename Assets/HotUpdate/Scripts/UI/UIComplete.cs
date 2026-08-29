@@ -174,7 +174,9 @@ namespace Watermelon
                     {
                         CurrencyCloud.SpawnCurrency(coinsHash, (RectTransform)rewardLabel.Transform, (RectTransform)coinsPanelScalable.Transform, 10, "", () =>
                         {
-                            CurrencyController.Add(CurrencyType.Coins, currentReward * rewardMult);
+                            // 基础奖励已在页面展示时发放（OnShow 的 ShowRewardLabel 回调），
+                            // 这里只补发倍数差额，否则宣传 x3 实际到账 x4。
+                            CurrencyController.Add(CurrencyType.Coins, currentReward * (rewardMult - 1));
                             DailyTaskController.AddProgress(DailyTaskType.RewardedVideos);
 
                             homeButton.interactable = true;

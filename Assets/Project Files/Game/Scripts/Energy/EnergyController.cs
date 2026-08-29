@@ -100,9 +100,24 @@ namespace Watermelon
 
         public static bool TrySpend(int amount)
         {
+            if (instance == null || Current < amount) return false;
+
+            // 先把累计回复结算到当前时刻——满格时 Tick/RecoverOffline 都不再推进时间戳，
+            // 不结算的话时间戳会停在回满时刻，形成"时间银行"。
+            instance.RecoverOffline();
             if (Current < amount) return false;
+
+            bool wasFullOrOver = Current >= Max;
+
             Current -= amount;
             instance.save.Energy = Current;
+
+            // 从满格（含 ignoreCap 超上限）扣费时把时间戳锚定到当前时刻，否则下次
+            // RecoverOffline 会把"回满→扣费"之间的时间也算作回复量，白返能量。
+            // 满格期间回复本就暂停，锚定不损失任何进行中的回复进度。
+            if (wasFullOrOver)
+                instance.save.EnergyTimestampBinary = DateTime.UtcNow.ToBinary();
+
             SaveController.MarkAsSaveIsRequired();
             OnEnergyChanged?.Invoke(Current, Max);
             return true;

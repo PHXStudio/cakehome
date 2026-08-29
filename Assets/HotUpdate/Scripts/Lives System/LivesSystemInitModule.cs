@@ -8,18 +8,10 @@ namespace Watermelon
     {
         public override string ModuleName => "Lives System";
 
-        [SerializeField] LivesData livesData;
-
+        // LivesData 资产已随能量统一废弃（数值全在 Energy Data），模块无需再挂配置
         public override IEnumerator InitAsync(GameObject owner)
         {
-            if (livesData == null)
-            {
-                Debug.LogError("LivesData is not assigned in Project Init Settings", this);
-
-                yield break;
-            }
-
-            LivesSystem.Init(livesData);
+            LivesSystem.Init();
             yield break;
         }
     }

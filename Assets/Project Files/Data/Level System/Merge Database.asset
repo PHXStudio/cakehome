@@ -1137,7 +1137,7 @@ MonoBehaviour:
     - rid: 5520886623642845187
       type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        amount: 40
+        amount: 20
     - rid: 5520886623642845188
       type: {class: EnergyGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1165,10 +1165,14 @@ MonoBehaviour:
       data:
         spawnPool:
           items:
-          - weight: 100
+          - weight: 95
             item:
               typeId: Cake
               grade: 1
+          - weight: 5
+            item:
+              typeId: Cake
+              grade: 2
     - rid: 5520886940757655552
       type: {class: ChestGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1556,35 +1560,35 @@ MonoBehaviour:
     - rid: 9100000000000000003
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 3
+        sellPrice: 4
     - rid: 9100000000000000004
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 4
+        sellPrice: 8
     - rid: 9100000000000000005
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 5
+        sellPrice: 16
     - rid: 9100000000000000006
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 6
+        sellPrice: 32
     - rid: 9100000000000000007
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 7
+        sellPrice: 64
     - rid: 9100000000000000008
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 8
+        sellPrice: 128
     - rid: 9100000000000000009
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 9
+        sellPrice: 256
     - rid: 9100000000000000010
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 10
+        sellPrice: 512
     - rid: 9100000000000000011
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1596,35 +1600,35 @@ MonoBehaviour:
     - rid: 9100000000000000013
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 3
+        sellPrice: 4
     - rid: 9100000000000000014
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 4
+        sellPrice: 8
     - rid: 9100000000000000015
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 5
+        sellPrice: 16
     - rid: 9100000000000000016
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 6
+        sellPrice: 32
     - rid: 9100000000000000017
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 7
+        sellPrice: 64
     - rid: 9100000000000000018
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 8
+        sellPrice: 128
     - rid: 9100000000000000019
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 9
+        sellPrice: 256
     - rid: 9100000000000000020
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 10
+        sellPrice: 512
     - rid: 9100000000000000021
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1636,7 +1640,7 @@ MonoBehaviour:
     - rid: 9100000000000000023
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 3
+        sellPrice: 4
     - rid: 9100000000000000024
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1648,7 +1652,7 @@ MonoBehaviour:
     - rid: 9100000000000000026
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 3
+        sellPrice: 4
     - rid: 9100000000000000027
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
@@ -1660,12 +1664,12 @@ MonoBehaviour:
     - rid: 9100000000000000029
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 3
+        sellPrice: 4
     - rid: 9100000000000000030
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 4
+        sellPrice: 8
     - rid: 9100000000000000031
       type: {class: ItemGradeConfig, ns: Watermelon, asm: Game.Scripts}
       data:
-        sellPrice: 5
+        sellPrice: 16

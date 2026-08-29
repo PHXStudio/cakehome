@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneId: 9be171fd-2956-4c71-9f2d-7b013af23079
   zoneName: Adventure awaits
-  minLevelToUnlock: 25
-  backgroundSprite: {fileID: 21300000, guid: f9a55569c3bbcaf498e69dadf09e87ed, type: 3}
-  zonePreview: {fileID: 21300000, guid: 0cdb4a755de780a4895e1aa738ea30c6, type: 3}
+  minLevelToUnlock: 24
+  backgroundSprite: {fileID: 21300000, guid: 0268e96345bc44a6b0a37c4a6d724699, type: 3}
+  zonePreview: {fileID: 21300000, guid: 0268e96345bc44a6b0a37c4a6d724699, type: 3}
   zonePrefab: {fileID: 6325659266932893377, guid: 77ad474ae117a2942b7762790bd873d0,
     type: 3}
   progression:
   - atUpgrade: 0
     targetLevel:
-      level: 8
+      level: 24
       progress: 0.6
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002100
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -142,13 +142,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 1
     targetLevel:
-      level: 9
+      level: 25
       progress: 0.1
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002200
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -262,13 +262,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 2
     targetLevel:
-      level: 9
+      level: 25
       progress: 0.6
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002300
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -382,13 +382,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 3
     targetLevel:
-      level: 10
+      level: 26
       progress: 0.2
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002400
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -502,13 +502,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 4
     targetLevel:
-      level: 10
+      level: 26
       progress: 0.8
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002500
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -622,13 +622,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 5
     targetLevel:
-      level: 11
+      level: 27
       progress: 0.4
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002600
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -742,15 +742,15 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 6
     targetLevel:
-      level: 12
+      level: 28
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002700
       - reward:
-          rid: -2
+          rid: 7000000000000002701
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -864,13 +864,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 7
     targetLevel:
-      level: 12
+      level: 28
       progress: 0.6
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002800
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -984,13 +984,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 8
     targetLevel:
-      level: 13
+      level: 29
       progress: 0.3
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000002900
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1104,15 +1104,15 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 9
     targetLevel:
-      level: 14
+      level: 30
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003000
       - reward:
-          rid: -2
+          rid: 7000000000000003001
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1226,13 +1226,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 10
     targetLevel:
-      level: 15
+      level: 31
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003100
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1346,13 +1346,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 11
     targetLevel:
-      level: 17
+      level: 33
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003200
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1466,13 +1466,13 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 12
     targetLevel:
-      level: 19
+      level: 35
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003300
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1586,15 +1586,15 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 13
     targetLevel:
-      level: 21
+      level: 37
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003400
       - reward:
-          rid: -2
+          rid: 7000000000000003401
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1708,15 +1708,15 @@ MonoBehaviour:
       maxSimultaneousRandomTasks: 3
   - atUpgrade: 14
     targetLevel:
-      level: 24
+      level: 40
       progress: 0
     dialog: {fileID: 0}
     reward:
       rewards:
       - reward:
-          rid: -2
+          rid: 7000000000000003500
       - reward:
-          rid: -2
+          rid: 7000000000000003501
     sequentialTasks: []
     randomTasks:
       tasks:
@@ -1831,5 +1831,117 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 7000000000000002100
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000002200
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000002300
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000002400
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000002500
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 3
+        spawnFloatingImage: 1
+    - rid: 7000000000000002600
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000002700
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000002701
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000002800
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000002900
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003000
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000003001
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 4
+        spawnFloatingImage: 1
+    - rid: 7000000000000003100
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003200
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003300
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003400
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003401
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Gems Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003500
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Energy Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1
+    - rid: 7000000000000003501
+      type: {class: SpawnerQueueReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        spawnerTypeId: Coins Chest
+        spawnerGrade: 5
+        spawnFloatingImage: 1

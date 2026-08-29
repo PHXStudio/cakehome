@@ -41,7 +41,8 @@ namespace Watermelon
 
         public static event StatusChangedDelegate StatusChanged;
 
-        public static void Init(LivesData livesData)
+        // LivesData 资产已随能量统一废弃（数值全在 Energy Data）——Init 不再接收它
+        public static void Init()
         {
             Status = new LivesStatus();
 
@@ -75,19 +76,24 @@ namespace Watermelon
             UpdateStatus();
         }
 
-        /// <summary>进关打锁并预扣门票能量（无限模式免票）。锁存续期间重复调用不再扣（NextLevel 连胜只算一票）。</summary>
-        public static void LockLife(bool halfPrice = false)
+        /// <summary>进关打锁并预扣门票能量（无限模式免票）。锁存续期间重复调用不再扣（NextLevel 连胜只算一票）。返回 false = 能量不足，未打锁。</summary>
+        public static bool LockLife(bool halfPrice = false)
         {
             if (!save.LifeLocked)
             {
                 lockedTicketCost = InfiniteMode ? 0 : (halfPrice ? HALF_PRICE_ENERGY_COST : LEVEL_ENERGY_COST);
 
-                if (lockedTicketCost > 0)
-                    EnergyController.TrySpend(lockedTicketCost);
+                // 扣费失败不能打锁——否则通关 UnlockLife(false) 会返还从未支付的门票能量（净 +10）
+                if (lockedTicketCost > 0 && !EnergyController.TrySpend(lockedTicketCost))
+                {
+                    lockedTicketCost = 0;
+                    return false;
+                }
 
                 save.LifeLocked = true;
                 SaveController.MarkAsSaveIsRequired();
             }
+            return true;
         }
 
         /// <summary>解锁结算：decrease=false（通关/回主菜单）返还门票；decrease=true（失败/中途退出）不返还。</summary>

@@ -167,10 +167,15 @@ namespace Watermelon
 
         public static void LoadLevel(int index, SimpleCallback onLevelLoaded = null, bool halfPrice = false)
         {
+            // 门票预扣失败（能量不足）直接中止，不进关——避免"没扣成却锁了票"的胜利白返漏洞
+            if (!LivesSystem.LockLife(halfPrice))
+            {
+                Debug.LogWarning($"[Game] LoadLevel({index}) 中止：能量不足以支付门票");
+                return;
+            }
+
             CustomAnalytics.TrackLevelStart(index);
             DailyTaskController.AddProgress(DailyTaskType.LevelsPlayed);
-
-            LivesSystem.LockLife(halfPrice);
 
             // 积分棋子：进入关卡启用
             MatchBonusController.OnLevelStarted();
@@ -218,12 +223,16 @@ namespace Watermelon
             }
             catch { }
 
-            // First level cleared 鈫?show guest registration
+            // First level cleared → show guest registration
             if (LevelController.DisplayedLevelIndex == 0 && !GuestRegistration.IsRegistered())
             {
                 GuestRegistration.RegisterAsGuest();
                 GuestRegistration.ClaimRegistrationReward();
             }
+
+            // 胜利当场返还门票并解锁——此前返还只在 UIComplete 点 Home 时发生，
+            // 结算页杀进程会被吞。Next Level 会重新 LockLife 预扣下一张票，经济净额不变。
+            LivesSystem.UnlockLife(false);
 
             SaveController.Save();
 

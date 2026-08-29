@@ -29,6 +29,146 @@ MonoBehaviour:
       rewards:
       - reward:
           rid: 5520886876361719812
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719813
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719814
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719815
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719816
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719817
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719818
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719819
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719820
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719821
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719822
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719823
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719824
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719825
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719826
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719827
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719828
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719829
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719830
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719831
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719832
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719833
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719834
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719835
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719836
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719837
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719838
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719839
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719840
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719841
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719842
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719843
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719844
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719845
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719846
+  - reward:
+      rewards:
+      - reward:
+          rid: 5520886876361719847
   expIcon: {fileID: 21300000, guid: e803ed94e769c0d498396c5bb276f9db, type: 3}
   appearAudioClip: {fileID: 8300000, guid: 7ed02add2c2a9df4baaa5a74a78e355a, type: 3}
   collectAudioClip: {fileID: 8300000, guid: 1b3a9aa133dd17e4a80144d16ef86d0b, type: 3}
@@ -48,6 +188,146 @@ MonoBehaviour:
       data:
         amount: 25
     - rid: 5520886876361719812
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719813
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719814
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719815
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719816
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719817
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719818
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719819
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719820
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719821
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719822
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719823
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719824
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719825
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719826
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719827
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719828
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719829
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719830
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719831
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719832
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719833
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719834
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719835
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719836
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719837
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719838
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719839
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719840
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719841
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719842
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719843
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719844
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719845
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719846
+      type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
+      data:
+        amount: 25
+    - rid: 5520886876361719847
       type: {class: EnergyReward, ns: Watermelon, asm: Game.Scripts}
       data:
         amount: 25

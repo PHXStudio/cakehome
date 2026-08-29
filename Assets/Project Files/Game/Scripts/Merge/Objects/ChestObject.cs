@@ -25,6 +25,12 @@ namespace Watermelon
             RemainingSpawns = MaxSpawns;
         }
 
+        // 合成结果继承两箱中较少的剩余次数——否则"每个箱子开到剩 1 次再合成回满"会成为最优策略
+        public void SetRemainingSpawns(int value)
+        {
+            RemainingSpawns = Mathf.Clamp(value, 0, MaxSpawns);
+        }
+
         public override object OnBeforeSave() => new ChestSaveData { RemainingSpawns = RemainingSpawns };
 
         public override void OnAfterLoad(string customDataJson)

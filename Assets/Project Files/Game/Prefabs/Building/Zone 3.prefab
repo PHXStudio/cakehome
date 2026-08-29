@@ -93,19 +93,19 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: c619fec74a807b8409e350ff333aeead, type: 3}
   buildingImage: {fileID: 838721386053187254}
   upgrades:
-  - cost: 5
+  - cost: 425
     upgradedSprite: {fileID: 21300000, guid: ab3bc0105097f2c4ebd375089dff9732, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 510
     upgradedSprite: {fileID: 21300000, guid: 246f4e42321e6774982038f54dccf8f9, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 1700
     upgradedSprite: {fileID: 21300000, guid: 626831e1a2f33e34b88df241dd2ca056, type: 3}
     completionThought:
       character: {fileID: 0}
@@ -306,19 +306,19 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: 0c3a3b53825303646afe360e494bc760, type: 3}
   buildingImage: {fileID: 6724283811714968042}
   upgrades:
-  - cost: 5
+  - cost: 255
     upgradedSprite: {fileID: 21300000, guid: 535a54a09f550d5449f19272d293bda9, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 680
     upgradedSprite: {fileID: 21300000, guid: 83aa64ae3514bde40987e39942140aaf, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 1190
     upgradedSprite: {fileID: 21300000, guid: 59b76d262674f374699bd205e30116be, type: 3}
     completionThought:
       character: {fileID: 0}
@@ -594,19 +594,19 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: 1a9ee87e73685db4198de57226eeb85b, type: 3}
   buildingImage: {fileID: 7081737380390869011}
   upgrades:
-  - cost: 5
+  - cost: 340
     upgradedSprite: {fileID: 21300000, guid: 3e58c81ab6301e64ba2fd453d25327e7, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 170
     upgradedSprite: {fileID: 21300000, guid: 17feabb3ec73c1b4fb88139849e4762c, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 850
     upgradedSprite: {fileID: 21300000, guid: 1fd5358cb90a0f446af77b57d0d10e43, type: 3}
     completionThought:
       character: {fileID: 0}
@@ -867,19 +867,19 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: a29aae8b5cdeb484599caafd1de65ebe, type: 3}
   buildingImage: {fileID: 2992579540024317937}
   upgrades:
-  - cost: 5
+  - cost: 85
     upgradedSprite: {fileID: 21300000, guid: c16196c1efb90a64a89737e7467cffe0, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 510
     upgradedSprite: {fileID: 21300000, guid: f018cc38dd0dd8a4ab299e4564fc85f6, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 1360
     upgradedSprite: {fileID: 21300000, guid: fa79257e7a8f08f4c9837c2ad31a34d8, type: 3}
     completionThought:
       character: {fileID: 0}
@@ -1080,19 +1080,19 @@ MonoBehaviour:
   defaultSprite: {fileID: 21300000, guid: ed044b7df00421d45a62e77103212160, type: 3}
   buildingImage: {fileID: 6965745153740595865}
   upgrades:
-  - cost: 5
+  - cost: 170
     upgradedSprite: {fileID: 21300000, guid: 190d9629df0921a4f81cbfaeacfb4254, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 340
     upgradedSprite: {fileID: 21300000, guid: 96e619acf4b19a5409fdcefdc7d07058, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
-  - cost: 5
+  - cost: 1020
     upgradedSprite: {fileID: 21300000, guid: 5e0b018142841964ba1ba210008cba8d, type: 3}
     completionThought:
       character: {fileID: 0}
