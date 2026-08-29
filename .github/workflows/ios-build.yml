@@ -1,0 +1,68 @@
+name: iOS Build (Cloud)
+
+# 手动触发：Actions → iOS Build (Cloud) → Run workflow
+on:
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration'
+        type: choice
+        options: [Debug, Release]
+        default: Debug
+
+jobs:
+  build-ios:
+    runs-on: macos-13
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-iOS-${{ runner.os }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-iOS-${{ runner.os }}-
+
+      # Unity 云构建（macOS runner + Xcode）
+      # 必需 secrets：UNITY_LICENSE（Unity 激活 .ulf base64）
+      #   激活方式：本地 Unity -batchmode 激活后导出 .ulf，或 UNITY_EMAIL/PASSWORD/SERIAL 在线激活
+      - name: Build iOS Xcode project (Unity)
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          targetPlatform: iOS
+          projectPath: .
+          unityVersion: 2022.3.62f3
+          buildMethod: BuildIOS.Build
+          buildName: CakeHome
+          buildPath: builds/ios
+          allowDirtyBuild: true
+
+      # 签名 + 出 IPA（可选）：提供 Apple 证书 secrets 才执行
+      #   IOS_CERTIFICATE: 分发证书 .p12 的 base64
+      #   IOS_CERTIFICATE_PASSWORD: p12 密码
+      #   IOS_PROVISIONING_PROFILE: 匹配的 .mobileprovision base64
+      - name: Sign & package IPA (optional)
+        if: ${{ secrets.IOS_CERTIFICATE != '' }}
+        uses: game-ci/unity-ios-sign@v0
+        with:
+          provisioningProfileBase64: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          certificateBase64: ${{ secrets.IOS_CERTIFICATE }}
+          certificatePassword: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          projectPath: builds/ios
+
+      - name: Upload iOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: CakeHome-iOS-${{ inputs.configuration }}
+          path: builds/ios
+          if-no-files-found: error

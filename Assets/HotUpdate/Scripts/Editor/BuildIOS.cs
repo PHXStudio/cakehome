@@ -5,11 +5,14 @@ using UnityEngine;
 
 public static class BuildIOS
 {
+    // game-ci/unity-builder 在 GitHub Actions 里设 CI=true；本地 batchmode 无此变量
+    private static bool IsCI => System.Environment.GetEnvironmentVariable("CI") == "true";
+
     public static void Build()
     {
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
 
-        // 签名：自动签名开，Team ID 由 Mac mini 的 Xcode 里选择
+        // 签名：自动签名开，Team ID 由 CI secrets / 本地 Xcode 里配置
         PlayerSettings.iOS.appleEnableAutomaticSigning = true;
 
         string[] scenes =
@@ -33,12 +36,15 @@ public static class BuildIOS
                         Debug.LogError($"  [{report.steps[i].name}] {m.content}");
                 }
             }
+            if (IsCI)
+                throw new System.Exception("iOS build failed: " + report.summary.result);
             EditorApplication.Exit(1);
         }
         else
         {
             Debug.Log($"iOS Xcode project built OK -> {outPath} ({report.summary.totalSize / 1024 / 1024}MB)");
-            EditorApplication.Exit(0);
+            if (!IsCI)
+                EditorApplication.Exit(0);
         }
     }
 }
