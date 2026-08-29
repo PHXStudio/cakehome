@@ -11,6 +11,12 @@ namespace Watermelon
         [BoxGroup("Bottom Panel", "Bottom Panel")]
         [SerializeField] Button mapButton;
 
+        // Hub 底部导航条（HotUpdate 侧 BottomNavLayout.Height = 120）常驻屏幕底部，
+        // 页面 Safe Area 需要上抬对应高度，否则选中面板/地图按钮会被导航条盖住。
+        // Game.Scripts 无法引用 HotUpdate，常量在此保留一份（须与 BottomNavLayout.Height 保持一致）。
+        private const float BOTTOM_NAV_HEIGHT = 120f;
+
+        private RectTransform safeAreaRectTransform;
         private AspectRatioFitter backgroundAspectRatioFitter;
 
         public RectTransform MapButtonRectTransform => (RectTransform)mapButton.transform;
@@ -23,6 +29,10 @@ namespace Watermelon
             Vector2 offsetMax = backgroundParentRectTransform.offsetMax;
             offsetMax.y += SafeAreaAdapter.GetTopOffset();
             backgroundParentRectTransform.offsetMax = offsetMax;
+
+            SafeAreaElement safeAreaElement = GetComponentInChildren<SafeAreaElement>(true);
+            if (safeAreaElement != null)
+                safeAreaRectTransform = (RectTransform)safeAreaElement.transform;
 
             mapButton.onClick.AddListener(OnMapButtonClicked);
 
@@ -68,7 +78,20 @@ namespace Watermelon
 
         protected override void OnShow()
         {
+            ApplyBottomNavPadding();
             NotifyOpened();
+        }
+
+        // 与 UIMainMenu.ApplyBottomNavPadding 同款：把 Safe Area 底部抬到导航条之上。
+        // SafeAreaAdapter 刷新时只重写 anchors、保留 offsets，因此这里的 padding 不会被冲掉。
+        private void ApplyBottomNavPadding()
+        {
+            if (safeAreaRectTransform == null)
+                return;
+
+            Vector2 offsetMin = safeAreaRectTransform.offsetMin;
+            offsetMin.y = Mathf.Max(offsetMin.y, BOTTOM_NAV_HEIGHT);
+            safeAreaRectTransform.offsetMin = offsetMin;
         }
 
 #endregion

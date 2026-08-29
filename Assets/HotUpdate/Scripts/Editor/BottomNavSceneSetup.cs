@@ -106,6 +106,9 @@ namespace Watermelon
             Button camperButton = CreateTabButton(row.transform, "Camper", 1f / 3f, 2f / 3f, out Graphic camperSelected);
             Button profileButton = CreateTabButton(row.transform, "Profile", 2f / 3f, 1f, out Graphic profileSelected);
 
+            AssignTabIcon(shopButton, "Assets/Project Files/Game/Images/ui_icon_store.png");
+            AssignTabIcon(camperButton, "Assets/Project Files/Game/Images/ui_icon_map.png");
+
             UIBottomNavBar nav = navRoot.AddComponent<UIBottomNavBar>();
             SerializedObject so = new SerializedObject(nav);
             so.FindProperty("root").objectReferenceValue = navRoot;
@@ -164,6 +167,24 @@ namespace Watermelon
             Button button = tab.AddComponent<Button>();
             button.targetGraphic = icon;
             return button;
+        }
+
+        private static void AssignTabIcon(Button button, string spritePath)
+        {
+            if (button == null) return;
+
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath);
+            if (sprite == null)
+            {
+                Debug.LogWarning($"[BottomNav] 图标 sprite 未找到: {spritePath}");
+                return;
+            }
+
+            Image icon = button.targetGraphic as Image;
+            if (icon == null) return;
+
+            icon.sprite = sprite;
+            icon.color = Color.white;
         }
 
         private static Text CreateLabel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax)

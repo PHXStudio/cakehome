@@ -207,7 +207,14 @@ namespace Watermelon
             {
                 Graphic icon = button.targetGraphic;
                 if (icon != null)
-                    icon.color = selected ? selectedColor : normalColor;
+                {
+                    // 彩色图标保持原色，选中态由 Selected Bg 圆点表达；
+                    // 纯色染色只作为 sprite 缺失时的占位回退。
+                    Image iconImage = icon as Image;
+                    icon.color = iconImage != null && iconImage.sprite != null
+                        ? Color.white
+                        : (selected ? selectedColor : normalColor);
+                }
             }
         }
     }
