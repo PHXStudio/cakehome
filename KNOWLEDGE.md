@@ -629,6 +629,36 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 
 ---
 
+## 二十、2026-08-29 QA 全逻辑测试循环
+
+### 20.1 测试方法（可复用）
+
+- **驱动**：Unity MCP（`127.0.0.1:8080/mcp`，streamable HTTP）+ Python 客户端 `D:\claudeWorkbase\mcp_unity.py`（`exec`/`play`/`console`/`shot`）
+- **逻辑测试**：`D:\claudeWorkbase\qa_runner.py`（`level|fail|merge|economy|all`），execute_code 驱动**真实 UI 按钮**（反射调 private，如 `UIGameOver.ReplayButton`）+ 相对断言（before/after 差值，不依赖绝对初值）
+- **PlayMode 冒烟**：`Unity.exe -batchmode -runTests -testPlatform PlayMode -testFilter CakeHomeBootTest`
+- **屏幕识别限制**：编辑器失焦时 Game view 不重绘，`ScreenCapture.CaptureScreenshot` 截到旧帧 → 用 `execute_code` 读 `UIPage.IsPageDisplayed` + `Canvas.enabled` 做精确 UI 断言（比像素截图更强）；截图仅用于首次视觉基线
+- **测试前置**：`CurrencyController.Set(Coins,500)` + `EnergyController.Set(50)` + 清棋盘多余物品，让各测试相互独立
+
+### 20.2 覆盖（31/31 通过）
+
+- **消消乐**：进关预扣10/三消匹配/通关/Home返还10/失败不返还/积分续局(-100金币)/半价重试(-5)/返回无页面残留
+- **门店**：生成器产出（`SetForcedSpawn`+`TryActivate`）/建筑升级(step+1 扣金币)/订单状态/合成物品放置(`grid.SpawnObject`)
+- **经济**：货币增减/能量 TrySpend 边界/每日签到/每日任务进度/积分棋子(5/个)
+
+### 20.3 发现的 bug（已修复，commit `6b0a86e`）
+
+1. **能量超上限**：`GuestRegistration.ClaimRegistrationReward` 用 `Add(30, ignoreCap:true)` → 43+30=73>50。去掉 `ignoreCap`（钳制到 Max）
+2. **Kettle typeId 错误**：`SpawnerQueue.Push("Kettle",…)` → MergeDatabase 里是 `"Kettle Spawner"`，游客奖励生成器从未生效。改 id
+3. **UI 残留遮挡**：UIGameOver 按钮用异步 `HidePage` 被页面切换打断 → 残留遮挡主菜单。改 `DisablePage` 同步隐藏 + `ReturnToMenu` 兜底隐藏 UIGame/UIGameOver/UIComplete
+4. **ReturnToMenu 未解锁 LifeLocked** → 下次进关 `LockLife` 守卫不扣能量。补 `LivesSystem.UnlockLife(true)`（通关路径 Home 已返还，幂等）
+5. **SetForcedSpawn 被 IsPoolEmpty 挡**：g1 生成器（池空设计）下强制产出永远失败。forced 分支绕过池空检查
+
+### 20.4 端到端验证（干净存档首通）
+
+重置存档+PlayerPrefs → 重进 Play → 首关进关/三消/通关 → 断言：`coins=70`（首通+游客50）、`energy=50/50 clamped=True`（钳制生效）、`spawnerQueue=1`（Kettle 入队）、console 0 错误。
+
+---
+
 ## 附录 A、玩家存档总览（2026-08-24 盘点）
 
 ### A.1 存档机制
