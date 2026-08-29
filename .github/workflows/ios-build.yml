@@ -9,6 +9,10 @@ on:
         type: choice
         options: [Debug, Release]
         default: Debug
+      sign_ipa:
+        description: 'Sign & package IPA (needs Apple certs secrets)'
+        type: boolean
+        default: false
 
 jobs:
   build-ios:
@@ -47,12 +51,12 @@ jobs:
           buildPath: builds/ios
           allowDirtyBuild: true
 
-      # 签名 + 出 IPA（可选）：提供 Apple 证书 secrets 才执行
+      # 签名 + 出 IPA（可选，触发时勾 sign_ipa）：
       #   IOS_CERTIFICATE: 分发证书 .p12 的 base64
       #   IOS_CERTIFICATE_PASSWORD: p12 密码
       #   IOS_PROVISIONING_PROFILE: 匹配的 .mobileprovision base64
       - name: Sign & package IPA (optional)
-        if: ${{ secrets.IOS_CERTIFICATE != '' }}
+        if: ${{ inputs.sign_ipa }}
         uses: game-ci/unity-ios-sign@v0
         with:
           provisioningProfileBase64: ${{ secrets.IOS_PROVISIONING_PROFILE }}
