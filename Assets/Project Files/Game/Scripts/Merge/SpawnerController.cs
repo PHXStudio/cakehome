@@ -69,13 +69,15 @@ namespace Watermelon
                 return false;
             }
 
-            if (spawner.IsPoolEmpty)
+            bool isForced = !string.IsNullOrEmpty(forcedTypeId);
+
+            // 强制产出（SetForcedSpawn：教程/测试用）应绕过空池检查，否则 g1 生成器（池空设计）下强制产出永远失败
+            if (!isForced && spawner.IsPoolEmpty)
             {
                 Debug.Log("[Spawn] TryActivate: aborted, spawn pool is empty");
                 return false;
             }
 
-            bool isForced = !string.IsNullOrEmpty(forcedTypeId);
             SpawnEntry entry;
             float chancePercent;
 

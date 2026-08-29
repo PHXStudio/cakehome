@@ -311,6 +311,14 @@ namespace Watermelon
 
             LevelController.UnloadLevel();
 
+            // 兜底同步隐藏全部游戏页面，防异步隐藏被页面切换打断后残留遮挡主菜单
+            UIController.DisablePage<UIGame>();
+            UIController.DisablePage<UIGameOver>();
+            UIController.DisablePage<UIComplete>();
+
+            // 兜底解锁门票锁存（失败/中途退出不返还；通关路径 UIComplete.HomeButton 已返还，此处幂等）
+            LivesSystem.UnlockLife(true);
+
             gameController.mapBehavior.Show();
 
             AdsManager.ShowInterstitial(null);

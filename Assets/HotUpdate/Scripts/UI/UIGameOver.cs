@@ -112,7 +112,8 @@ namespace Watermelon
                 return;
             }
 
-            UIController.HidePage<UIGameOver>();
+            // 同步隐藏本页，避免异步动画被后续页面切换打断导致残留遮挡
+            UIController.DisablePage<UIGameOver>();
             UIController.ShowPage<UIGame>();
         }
 
@@ -123,7 +124,8 @@ namespace Watermelon
             // D4 半价重试：5 能量（门票的一半）
             if (LivesSystem.CanStartHalfPrice())
             {
-                UIController.HidePage<UIGameOver>();
+                // 同步隐藏本页再进关，防残留
+                UIController.DisablePage<UIGameOver>();
 
                 GameController.ReplayLevelHalfPrice();
             }
@@ -137,10 +139,10 @@ namespace Watermelon
         {
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
-            UIController.HidePage<UIGameOver>(() =>
-            {
-                GameController.ReturnToMenu();
-            });
+            // 同步隐藏本页后回主菜单（ReturnToMenu 内还会兜底隐藏游戏页面）
+            UIController.DisablePage<UIGameOver>();
+
+            GameController.ReturnToMenu();
         }
 
         #endregion

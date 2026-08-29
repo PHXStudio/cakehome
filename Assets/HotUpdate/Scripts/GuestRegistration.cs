@@ -31,8 +31,10 @@ namespace Watermelon
             if (IsRewardClaimed()) return;
 
             // Grant energy + a grade-1 Kettle spawner for the merge board
-            EnergyController.Add(30, ignoreCap: true);
-            TaskController.Instance?.SpawnerQueue?.Push("Kettle", 1);
+            // 用默认钳制（≤Max）：能量 43+30 → 封顶 50，避免超上限显示异常
+            EnergyController.Add(30);
+            // typeId 必须与 MergeDatabase 一致（"Kettle" 查不到，会导致生成器奖励失效）
+            TaskController.Instance?.SpawnerQueue?.Push("Kettle Spawner", 1);
 
             // Grant 50 coins
             CurrencyController.Add(CurrencyType.Coins, 50);
