@@ -17,6 +17,23 @@ namespace Watermelon
         private Vector2 spacing;
         private Vector2 paddingTopLeft;
 
+        // objectsContainer 的 rect 在棋盘建成后仍可能变化：SafeAreaAdapter 应用安全区、
+        // UIGame.OnShow 为底部导航条加 padding、分辨率/旋转变化。尺寸只在 Init 算一次会导致
+        // 棋盘溢出盖住下方选中面板，因此监听容器尺寸变化并整体重排。
+        private Rect lastContainerRect;
+
+        private class ContainerResizeListener : MonoBehaviour
+        {
+            public Action OnResize;
+
+            // Unity 会把该消息发给尺寸变化的 RectTransform 自身及其所有子节点上的组件，
+            // 挂在容器上即可感知 Game Area / Padding 链路的任何尺寸变化。
+            private void OnRectTransformDimensionsChange()
+            {
+                if (isActiveAndEnabled) OnResize?.Invoke();
+            }
+        }
+
         private MergeCell[,] cells;
         private MergeCellBackground[,] backgrounds;
         private MergeDatabase database;
@@ -56,6 +73,12 @@ namespace Watermelon
             SetupLayout();
             SpawnCellBackgrounds();
             SpawnFlyingIconPool();
+
+            lastContainerRect = objectsContainer.rect;
+            ContainerResizeListener resizeListener = objectsContainer.GetComponent<ContainerResizeListener>();
+            if (resizeListener == null)
+                resizeListener = objectsContainer.gameObject.AddComponent<ContainerResizeListener>();
+            resizeListener.OnResize += Relayout;
 
             Dictionary<Vector2Int, CellSaveData> saveByPos = null;
             if (save != null && save.Cells.Count > 0)
@@ -97,6 +120,32 @@ namespace Watermelon
 
             gridLayout.cellSize = cellSize;
             gridLayout.enabled = false;
+        }
+
+        // Re-fit every cell/occupant after the container rect changes (see lastContainerRect).
+        // Occupants mid-drag or mid-flight snap to their cell — acceptable for a rare event.
+        private void Relayout()
+        {
+            Rect rect = objectsContainer.rect;
+            if (rect == lastContainerRect) return;
+            lastContainerRect = rect;
+
+            cellSize = new Vector2(
+                (rect.width - spacing.x * (Width - 1)) / Width,
+                (rect.height - spacing.y * (Height - 1)) / Height);
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    if (backgrounds[x, y] != null)
+                        PlaceInCell((RectTransform)backgrounds[x, y].transform, x, y);
+
+                    MergeFieldObject occupant = cells[x, y].Occupant;
+                    if (occupant != null)
+                        PlaceInCell((RectTransform)occupant.transform, x, y);
+                }
+            }
         }
 
         private void SpawnCellBackgrounds()
@@ -328,13 +377,21 @@ namespace Watermelon
             return false;
         }
 
+        // 拖拽中的物品虽已从格子摘下，但其源格在拖拽结束前不算真空位——生成器/奖励卡的
+        // Find* 若选中该格，松手时 ReturnToSource 会覆盖占用引用，产生幽灵物品。
+        private Vector2Int reservedCell = new Vector2Int(-1, -1);
+
+        public void ReserveCell(Vector2Int pos) => reservedCell = pos;
+        public void ReleaseReservedCell() => reservedCell = new Vector2Int(-1, -1);
+        private bool IsUsableEmpty(MergeCell cell) => cell != null && cell.IsEmpty && cell.Position != reservedCell;
+
         // Simple top-left scan — used for placing reward items where there's no anchor position
         // to search outward from (unlike spawner activation, which searches near the spawner).
         public MergeCell FindAnyEmpty()
         {
             for (int y = 0; y < Height; y++)
                 for (int x = 0; x < Width; x++)
-                    if (cells[x, y].IsEmpty) return cells[x, y];
+                    if (IsUsableEmpty(cells[x, y])) return cells[x, y];
             return null;
         }
 
@@ -422,7 +479,7 @@ namespace Watermelon
                 if (!visited.Add(pos)) continue;
 
                 MergeCell cell = GetCell(pos);
-                if (cell != null && cell.IsEmpty) return cell;
+                if (IsUsableEmpty(cell)) return cell;
 
                 Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
                 foreach (Vector2Int dir in dirs)

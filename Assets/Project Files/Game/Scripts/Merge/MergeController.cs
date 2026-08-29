@@ -296,6 +296,7 @@ namespace Watermelon
             magnetActiveCells.Clear();
 
             mergeGrid.GetCell(dragSourcePos).Occupant = null;
+            mergeGrid.ReserveCell(dragSourcePos);
             ClientOrderHighlightController.Instance?.Refresh();
             BuildMagnetCandidates();
 
@@ -398,6 +399,7 @@ namespace Watermelon
         {
             if (!isDragging || draggedObject == null) return;
             isDragging = false;
+            mergeGrid.ReleaseReservedCell();
 
             MergeFieldObject snappedTarget = magnetTarget != null && magnetTargetDist <= GameData.Data.LevelDatabase.MergeThreshold
                 ? magnetTarget
@@ -500,7 +502,27 @@ namespace Watermelon
             if (draggedObject == null) return;
 
             MergeFieldObject obj = draggedObject;
-            mergeGrid.GetCell(dragSourcePos).Occupant = obj;
+            MergeCell sourceCell = mergeGrid.GetCell(dragSourcePos);
+            if (sourceCell.Occupant == null || sourceCell.Occupant == obj)
+            {
+                sourceCell.Occupant = obj;
+            }
+            else
+            {
+                // 正常被 ReserveCell 挡住不会走到这；兜底放任意空格，避免覆盖他人引用产生幽灵物品
+                MergeCell empty = mergeGrid.FindAnyEmpty();
+                if (empty != null)
+                {
+                    empty.Occupant = obj;
+                    ((RectTransform)obj.transform).anchoredPosition = mergeGrid.GetAnchoredPosition(empty.Position);
+                }
+                else
+                {
+                    // 有 ReserveCell 在前置拦截，此分支不应可达；真到达时物品会掉出棋盘，
+                    // 用 Error 留痕而不是静默覆盖他人引用。
+                    Debug.LogError($"[Merge] ReturnToSource: 源格 {dragSourcePos} 被占且棋盘已满，{obj.TypeId} g{obj.Grade} 未能回格");
+                }
+            }
 
             if (selectedObject == obj)
                 MergeFieldObjectSelection.Instance?.Show(obj);
@@ -535,6 +557,11 @@ namespace Watermelon
             string typeId = source.TypeId;
             int newGrade  = source.Grade + 1;
 
+            // 宝箱合成：继承两箱中较少的剩余次数（在 Destroy 前取样）
+            int? chestCarry = null;
+            if (source is ChestObject chestA && target is ChestObject chestB)
+                chestCarry = Mathf.Min(chestA.RemainingSpawns, chestB.RemainingSpawns);
+
             // Only the merge that actually involves the current selection should hand
             // selection over to the result — otherwise this would override whatever the
             // player selected elsewhere while the drag was still in progress.
@@ -549,6 +576,8 @@ namespace Watermelon
 
             MergeItemData itemData = database.GetItem(typeId);
             MergeFieldObject merged = mergeGrid.SpawnObject(itemData, newGrade, targetPos.x, targetPos.y);
+            if (chestCarry.HasValue && merged is ChestObject chestResult)
+                chestResult.SetRemainingSpawns(chestCarry.Value);
             if (reselect)
                 Select(merged);
 
@@ -605,6 +634,8 @@ namespace Watermelon
             ResetMergeHint();
 
             Vector2Int pos = FindPosition(obj);
+            // 多指操作时物品可能已被摘离棋盘（如拖拽中另一指点按钮）——找不到就直接放弃
+            if (pos.x < 0) return;
 
             if (obj is EnergyItem)
             {
@@ -672,6 +703,8 @@ namespace Watermelon
             ResetMergeHint();
 
             Vector2Int pos = FindPosition(obj);
+            if (pos.x < 0) return; // 多指操作：物品已不在棋盘上（如拖拽中）
+
             Sprite icon = obj.CurrentSprite;
 
             mergeGrid.GetCell(pos).Occupant = null;
@@ -695,12 +728,23 @@ namespace Watermelon
             if (pendingDelete == null) return;
 
             (string TypeId, int Grade, int X, int Y) info = pendingDelete.Value;
-            pendingDelete = null;
 
             MergeItemData data = database.GetItem(info.TypeId);
-            if (data == null) return;
+            if (data == null) { pendingDelete = null; return; }
 
-            MergeFieldObject restored = mergeGrid.SpawnObject(data, info.Grade, info.X, info.Y);
+            // 原格可能已被占（删除后宝箱领取卡恰好落进该格，全程不经 Select，pendingDelete 未清）——
+            // 直接 SpawnObject 会顶掉占用引用产生幽灵物品。改放任意空格；棋盘满则保留待撤状态。
+            MergeCell target = mergeGrid.GetCell(info.X, info.Y);
+            if (target == null) { pendingDelete = null; return; }
+            if (!target.IsEmpty)
+            {
+                target = mergeGrid.FindAnyEmpty();
+                if (target == null) return;
+            }
+
+            pendingDelete = null;
+
+            MergeFieldObject restored = mergeGrid.SpawnObject(data, info.Grade, target.Position.x, target.Position.y);
             Select(restored);
             ParticlesController.PlayParticle("Appear")?.SetPosition(restored.transform.position);
             SyncSaveData();
@@ -711,6 +755,8 @@ namespace Watermelon
             ResetMergeHint();
 
             Vector2Int pos = FindPosition(obj);
+            if (pos.x < 0) return; // 多指操作：物品已不在棋盘上（如拖拽中）
+
             int sellPrice = obj.GradeData?.GetConfig<ItemGradeConfig>()?.SellPrice ?? 0;
 
             mergeGrid.GetCell(pos).Occupant = null;

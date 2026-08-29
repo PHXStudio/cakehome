@@ -151,6 +151,21 @@ namespace Watermelon
 
         // ─── Typed factories ─────────────────────────────────────────────────────
 
+        // 跨订单共享的认领集合：同一棋盘活物不能被两张订单同时显示为"可交付"。
+        // 此前 ClientOrderTask 的排除集只含本订单已绑实例，两单需求撞车时会同时亮 Give。
+        public HashSet<MergeFieldObject> GetClaimedInstances(ClientOrderTask except)
+        {
+            var claimed = new HashSet<MergeFieldObject>();
+            foreach (ITask task in activeTasks)
+            {
+                if (ReferenceEquals(task, except) || task is not ClientOrderTask order) continue;
+                foreach (OrderItem item in order.Items)
+                    if (item.collected && item.boundObject != null)
+                        claimed.Add(item.boundObject);
+            }
+            return claimed;
+        }
+
         public static ClientOrderTask AddClientOrder(string taskId, CharacterData character, List<OrderItem> items, int coinsReward)
         {
             var task = new ClientOrderTask(taskId, character, items, coinsReward);

@@ -175,6 +175,9 @@ namespace Watermelon
             if (zone == null) return;
             if (save.InitialProgressionZones.Contains(zone.ZoneId)) return;
 
+            // OnZoneChanged 直达路径也要过引导门控（此前只有 TriggerInitialProgressionIfOnboarded 有检查）
+            if (!MergeViewController.IsOnboardingCompleted()) return;
+
             // Opt-in: only zones whose progression explicitly STARTS with an atUpgrade: 0 step
             // get a zone-start grant. Normally the tutorial walks the player to the first
             // upgrade and progression begins at atUpgrade: 1 — a designer who removes the
@@ -182,11 +185,15 @@ namespace Watermelon
             ZoneProgressionStep[] progression = zone.Progression;
             if (progression == null || progression.Length == 0 || progression[0].AtUpgrade != 0) return;
 
-            save.InitialProgressionZones.Add(zone.ZoneId);
-            SaveController.MarkAsSaveIsRequired();
-
             UIQueueController.Enqueue(UIQueuePriority.BuildingProgression, onDone =>
             {
+                // 发放动作真正执行时才记账——先记账会在 1.8s 延迟期间杀进程时永久丢开局奖励
+                if (!save.InitialProgressionZones.Contains(zone.ZoneId))
+                {
+                    save.InitialProgressionZones.Add(zone.ZoneId);
+                    SaveController.MarkAsSaveIsRequired();
+                }
+
                 TriggerProgression(progression[0], null);
                 onDone();
             }, PROGRESSION_DELAY);

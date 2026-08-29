@@ -50,6 +50,10 @@ namespace Watermelon
             {
                 var bound = new HashSet<MergeFieldObject>(Items.Where(i => i.collected).Select(i => i.boundObject));
 
+                // 排除其它订单已认领的实例——避免两张订单同时显示"可交付"同一个物品
+                HashSet<MergeFieldObject> claimed = TaskController.Instance?.GetClaimedInstances(this);
+                if (claimed != null) bound.UnionWith(claimed);
+
                 foreach (OrderItem item in Items)
                 {
                     if (item.collected) continue;

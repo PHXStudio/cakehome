@@ -102,6 +102,10 @@ namespace Watermelon
 
             EnergyController.OnEnergyChanged += OnEnergyChanged;
 
+            // 页面用 canvas.enabled 显隐（OnEnable 不触发），隐藏期间退订会错过能量恢复/消耗，
+            // 重新订阅时补一次 Redraw，否则数值停留在隐藏前的旧值（同金币面板的修复）。
+            Redraw();
+
             timerCoroutine = StartCoroutine(TimerLoop());
         }
 
