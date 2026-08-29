@@ -32,6 +32,15 @@ jobs:
           restore-keys: |
             Library-iOS-${{ runner.os }}-
 
+      # 缓存 Unity 编辑器下载（unity-downloader 缓存目录）——避免每次构建重新下载 ~2GB
+      - name: Cache Unity editor download
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Unity/cache
+            ~/Library/Unity/Editor
+          key: unity-cache-${{ runner.os }}-2022.3.62f3
+
       # Unity 云构建（macOS runner + Xcode）
       # 必需 secrets：UNITY_LICENSE（Unity 激活 .ulf base64）
       #   激活方式：本地 Unity -batchmode 激活后导出 .ulf，或 UNITY_EMAIL/PASSWORD/SERIAL 在线激活
