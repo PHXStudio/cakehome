@@ -94,7 +94,7 @@ LoadDll.Start()
 6. **GameController** — 游戏主控制器
 7. **LevelController** — 关卡控制
 8. **ParticlesController** — 粒子系统
-9. **PUController** — 道具系统
+9. **PUController** — 道具系统（⚠️ 整个 `Init()` 被 `#if MODULE_POWERUPS` 包裹，宏缺失时静默跳过 → 启动 NRE，见注意事项 12）
 10. **LivesSystem** — 能量门票适配层（Lock/Unlock = 预扣/返还能量）+ 无限模式容器
 11. **MergeController / SpawnerController / TaskController** — 门店合成玩法（棋盘/生成器/订单，Game.Scripts 程序集）
 12. **TutorialController** — 新手引导
@@ -240,7 +240,10 @@ TileEffectType: None | Unknown | Crate | Ice | Link
 - 称号：订单 50 单「订单达人」/ 建筑 10 级「装修大师」/ 区域全解锁「区域开拓者」（⚠️ 「我的」Tab 已禁用，称号入口不可见，见 18.2）
 - 每日任务：`MergeOrders`（完成 2 订单，经 `CakeUIBridge.OrderCompleted`；⚠️ 每日任务面板已屏蔽，进度照跑但无 UI 出口）
 - 游客奖励：能量 30 + Kettle 生成器 + 50 金币
-- 推送：能量回满提醒（`ScheduleEnergyFullReminder`）
+- 推送（2026-08-28 重写）：`PushNotificationManager`（HotUpdate，`Other/PushNotificationManager.cs`）接 **Unity Notifications 2.3.2** API
+  - 能量回满提醒（`ScheduleEnergyFullReminder`）+ 每日 18:00 刷新提醒（`ScheduleDailyResetReminder`）
+  - 真机生效（`#if UNITY_ANDROID || UNITY_IOS`），编辑器/PC 静默
+  - 包 `com.unity.mobile.notifications` 为 **本地副本**（`Packages/com.unity.mobile.notifications/`，`manifest.json` `file:` 引用 + lock `embedded`）——因 `packages.unity.com` 被墙（ECONNRESET）无法在线注册，见 19.3
 
 ---
 
@@ -415,6 +418,8 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 | UI 完成 | `Assets/HotUpdate/Scripts/UI/UIComplete.cs` | ~200 |
 | UI 失败 | `Assets/HotUpdate/Scripts/UI/UIGameOver.cs` | ~150 |
 | 游客注册 | `Assets/HotUpdate/Scripts/GuestRegistration.cs` | 51 |
+| 推送管理器 | `Assets/HotUpdate/Scripts/Other/PushNotificationManager.cs` | ~90 |
+| 启动冒烟测试 | `Assets/Tests/PlayMode/CakeHomeBootTest.cs` | ~50 |
 
 ---
 
@@ -431,7 +436,9 @@ Unity 编辑器**失焦时** Play Mode 默认冻结（逻辑暂停 + 画面不�
 9. **⚡ Unity 失焦自动刷新** — `Assets/Editor/UnityBackgroundUpdate.cs` 解决编辑器失焦时 Play Mode 逻辑/渲染冻结（runInBackground + 强制重绘），便于 MCP 自动化
 10. **🧩 模板代码隔离在 `Game.Scripts` 程序集** — Merge 模板代码在 `Assets/Project Files/Game/Scripts/`（程序集 `Game.Scripts` + 7 个 `Game.Scripts.*.Editor`），HotUpdate 单向引用它；模板代码**不允许**反向引用 HotUpdate 类型（会成环），跨层调用点均已打 `TODO(模板迁移)` 存根
 11. **🧱 同名类型双存在是刻意的** — `GameData`/`LevelDatabase`/`TutorialController` 等在 HotUpdate（蛋糕版）与 Game.Scripts/Watermelon.Tutorial（模板版）各有一份；同程序集内优先解析本程序集类型（CS0436 警告属预期）。**不要再把第三个同名类型引进 Assembly-CSharp**（CS0433 硬错误）
-12. **🔧 改了代码 Unity 不编译时** — 先切到 Unity 窗口聚焦；无效则 `CompilationPipeline.RequestScriptCompilation(CleanBuildCache)` 全量重编（约 7 分钟，期间 isCompiling=true 看似卡死实属正常）
+12. **⚙️ 平台宏必须齐全** — `MODULE_POWERUPS` / `MODULE_MONETIZATION` 需在 Android/iOS/tvOS/Standalone **同时**定义（2026-08-28 修复：原只在 Standalone，移动端 `PUController.Init()` 被 `#if` 编译掉 → 启动刷 2 个 NullReference）。改动位置：`ProjectSettings.asset` → `scriptingDefineSymbols`（或 Player Settings → Scripting Define Symbols）
+13. **🤖 batchmode/CI 验证启动用 PlayMode 测试** — `WaitForEndOfFrame` 在 batchmode（无渲染帧）**不触发**，GameLoading 已加 `Application.isBatchMode` 兼容（GUI 行为不变）。验证启动全链路：`Unity.exe -batchmode -projectPath . -runTests -testPlatform PlayMode -testFilter CakeHomeBootTest -logFile Library/PlayModeTest.log`（见 19.2）
+14. **🔔 推送包是本地副本** — `com.unity.mobile.notifications` 位于 `Packages/com.unity.mobile.notifications/`（`file:` 引用 + lock `embedded`），因 `packages.unity.com` 被墙无法在线拉取。**勿从包管理器删除/替换**，否则推送编译报错
 
 ---
 
@@ -584,6 +591,41 @@ mergedev Game.unity → cakehome Game.unity，**Editor 脚本 additive 搬运**�
 - **露营车主菜单清理**：停用旧金币/能量面板（顶栏替代）；商店按钮换门店同款（`ui_icon_store`，静态无滑入动画、无红点徽章）；每日签到屏蔽（`CheckDailyPanels` 短路，数据层保留）。
 - **位置对齐教训**：跨页面拷贝 anchoredPosition 必须核对 **pivot 与父容器**——露营车商店按钮 pivot(1,1) 套门店 pivot(0.5,0.5) 的坐标导致偏移 50px；正确做法是在 Play 模式实测世界坐标反推（门店中心 right-100/top-70 ↔ 露营车 pivot(1,1) 的 (-50,-20)）。
 - **框架修复**：`IAPRewardsHolder.OnIAPManagerLoaded/OnPurchaseComplete` 对 `product==null`（编辑器无商品数据）加守卫——此前开机刷 8 条 NRE。
+
+---
+
+## 十九、2026-08-28 运行稳定化 + 推送通知 + 自动化冒烟
+
+### 19.1 运行报错根因与修复（commit `d117a79`）
+
+启动报 2 个 NullReference（`PUController.GetPowerUpBehavior` / `PUUIController.Update`），根因是**平台宏缺失**：
+
+- `MODULE_POWERUPS` / `MODULE_MONETIZATION` 原**只在 Standalone** 定义 → Android/iOS 目标下 `PUController.Init()`（整个方法体被 `#if MODULE_POWERUPS` 包裹）被编译掉 → `powerUpsLink`/`uiBehaviors` 为 null
+- 修复：`ProjectSettings.asset` 的 Android/iPhone/tvOS `scriptingDefineSymbols` 补上两个宏（与 Standalone 对齐）
+
+顺带修复：
+- `AudioInitModule` / `CurrencyInitModule` 的 `Unload()` 无空保护 → 退出 Play 时（模块未初始化，`audioController`/`currencyController` 为 null）NRE
+- `GameLoading.BootstrapCoroutine` 首段 `yield return new WaitForEndOfFrame()` 在 batchmode（无渲染帧）**永不恢复** → 启动协程卡死（仅 batchmode/CI，GUI 正常）；已加 `Application.isBatchMode` 分支改用普通帧等待
+
+### 19.2 PlayMode 冒烟测试（新增，自动化验证启动）
+
+`Assets/Tests/PlayMode/CakeHomeBootTest.cs`（asmdef `CakeHome.PlayModeTests`，`includePlatforms` 必须为空 = 全平台才是 PlayMode 测试）：
+
+- 流程：加载 Init(0) → 等 `GameLoading` 自动切到 Game(1) → Game 内跑 120 帧 → 断言全程无 Error/Exception（`Application.logMessageReceived` 捕获）
+- 运行：`Unity.exe -batchmode -projectPath . -runTests -testPlatform PlayMode -testFilter CakeHomeBootTest -logFile Library/PlayModeTest.log`（结果 XML 在项目根 `TestResults-*.xml`）
+- 已实测**通过**：修复后 Init→Game 秒切、120 帧零错误（修复前两个 PU NRE 刷屏）
+- ⚠️ `LogAssert.NoUnexpectedReceived()` 会拦所有信息日志（如 LoadDll 的 editor-mode 提示）→ 用显式错误捕获代替
+
+### 19.3 推送通知接入（commit `8da5b95`）
+
+- `PushNotificationManager` 重写为 Unity Notifications **2.3.2 正确 API**：`NotificationCenter.RequestPermission()` + `Notification` + `NotificationDateTimeSchedule.FireTime` + `ScheduleNotification(notification, schedule)`
+- 触发点：能量回满（按 `EnergyController` 剩余秒数）+ 每日 18:00 刷新提醒；`#if UNITY_ANDROID || UNITY_IOS` 真机生效
+- `com.unity.mobile.notifications` 为**本地副本包**（`Packages/com.unity.mobile.notifications/`），`manifest.json` 用 `file:com.unity.mobile.notifications` 引用 + `packages-lock.json` source=`embedded`——`packages.unity.com` 被墙（ECONNRESET）无法在线注册，这是唯一可用方案
+- `HotUpdate.asmdef` 引用程序集名 **`Unity.Notifications.Unified`**（不是 `Unity.Notifications`，旧名解析不到 `NotificationCenter`）
+
+### 19.4 系统备注
+
+- 本机 Windows 是**内置 Administrator 账户**（SID 以 `-500` 结尾），默认不受 UAC 过滤 → 所有进程全权限 → Unity 每次启动提示 "running with Administrator privileges"。已设 `HKLM\...\Policies\System\FilterAdministratorToken=1`（2026-08-28，**重启后生效**）：之后普通启动的进程走受限令牌，警告消失；需要管理员权限的操作会弹 UAC 确认
 
 ---
 
