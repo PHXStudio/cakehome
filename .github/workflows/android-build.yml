@@ -24,34 +24,39 @@ jobs:
           restore-keys: |
             Library-Android-${{ runner.os }}-
 
-      # 缓存 Unity 编辑器下载（Linux: ~/.cache/unity3d），避免每次重下 ~2GB
-      - name: Cache Unity editor download
-        uses: actions/cache@v3
+      # 下载 Unity 编辑器（GameCI 托管，Linux 装到 /opt/unity 或默认路径）
+      - name: Download Unity Editor
+        uses: game-ci/unity-downloader@v0.2
         with:
-          path: |
-            ~/.cache/unity3d
-            ~/Library/Unity/cache
-          key: unity-cache-${{ runner.os }}-2022.3.62f3
+          unityVersion: 2022.3.62f3
+          skipLicensingCheck: true
 
-      - name: Build Android APK (Unity)
-        uses: game-ci/unity-builder@v4
+      - name: Activate Unity (Personal, entitlement)
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        run: |
+          UNITY="$(ls /opt/unity*/Editor/Unity /Applications/Unity/Hub/Editor/2022.3.62f3/Unity.app/Contents/MacOS/Unity 2>/dev/null | head -1)"
+          "$UNITY" -batchmode -nographics -quit \
+            -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" \
+            -logFile /tmp/unity-activate.log || echo "activate returned non-zero (may already be activated)"
+
+      - name: Build Android APK (Unity)
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASS: ${{ secrets.ANDROID_KEY_PASS }}
-        with:
-          targetPlatform: Android
-          projectPath: .
-          unityVersion: 2022.3.62f3
-          buildMethod: BuildAndroid.Build
-          buildName: CakeHome
-          buildPath: builds/android
-          allowDirtyBuild: true
+        run: |
+          UNITY="$(ls /opt/unity*/Editor/Unity 2>/dev/null | head -1)"
+          "$UNITY" -batchmode -quit -projectPath . \
+            -buildTarget Android \
+            -executeMethod BuildAndroid.Build \
+            -logFile /tmp/unity-build.log
+          echo "===== BUILD LOG TAIL ====="
+          tail -30 /tmp/unity-build.log
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
