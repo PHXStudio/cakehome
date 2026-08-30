@@ -26,7 +26,7 @@ jobs:
 
       # 下载 Unity 编辑器（GameCI 托管，Linux 装到 /opt/unity 或默认路径）
       - name: Download Unity Editor
-        uses: game-ci/unity-downloader@v0.2
+        uses: game-ci/unity-downloader@main
         with:
           unityVersion: 2022.3.62f3
           skipLicensingCheck: true
