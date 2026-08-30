@@ -1,11 +1,17 @@
 name: Android Build (Cloud)
 
 # 手动触发：Actions → Android Build (Cloud) → Run workflow
-# Unity Personal 激活：UNITY_EMAIL + UNITY_PASSWORD 直激活（新版 entitlement，无需 .ulf/序列号）
+# 必需 secret：UNITY_LICENSE（Unity Personal 激活 .ulf 的 base64）
+#   获取：Unity -createManualActivationFile 生成 .alf → license.unity3d.com/manual 上传（选 Personal）→ 下载 .ulf
 # 签名：默认 Unity debug keystore；发布签名配置 secrets:
 #   ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASS / ANDROID_KEY_ALIAS / ANDROID_KEY_PASS
 on:
   workflow_dispatch:
+    inputs:
+      sign_apk:
+        description: 'Sign APK with release keystore (needs keystore secrets)'
+        type: boolean
+        default: false
 
 jobs:
   build-android:
@@ -25,41 +31,20 @@ jobs:
           restore-keys: |
             Library-Android-${{ runner.os }}-
 
-      # 下载 Unity 编辑器 + Android 模块（unity-downloader-cli，game-ci 官方 CLI）
-      - name: Download Unity Editor + Android support
-        run: |
-          pip install unity-downloader-cli -q
-          mkdir -p /opt/unity
-          unity-downloader-cli -u 2022.3.62f3 -c Editor -c Android --wait -d /opt/unity
-          echo "Unity 可执行:"
-          ls -la /opt/unity/Editor/Unity
-
-      # 激活 Unity（Personal entitlement，email/password 直激活）
-      - name: Activate Unity (Personal)
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        run: |
-          /opt/unity/Editor/Unity -batchmode -nographics -quit \
-            -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" \
-            -logFile /tmp/unity-activate.log || echo "activate rc=$? (可能已激活，继续)"
-          echo "===== ACTIVATE LOG ====="
-          grep -aiE "licens|activ|entitlement" /tmp/unity-activate.log | tail -5 || true
-
-      # 构建 APK
+      # Unity 云构建（unity-builder 自动下载 Unity + Android 模块 + 处理 SDK）
       - name: Build Android APK (Unity)
+        uses: game-ci/unity-builder@v4
         env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          ANDROID_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASS: ${{ secrets.ANDROID_KEY_PASS }}
-        run: |
-          /opt/unity/Editor/Unity -batchmode -quit -projectPath . \
-            -buildTarget Android \
-            -executeMethod BuildAndroid.Build \
-            -logFile /tmp/unity-build.log
-          echo "===== BUILD LOG TAIL ====="
-          tail -40 /tmp/unity-build.log
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: Android
+          projectPath: .
+          unityVersion: 2022.3.62f3
+          buildMethod: BuildAndroid.Build
+          buildName: CakeHome
+          buildPath: builds/android
+          allowDirtyBuild: true
+          androidExportType: androidPackage
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
