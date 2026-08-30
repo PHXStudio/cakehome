@@ -1,7 +1,8 @@
 name: Android Build (Cloud)
 
 # 手动触发：Actions → Android Build (Cloud) → Run workflow
-# 签名：默认 Unity debug keystore（可直接装测试机）；如需发布签名，配置 secrets:
+# Unity Personal 激活：UNITY_EMAIL + UNITY_PASSWORD 直激活（新版 entitlement，无需 .ulf/序列号）
+# 签名：默认 Unity debug keystore；发布签名配置 secrets:
 #   ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASS / ANDROID_KEY_ALIAS / ANDROID_KEY_PASS
 on:
   workflow_dispatch:
@@ -9,7 +10,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,39 +25,41 @@ jobs:
           restore-keys: |
             Library-Android-${{ runner.os }}-
 
-      # 下载 Unity 编辑器（GameCI 托管，Linux 装到 /opt/unity 或默认路径）
-      - name: Download Unity Editor
-        uses: game-ci/unity-downloader@main
-        with:
-          unityVersion: 2022.3.62f3
-          skipLicensingCheck: true
+      # 下载 Unity 编辑器 + Android 模块（unity-downloader-cli，game-ci 官方 CLI）
+      - name: Download Unity Editor + Android support
+        run: |
+          pip install unity-downloader-cli -q
+          mkdir -p /opt/unity
+          unity-downloader-cli -u 2022.3.62f3 -c Editor -c Android --wait -d /opt/unity
+          echo "Unity 可执行:"
+          ls -la /opt/unity/Editor/Unity
 
-      - name: Activate Unity (Personal, entitlement)
+      # 激活 Unity（Personal entitlement，email/password 直激活）
+      - name: Activate Unity (Personal)
         env:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         run: |
-          UNITY="$(ls /opt/unity*/Editor/Unity /Applications/Unity/Hub/Editor/2022.3.62f3/Unity.app/Contents/MacOS/Unity 2>/dev/null | head -1)"
-          "$UNITY" -batchmode -nographics -quit \
+          /opt/unity/Editor/Unity -batchmode -nographics -quit \
             -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" \
-            -logFile /tmp/unity-activate.log || echo "activate returned non-zero (may already be activated)"
+            -logFile /tmp/unity-activate.log || echo "activate rc=$? (可能已激活，继续)"
+          echo "===== ACTIVATE LOG ====="
+          grep -aiE "licens|activ|entitlement" /tmp/unity-activate.log | tail -5 || true
 
+      # 构建 APK
       - name: Build Android APK (Unity)
         env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASS: ${{ secrets.ANDROID_KEY_PASS }}
         run: |
-          UNITY="$(ls /opt/unity*/Editor/Unity 2>/dev/null | head -1)"
-          "$UNITY" -batchmode -quit -projectPath . \
+          /opt/unity/Editor/Unity -batchmode -quit -projectPath . \
             -buildTarget Android \
             -executeMethod BuildAndroid.Build \
             -logFile /tmp/unity-build.log
           echo "===== BUILD LOG TAIL ====="
-          tail -30 /tmp/unity-build.log
+          tail -40 /tmp/unity-build.log
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
