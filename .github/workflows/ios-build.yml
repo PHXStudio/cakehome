@@ -1,6 +1,7 @@
 name: iOS Build (Cloud)
 
 # 手动触发：Actions → iOS Build (Cloud) → Run workflow
+# Unity Personal 激活：UNITY_EMAIL + UNITY_PASSWORD 直激活（新版 entitlement，无需 .ulf/序列号）
 on:
   workflow_dispatch:
     inputs:
@@ -32,38 +33,37 @@ jobs:
           restore-keys: |
             Library-iOS-${{ runner.os }}-
 
-      # 缓存 Unity 编辑器下载（unity-downloader 缓存目录）——避免每次构建重新下载 ~2GB
-      - name: Cache Unity editor download
-        uses: actions/cache@v3
+      # 下载 Unity 编辑器（GameCI 托管，自动装到 /Applications/Unity/Hub/Editor）
+      - name: Download Unity Editor
+        uses: game-ci/unity-downloader@main
         with:
-          path: |
-            ~/Library/Unity/cache
-            ~/Library/Unity/Editor
-          key: unity-cache-${{ runner.os }}-2022.3.62f3
+          unityVersion: 2022.3.62f3
+          skipLicensingCheck: true
 
-      # Unity 云构建（macOS runner + Xcode）
-      # 必需 secrets：UNITY_LICENSE（Unity 激活 .ulf base64）
-      #   激活方式：本地 Unity -batchmode 激活后导出 .ulf，或 UNITY_EMAIL/PASSWORD/SERIAL 在线激活
-      - name: Build iOS Xcode project (Unity)
-        uses: game-ci/unity-builder@v4
+      - name: Activate Unity (Personal, entitlement)
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-        with:
-          targetPlatform: iOS
-          projectPath: .
-          unityVersion: 2022.3.62f3
-          buildMethod: BuildIOS.Build
-          buildName: CakeHome
-          buildPath: builds/ios
-          allowDirtyBuild: true
+        run: |
+          UNITY="/Applications/Unity/Hub/Editor/2022.3.62f3/Unity.app/Contents/MacOS/Unity"
+          "$UNITY" -batchmode -nographics -quit \
+            -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" \
+            -logFile /tmp/unity-activate.log || echo "activate returned non-zero (may already be activated)"
 
-      # 签名 + 出 IPA（可选，触发时勾 sign_ipa）：
-      #   IOS_CERTIFICATE: 分发证书 .p12 的 base64
-      #   IOS_CERTIFICATE_PASSWORD: p12 密码
-      #   IOS_PROVISIONING_PROFILE: 匹配的 .mobileprovision base64
+      - name: Build iOS Xcode project (Unity)
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          UNITY="/Applications/Unity/Hub/Editor/2022.3.62f3/Unity.app/Contents/MacOS/Unity"
+          "$UNITY" -batchmode -quit -projectPath . \
+            -buildTarget iOS \
+            -executeMethod BuildIOS.Build \
+            -logFile /tmp/unity-build.log
+          echo "===== BUILD LOG TAIL ====="
+          tail -30 /tmp/unity-build.log
+
+      # 签名 + 出 IPA（可选，触发时勾 sign_ipa）
       - name: Sign & package IPA (optional)
         if: ${{ inputs.sign_ipa }}
         uses: game-ci/unity-ios-sign@v0
