@@ -12,6 +12,9 @@ namespace Watermelon
     {
         public static bool IsBuildingActive { get; private set; }
 
+        /// <summary>视图切换广播：true=门店/装修视图，false=合成棋盘页。HotUpdate 侧（MergeHubModule）用它联动底栏显隐。</summary>
+        public static event System.Action<bool> OnBuildingActiveChanged;
+
         /// <summary>
         /// Master switch for ALL tutorials (wired to GameData.ShowTutorial by GameController at
         /// boot). When false, ActivateTutorials() is a no-op and onboarding counts as completed,
@@ -53,6 +56,8 @@ namespace Watermelon
                 UIController.HidePage<UIMainMenu>();
                 UIController.ShowPage<UIGame>();
             }
+
+            OnBuildingActiveChanged?.Invoke(active);
         }
 
         /// <summary>Called by MergeHubModule when the shop tab becomes active.</summary>

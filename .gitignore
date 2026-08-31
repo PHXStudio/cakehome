@@ -100,3 +100,4 @@ unity-mcp/dist/
 /HybridCLRData/AssembliesPostIl2CppStrip/
 # IL2CPP 临时构建项目
 /HybridCLRData/StrippedAOTDllsTempProj/
+Tools/GenerateTiles/__pycache__/

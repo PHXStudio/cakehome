@@ -82,15 +82,15 @@ namespace Watermelon
             NotifyOpened();
         }
 
-        // 与 UIMainMenu.ApplyBottomNavPadding 同款：把 Safe Area 底部抬到导航条之上。
-        // SafeAreaAdapter 刷新时只重写 anchors、保留 offsets，因此这里的 padding 不会被冲掉。
+        // 棋盘页已隐藏底栏 Tab（MergeHubModule 联动），不再为导航条抬高 Safe Area。
+        // 显式归零：SafeAreaAdapter 只重写 anchors、保留 offsets，旧会话抬过的值需要复位。
         private void ApplyBottomNavPadding()
         {
             if (safeAreaRectTransform == null)
                 return;
 
             Vector2 offsetMin = safeAreaRectTransform.offsetMin;
-            offsetMin.y = Mathf.Max(offsetMin.y, BOTTOM_NAV_HEIGHT);
+            offsetMin.y = 0f;
             safeAreaRectTransform.offsetMin = offsetMin;
         }
 
