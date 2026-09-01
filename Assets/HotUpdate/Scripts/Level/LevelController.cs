@@ -44,7 +44,11 @@ namespace Watermelon
         public static Vector2Int OddLayerSize => new Vector2Int(Level.GetLayer(Level.AmountOfLayers - 2).GetRow(0).AmountOfCells, Level.GetLayer(Level.AmountOfLayers - 2).AmountOfRows);
         public static bool IsEvenLayerBigger => EvenLayerSize.x > OddLayerSize.x;
 
-        public static int CurrentReward => GetCurrentLevelReward();
+        public static int CurrentReward => BaseReward + PerformanceReward;
+        /// <summary>通关基础奖励（首通 CoinsReward / 重玩 25%）。</summary>
+        public static int BaseReward => GetCurrentLevelReward();
+        /// <summary>表现加成：本局消除棋子数 ×1 + 最高连击 ×2（让表现直接变金币）。</summary>
+        public static int PerformanceReward => ComboController.TotalMatched + ComboController.MaxCombo * 2;
         public static DockBehavior Dock => instance.dock;
 
         public static BackgroundBehavior Background { get; private set; }
@@ -354,6 +358,7 @@ namespace Watermelon
         private void Update()
         {
             GameplayTimer.Update();
+            ComboController.Update(); // 三消爽感：Fever 到期检测
         }
 
         public static bool SubmitIsAllowed()

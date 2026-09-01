@@ -38,6 +38,9 @@ namespace Watermelon
         private int coinsHash = "Coins".GetHashCode();
         private int currentReward;
 
+        // 表现加成拆分显示（运行时创建，挂在安全区下）
+        private TextMeshProUGUI perfBreakdownText;
+
         public override void Init()
         {
             multiplyRewardButton.onClick.AddListener(MultiplyRewardButton);
@@ -75,6 +78,9 @@ namespace Watermelon
 
             currentReward = LevelController.CurrentReward;
 
+            // 表现加成拆分：基础 + 表现（消除棋子数/最高连击）
+            CreatePerfBreakdown(LevelController.BaseReward, LevelController.PerformanceReward);
+
             ShowRewardLabel(currentReward, false, 0.3f, delegate
             {
                 rewardLabel.Transform.DOPushScale(Vector3.one * 1.1f, Vector3.one, 0.2f, 0.2f).OnComplete(delegate
@@ -101,6 +107,8 @@ namespace Watermelon
             if (!isPageDisplayed)
                 return;
 
+            if (perfBreakdownText != null) perfBreakdownText.gameObject.SetActive(false);
+
             backgroundFade.Hide(0.25f);
             coinsPanelScalable.Hide();
 
@@ -113,6 +121,40 @@ namespace Watermelon
             });
         }
 
+
+        #endregion
+
+        #region PerformanceBreakdown
+
+        private void CreatePerfBreakdown(int baseReward, int perfReward)
+        {
+            if (perfBreakdownText == null)
+            {
+                var go = new GameObject("PerfBreakdown", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+                perfBreakdownText = go.GetComponent<TextMeshProUGUI>();
+                perfBreakdownText.alignment = TextAlignmentOptions.Center;
+                perfBreakdownText.fontSize = 30;
+                perfBreakdownText.fontStyle = FontStyles.Bold;
+                perfBreakdownText.color = new Color(1f, 0.9f, 0.4f);
+                perfBreakdownText.outlineWidth = 0.25f;
+                perfBreakdownText.outlineColor = new Color(0f, 0f, 0f, 0.6f);
+
+                if (rewardAmountText != null) perfBreakdownText.font = rewardAmountText.font;
+
+                var rt = perfBreakdownText.rectTransform;
+                rt.SetParent(safeAreaTransform, false);
+                rt.anchorMin = new Vector2(0.5f, 0.5f);
+                rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchoredPosition = new Vector2(0f, -46f);
+                rt.sizeDelta = new Vector2(600f, 42f);
+            }
+
+            perfBreakdownText.text = perfReward > 0
+                ? $"基础 +{baseReward}    表现 +{perfReward}"
+                : $"通关奖励 +{baseReward}";
+            perfBreakdownText.gameObject.SetActive(true);
+        }
 
         #endregion
 

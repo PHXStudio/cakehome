@@ -179,6 +179,7 @@ namespace Watermelon
 
             // 积分棋子：进入关卡启用
             MatchBonusController.OnLevelStarted();
+            ComboController.OnLevelStarted();
 
             AdsManager.ShowInterstitial(null);
 
@@ -245,6 +246,7 @@ namespace Watermelon
             });
 
             MatchBonusController.OnLevelEnded();
+            ComboController.OnLevelEnded();
             isGameActive = false;
         }
 
@@ -274,6 +276,7 @@ namespace Watermelon
             });
 
             MatchBonusController.OnLevelEnded();
+            ComboController.OnLevelEnded();
             isGameActive = false;
         }
 

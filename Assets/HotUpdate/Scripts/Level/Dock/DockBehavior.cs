@@ -50,6 +50,10 @@ namespace Watermelon
             MatchCombined -= MatchBonusController.OnMatchCombined;
             MatchCombined += MatchBonusController.OnMatchCombined;
 
+            // 三消爽感：连击系统（Combo + Fever）
+            MatchCombined -= ComboMatchHandler;
+            MatchCombined += ComboMatchHandler;
+
             defaultContainerPosition = transform.position;
 
             lastPickedObject = null;
@@ -170,7 +174,28 @@ namespace Watermelon
                 slotCase.Behavior.MatchAnimation(i * 0.05f);
             }
 
-            AudioController.PlaySound(AudioController.AudioClips.mergeSound, 0.5f);
+            // 三消爽感：连击越高音调越高 + 粒子爆炸升级 + 连击/大消除/Fever 震屏
+            int combo = ComboController.Combo;
+            bool isFever = ComboController.IsFever;
+            AudioController.PlaySound(AudioController.AudioClips.mergeSound, 0.5f, Mathf.Min(1f + combo * 0.05f, 1.5f));
+
+            Vector3 fxPos = transform.position;
+            for (int i = 0; i < charactersToRemove.Count; i++)
+            {
+                var comp = charactersToRemove[i] as Component;
+                if (comp != null) fxPos = comp.transform.position;
+            }
+            ParticlesController.PlayParticle("Slot Highlight")
+                .SetPosition(fxPos + Vector3.back * 0.2f)
+                .SetRotation(Quaternion.Euler(Vector3.right * -90f))
+                .SetScale(Vector3.one * (1f + combo * 0.3f))
+                .SetDuration(1f);
+
+            if (combo >= 2 || charactersToRemove.Count >= 4 || isFever)
+            {
+                if (Camera.main != null)
+                    Camera.main.transform.DOShake(Mathf.Min(0.15f + combo * 0.03f, 0.4f), 0.3f);
+            }
 
             Tween.DelayedCall(0.4f, () =>
             {
@@ -220,6 +245,12 @@ namespace Watermelon
             return CheckDockMatch(remove);
         }
 
+        /// <summary>三消爽感：消除回调 → 连击系统。</summary>
+        private static void ComboMatchHandler(List<ISlotable> match)
+        {
+            ComboController.RegisterMatch(match != null ? match.Count : 0);
+        }
+
         public static List<ISlotable> GetHintSlots()
         {
             SlotBehavior[] elementsArray = slots.FindAll(x => x.IsOccupied).GroupBy(x => x.SlotCase.Behavior.UniqueElementID).OrderByDescending(g => g.Count()).SelectMany(g => g).ToArray();
@@ -253,7 +284,20 @@ namespace Watermelon
             {
                 var slot = slots[i];
 
-                if (!slot.IsOccupied) return false;
+                if (!slot.IsOccupied)
+                {
+                    // 空槽：若前面已有 ≥3 连则消除（三消爽感：大消除支持），否则无匹配
+                    if (counter >= 3)
+                    {
+                        if (remove)
+                        {
+                            RemoveMatch(list);
+                            MatchCombined?.Invoke(list);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
 
                 var slotCase = slot.SlotCase;
                 var element = slotCase.Behavior;
@@ -267,8 +311,11 @@ namespace Watermelon
                 {
                     counter++;
                     list.Add(element);
-
-                    if (counter == 3)
+                }
+                else if (!slotCase.IsBeingRemoved)
+                {
+                    // 三消爽感：遇到不同型时，若前面连续同型段 ≥3，一次性消除（支持 4/5/6 大消除）
+                    if (counter >= 3)
                     {
                         if (remove)
                         {
@@ -279,9 +326,7 @@ namespace Watermelon
 
                         return true;
                     }
-                }
-                else if (!slotCase.IsBeingRemoved)
-                {
+
                     counter = 1;
                     comparableRefference = element;
                     list = new List<ISlotable> { element };
@@ -291,6 +336,19 @@ namespace Watermelon
                     counter = 0;
                     list = new List<ISlotable>();
                 }
+            }
+
+            // 三消爽感：循环结束，最后一段 ≥3 也消除（含 4+ 大消除）
+            if (counter >= 3)
+            {
+                if (remove)
+                {
+                    RemoveMatch(list);
+
+                    MatchCombined?.Invoke(list);
+                }
+
+                return true;
             }
 
             return false;

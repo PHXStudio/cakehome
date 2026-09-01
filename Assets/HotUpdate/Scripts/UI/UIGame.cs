@@ -29,6 +29,9 @@ namespace Watermelon
         [SerializeField] TextMeshProUGUI tutorialDescriptionText;
         [SerializeField] Button tutorialSkipButton;
 
+        // 三消爽感：Combo/Fever UI（运行时创建，挂在安全区下）
+        private TextMeshProUGUI comboText;
+
         public TimerVisualiser GameplayTimer => gameplayTimer;
 
         public override void Init()
@@ -49,12 +52,19 @@ namespace Watermelon
         {
             exitPopUp.OnConfirmExitEvent += ExitPopUpConfirmExitButton;
             exitPopUp.OnCancelExitEvent += ExitPopCloseButton;
+
+            // 三消爽感：Combo/Fever 事件
+            ComboController.OnComboChanged += OnComboChangedHandler;
+            ComboController.OnFeverChanged += OnFeverChangedHandler;
         }
 
         private void OnDisable()
         {
             exitPopUp.OnConfirmExitEvent -= ExitPopUpConfirmExitButton;
-            exitPopUp.OnCancelExitEvent += ExitPopCloseButton;
+            exitPopUp.OnCancelExitEvent -= ExitPopCloseButton;
+
+            ComboController.OnComboChanged -= OnComboChangedHandler;
+            ComboController.OnFeverChanged -= OnFeverChangedHandler;
         }
 
         #region Show/Hide
@@ -63,6 +73,8 @@ namespace Watermelon
         {
             coinsPanel.Activate();
             exitButtonFadeAnimation.Show();
+
+            if (comboText != null) comboText.gameObject.SetActive(false);
 
             UILevelNumberText.Show();
 
@@ -85,6 +97,8 @@ namespace Watermelon
             coinsPanel.Disable();
             exitButtonFadeAnimation.Hide();
 
+            if (comboText != null) comboText.gameObject.SetActive(false);
+
             UILevelNumberText.Hide();
 
             IntToggle timer = LevelController.Level.Timer;
@@ -100,6 +114,88 @@ namespace Watermelon
         {
             levelNumberText.UpdateLevelNumber(levelNumber);
         }
+        #endregion
+
+        #region Combo / Fever（三消爽感）
+
+        private void CreateComboUI()
+        {
+            if (comboText != null) return;
+
+            var go = new GameObject("ComboText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+            comboText = go.GetComponent<TextMeshProUGUI>();
+            comboText.alignment = TextAlignmentOptions.Center;
+            comboText.fontSize = 44;
+            comboText.fontStyle = FontStyles.Bold;
+            comboText.color = Color.white;
+            comboText.outlineWidth = 0.3f;
+            comboText.outlineColor = new Color(0f, 0f, 0f, 0.65f);
+
+            // 字体复用金币面板的 TMP 字体
+            var sample = coinsPanel != null ? coinsPanel.GetComponentInChildren<TextMeshProUGUI>(true) : null;
+            if (sample != null) comboText.font = sample.font;
+
+            var rt = comboText.rectTransform;
+            rt.SetParent(safeAreaRectTransform, false);
+            rt.anchorMin = new Vector2(0.5f, 1f);
+            rt.anchorMax = new Vector2(0.5f, 1f);
+            rt.pivot = new Vector2(0.5f, 1f);
+            rt.anchoredPosition = new Vector2(0f, -16f);
+            rt.sizeDelta = new Vector2(600f, 64f);
+
+            comboText.gameObject.SetActive(false);
+        }
+
+        private void OnComboChangedHandler(int combo, float mult)
+        {
+            CreateComboUI();
+
+            if (combo <= 0)
+            {
+                if (comboText != null) comboText.gameObject.SetActive(false);
+                return;
+            }
+
+            comboText.gameObject.SetActive(true);
+            comboText.text = ComboController.IsFever
+                ? $"FEVER!  {mult:0.#}x"
+                : $"COMBO x{combo}   {mult:0.#}x";
+
+            comboText.color = ComboController.IsFever ? new Color(1f, 0.8f, 0.15f) : Color.white;
+            comboText.transform.localScale = Vector3.one * 0.55f;
+            comboText.transform.DOScale(Vector3.one, 0.25f).SetEasing(Ease.Type.BackOut);
+
+            // 金币面板弹跳（印钞感）
+            if (coinsPanel != null)
+            {
+                var coinRt = coinsPanel.GetComponent<RectTransform>();
+                if (coinRt != null) coinRt.DOPushScale(Vector3.one * 1.12f, Vector3.one, 0.2f, 0.08f);
+            }
+        }
+
+        private void OnFeverChangedHandler(bool isFever)
+        {
+            CreateComboUI();
+
+            if (!isFever)
+            {
+                if (comboText != null)
+                {
+                    comboText.color = Color.white;
+                    comboText.text = $"COMBO x{ComboController.Combo}   {ComboController.GetMultiplier():0.#}x";
+                }
+                return;
+            }
+
+            if (comboText != null)
+            {
+                comboText.gameObject.SetActive(true);
+                comboText.color = new Color(1f, 0.8f, 0.15f);
+                comboText.text = $"FEVER!  {ComboController.GetMultiplier():0.#}x";
+                comboText.transform.DOPushScale(Vector3.one * 1.35f, Vector3.one, 0.3f, 0.08f);
+            }
+        }
+
         #endregion
 
         public void ShowExitPopUp()

@@ -47,7 +47,8 @@ namespace Watermelon
             if (count < MIN_MATCH)
                 return;
 
-            int reward = count * COINS_PER_MATCHED_TILE;
+            // 三消爽感：分数 × 连击倍率（Fever 5x / 连击叠加）
+            int reward = Mathf.RoundToInt(count * COINS_PER_MATCHED_TILE * ComboController.GetMultiplier());
             CurrencyController.Add(CurrencyType.Coins, reward);
             CustomAnalytics.TrackCurrencyGain("coins", reward, "match_bonus");
         }
