@@ -1104,8 +1104,9 @@ Transparent background.
 ```
 
 ### 资源替换状态（2026-09-05）
-- 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）
+- 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）、`D:\claudeWorkbase\reskin_bg.py`（Backgrounds 关卡背景暖烘焙化）
 - done 清单：`reskin_royal_done.txt`（冷调 82）、`reskin_warm_done.txt`（暖烘焙 64）
+- **Backgrounds 4 张已换暖烘焙**（commit 7dace77，关卡背景 back_1~4：奶油草地+姜饼屋/暖杏村/糖霜山/暖金暮），关卡实测暖奶黄糖果郊野
 - 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**，不做原样 img2img（待设计）
 
 ### ⚠️ img2img 适用边界（2026-09-05 教训）
