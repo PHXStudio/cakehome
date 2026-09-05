@@ -1107,3 +1107,10 @@ Transparent background.
 - 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）
 - done 清单：`reskin_royal_done.txt`（冷调 82）、`reskin_warm_done.txt`（暖烘焙 64）
 - 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**，不做原样 img2img（待设计）
+
+### ⚠️ img2img 适用边界（2026-09-05 教训）
+- **内容型/立体感图片**（瓦片、甜点、宝箱、角色、店招）→ seedream img2img 效果 OK
+- **几何符号/基础 UI 图标**（叉、勾、圆钮、加号、心形、开关、纯色按钮底）→ **禁止 seedream**：会把干净线条画乱、画丢内部符号（如 btn_close 白叉丢失）、加白色描边、高饱和刷成米白失去语义区分
+- 符号类正确做法：**恢复原版(HEAD)干净几何 + HSV 降饱和(约×0.6)+ 微提亮** 转暖烘焙马卡龙，保留 alpha/渐变/白符号
+- 脚本：`D:\claudeWorkbase\reskin_soften.py`（通用: 恢复 HEAD + 低饱和烘焙调色）
+- 已应用：`General UI` 18 张基础图标（2026-09-05 commit bc37d69）；大地图关卡按钮三态配色（bd617cc）
