@@ -1062,3 +1062,48 @@ Play（能量≥10 或无限模式）→ 预扣 10 能量 → UIGame（多层三
 - 店长 Avatar 换装系统
 - 赛季通行证（Bakery Pass）
 - 限定食材/模具 IAP 礼包
+---
+
+## 美术风格规范（2026-09-05 确立，全项目基准）
+
+> 这是**当前确定的唯一美术风格**，此后所有 UI/场景/物品/图标资源一律以此为基准生成或绘制。
+> 参考图：`C:\Users\Administrator\Pictures\Screenshots\Gemini_Generated_Image_*.jpg`（4 张风格/店面/UI/棋盘示意）
+> 生成通道：火山 Seedream 5.0 Pro（key ark-7d0a5146-7919-44cf-b458-be91bbcf0c08-f0727），img2img 保持原构图。
+> 看图片质检验证：`python D:\claudeWorkbase\volc_vision.py <图路径> "<问题>"`（doubao-seed-2-1-pro）。
+
+### 风格关键词
+**暖调治愈烘焙风**（casual bakery / Yummy Tales / 烘焙合并休闲类），不是冷调白金皇室。
+
+### 配色（低饱和、无尖锐高饱和）
+- **基底**：暖木棕 + 奶油米白 / 浅卡其，整体温暖柔和
+- **主体**：马卡龙柔色（柔粉 powder pink / 奶油黄 butter yellow / 浅橙 light orange / 奶棕 / 可可巧克力棕）——均取甜点本身自然色
+- **背景/辅助**：低饱和浅雾霾蓝或暖浅底，干净不抢主体
+- **功能区分**：低饱和草绿 / 暖橙 / 柔蓝；货币用暖调柔金，钻石用淡紫柔色
+- 提示红点用小面积
+- **禁用**：高饱和刺眼色、冷调白金、厚重粗金边、宝石抢镜
+
+### 造型（圆角体系）
+- 所有 UI 容器（面板/按钮/棋盘格/道具框）＝**超大圆角矩形（squircle 方圆形）**，无尖锐棱角
+- 面板：奶米/浅卡其底 + **香槟暖金细描边** + 柔和凸起包边（不要厚重粗金边）
+- 按钮：同色系深一度外描边 + 顶部细白高光
+- 成品蛋糕/高价值物：配带金边雕花的白瓷高脚盘承载
+
+### 三消棋盘瓦片（关键约束）
+- 棋盘格子（`tile_background`）＝**正俯视伪 3D 圆角方形**：干净低饱和奶白+暖杏底、中央平整空白放 icon、边缘柔和，**正俯视下不得有上翻花边/波浪带**（花边若需立体感，只做顶面外缘"垂直向下"的简单衬边，厚度要够，避免纸片感）
+- 棋子（icon）＝甜点/糖果主题 3D 立体、图案为主、避免圆形徽章化
+- 具体 3D 物体（蛋糕/咖啡/工具）可轻微立体斜视，但棋盘格/容器类坚持正俯视
+
+### Seedream 提示词公共段（img2img 换肤时附加）
+```
+Warm cozy bakery merge-game art style: cream/butter-ivory base with soft warm wood-brown accents,
+soft pastel macaron colors (powder pink, butter yellow, light orange, cream, cocoa),
+LOW saturation muted cozy feel, super rounded squircle shapes, thin champagne-gold border line,
+soft matte finish with gentle top highlight. NO harsh saturated colors, NO cold white-gold,
+NO heavy thick gold frame, NO gemstones. Keep the original shape, icon composition and colors.
+Transparent background.
+```
+
+### 资源替换状态（2026-09-05）
+- 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）
+- done 清单：`reskin_royal_done.txt`（冷调 82）、`reskin_warm_done.txt`（暖烘焙 64）
+- 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**，不做原样 img2img（待设计）
