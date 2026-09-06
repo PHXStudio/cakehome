@@ -1107,7 +1107,13 @@ Transparent background.
 - 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）、`D:\claudeWorkbase\reskin_bg.py`（Backgrounds 关卡背景暖烘焙化）
 - done 清单：`reskin_royal_done.txt`（冷调 82）、`reskin_warm_done.txt`（暖烘焙 64）
 - **Backgrounds 4 张已换暖烘焙**（commit 7dace77，关卡背景 back_1~4：奶油草地+姜饼屋/暖杏村/糖霜山/暖金暮），关卡实测暖奶黄糖果郊野
-- 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**，不做原样 img2img（待设计）
+- 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**（2026-09-06 定方案，进行中）
+  - **方向**：Zone 1 布景从"蓝房庭院外景"整容成"烘焙店内"，保留 5 物件 × 每物 4 档升级机制(buildingId/存档/成本全不变，只改美术+布局+台词)。Zone 2/3 本次不动，其 prefab 共享 z1 图，故新图全走新目录避免连累。
+  - **5 槽映射**：building_1(house)→后墙左高柜 / building_4(fence)→右高柜 / building_2(fountain)→前景玻璃柜 / building_3(table)→圆桌餐椅 / building_5(bush)→三层点心塔(绿植吊灯入背景固定)
+  - **资源产出**(commit 后)：`Images/Zone 1 Shop/` = 空壳背景 `shop1_bg`(1882×3346 竖幅) + 5 物族×4 档透明物件图 `shop1_counter/display/dining/rightcab/tower_1~4`(RMBG 抠透明) + 豪华整店样板 `shop_sample_full`
+  - **技术教训**：逐件生成"正立面物件"与"纵深透视空壳"透视不匹配拼装违和；用户已定**改平视整店 + 同源切层**(先生成平视无纵深整店图,再切背景+5物,保证同源对齐)。`shop_flat.png` 平视样板已生成待视觉确认切层
+  - **脚本**：`D:\claudeWorkbase\gen_shop_objects.py / gen_shop_t2i.py`(物件生成)、`rmbg_cut.py / cut_all.py`(RMBG 抠图)、`bg2alpha.py`(色键备用)。RMBG 模型 `D:\claudeWorkbase\models_rmbg\rmbg14.onnx`
+  - **待续**：视觉确认平视样板→同源切层→Prefab 重排坐标/接 sprite→15 段 completionThought 改店内台词→Play 验证。prefab 已还原 HEAD(避免 SavePrefabAsset 引号格式噪音)，接入时统一用 Unity 改
 
 ### ⚠️ img2img 适用边界（2026-09-05 教训）
 - **内容型/立体感图片**（瓦片、甜点、宝箱、角色、店招）→ seedream img2img 效果 OK
