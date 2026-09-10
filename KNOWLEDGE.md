@@ -21,6 +21,8 @@
 
 ## 二、目录结构
 
+> 📍 **全量资源定位速查（场景/UI/美术/音频/数据/字体/代码/工具）见 [§21 全量资源地图](#二十一全量资源地图2026-09-10-整理定位用速查)** —— 用户提到某类资源时直接跳该节。
+
 ```
 Assets/
 ├── Editor/                          # Editor 工具（AOT 编译期）
@@ -48,6 +50,14 @@ Assets/
 ├── Project Files/
 │   ├── Data/                        # ScriptableObject 数据资产
 │   └── Game/                        # 游戏资产（动画/音频/字体/图片/材质/模型/预制体/场景）
+│       └── Art/                     # ★ 美术资源归集区（2026-09-10 建立，换皮唯一入口）
+│           ├── _MANIFEST.md         # 资源索引（分组/尺寸/原始路径）
+│           ├── Gameplay/            # Pieces 棋子64 / Tiles 瓦片 / Chests / Characters / PowerUps / Dock / Misc
+│           ├── UI/                  # Common 通用 / Icons 图标 / Store 商店 / Tutorial 引导
+│           ├── Scene/               # Backgrounds / Zone1 / Zone2 / Zone3
+│           ├── Dialog/  Map/  Fx/  Fonts/
+│           ├── _Pending/            # 已生成待接入（Zone1Shop 烘焙店素材）
+│           └── _Unused/             # 未被任何 prefab/scene 引用的孤儿资源
 ├── Scripts/
 │   └── LoadDll.cs                   # HybridCLR dll 加载器
 ├── StreamingAssets/HotUpdate/       # 热更新 dll 存放目录
@@ -1103,6 +1113,38 @@ NO heavy thick gold frame, NO gemstones. Keep the original shape, icon compositi
 Transparent background.
 ```
 
+### 美术资源目录规范（2026-09-10 建立）
+
+**归集根目录：`Assets/Project Files/Game/Art/`** —— 换皮的唯一入口，不再去别处找图。
+
+| 分组 | 内容 |
+|---|---|
+| `Gameplay/Pieces` (64) | 三消棋子（蛋糕/糖果） |
+| `Gameplay/Tiles` (17) + `Tiles/Special` (6) | 棋盘瓦片与特殊瓦片 |
+| `Gameplay/Chests` (15) / `Characters` (6) / `PowerUps` (4) / `Dock` (1) / `Misc` (9) | 宝箱开箱序列、角色立绘、道具、槽位、杂项 |
+| `UI/Common` (47) | 通用面板、按钮、进度条 |
+| `UI/Icons` (33) | 全量功能图标 |
+| `UI/Store` (16) / `UI/Tutorial` (2) | 商店界面、引导指针 |
+| `Scene/Zone1` (22) / `Zone2` (2) / `Zone3` (1) / `Backgrounds` (4) | 关卡背景与布景 |
+| `Dialog` (13) / `Map` (7) / `Fx` (9) / `Fonts` (6) | 剧情弹窗、地图、特效、字体描边贴图 |
+| `_Pending/Zone1Shop` (24) | 已生成但尚未接入的烘焙店素材 |
+| `_Unused` (61) | 未被任何 prefab/scene 引用的孤儿资源 |
+
+**关键性质**：284 个使用中资源**全部是 GUID 序列化引用**（prefab/scene/asset），**零代码路径加载**。因此移动/改名/重组目录**不会断任何场景与预制体引用**；换皮时直接覆盖同名文件即可。
+
+**索引**：`Art/_MANIFEST.md`（21 分组 × 文件 × 尺寸 × 原始路径，575 行）
+
+**迁移工具**（`Tools/`）：
+- `scan_art_refs.py` — 扫描资源引用，输出 `Tools/art_refs.json`（区分使用中/孤儿）
+- `migrate_art.py` — 归集迁移（`--apply` 执行，`--rollback` 按映射表回滚）
+- `fix_art_paths.py` — 按映射表批量修复代码里硬编码的旧资源路径
+- `gen_art_manifest.py` — 生成 `Art/_MANIFEST.md`
+- 映射表：`Tools/art_migration_map.json`（369 条 src→dst，回滚依据）
+
+**遗留**：`Assets/Project Files/Game/Images/` 与 `Assets/Textures/` 现仅剩空文件夹及其 `.meta`，可在 Unity 中直接删除。
+
+**已同步修改的硬编码路径**：`BottomNavSceneSetup.cs` / `DailyRewardUIBuilder.cs` / `DailyTaskUIBuilder.cs` / `ProfileUIBuilder.cs`（共 4 文件 10 处）、`run_generate_zone1.bat`（输出目录）
+
 ### 资源替换状态（2026-09-05）
 - 换肤脚本：`D:\claudeWorkbase\reskin_apply_batch.py`（Gameplay/Merge 物品，旧冷调，用户已保留不再重换）、`D:\claudeWorkbase\reskin_warm.py`（暖烘焙 UI 图标/宝箱/角色）、`D:\claudeWorkbase\reskin_bg.py`（Backgrounds 关卡背景暖烘焙化）
 - done 清单：`reskin_royal_done.txt`（冷调 82）、`reskin_warm_done.txt`（暖烘焙 64）
@@ -1110,7 +1152,7 @@ Transparent background.
 - 商店场景布景（Zone 1 的 house/table/bush/fence/fountain ×4 档）按参考图**另设计布局**（2026-09-06 定方案，进行中）
   - **方向**：Zone 1 布景从"蓝房庭院外景"整容成"烘焙店内"，保留 5 物件 × 每物 4 档升级机制(buildingId/存档/成本全不变，只改美术+布局+台词)。Zone 2/3 本次不动，其 prefab 共享 z1 图，故新图全走新目录避免连累。
   - **5 槽映射**：building_1(house)→后墙左高柜 / building_4(fence)→右高柜 / building_2(fountain)→前景玻璃柜 / building_3(table)→圆桌餐椅 / building_5(bush)→三层点心塔(绿植吊灯入背景固定)
-  - **资源产出**(commit 后)：`Images/Zone 1 Shop/` = 空壳背景 `shop1_bg`(1882×3346 竖幅) + 5 物族×4 档透明物件图 `shop1_counter/display/dining/rightcab/tower_1~4`(RMBG 抠透明) + 豪华整店样板 `shop_sample_full`
+  - **资源产出**(commit 后)：`Images/Zone 1 Shop/`（**2026-09-10 已迁至 `Art/_Pending/Zone1Shop/`**）= 空壳背景 `shop1_bg`(1882×3346 竖幅) + 5 物族×4 档透明物件图 `shop1_counter/display/dining/rightcab/tower_1~4`(RMBG 抠透明) + 豪华整店样板 `shop_sample_full`
   - **技术教训**：逐件生成"正立面物件"与"纵深透视空壳"透视不匹配拼装违和；用户已定**改平视整店 + 同源切层**(先生成平视无纵深整店图,再切背景+5物,保证同源对齐)。`shop_flat.png` 平视样板已生成待视觉确认切层
   - **脚本**：`D:\claudeWorkbase\gen_shop_objects.py / gen_shop_t2i.py`(物件生成)、`rmbg_cut.py / cut_all.py`(RMBG 抠图)、`bg2alpha.py`(色键备用)。RMBG 模型 `D:\claudeWorkbase\models_rmbg\rmbg14.onnx`
   - **待续**：视觉确认平视样板→同源切层→Prefab 重排坐标/接 sprite→15 段 completionThought 改店内台词→Play 验证。prefab 已还原 HEAD(避免 SavePrefabAsset 引号格式噪音)，接入时统一用 Unity 改
@@ -1121,3 +1163,146 @@ Transparent background.
 - 符号类正确做法：**恢复原版(HEAD)干净几何 + HSV 降饱和(约×0.6)+ 微提亮** 转暖烘焙马卡龙，保留 alpha/渐变/白符号
 - 脚本：`D:\claudeWorkbase\reskin_soften.py`（通用: 恢复 HEAD + 低饱和烘焙调色）
 - 已应用：`General UI` 18 张基础图标（2026-09-05 commit bc37d69）；大地图关卡按钮三态配色（bd617cc）
+
+---
+
+## 二十一、全量资源地图（2026-09-10 整理，定位用速查）
+
+> 用户提到某类资源时，直接按下表定位。**唯一美术入口 = `Assets/Project Files/Game/Art/`**（见"美术资源目录规范"），其余为数据结构/预制体/代码。
+
+### 21.1 场景 Scenes（3 个）
+| 路径 | 说明 |
+|---|---|
+| `Assets/Project Files/Game/Scenes/Init.unity` | 启动场景（build 0）：加载 DLL + 模块 → 自动切 Game |
+| `Assets/Project Files/Game/Scenes/Game.unity` | 主场景（build 1）：三消棋盘 + Dock + 全部 UI Canvas |
+| `Assets/Project Files/Game/Scenes/CakeShop.unity` | 门店/Merge 场景，**未加入 build settings** |
+| （仅 build 设置含前 2 个，见 `ProjectSettings/EditorBuildSettings.asset`） | |
+
+### 21.2 UI 预制体（`Assets/Project Files/Game/Prefabs/`，共 109 个 prefab）
+| 子目录 | 数量 | 内容 |
+|---|---|---|
+| `UI/Canvas/` | 8 | UI Main Menu / UI Game / UI Game Over / UI Complete / UI Settings / UIProfilePage / DailyRewardPanel / DailyTaskPanel |
+| `UI/` | 7 | Currency Panel Simple、Energy Panel、Level Cell、Pointer、Timer Visualiser、Flying Experience/Spawner Reward |
+| `UI/Tasks/` | 6 | UI Client Order Card、UI Hammer Card、UI Placeholder Card、UI Spawner Reward Card、UI Order Item Icon、Cell Task Highlight |
+| `UI/Info/` | 2 | UI Info Cross Ref Cell、UI Info Grade Cell（图鉴） |
+| `UI/Building/` | 2 | Building UI、Star |
+| `UI/Level Up/`、`UI/Zones/` | 1+1 | UI Level Up Reward Tile、UI Zone Card |
+| `UI Store/` | 2 | UI IAP Store、Store Spacer |
+| `UI Store/Offers/` | 8 | 8 档内购卡：Starter / Power / Big Money / Medium Money / Small Money / Free Money With Timer / Money For Ads / No Ads |
+| `Settings/` | 2 | Settings Button、UI Settings |
+| `Dialog/` | 4 | Message (Character) / (Image) / (User) / Message Idea (User) |
+| `Lives System/` | 1 | Quit Pop Up |
+
+### 21.3 玩法预制体
+| 子目录 | 数量 | 内容 |
+|---|---|---|
+| `Prefabs/Tiles/` | 16 | Tile Base + 15 个具体瓦片（C1~C3 系 × T1~T5 型） |
+| `Prefabs/Tiles/Effects/` | 4 | Crate / Ice / Link / Unknown Effect（障碍效果） |
+| `Prefabs/Items/` | 6 | Merge 物品：Spawner / Merge Item / Chest / Currency / Energy / Locked |
+| `Prefabs/Dock/` | 2 | Dock.prefab、Slot.prefab |
+| `Prefabs/Power Ups/` | 5 | PU Hint / Shuffle / Undo / Extra Slot + PU Behavior UI |
+| `Prefabs/Power Ups System/` | 3 | Power Up Panel / Power Up Purchase Panel / PU Behavior UI |
+| `Prefabs/Particles/` | 12 | Block Trail、Crate/Ice/Link Shatter、Item Appear/Delete/Merge、Slot Highlight、Snow Sparks、Poof、UI Level Up、Building Upgrade |
+| `Prefabs/Backgrounds/` | 5 | Background 1~4 + Background Tutorial |
+| `Prefabs/Building/` | 3 | Zone 1 / Zone 2 / Zone 3 |
+| `Prefabs/Map/` | 5 | Chunk_1~4、Map Level |
+| `Prefabs/Level Map/` | 2 | Example Chunk、Example Map Level（模板样例） |
+| `Prefabs/` 根 | 2 | Initializer.prefab（全局初始化）、SDKs.prefab |
+
+### 21.4 美术位图（`Assets/Project Files/Game/Art/`，369 PNG，索引 `Art/_MANIFEST.md`）
+分组明细见"美术资源目录规范"表。补充要点：
+- 使用中 284 张全部 GUID 引用，**零代码路径加载** → 换皮直接覆盖同名文件。
+- 特殊子目录：`_Pending/Zone1Shop/`（24 张待接入烘焙店素材）、`_Unused/`（61 张孤儿）。
+
+### 21.5 字体 Fonts
+| 路径 | 说明 |
+|---|---|
+| `Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne.ttf` | 英文主字体源文件 |
+| `Assets/Project Files/Game/Fonts/Resources/ChineseFont.ttf` | 中文字体源文件（⚠ 无 TMP fallback，中文显示为空格，见"已知问题"） |
+| `Assets/TextMesh Pro/Fonts/`、`Assets/TextMesh Pro/Resources/Fonts & Materials/` | TMP 默认 SDF 资产（LiberationSans 系列） |
+| `Assets/Project Files/Game/Art/Fonts/FredokaOne 120` / `FredokaOne 50` | 美术字贴图（Glow / Outline / Shadow / Texture） |
+
+### 21.6 音频 Audio（35 个）
+| 路径 | 说明 |
+|---|---|
+| `Assets/Project Files/Game/Audio/Music/music_main.wav` | 主背景音乐 |
+| `Assets/Project Files/Game/Audio/Sounds/`（34） | 音效：tile click / tile click blocked / item_merge / item_place / item_pop_01~04 / merge sound / level complete / level failed / level_up / coin_pickup / coins reward / coin_appear / crate crack / ice crack / power up / task_complete / spawner_activate / building_hammer / building_available / button_sound / ui_button_1 / energy_pick_up / energy_restore / life received / item_flying / item_pickup / item_swoosh / level_sparks / message_appear / rubber quick / ui 等 |
+| `Assets/Project Files/Data/Audio Registry.asset`、`Audio Settings.asset` | 音频注册表与音量配置 |
+
+### 21.7 数据 / 配置 ScriptableObject
+**根目录 `Assets/Project Files/Data/`（79 个 .asset，不含关卡）**
+| 路径 | 说明 |
+|---|---|
+| `Project Init Settings.asset` | 模块初始化顺序总入口 |
+| `Game Data.asset` / `Merge Game Data.asset` / `Map Data.asset` | 三消 / Merge / 地图 全局参数 |
+| `Currencies Database.asset`、`Experience Database.asset`、`Energy Data.asset` | 货币 / 经验 / 体力 |
+| `Character Database.asset` + `Characters/C1~C6 *.asset` | 角色库与 6 个角色 |
+| `Dialog/Dialog 1~15.asset` + `Intro Dialog.asset` | 16 个对话脚本 |
+| `IAP Settings.asset`、`Ads Settings.asset`、`Monetization Settings.asset` | 内购 / 广告 / 变现 |
+| `Power Ups/Power Ups Database.asset` + `PU Hint/Shuffle/Undo/Extra Slot Settings.asset` | 道具库与 4 个道具参数 |
+| `Rewards/IAP/`（14）、`Rewards/Ads/`、`Rewards/Hard Currency/`、`Rewards/Timer/`、`Rewards/Settings/` | 奖励定义（礼包 / 看广告 / 体力 / 定时金币 / 金币预览） |
+| `Pipeline/URP Asset.asset`、`URP Asset Renderer.asset`、`Default Volume Profile.asset`、`URP Global Settings.asset` | URP 渲染管线 |
+
+**关卡 Merge 数据 `Assets/Project Files/Data/Level System/`**
+| 路径 | 说明 |
+|---|---|
+| `Levels/Level 001~200.asset`（**200 个**） | 三消关卡数据 |
+| `Special Levels/Tutorial Level 1~2.asset` | 教程关 |
+| `Level Database.asset`、`Level.asset` | 关卡索引与模板 |
+| `Merge Database.asset`、`Merge/Merge Level Database.asset` | Merge 合成链 / 关卡库 |
+| `Zone 1~3/Zone N Data.asset` | 三 Zone 解锁与建筑升级数据 |
+| `Animations/Simple·Instant·Layer·Shuffle Spawn Animation.asset` | 4 种棋子入场动画配置 |
+
+### 21.8 材质 / Shader / 模型 / 动画
+| 路径 | 说明 |
+|---|---|
+| `Assets/Project Files/Game/Materials/Particles/`（11） | 粒子材质（Spark / Mist / Smoke / Ice Sheet / Cartoon White / Board / Pop 等） |
+| `Assets/Project Files/Game/Materials/Level Map/Map Wall Universal.mat` | 大地图墙面 |
+| `Assets/Project Files/Game/Materials/Shop/Shop0 Skybox.mat` | 商店天空盒 |
+| `Assets/Project Files/Game/Models/Particles/smoke_mesh.fbx` | 唯一 3D 模型（烟雾网格） |
+| `Assets/HotUpdate/Scripts/Tutorial/Shaders/Tutorial Spotlight Mask.shader` | 教程聚光灯遮罩 |
+| `Assets/Project Files/Game/Animations/Pointer/` | Click.anim、Idle.anim、PointerHolder.controller |
+| `Assets/Project Files/Game/Animations/UI/Tasks Hammer/` | Icon.controller、Tasks Hammer Idle.anim |
+| `Assets/TextMesh Pro/Shaders/`（15） | TMP 官方 shader 集 |
+
+### 21.9 功能模块（`Assets/Project Files/Modules/`）
+| 路径 | 说明 |
+|---|---|
+| `Loading/` | 加载页 prefab ×2 + Loading.anim + LoadingGraphicsBehavior |
+| `Level Resize/` | LevelSizeController + Editor（关卡自适应屏幕） |
+| `Reward/` | UIRewardsPopup（Watermelon.Reward.asmdef） |
+| `Save/` | CustomBackendSaveHandler / CustomBackendCloudHandler（云存档） |
+| `Scene Overlay/` | SceneOverlay 编辑器与数据库 |
+| `UI/` | SystemMessageBehavior、UIControllerHelper |
+| `Inspector Examples/` | 属性示例（模板自带，未用于业务） |
+
+### 21.10 代码
+| 路径 | 说明 |
+|---|---|
+| `Assets/HotUpdate/`（171 个 .cs） | 热更主程序集：Entry.cs + Level/Dock、Merge、Power Ups、Tutorial、UI、Hub、Level Map、Lives System、DailyTask/Reward、IAP Store、Avatar、Combo 等 |
+| `Assets/HotUpdate/Scripts/Editor/` | 工具：BottomNavSceneSetup、DailyReward/Profile/DailyTask UIBuilder、MergeSceneImporter、TileTextureGenerator、ChineseFontSetup、BuildAndroid/iOS、CustomActionsMenu |
+| `Assets/Scripts/LoadDll.cs` | HybridCLR 热更 DLL 加载器 |
+| `Assets/Editor/` | HotUpdateBuildProcessor、UnityBackgroundUpdate（后台刷新保 MCP）、UnityMcpAutoStart |
+| `Assets/Project Files/Game/Scripts/`（163 个 .cs） | 非热更业务：Building/Zone、Characters、Dialog、Merge 等（模板载体） |
+| `Assets/Watermelon Core/`（499 个 .cs） | 框架源码：Modules（Audio/Currency/Haptic/Initializer/Inspector/Monetization/Pool/Reward/Save/Skins/Tween/UI）、Editor Tools、Examples、Utils |
+| `Assets/Tests/PlayMode/CakeHomeBootTest.cs` | 唯一自动化测试（启动冒烟） |
+
+### 21.11 热更与构建
+| 路径 | 说明 |
+|---|---|
+| `Assets/StreamingAssets/HotUpdate/` | 热更 DLL：HotUpdate.dll（237 KB）+ mscorlib / System / System.Core |
+| `Assets/HybridCLRGenerate/` | AOTGenericReferences.cs、link.xml |
+| `Assets/link.xml` | IL2CPP 防裁剪白名单（保留 Assembly-CSharp / HotUpdate / HybridCLR.Runtime） |
+| `ProjectSettings/HybridCLRSettings.asset` | HybridCLR 全局配置 |
+| `Packages/manifest.json` | 依赖：hybridclr、unity-mcp、inputsystem 1.14、burst、URP 14.0.12、TMP 3.0.9、ugui 2.0、Newtonsoft 3.2.1、mobile.notifications（本地包） |
+
+### 21.12 空目录残留（无资源，可直接删）
+`Assets/Project Files/Game/Images/`、`Assets/Project Files/Game/Resources/`、`Assets/Project Files/Packages/`、`Assets/Textures/CandyTiles/`、`Assets/HotUpdate/Scripts/Tutorial/Images/` —— 仅剩空文件夹 + `.meta`。
+
+### 21.13 工具脚本（`Tools/`，仓库内）
+| 脚本 | 用途 |
+|---|---|
+| `mcp_call.py` | CLI 调 Unity MCP（HTTP 8080），用法 `python Tools/mcp_call.py <tool> '<json>'` |
+| `dismiss_unity_popup.ps1` | 关闭 Watermelon 推广模态窗（否则卡死 MCP run_tests） |
+| `scan_art_refs.py` / `migrate_art.py` / `fix_art_paths.py` / `gen_art_manifest.py` | 美术归集四件套（扫描 / 迁移 / 修路径 / 出索引） |
+| `art_migration_map.json` / `art_refs.json` | 迁移映射表与引用扫描结果 |
