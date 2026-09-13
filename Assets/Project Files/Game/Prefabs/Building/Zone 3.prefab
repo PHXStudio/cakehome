@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -250, y: -580}
-  m_SizeDelta: {x: 460, y: 520}
+  m_AnchoredPosition: {x: 0.0000076294, y: -761}
+  m_SizeDelta: {x: 549.9, y: 498.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5373858605801092283
 CanvasRenderer:
@@ -90,23 +90,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingId: building_3
   buildingName: Building 3
-  defaultSprite: {fileID: 21300000, guid: 12a7b8a29ac24774492cc928c83c17d0, type: 3}
+  defaultSprite: {fileID: 21300000, guid: c619fec74a807b8409e350ff333aeead, type: 3}
   buildingImage: {fileID: 838721386053187254}
   upgrades:
   - cost: 425
-    upgradedSprite: {fileID: 21300000, guid: 676a3983563aae62ebe6ec6a86286954, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: ab3bc0105097f2c4ebd375089dff9732, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 510
-    upgradedSprite: {fileID: 21300000, guid: 2e0027c81c38fb035266c9bcd679de23, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 246f4e42321e6774982038f54dccf8f9, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 1700
-    upgradedSprite: {fileID: 21300000, guid: 2db5dc455c9b0caa87d5ecf519309ade, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 626831e1a2f33e34b88df241dd2ca056, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
@@ -248,8 +248,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -364, y: -45.5}
-  m_SizeDelta: {x: 352, y: 405}
+  m_AnchoredPosition: {x: 315.1, y: -304}
+  m_SizeDelta: {x: 585.9, y: 585.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7718983123471089063
 CanvasRenderer:
@@ -303,23 +303,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingId: building_2
   buildingName: Building 2
-  defaultSprite: {fileID: 21300000, guid: f22a3c036561102e82f503c69dc2c79a, type: 3}
+  defaultSprite: {fileID: 21300000, guid: 0c3a3b53825303646afe360e494bc760, type: 3}
   buildingImage: {fileID: 6724283811714968042}
   upgrades:
   - cost: 255
-    upgradedSprite: {fileID: 21300000, guid: 0f8563a5a6878c65826bb550d25cf028, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 535a54a09f550d5449f19272d293bda9, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 680
-    upgradedSprite: {fileID: 21300000, guid: 93de3934e96e7f46e01fd5da2cca8355, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 83aa64ae3514bde40987e39942140aaf, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 1190
-    upgradedSprite: {fileID: 21300000, guid: ead31955ceaaa2f729754422fea296e3, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 59b76d262674f374699bd205e30116be, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
@@ -460,8 +460,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 1920}
+  m_AnchoredPosition: {x: 59, y: 0}
+  m_SizeDelta: {x: 1882, y: 3345.7776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3992527337587987033
 CanvasRenderer:
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fad3b4d45590ea7aa5cdb20a34581aff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2837c58819e16e840898321e832a15b9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -536,8 +536,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -580}
-  m_SizeDelta: {x: 460, y: 520}
+  m_AnchoredPosition: {x: -300, y: -379.75}
+  m_SizeDelta: {x: 434.4, y: 434.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &898879069105319705
 CanvasRenderer:
@@ -591,23 +591,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingId: building_5
   buildingName: Building 5
-  defaultSprite: {fileID: 21300000, guid: f6acf1874a2ea2010a506f4ca82e0e97, type: 3}
+  defaultSprite: {fileID: 21300000, guid: 1a9ee87e73685db4198de57226eeb85b, type: 3}
   buildingImage: {fileID: 7081737380390869011}
   upgrades:
   - cost: 340
-    upgradedSprite: {fileID: 21300000, guid: 53f86920ba3d0b6d5fdd405b2db91f92, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 3e58c81ab6301e64ba2fd453d25327e7, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 170
-    upgradedSprite: {fileID: 21300000, guid: 1a9a91161f212af38feea3787f2c73fb, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 17feabb3ec73c1b4fb88139849e4762c, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 850
-    upgradedSprite: {fileID: 21300000, guid: 06fcf48b5fcbd5224ac2cc10320b5fd8, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 1fd5358cb90a0f446af77b57d0d10e43, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
@@ -809,8 +809,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -45.5}
-  m_SizeDelta: {x: 352, y: 405}
+  m_AnchoredPosition: {x: -252, y: 329.16}
+  m_SizeDelta: {x: 1129.9, y: 1129.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7891314435450904418
 CanvasRenderer:
@@ -864,23 +864,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingId: building_1
   buildingName: Building 1
-  defaultSprite: {fileID: 21300000, guid: 6071a64b859a41eede5192e8e920a823, type: 3}
+  defaultSprite: {fileID: 21300000, guid: a29aae8b5cdeb484599caafd1de65ebe, type: 3}
   buildingImage: {fileID: 2992579540024317937}
   upgrades:
   - cost: 85
-    upgradedSprite: {fileID: 21300000, guid: f193807d281bab61871e702984a09e5d, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: c16196c1efb90a64a89737e7467cffe0, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 510
-    upgradedSprite: {fileID: 21300000, guid: 81052dbd388e9789e88297356ad0eb57, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: f018cc38dd0dd8a4ab299e4564fc85f6, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 1360
-    upgradedSprite: {fileID: 21300000, guid: 659496b14cb82f4d34455d5a601de830, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: fa79257e7a8f08f4c9837c2ad31a34d8, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
@@ -1022,8 +1022,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 364, y: -45.5}
-  m_SizeDelta: {x: 352, y: 405}
+  m_AnchoredPosition: {x: 534.85, y: 37}
+  m_SizeDelta: {x: 930.3, y: 835.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8469146909627260192
 CanvasRenderer:
@@ -1077,23 +1077,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingId: building_4
   buildingName: Building 4
-  defaultSprite: {fileID: 21300000, guid: c5c5cfbc78e6f456de3d2546db0002b8, type: 3}
+  defaultSprite: {fileID: 21300000, guid: ed044b7df00421d45a62e77103212160, type: 3}
   buildingImage: {fileID: 6965745153740595865}
   upgrades:
   - cost: 170
-    upgradedSprite: {fileID: 21300000, guid: 50dc09cd848f74de8e05201cd8d66708, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 190d9629df0921a4f81cbfaeacfb4254, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 340
-    upgradedSprite: {fileID: 21300000, guid: 0b4803381a30508b6228ad3b473fa5c7, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 96e619acf4b19a5409fdcefdc7d07058, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0
       text: 
   - cost: 1020
-    upgradedSprite: {fileID: 21300000, guid: 8d9fd824290b96e9e3fa0907a5336fe4, type: 3}
+    upgradedSprite: {fileID: 21300000, guid: 5e0b018142841964ba1ba210008cba8d, type: 3}
     completionThought:
       character: {fileID: 0}
       emotion: 0

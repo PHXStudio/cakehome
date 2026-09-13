@@ -1309,6 +1309,34 @@ Transparent background.
 
 ---
 
+## ★ 分支结构（2026-09-13 建立）
+
+| 分支 | 内容 | 用途 |
+|---|---|---|
+| **`main`** | **原始素材 + 完整功能** | 主干。美术为换皮前原貌，功能（三消爽感/AgentBridge/CI）全保留 |
+| **`reskin/full`** | `6b173b1`（含**全量**换皮成果） | 换皮工作分支。棋子/UI/背景/地图/三场景室内店铺等 197+ 张 |
+
+> 换皮成果未丢失，全部保存在 `reskin/full`。
+> 主干重置点：`2ed7bed`（原始素材），但**保留**了与换皮无关的功能提交。
+
+### 主干重置时保留的功能（勿误删）
+- `a50dc24` 三消爽感增强（ComboController / Fever / MatchBonusController）
+- `d2730bc` 首胜后 Shop Tab 轻引导（UIBottomNavBar 红点+气泡）
+- `4c50baa`..`fca15ce` 4 个 CI workflow 提交（`.github/workflows/`）
+- `3719210` 的 URP HDR 开（`URP Asset.asset` 的 `m_SupportsHDR: 1`）+ 粒子材质修复
+- `Assets/Editor/AgentBridge/`（Unity MCP 桥接）
+- `d2730bc` 的未用 FBX 清理（627 个，零引用，保留删除）
+
+### 主干重置时还原的内容
+- `Art/` 369 张素材 → 全部还原为 `2ed7bed` 原始字节（690/690 校验一致）
+- 删除换皮新增：`Scene/Zone1Shop` `Zone2Shop` `Zone3Shop`、`Art/_Pending`
+- 还原 5 个 prefab：Zone 1/2/3、Quit Pop Up、Map Level
+- 删除空目录 `Images/`（663 个文件已全部归集到 `Art/`，非丢失）
+- 删除换皮专用脚本（`Tools/` 只留 MCP 基础设施）
+- 清理误提交的 184MB 打包残留（`Art_2026-09-10_part*.zip` + 解压目录 + `_pilot_show/`）
+
+---
+
 ## 二十二、三场景室内店铺改造（2026-09-13 进行中）
 
 > 目标：Zone1/2/3 从「庭院」改为**三个不同风格的室内店铺**，每场景 5 个可升级部件 × 4 档。
