@@ -1,0 +1,1207 @@
+{
+ "total": 369,
+ "used_count": 284,
+ "orphan_count": 85,
+ "used": {
+  "Assets/Project Files/Game/Art/Dialog/dialog_character_mask.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_character_ring_back.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_character_ring_front.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_phrase.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_phrase_header.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_phrase_pointer.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_phrase_thought_part.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_thought.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialog_thought_header.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialogs_0_1.png": [
+   "Assets/Project Files/Data/Dialog/Intro Dialog.asset",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Image).prefab"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialogs_0_2.png": [
+   "Assets/Project Files/Data/Dialog/Intro Dialog.asset"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialogs_3_1.png": [
+   "Assets/Project Files/Data/Dialog/Dialog 3.asset"
+  ],
+  "Assets/Project Files/Game/Art/Dialog/dialogs_8_1.png": [
+   "Assets/Project Files/Data/Dialog/Dialog 8.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 120/FredokaOne 120 Glow Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/Fredoka One 120/FredokaOne 120 Glow.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 120/FredokaOne 120 Outline Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/Fredoka One 120/FredokaOne 120 Glow.asset",
+   "Assets/Project Files/Game/Fonts/FredokaOne/Fredoka One 120/FredokaOne 120 Outline.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 50/FredokaOne 50 Glow Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50 Glow Light.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 50/FredokaOne 50 Outline Light Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50 Outline Light.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 50/FredokaOne 50 Outline Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50 Outline.asset",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Fonts/FredokaOne 50/FredokaOne 50 Shadow Texture.png": [
+   "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50 Shadow.asset"
+  ],
+  "Assets/Project Files/Game/Art/Fx/board.png": [
+   "Assets/Project Files/Game/Materials/Particles/Board.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/cloud_blurry.png": [
+   "Assets/Project Files/Game/Materials/Particles/Cartoon White.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/ice_spritesheet.png": [
+   "Assets/Project Files/Game/Materials/Particles/Ice Sheet.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/particle_ceramics.png": [
+   "Assets/Project Files/Game/Materials/Particles/Particle Ceramics.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/particle_circle_shiny.png": [
+   "Assets/Project Files/Game/Materials/Particles/Particle Circle.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/particle_mist.png": [
+   "Assets/Project Files/Game/Materials/Particles/Particle Mist.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/pop.png": [
+   "Assets/Project Files/Game/Materials/Particles/Pop.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/round_small_blurry.png": [
+   "Assets/Project Files/Game/Materials/Particles/Particle Round Blur.mat",
+   "Assets/Project Files/Game/Materials/Particles/Round Small.mat"
+  ],
+  "Assets/Project Files/Game/Art/Fx/spark_custom.png": [
+   "Assets/Project Files/Game/Materials/Particles/Spark Custom.mat"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_1.png": [
+   "Assets/Project Files/Data/Characters/C1 Maya.asset",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Character).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (User).prefab",
+   "Assets/Project Files/Game/Prefabs/Dialog/Message Idea (User).prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Client Order Card.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Placeholder Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_2.png": [
+   "Assets/Project Files/Data/Characters/C2 Daniel.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_3.png": [
+   "Assets/Project Files/Data/Characters/C3 Iris.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_4.png": [
+   "Assets/Project Files/Data/Characters/C4 Theo.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_5.png": [
+   "Assets/Project Files/Data/Characters/C5 Sofia.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Characters/game_character_6.png": [
+   "Assets/Project Files/Data/Characters/C6 Arthur.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_coins_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_coins_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_coins_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_coins_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_coins_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_energy_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_energy_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_energy_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_energy_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_energy_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_gem_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_gem_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_gem_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_gem_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Chests/game_chest_gem_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Dock/slot_background.png": [
+   "Assets/Project Files/Game/Prefabs/Dock/Slot.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_arrow.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Spawner Reward Card.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_box.png": [
+   "Assets/Project Files/Data/Level System/Merge/Merge Level Database.asset",
+   "Assets/Project Files/Game/Prefabs/Items/Locked Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_exp_back.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_exp_fill.png": [
+   "Assets/Project Files/Data/Experience Database.asset",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_half_locked_back.png": [
+   "Assets/Project Files/Game/Prefabs/Items/Chest Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Currency Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Energy Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Merge Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_half_locked_front.png": [
+   "Assets/Project Files/Data/Level System/Merge/Merge Level Database.asset",
+   "Assets/Project Files/Game/Prefabs/Items/Chest Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Currency Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Energy Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Merge Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_half_locked_mask.png": [
+   "Assets/Project Files/Game/Prefabs/Items/Chest Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Currency Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Energy Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Merge Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_selection_brackets.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Grade Cell.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Misc/game_zone_background.png": [
+   "Assets/Project Files/Data/Level System/Zone 1/Zone 1 Data.asset",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_10.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_11.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_12.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_6.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_7.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_8.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_cake_9.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_candy_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_candy_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_candy_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_candy_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_candy_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_10.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_11.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_12.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Grade Cell.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_6.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Order Item Icon.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_7.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_8.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coffe_9.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coin_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_coin_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_energy_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_energy_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_gem_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Spawner Reward Card.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Flying Experience Reward.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Flying Spawner Reward.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_6.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Cross Ref Cell.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_7.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_8.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_kettle_9.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_6.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_7.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_8.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_mixer_9.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/Items/Chest Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Energy Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Merge Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_6.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_placeholder_7.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_soda_1.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_soda_2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_soda_3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_soda_4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Pieces/game_soda_5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/PowerUps/pu_hint.png": [
+   "Assets/Project Files/Data/Power Ups/PU Hint Settings.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/PowerUps/pu_shuffle.png": [
+   "Assets/Project Files/Data/Power Ups/PU Shuffle Settings.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/PowerUps/pu_undo.png": [
+   "Assets/Project Files/Data/Power Ups/PU Undo Settings.asset",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/PowerUps/pu_xtr_slot.png": [
+   "Assets/Project Files/Data/Power Ups/PU Extra Slot Settings.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_crate.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Crate Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_ice_1.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Ice Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_ice_2.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Ice Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_ice_3.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Ice Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_link.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Link Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/Special/tile_unknown.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Effects/Unknown Effect.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/new tile_c1_t1.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_background.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile Base.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T2.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T3.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T4.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T5.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T1.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T2.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T3.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T4.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T5.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T1.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T2.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T3.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T4.prefab",
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T5.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c1_t1.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile Base.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c1_t2.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T2.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c1_t3.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c1_t4.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c1_t5.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C1T5.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c2_t1.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c2_t2.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T2.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c2_t3.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c2_t4.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c2_t5.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C2T5.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c3_t1.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c3_t2.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T2.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c3_t3.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c3_t4.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Gameplay/Tiles/tile_c3_t5.png": [
+   "Assets/Project Files/Game/Prefabs/Tiles/Tile C3T5.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/cloud.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_1.prefab",
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_2.prefab",
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_3.prefab",
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_c0.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_c1.png": [
+   "Assets/Project Files/Game/Prefabs/Level Map/Example Chunk.prefab",
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_c2.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_2.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_c3.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_c4.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Chunk_4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Map/map_level.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Map Level.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Backgrounds/back_1.png": [
+   "Assets/Project Files/Game/Prefabs/Backgrounds/Background 1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Backgrounds/back_2.png": [
+   "Assets/Project Files/Game/Prefabs/Backgrounds/Background 2.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Backgrounds/back_3.png": [
+   "Assets/Project Files/Game/Prefabs/Backgrounds/Background 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Backgrounds/back_4.png": [
+   "Assets/Project Files/Game/Prefabs/Backgrounds/Background 4.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/game_backgound_zone_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/game_zone_1_preview.png": [
+   "Assets/Project Files/Data/Level System/Zone 1/Zone 1 Data.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Zones/UI Zone Card.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_bush_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_bush_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_bush_3.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_bush_4.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fence_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fence_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fence_3.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fence_4.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fountain_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fountain_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fountain_3.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_fountain_4.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_house_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_house_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_house_3.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_house_4.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_table_1.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab",
+   "Assets/Project Files/Game/Prefabs/Particles/Building Upgrade Particle.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_table_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_table_3.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone1/z1_table_4.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 1.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone2/game_backgound_zone_2.png": [
+   "Assets/Project Files/Game/Prefabs/Building/Zone 2.prefab",
+   "Assets/Project Files/Game/Prefabs/Building/Zone 3.prefab"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone2/game_zone_2_preview.png": [
+   "Assets/Project Files/Data/Level System/Zone 2/Zone 2 Data.asset"
+  ],
+  "Assets/Project Files/Game/Art/Scene/Zone3/game_zone_3_preview.png": [
+   "Assets/Project Files/Data/Level System/Zone 3/Zone 3 Data.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/arrow.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/btn_close.png": [
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/DailyTaskPanel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/btn_gray.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Big Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Medium Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/No Ads.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Small Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/btn_green.png": [
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Big Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Medium Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/No Ads.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Small Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/DailyTaskPanel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/btn_orange.png": [
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/btn_purple.png": [
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Free Money With Timer Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Money For Ads Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/DailyRewardPanel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UIProfilePage.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Timer Visualiser.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/click_effect.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Pointer.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/coin.png": [
+   "Assets/Project Files/Data/Currencies Database.asset",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/grad_shine_round.png": [
+   "Assets/Project Files/Game/Prefabs/Map/Map Level.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/grad_shine_square.png": [
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/gradient.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/heart.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/home icon.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ic_indicator.png": [
+   "Assets/Project Files/Game/Prefabs/Power Ups System/PU Behavior UI.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups/PU Behavior UI.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ic_plus.png": [
+   "Assets/Project Files/Game/Prefabs/Power Ups System/PU Behavior UI.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups/PU Behavior UI.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ic_video.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Money For Ads Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/no_ads.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/panel.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/DailyRewardPanel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/DailyTaskPanel.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/panel_blue.png": [
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/panel_dark.png": [
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/panel_red.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/pointer.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Pointer.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/replay icon.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/tgl_off.png": [
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/tgl_on.png": [
+   "Assets/Project Files/Game/Prefabs/Settings/UI Settings.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Settings.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_back_gradient.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_blue.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Cross Ref Cell.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_gray.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_green.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Client Order Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity",
+   "Assets/Watermelon Core/Modules/Initializer/Prefabs/Internet Connection Popup.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_orange.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity",
+   "Assets/Project Files/Modules/Loading/Prefabs/Loading Graphics.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_plus.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Currency Panel Simple.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Energy Panel.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_round_red.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_button_white.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_cup_silhouette.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_energy_collage.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_fill_bar.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Modules/Loading/Prefabs/Loading Graphics.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_header.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Store Spacer.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Zones/UI Zone Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_panel_bevel.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Cross Ref Cell.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Grade Cell.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Order Item Icon.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_panel_inner_white.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Zones/UI Zone Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_panel_white.png": [
+   "Assets/Project Files/Game/Prefabs/Dialog/Message (Image).prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Zones/UI Zone Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_shine_gradient.png": [
+   "Assets/Project Files/Game/Prefabs/Items/Chest Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Currency Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Energy Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Merge Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Level Up/UI Level Up Reward Tile.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_shine_hard.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Level Up/UI Level Up Reward Tile.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_shine_soft.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Hammer Card.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Spawner Reward Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_spark.png": [
+   "Assets/Project Files/Game/Materials/Particles/Particle Sparks.mat"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_text_energy_1.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_text_energy_2.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Common/ui_text_level_up.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_coin.png": [
+   "Assets/Project Files/Data/Level System/Merge/Merge Level Database.asset",
+   "Assets/Project Files/Data/Rewards/Settings/Coins Preview Settings.asset",
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Currency Panel Simple.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Client Order Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_coin_x2.png": [
+   "Assets/Project Files/Data/Rewards/Settings/Coins Preview Settings.asset",
+   "Assets/Project Files/Game/Prefabs/Items/Currency Item.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_coin_x3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Data/Rewards/Settings/Coins Preview Settings.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_coin_x4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Data/Rewards/Settings/Coins Preview Settings.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_coin_x5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Data/Rewards/Settings/Coins Preview Settings.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_construction.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_cross.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_energy.png": [
+   "Assets/Project Files/Data/Energy Data.asset",
+   "Assets/Project Files/Game/Prefabs/Items/Spawner Item.prefab",
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Energy Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Level Up/UI Level Up Reward Tile.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_energy_x3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_energy_x4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_energy_x5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gameboard.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gem.png": [
+   "Assets/Project Files/Data/Currencies Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gem_x2.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gem_x3.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gem_x4.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_gem_x5.png": [
+   "Assets/Project Files/Data/Level System/Merge Database.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_hammer.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Tasks/UI Hammer Card.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_lock.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Zones/UI Zone Card.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_logo.png": [
+   "Assets/Project Files/Modules/Loading/Prefabs/Loading Graphics.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_map.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_no_ads.png": [
+   "Assets/Project Files/Data/Ads Settings.asset",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_play.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Grade Cell.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_question.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Cross Ref Cell.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Info/UI Info Grade Cell.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_settings.png": [
+   "Assets/Project Files/Game/Prefabs/Settings/Settings Button.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_settings__Images.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_skip.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_star.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Building/Star.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_star_empty.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Building/Building UI.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_store.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_trash_bin.png": [
+   "Assets/Project Files/Data/Level System/Merge/Merge Level Database.asset"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_undo.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Icons/ui_icon_video_ads.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/background_gradient_store.png": [
+   "Assets/Project Files/Game/Prefabs/Backgrounds/Background Tutorial.prefab",
+   "Assets/Project Files/Game/Prefabs/Level Map/Example Chunk.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/background_gradient_store_alt.png": [
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Game Over.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/badge_orange.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/blinder.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/header_orange.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/ic_coins_pack_1.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Free Money With Timer Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Money For Ads Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Small Money Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/ic_coins_pack_2.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Medium Money Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/ic_coins_pack_3.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Big Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/ic_infinity.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/ic_noads_small.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/No Ads.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Main Menu.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/item_background.png": [
+   "Assets/Project Files/Game/Prefabs/Lives System/Quit Pop Up.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups System/Power Up Purchase Panel.prefab",
+   "Assets/Project Files/Game/Prefabs/Power Ups/PU Behavior UI.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI/Canvas/UI Complete.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/item_frame.png": [
+   "Assets/Project Files/Game/Prefabs/Dock/Slot.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/panel_blue_store.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Starter Pack.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/panel_purple_store.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Power Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/UI IAP Store.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/panel_red_white.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/No Ads.prefab"
+  ],
+  "Assets/Project Files/Game/Art/UI/Store/panel_yellow_white.png": [
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Big Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Free Money With Timer Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Medium Money Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Money For Ads Pack.prefab",
+   "Assets/Project Files/Game/Prefabs/UI Store/Offers/Small Money Pack.prefab",
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Tutorial/click_effect.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ],
+  "Assets/Project Files/Game/Art/UI/Tutorial/pointer.png": [
+   "Assets/Project Files/Game/Scenes/Game.unity"
+  ]
+ },
+ "orphans": [
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/full/game_background_zone_1_full_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/full/game_background_zone_1_full_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/full/game_background_zone_1_full_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/full/game_background_zone_1_full_tier4.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/counter/game_background_zone_1_counter_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/counter/game_background_zone_1_counter_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/counter/game_background_zone_1_counter_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/counter/game_background_zone_1_counter_tier4.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/dining_table/game_background_zone_1_dining_table_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/dining_table/game_background_zone_1_dining_table_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/dining_table/game_background_zone_1_dining_table_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/dining_table/game_background_zone_1_dining_table_tier4.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/display_shelf/game_background_zone_1_display_shelf_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/display_shelf/game_background_zone_1_display_shelf_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/display_shelf/game_background_zone_1_display_shelf_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/display_shelf/game_background_zone_1_display_shelf_tier4.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/right_cabinet/game_background_zone_1_right_cabinet_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/right_cabinet/game_background_zone_1_right_cabinet_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/right_cabinet/game_background_zone_1_right_cabinet_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/right_cabinet/game_background_zone_1_right_cabinet_tier4.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/tower_shelf/game_background_zone_1_tower_shelf_tier1.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/tower_shelf/game_background_zone_1_tower_shelf_tier2.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/tower_shelf/game_background_zone_1_tower_shelf_tier3.png",
+  "Assets/Project Files/Game/Art/_Pending/Zone1Shop/objects/tower_shelf/game_background_zone_1_tower_shelf_tier4.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Currency/money.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/checkmark.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/circle_frame_medium.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/cross.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/heart_broken.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/heart_small.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/ic_skins.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/ic_star_small.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/ic_store.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/panel_alpha_grad.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/panel_gradient.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/General UI/panel_outlined_dark.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Misc/close_icon.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Misc/watch_video.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Settings/ui_icon_revert.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Settings/ui_icon_sound_off.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Settings/ui_icon_sound_on.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Settings/ui_icon_vibro_off.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Settings/ui_icon_vibro_on.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Store/comingsoon.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Store/questionmark.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Tutorial/ui_pointer.png",
+  "Assets/Project Files/Game/Art/_Unused/Base/Tutorial/ui_pointer_click.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Apple.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Blueberry.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Blueberry_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Grape.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Grape_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Lemon_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Mint.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Mint_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Orange.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Orange_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Peach.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Peach_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Strawberry.png",
+  "Assets/Project Files/Game/Art/_Unused/CandyTiles/Strawberry_Light.png",
+  "Assets/Project Files/Game/Art/_Unused/Fonts/Fredoka One 120/FredokaOne 120 Texture.png",
+  "Assets/Project Files/Game/Art/_Unused/Fonts/FredokaOne 50/FredokaOne 50 Texture.png",
+  "Assets/Project Files/Game/Art/_Unused/Icon/icon.png",
+  "Assets/Project Files/Game/Art/_Unused/Particles/particle_round_small_blurry.png",
+  "Assets/Project Files/Game/Art/_Unused/UI/cakecar.png",
+  "Assets/Project Files/Game/Art/_Unused/UI/cakeshop.png",
+  "Assets/Project Files/Game/Art/_Unused/UI/mine.png",
+  "Assets/Project Files/Game/Art/_Unused/Zone 1/z1_table_shadow.png",
+  "Assets/Project Files/Game/Art/_Unused/game_backround_gameplay.png",
+  "Assets/Project Files/Game/Art/_Unused/game_character_main_full.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_button_purple.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_button_round_green.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_button_upgrade.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_button_upgrade_disabled.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_game_logo.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_icon_energy_x2.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_panel_blue.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_panel_pink.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_panel_purple.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_panel_red.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_panel_yellow.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_store_roof.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_toggle_off.png",
+  "Assets/Project Files/Game/Art/_Unused/ui_toggle_on.png"
+ ]
+}

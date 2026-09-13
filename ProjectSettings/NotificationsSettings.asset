@@ -18,12 +18,12 @@
             ],
             "m_Values": [
                 "True",
-                "7",
-                "False",
-                "False",
-                "-1",
-                "False",
-                "False",
+                "4",
+                "True",
+                "True",
+                "4",
+                "True",
+                "True",
                 "False"
             ]
         },
@@ -35,10 +35,10 @@
                 "UnityNotificationAndroidCustomActivityString"
             ],
             "m_Values": [
-                "False",
+                "True",
                 "0",
-                "False",
-                "com.unity3d.player.UnityPlayerActivity"
+                "True",
+                "com.test.dummy.activity"
             ]
         },
         "DrawableResources": []

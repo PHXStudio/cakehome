@@ -106,8 +106,8 @@ namespace Watermelon
             Button camperButton = CreateTabButton(row.transform, "Camper", 1f / 3f, 2f / 3f, out Graphic camperSelected);
             Button profileButton = CreateTabButton(row.transform, "Profile", 2f / 3f, 1f, out Graphic profileSelected);
 
-            AssignTabIcon(shopButton, "Assets/Project Files/Game/Images/ui_icon_store.png");
-            AssignTabIcon(camperButton, "Assets/Project Files/Game/Images/ui_icon_map.png");
+            AssignTabIcon(shopButton, "Assets/Project Files/Game/Art/UI/Icons/ui_icon_store.png");
+            AssignTabIcon(camperButton, "Assets/Project Files/Game/Art/UI/Icons/ui_icon_map.png");
 
             UIBottomNavBar nav = navRoot.AddComponent<UIBottomNavBar>();
             SerializedObject so = new SerializedObject(nav);

@@ -20,8 +20,8 @@ namespace Watermelon
 
         private const string FONT_PATH = "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50.asset";
         private const string NINE_SLICE = "Assets/Watermelon Core/Core Resources/Images/core_universal_back.png";
-        private const string BTN_PURPLE = "Assets/Project Files/Game/Images/Base/General UI/btn_purple.png";
-        private const string BTN_GRAY = "Assets/Project Files/Game/Images/Base/General UI/btn_gray.png";
+        private const string BTN_PURPLE = "Assets/Project Files/Game/Art/UI/Common/btn_purple.png";
+        private const string BTN_GRAY = "Assets/Project Files/Game/Art/UI/Common/btn_gray.png";
 
         [MenuItem("Actions/Profile/Rebuild Profile Page UI")]
         public static void Rebuild()

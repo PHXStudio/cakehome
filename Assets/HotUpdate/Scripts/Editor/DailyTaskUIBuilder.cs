@@ -18,10 +18,10 @@ namespace Watermelon
         private const string GAME_SCENE_PATH = "Assets/Project Files/Game/Scenes/Game.unity";
         private const string FONT_PATH = "Assets/Project Files/Game/Fonts/FredokaOne/FredokaOne 50/FredokaOne 50.asset";
         private const string NINE_SLICE = "Assets/Watermelon Core/Core Resources/Images/core_universal_back.png";
-        private const string PANEL = "Assets/Project Files/Game/Images/Base/General UI/panel.png";
-        private const string BTN_PURPLE = "Assets/Project Files/Game/Images/Base/General UI/btn_purple.png";
-        private const string BTN_GREEN = "Assets/Project Files/Game/Images/Base/General UI/btn_green.png";
-        private const string BTN_CLOSE = "Assets/Project Files/Game/Images/Base/General UI/btn_close.png";
+        private const string PANEL = "Assets/Project Files/Game/Art/UI/Common/panel.png";
+        private const string BTN_PURPLE = "Assets/Project Files/Game/Art/UI/Common/btn_purple.png";
+        private const string BTN_GREEN = "Assets/Project Files/Game/Art/UI/Common/btn_green.png";
+        private const string BTN_CLOSE = "Assets/Project Files/Game/Art/UI/Common/btn_close.png";
 
         [MenuItem("Actions/Daily Task/Rebuild Panel")]
         public static void Rebuild()
